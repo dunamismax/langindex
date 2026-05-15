@@ -1,0 +1,374 @@
+---
+title: PHP
+slug: php
+status: active
+summary: "PHP is a dynamically typed, garbage-collected scripting language centered on server-side web applications, content management systems, request/response backends, and Composer-based package ecosystems."
+firstReleased: 1995
+creators:
+  - Rasmus Lerdorf
+paradigms:
+  - imperative
+  - procedural
+  - object-oriented
+  - functional
+  - scripting
+typing:
+  discipline: dynamic
+  strength: runtime typing with optional declarations, coercive defaults, and per-file strict scalar mode
+memory:
+  model: automatic memory management through reference counting and cyclic garbage collection
+runtime:
+  model: Zend Engine interpreter for web server SAPIs, PHP-FPM, CLI scripts, workers, and embedded runtimes
+officialSite: https://www.php.net/
+repository: https://github.com/php/php-src
+packageManagers:
+  - Composer
+  - Packagist
+  - PECL
+comparedWith:
+  - javascript
+  - ruby
+  - python
+  - java
+  - csharp
+bestFor:
+  - Server-rendered web applications, CMS-backed sites, admin tools, forms, dashboards, and request/response backends.
+  - Teams using Laravel, Symfony, WordPress, Drupal, or Composer packages as central platform assets.
+  - Shared hosting, conventional VPS, container, or platform-as-a-service deployments where PHP-FPM, web server integration, and per-request isolation are useful.
+  - Product teams that need mature web framework conventions and straightforward HTML/database-oriented application delivery.
+poorFit:
+  - Browser-first products where JavaScript or TypeScript must run directly in the client and share npm-centered UI code.
+  - CPU-bound services, hard real-time systems, long-running low-level daemons, or components that need manual memory layout.
+  - Projects that require one static binary, minimal runtime surface, or a standard library-first service model with little framework dependency.
+  - Teams unwilling to manage PHP runtime versions, extensions, OPcache/FPM settings, Composer locks, and framework support windows.
+sources:
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: History of PHP
+    url: https://www.php.net/manual/en/history.php.php
+    publisher: PHP Manual
+  - title: PHP Supported Versions
+    url: https://www.php.net/supported-versions.php
+    publisher: PHP Project
+  - title: PHP 8.5 Release Announcement
+    url: https://www.php.net/releases/8.5/
+    publisher: PHP Project
+  - title: php-src
+    url: https://github.com/php/php-src
+    publisher: PHP Project
+  - title: Command line usage
+    url: https://www.php.net/manual/en/features.commandline.php
+    publisher: PHP Manual
+  - title: FastCGI Process Manager
+    url: https://www.php.net/manual/en/install.fpm.php
+    publisher: PHP Manual
+  - title: OPcache
+    url: https://www.php.net/manual/en/book.opcache.php
+    publisher: PHP Manual
+  - title: PHP Type System
+    url: https://www.php.net/manual/en/language.types.type-system.php
+    publisher: PHP Manual
+  - title: Type declarations
+    url: https://www.php.net/manual/en/language.types.declarations.php
+    publisher: PHP Manual
+  - title: Classes and Objects
+    url: https://www.php.net/manual/en/language.oop5.php
+    publisher: PHP Manual
+  - title: Namespaces
+    url: https://www.php.net/manual/en/language.namespaces.php
+    publisher: PHP Manual
+  - title: Composer introduction
+    url: https://getcomposer.org/doc/00-intro.md
+    publisher: Composer
+  - title: Composer basic usage
+    url: https://getcomposer.org/doc/01-basic-usage.md
+    publisher: Composer
+  - title: Composer repositories
+    url: https://getcomposer.org/doc/05-repositories.md
+    publisher: Composer
+  - title: Packagist
+    url: https://packagist.org/
+    publisher: Packagist
+  - title: PSR-4 Autoloader
+    url: https://www.php-fig.org/psr/psr-4/
+    publisher: PHP-FIG
+  - title: PHP RFC Voting
+    url: https://wiki.php.net/rfc/voting2019
+    publisher: PHP Wiki
+  - title: PHP Release Process
+    url: https://wiki.php.net/rfc/releaseprocess
+    publisher: PHP Wiki
+  - title: Structure
+    url: https://thephp.foundation/structure/
+    publisher: The PHP Foundation
+  - title: Laravel Documentation
+    url: https://laravel.com/docs
+    publisher: Laravel
+  - title: Symfony Documentation
+    url: https://symfony.com/doc/current/index.html
+    publisher: Symfony
+  - title: WordPress Requirements
+    url: https://wordpress.org/about/requirements/
+    publisher: WordPress.org
+lastVerified: 2026-05-15
+---
+
+## Origin And Web Context
+
+PHP began as Rasmus Lerdorf's web-oriented CGI tooling in the mid-1990s and
+grew into a general server-side scripting language for generating dynamic web
+pages. That origin still matters. PHP is not just a language with a web
+framework ecosystem attached; its everyday runtime model, standard library,
+deployment habits, hosting history, and application frameworks are deeply
+shaped by HTTP requests, templates, forms, sessions, databases, files, and web
+server integration.
+
+The modern language is far removed from early PHP/FI. Current PHP has
+namespaces, traits, generators, attributes, enums, exceptions, first-class
+callables, typed properties, union and intersection types, readonly features,
+Fibers, a mature object model, and a large Composer package ecosystem. Its
+legacy is still visible in global configuration, extensions, dynamic typing,
+and a standard library with historical naming and argument-order inconsistencies.
+The practical question is not whether PHP is "old"; it is whether the target
+system benefits from PHP's web runtime and ecosystem enough to accept those
+constraints.
+
+## Runtime And Execution Model
+
+PHP source normally runs on the Zend Engine through one of several Server API
+interfaces. For production web applications, the common shape is a web server
+such as Nginx, Apache, Caddy, or a platform proxy passing requests to PHP-FPM,
+which manages pools of PHP worker processes. Apache module deployments still
+exist, and the CLI SAPI is standard for scripts, migrations, queues, scheduled
+jobs, package tools, and framework commands.
+
+The classic PHP web model is request scoped. A worker receives a request,
+loads or reuses compiled code through OPcache, executes application code, sends
+a response, and returns to the pool. That gives ordinary web apps a useful
+reset boundary: memory leaks, mutated globals, and accidental state are less
+likely to accumulate forever than in a single always-on process. The same model
+also means shared in-memory state is not the default; caches, queues, sessions,
+and coordination usually live in external systems such as Redis, databases,
+files, or application services.
+
+Modern PHP can also run long-lived workers through queue systems, WebSocket
+servers, application servers, or async/event-loop libraries. Those designs need
+more operational discipline than ordinary request/response PHP because memory
+growth, stale configuration, connection lifecycle, signal handling, and code
+reload behavior become persistent-process concerns.
+
+## Type System And Language Model
+
+PHP is dynamically typed at runtime. Variables do not have declared types, and
+values carry runtime types. The language supports type declarations on function
+parameters, return values, properties, and class constants, plus user-defined
+types through classes, interfaces, and enums. Scalar type declarations are
+coercive by default unless a file opts into `declare(strict_types=1)`, and even
+strict mode is not a whole-program static type system.
+
+This makes PHP a gradual discipline language in practice. A modern codebase can
+use typed properties, return types, union types, nullable types, enums,
+`readonly`, value objects, static analysis, and framework validation to create
+strong contracts. It can also bypass those contracts with dynamic arrays, mixed
+values, reflection, magic methods, loose comparisons, runtime service locators,
+legacy APIs, or unvalidated request data. Treat types as useful maintenance
+structure, not as proof that external data is safe.
+
+PHP's object model is class-based. Classes, interfaces, traits, enums,
+visibility modifiers, inheritance, attributes, namespaces, autoloading, and
+exceptions are normal modern PHP. Procedural code remains fully supported and
+is still common in small scripts, templates, WordPress plugins, and older
+applications.
+
+## Memory Management And Concurrency
+
+PHP uses automatic memory management. The implementation combines reference
+counting with a cyclic garbage collector for reference cycles. Ordinary web
+code does not manually free memory, and the request boundary often limits the
+impact of short-lived allocation mistakes. Production systems still need memory
+budgets: large arrays, ORM hydration, image processing, file uploads, exports,
+dependency containers, and long-running workers can exhaust process memory.
+
+PHP does not have built-in shared-memory threads as its mainstream application
+concurrency model. Web concurrency usually comes from multiple PHP-FPM workers,
+multiple containers or hosts, database concurrency, queues, and external
+services. Framework queues, cron jobs, process managers, and supervisors are
+common for background work. Async libraries and fibers can help with
+cooperative I/O in specialized systems, but most PHP web applications are still
+designed around synchronous request handling plus process-level parallelism.
+
+## Composer, Packagist, And Autoloading
+
+Composer is the center of modern PHP dependency management. Projects declare
+dependencies and metadata in `composer.json`, resolve exact package versions
+into `composer.lock`, install packages into `vendor/`, and rely on generated
+autoload files. Packagist is the default public Composer repository, while
+Composer can also use private package repositories, VCS repositories, local
+paths, and artifact repositories.
+
+Composer changed PHP's ecosystem shape. Frameworks and libraries can share
+packages through standard autoloading and semantic version constraints instead
+of copying files into projects manually. PHP-FIG recommendations such as PSR-4
+autoloading and common interfaces helped make cross-framework package reuse
+practical.
+
+The tradeoff is a real supply-chain and operations surface. Production teams
+need lockfiles, dependency review, extension checks, PHP version constraints,
+private repository authentication, deploy-time or build-time install policy,
+and a clear answer for whether `vendor/` is built in CI, inside a container, or
+on the server.
+
+## Syntax Example
+
+```php
+<?php
+
+declare(strict_types=1);
+
+final readonly class Language
+{
+    public function __construct(
+        public string $name,
+        /** @var list<string> */
+        public array $domains,
+    ) {
+    }
+
+    public function fits(string $domain): bool
+    {
+        return in_array($domain, $this->domains, true);
+    }
+}
+
+$languages = [
+    new Language('PHP', ['web', 'cms', 'backend']),
+    new Language('JavaScript', ['web', 'node', 'scripts']),
+    new Language('Ruby', ['web', 'scripts', 'rails']),
+];
+
+$domain = 'web';
+$matches = array_values(array_filter(
+    $languages,
+    fn (Language $language): bool => $language->fits($domain),
+));
+
+usort($matches, fn (Language $a, Language $b): int => $a->name <=> $b->name);
+
+echo $domain . ': ' . implode(', ', array_map(
+    fn (Language $language): string => $language->name,
+    $matches,
+)) . PHP_EOL;
+```
+
+This example uses strict scalar typing, constructor property promotion,
+`readonly`, arrow functions, arrays, and ordinary CLI output. In a web
+application, the same language constructs would usually sit behind a framework
+route, controller, handler, command, template, or service class.
+
+## Web Frameworks, CMSs, And Ecosystem
+
+PHP's practical strength is web application delivery. Laravel emphasizes an
+integrated application framework with routing, ORM, queues, jobs, validation,
+mail, events, testing tools, and deployment conventions. Symfony provides a
+framework and reusable components used directly by many PHP applications and
+indirectly by other projects. WordPress, Drupal, and other CMS ecosystems keep
+PHP central for content-heavy sites, extensions, themes, editorial workflows,
+and plugin markets.
+
+That ecosystem gives teams a fast path for CRUD apps, admin systems,
+server-rendered sites, forms, content workflows, payments, authentication,
+database-backed applications, and internal tools. It also creates framework
+gravity. A Laravel, Symfony, WordPress, or Drupal application is often best
+understood as that platform first and PHP second: lifecycle hooks, dependency
+injection, ORM behavior, plugin APIs, migration tools, template engines, and
+security conventions matter as much as the base language.
+
+## Deployment And Operations
+
+PHP can be deployed in several ordinary shapes:
+
+- Shared hosting or managed hosting where the provider owns much of the web
+  server and PHP runtime.
+- VPS or bare-metal deployments with Nginx/Apache/Caddy, PHP-FPM, OPcache,
+  Composer, system packages, and release directories.
+- Containers that build dependencies ahead of time and run PHP-FPM, a web
+  server, or a framework-specific runtime.
+- Platform services that provide PHP versions, buildpacks, workers, queues,
+  and framework integrations.
+
+The important production choices are PHP version, extension set, memory limit,
+OPcache settings, FPM pool sizing, web server routing, environment
+configuration, dependency installation, file upload handling, session storage,
+queue workers, cron/scheduler behavior, logs, and zero-downtime release
+strategy. PHP's request boundary simplifies some failure modes, but misconfigured
+FPM pools, stale OPcache, missing extensions, writable web roots, weak plugin
+governance, or Composer installs on live servers can still create avoidable
+production risk.
+
+## Best-Fit Use Cases
+
+PHP is a strong fit for:
+
+- Server-rendered web applications, dashboards, admin panels, forms, and
+  database-backed business software.
+- Content-heavy sites and CMS projects where WordPress, Drupal, or a similar
+  PHP platform is already the product center.
+- Laravel or Symfony applications where framework conventions, package access,
+  and web delivery speed matter more than single-binary deployment.
+- Teams that want straightforward hosting options from shared hosting through
+  containers without making JavaScript the backend language.
+- Projects where request-scoped execution, Composer packages, and mature web
+  framework patterns are operational advantages.
+
+## Poor-Fit Or Risky Use Cases
+
+PHP can be a poor fit when:
+
+- The product is mostly browser application code or full-stack JavaScript where
+  TypeScript and npm package sharing are central.
+- The service is CPU-bound, latency-sensitive under heavy computation, or
+  better expressed as a long-running native service.
+- The team needs static binary distribution, a small runtime, or a standard
+  library-first service model with minimal framework dependency.
+- The system requires heavy persistent in-memory coordination without external
+  queues, caches, or services.
+- The organization treats PHP's low hosting barrier as a substitute for
+  runtime patching, extension management, dependency review, and framework
+  upgrade planning.
+
+## Governance, Releases, And Compatibility
+
+PHP language changes are developed in the open through the PHP source
+repository, mailing lists, wiki RFCs, and voting rules. Release timing and
+support windows are documented by the PHP project; as of this page's
+verification date, PHP 8.5 is the current feature line, PHP 8.4 and 8.5 are in
+active support, and older lines have scheduled security-only or unsupported
+states. Production teams should track supported versions rather than relying on
+distribution defaults indefinitely.
+
+The PHP Foundation funds and coordinates work on the language by contracting
+core developers, but it is not the same thing as a single corporate owner of
+the language. Frameworks, CMSs, hosting providers, Linux distributions, and
+Composer packages each add their own support windows. A production PHP strategy
+should align the PHP runtime, framework major version, extensions, Composer
+constraints, operating system packages, and hosting platform.
+
+## Comparison Notes
+
+JavaScript and TypeScript are the direct choice for browser code and npm-first
+full-stack systems. PHP is usually the more direct choice when the backend is a
+server-rendered web app, CMS, Laravel/Symfony application, or hosting-constrained
+project and browser code is only one part of the system.
+
+Ruby is PHP's closest comparison for framework-led web application development.
+Ruby on Rails and Laravel both offer productive full-stack conventions. Ruby
+usually appeals when Rails and Ruby's object model are the desired platform;
+PHP usually appeals when Composer packages, PHP hosting, CMS ecosystems, or
+Laravel/Symfony are stronger constraints.
+
+Python, Java, C#, and Go are common backend alternatives. Python fits data and
+scripting-heavy teams, Java and C# fit managed-runtime enterprise platforms,
+and Go fits small network services and infrastructure tools. PHP is strongest
+when the product is fundamentally a web application or content platform and its
+deployment model fits the team.

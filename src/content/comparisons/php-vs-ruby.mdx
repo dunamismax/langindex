@@ -1,0 +1,130 @@
+---
+title: PHP vs Ruby
+slug: php-vs-ruby
+summary: "PHP and Ruby both have strong web-framework histories, but PHP is shaped by Composer, PHP-FPM, CMSs, and broad hosting, while Ruby is shaped by Ruby on Rails, RubyGems, Bundler, and Ruby's object-oriented language design."
+languages:
+  - php
+  - ruby
+useCases:
+  - web applications
+  - server-rendered applications
+  - cms platforms
+  - startup products
+  - internal tools
+sources:
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: PHP Type System
+    url: https://www.php.net/manual/en/language.types.type-system.php
+    publisher: PHP Manual
+  - title: Composer basic usage
+    url: https://getcomposer.org/doc/01-basic-usage.md
+    publisher: Composer
+  - title: FastCGI Process Manager
+    url: https://www.php.net/manual/en/install.fpm.php
+    publisher: PHP Manual
+  - title: Laravel Documentation
+    url: https://laravel.com/docs
+    publisher: Laravel
+  - title: Symfony Documentation
+    url: https://symfony.com/doc/current/index.html
+    publisher: Symfony
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Official Ruby FAQ
+    url: https://www.ruby-lang.org/en/documentation/faq/1/
+    publisher: Ruby
+  - title: Ruby Documentation
+    url: https://www.ruby-lang.org/en/documentation/
+    publisher: Ruby
+  - title: Getting Started - RubyGems Guides
+    url: https://guides.rubygems.org/getting_started/
+    publisher: RubyGems
+  - title: How to manage application dependencies with Bundler
+    url: https://guides.rubygems.org/using_bundler_in_applications/
+    publisher: RubyGems
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is about web application and product development. PHP and Ruby
+are both general-purpose dynamic languages, but the practical decision is often
+Laravel or Symfony versus Ruby on Rails, PHP hosting and CMSs versus Ruby/Rails
+platforms, and Composer/Packagist versus RubyGems/Bundler.
+
+## Shared Territory
+
+Both languages are dynamically typed, garbage-collected, open source, and
+productive for server-rendered applications, HTTP APIs, admin tools, internal
+products, background jobs, scripts, and database-backed web systems. Both
+ecosystems rely heavily on framework conventions, dependency managers, tests,
+runtime validation, and deployment discipline.
+
+## Key Differences
+
+| Dimension       | PHP                                                                      | Ruby                                                                  |
+| --------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Ecosystem pull  | Laravel, Symfony, WordPress, Drupal, Composer, Packagist                 | Ruby on Rails, RubyGems, Bundler, Rails conventions                   |
+| Runtime model   | Commonly PHP-FPM process pools with request-scoped execution and OPcache | Commonly long-running app servers or process managers for web apps    |
+| Language feel   | Web-first scripting language with modern OO and procedural compatibility | Object-oriented dynamic language designed around developer enjoyment  |
+| Hosting         | Very broad PHP hosting, CMS hosting, VPS, containers, platform services  | Strong Rails-aware platforms and containers, less shared-hosting pull |
+| CMS strength    | Major advantage through WordPress, Drupal, and PHP plugin ecosystems     | Usually not the default choice for mainstream CMS-heavy projects      |
+| Package tooling | Composer lockfiles, PSR autoloading, PHP extensions                      | Gemfile/Gemfile.lock, RubyGems, Bundler                               |
+| Legacy surface  | Large amount of old PHP, plugins, and host-specific configuration        | Large Rails-era codebases and framework-version upgrade constraints   |
+
+## Choose PHP When
+
+- The product is a CMS, content-heavy site, plugin ecosystem, admin panel, or
+  conventional server-rendered web application.
+- Laravel, Symfony, WordPress, Drupal, or PHP hosting is already a strategic
+  constraint.
+- The team wants Composer packages, PHP-FPM deployment, and common PHP
+  operations rather than Rails-specific conventions.
+- The application needs to fit hosting environments where PHP support is easier
+  to obtain than Ruby application hosting.
+- Existing PHP code, extensions, templates, or CMS integrations carry the
+  business value.
+
+## Choose Ruby When
+
+- Ruby on Rails is the desired application platform and its conventions match
+  the product.
+- The team values Ruby's object model, expressive syntax, Rails generators,
+  Active Record conventions, and the RubyGems/Bundler ecosystem.
+- The application is a custom product, SaaS backend, internal tool, or
+  server-rendered app where Rails conventions are a good fit.
+- The deployment platform and team are comfortable operating Ruby app servers,
+  background workers, gem dependencies, and Rails upgrades.
+- The project benefits more from Rails' integrated product-development
+  conventions than from PHP's CMS and hosting reach.
+
+## Watch Points
+
+PHP's risk is often ecosystem sprawl. A PHP project can be a modern Laravel app,
+a Symfony application, a CMS plugin stack, a legacy shared-hosted site, or a
+mix of all of those. Be explicit about framework, version support, deployment
+model, extension set, and dependency policy.
+
+Ruby's risk is often framework gravity. Rails productivity is real when a team
+accepts its conventions, but those conventions shape database access, code
+organization, background jobs, asset handling, tests, upgrades, and hiring.
+Ruby without Rails can be elegant, but Rails is usually why Ruby is in the
+web-backend conversation.
+
+## Migration Or Interoperability Notes
+
+Moving from PHP to Ruby or Ruby to PHP is usually a platform migration, not a
+syntax translation. Frameworks, routing, database migrations, validation,
+templates, background jobs, authentication, and package ecosystems all change.
+Prefer service boundaries, API extraction, or phased replacement when the
+existing application is large.
+
+For new projects, choose the framework and operational model first. Laravel,
+Symfony, Rails, WordPress, and Drupal each define more of the day-to-day
+experience than the language comparison alone.

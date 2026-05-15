@@ -30,6 +30,7 @@ Observed on 2026-05-15:
   - Python
   - Java
   - SQL
+  - PHP
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -40,12 +41,15 @@ Observed on 2026-05-15:
   - Java vs C# comparison
   - Java vs Go comparison
   - Java vs Kotlin comparison
+  - PHP vs JavaScript/Node.js comparison
+  - PHP vs Ruby comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
   - Choosing Python for scripting, backend, data, and AI work guide
   - Choosing Java for backend, enterprise, and JVM work guide
   - Choosing SQL for data access and application architecture guide
+  - Choosing PHP for web backends and CMS work guide
   - Ownership concept page
 - Current local baseline:
 
@@ -271,12 +275,12 @@ justify the extra network time.
 
 ### Phase 11 - PHP
 
-- [ ] Add a complete PHP page.
-- [ ] Cover PHP runtime, Composer, Packagist, web hosting history, modern
+- [x] Add a complete PHP page.
+- [x] Cover PHP runtime, Composer, Packagist, web hosting history, modern
       framework ecosystem, type-system evolution, deployment model, and
       common production constraints.
-- [ ] Add PHP vs JavaScript/Node.js and PHP vs Ruby comparisons.
-- [ ] Add PHP to web backend guides.
+- [x] Add PHP vs JavaScript/Node.js and PHP vs Ruby comparisons.
+- [x] Add PHP to web backend guides.
 
 ### Phase 12 - Kotlin
 

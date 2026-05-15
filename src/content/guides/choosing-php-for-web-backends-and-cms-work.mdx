@@ -1,0 +1,160 @@
+---
+title: Choosing PHP For Web Backends And CMS Work
+slug: choosing-php-for-web-backends-and-cms-work
+summary: A decision guide for teams evaluating PHP for server-rendered web applications, CMS platforms, Laravel or Symfony backends, and conventional PHP hosting.
+audience: Teams deciding whether PHP should power a new web backend, CMS-backed site, admin system, internal tool, or migration from an existing PHP platform.
+candidates:
+  - php
+  - javascript
+  - typescript
+  - ruby
+  - python
+  - csharp
+  - java
+  - go
+sources:
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: PHP Supported Versions
+    url: https://www.php.net/supported-versions.php
+    publisher: PHP Project
+  - title: FastCGI Process Manager
+    url: https://www.php.net/manual/en/install.fpm.php
+    publisher: PHP Manual
+  - title: OPcache
+    url: https://www.php.net/manual/en/book.opcache.php
+    publisher: PHP Manual
+  - title: Composer basic usage
+    url: https://getcomposer.org/doc/01-basic-usage.md
+    publisher: Composer
+  - title: Composer repositories
+    url: https://getcomposer.org/doc/05-repositories.md
+    publisher: Composer
+  - title: Packagist
+    url: https://packagist.org/
+    publisher: Packagist
+  - title: PSR-4 Autoloader
+    url: https://www.php-fig.org/psr/psr-4/
+    publisher: PHP-FIG
+  - title: Laravel Documentation
+    url: https://laravel.com/docs
+    publisher: Laravel
+  - title: Symfony Documentation
+    url: https://symfony.com/doc/current/index.html
+    publisher: Symfony
+  - title: WordPress Requirements
+    url: https://wordpress.org/about/requirements/
+    publisher: WordPress.org
+  - title: Drupal Composer requirements
+    url: https://www.drupal.org/docs/getting-started/system-requirements/composer-requirements
+    publisher: Drupal.org
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+lastVerified: 2026-05-15
+---
+
+## Start With The Web Shape
+
+PHP is usually strongest when the product is a conventional web application:
+routes, forms, templates, users, sessions, database records, files, background
+jobs, email, payments, admin screens, content workflows, and deployment behind a
+web server. It is also the default language for major CMS ecosystems such as
+WordPress and Drupal.
+
+The key decision is whether the project benefits from PHP's web-centered
+runtime and ecosystem more than from a different platform's strengths. PHP is
+not the default answer for every backend, but it remains a practical answer for
+many web products.
+
+## Choose PHP When
+
+Choose PHP when:
+
+- The application is server-rendered, form-heavy, CMS-backed, editorial,
+  internal, or admin-oriented.
+- Laravel, Symfony, WordPress, Drupal, or another PHP platform already matches
+  the product and team.
+- Composer packages, PHP hosting, PHP-FPM, OPcache, and conventional web server
+  deployment are acceptable operational constraints.
+- The backend does not need to share most of its code with a browser or npm
+  package ecosystem.
+- The team can keep PHP, extensions, Composer dependencies, and framework
+  versions on supported lines.
+
+PHP is especially pragmatic for organizations that already own PHP code or
+content systems. Replacing a working CMS or framework stack only makes sense
+when the replacement solves a real product or operational problem.
+
+## Choose JavaScript Or TypeScript Instead When
+
+Use JavaScript or TypeScript when the product is frontend-led, full-stack
+JavaScript, framework-driven, or npm-centered. TypeScript is usually the better
+default for long-lived Node.js services because static contracts help across
+route handlers, shared packages, generated types, validation code, and frontend
+boundaries.
+
+JavaScript and TypeScript are also stronger when the backend needs direct
+alignment with frontend tooling, build pipelines, edge runtimes, realtime
+features, or a team that already maintains everything in the JavaScript
+ecosystem.
+
+## Choose Ruby Instead When
+
+Choose Ruby when Ruby on Rails is the platform the team wants. Rails is a strong
+fit for custom products, internal tools, SaaS applications, and server-rendered
+systems where its conventions match the product.
+
+PHP and Ruby overlap most in framework-led web development. The difference is
+usually not a small language preference; it is Laravel or Symfony versus Rails,
+Composer versus RubyGems/Bundler, PHP-FPM and PHP hosting versus Ruby app
+servers and Rails-aware platforms.
+
+## Choose Python, Java, C#, Or Go Instead When
+
+Choose Python when the backend is close to data workflows, ML tooling,
+automation, notebooks, or a Python-heavy organization. Choose Java or C# when a
+managed enterprise platform, long-lived service architecture, support policy,
+and existing JVM or .NET investment are the main constraints.
+
+Choose Go when the backend is a network service, control plane, infrastructure
+tool, or deployable binary where static builds and simple concurrency matter
+more than web-framework and CMS ecosystem depth.
+
+## Production Checklist
+
+Before choosing PHP for production, answer these questions:
+
+- Which PHP version will run locally, in CI, and in production?
+- Which extensions are required, and who patches them?
+- Are Composer dependencies locked, reviewed, scanned, and installed at build
+  time rather than modified unpredictably on live servers?
+- Is the deployment model PHP-FPM, a container, shared hosting, a platform
+  service, or a long-running worker runtime?
+- Are OPcache, FPM pool sizing, memory limits, file uploads, sessions, queues,
+  cron jobs, and logs explicitly configured?
+- Does the selected framework or CMS support the current PHP version and have a
+  known upgrade path?
+- Where are uploaded files, cache state, sessions, and generated assets stored?
+- Which inputs are validated at runtime independent of type declarations?
+
+## Practical Default
+
+Start with PHP when the product is a web application or CMS and Laravel,
+Symfony, WordPress, Drupal, Composer packages, or PHP hosting are real
+advantages. Use TypeScript/Node.js when browser and backend code sharing is the
+main benefit. Use Ruby/Rails when Rails conventions are the platform choice.
+Use Python, Java, C#, or Go when their ecosystems or deployment models better
+match the workload.
+
+For existing PHP systems, improve the runtime and dependency posture before
+rewriting. Supported PHP versions, modern framework releases, Composer locks,
+tests, static analysis, OPcache/FPM tuning, and cleaner deployment often reduce
+risk faster than a language migration.

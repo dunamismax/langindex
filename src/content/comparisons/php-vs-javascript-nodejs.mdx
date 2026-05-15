@@ -1,0 +1,125 @@
+---
+title: PHP vs JavaScript/Node.js
+slug: php-vs-javascript-nodejs
+summary: "PHP is optimized around server-side web applications and Composer-based PHP frameworks, while JavaScript with Node.js keeps frontend and backend code in the same language and npm ecosystem."
+languages:
+  - php
+  - javascript
+useCases:
+  - web backends
+  - server-rendered applications
+  - full-stack applications
+  - cms platforms
+  - node services
+sources:
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: FastCGI Process Manager
+    url: https://www.php.net/manual/en/install.fpm.php
+    publisher: PHP Manual
+  - title: OPcache
+    url: https://www.php.net/manual/en/book.opcache.php
+    publisher: PHP Manual
+  - title: Composer basic usage
+    url: https://getcomposer.org/doc/01-basic-usage.md
+    publisher: Composer
+  - title: Packagist
+    url: https://packagist.org/
+    publisher: Packagist
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: Modules - Packages
+    url: https://nodejs.org/api/packages.html
+    publisher: OpenJS Foundation
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
+  - title: TypeScript Design Goals
+    url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
+    publisher: Microsoft
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is about backend and full-stack web application choices. It
+uses JavaScript/Node.js as the JavaScript-side baseline because JavaScript in
+the browser is not optional for ordinary web interactivity, while Node.js is a
+common server runtime for JavaScript and TypeScript applications.
+
+## Shared Territory
+
+PHP and Node.js both work for HTTP APIs, server-rendered pages, content sites,
+admin panels, queues, CLIs, background jobs, and framework-based web products.
+Both have large package ecosystems, mature web frameworks, container deployment
+paths, test tools, and hosting options. Both can be excellent or painful
+depending on framework choice, dependency discipline, runtime versioning, and
+operational habits.
+
+## Key Differences
+
+| Dimension        | PHP                                                                          | JavaScript/Node.js                                                       |
+| ---------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Runtime center   | Zend Engine through PHP-FPM, CLI, web SAPIs, and framework workers           | V8-based Node.js runtime with event loop and server APIs                 |
+| Web model        | Traditionally request scoped with process pools and OPcache                  | Long-running process that handles many events and requests               |
+| Type system      | Dynamic with optional runtime type declarations and external static analysis | Dynamic JavaScript, often paired with TypeScript for static checking     |
+| Package center   | Composer, Packagist, PSR autoloading, PHP extensions                         | npm-compatible package managers and `package.json`                       |
+| Frontend sharing | Requires JavaScript/TypeScript for browser code                              | Same base language can span frontend, backend, tooling, and build config |
+| CMS gravity      | Strong through WordPress, Drupal, and PHP hosting                            | Stronger in JavaScript-native frameworks and headless/front-end stacks   |
+| Concurrency      | Usually FPM/process workers, queues, external services, or specialized async | Event-driven I/O with workers/processes for CPU-heavy work               |
+| Deployment       | Web server plus PHP-FPM or platform/container PHP runtime                    | Node process, serverless/edge runtime, container, or platform service    |
+
+## Choose PHP When
+
+- The project is a server-rendered application, CMS, admin system, form-heavy
+  workflow, or database-backed web product.
+- Laravel, Symfony, WordPress, Drupal, or another PHP platform is the strongest
+  ecosystem match.
+- The team values request-scoped execution, conventional PHP hosting, Composer
+  packages, and PHP-FPM/web server operations.
+- Browser code is important but not the organizing center of the whole
+  application.
+- The deployment environment already supports PHP well and the team can manage
+  versions, extensions, OPcache, FPM pools, and Composer locks.
+
+## Choose JavaScript/Node.js When
+
+- Sharing language, validation logic, generated types, and packages between
+  frontend and backend is a central benefit.
+- The product is built around a JavaScript or TypeScript framework, npm
+  packages, frontend build tooling, or edge/serverless JavaScript runtimes.
+- The backend is I/O-heavy and fits Node's event-driven service model.
+- The team wants TypeScript as the main static contract layer across the
+  application.
+- Real-time features, build tools, developer tooling, or frontend-adjacent
+  server code dominate the workload.
+
+## Watch Points
+
+PHP's low hosting friction can hide runtime and dependency risk. Production
+teams still need supported PHP versions, locked Composer dependencies, extension
+inventory, secure upload handling, framework updates, cache invalidation,
+worker supervision, and OPcache/FPM tuning.
+
+Node's single-language story can hide deployment and runtime complexity. Teams
+still need package review, lockfiles, runtime compatibility, module-format
+decisions, memory leak monitoring, backpressure, CPU offloading, and runtime
+validation for untrusted data. TypeScript improves maintainability but does not
+validate incoming JSON or database rows by itself.
+
+## Migration Or Interoperability Notes
+
+PHP and Node.js can coexist cleanly at HTTP, queue, database, cache, and asset
+pipeline boundaries. A common split is PHP for the CMS or server-rendered
+application, with Node-based tooling for frontend builds or separate realtime
+services. Another is Node.js for the product application and PHP for a legacy
+CMS or administrative platform.
+
+Avoid half-migrations that leave ownership unclear. Decide which runtime owns
+routing, authentication, sessions, frontend builds, background jobs, and
+database migrations before splitting one web product across both ecosystems.
