@@ -32,12 +32,12 @@ const relatedLanguages = data.comparedWith
 
 const statusStyles: Record<string, string> = {
   active:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
   stable: "border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-300",
   experimental:
     "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   legacy:
-    "border-stone-500/30 bg-stone-500/10 text-stone-700 dark:text-stone-300",
+    "border-slate-500/30 bg-slate-500/10 text-slate-700 dark:text-slate-300",
   inactive:
     "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
 };
@@ -239,8 +239,9 @@ if (data.packageManagers.length > 0) {
         <h2
           class="flex items-center gap-2 text-base font-semibold text-[color:var(--color-fg-strong)]"
         >
-          <span aria-hidden="true" class="h-2 w-2 rounded-full bg-emerald-500"
-          ></span>
+          <span
+            aria-hidden="true"
+            class="h-2 w-2 rounded-full bg-[color:var(--color-accent)]"></span>
           Best fit
         </h2>
         <ul class="mt-3 space-y-1.5 text-sm text-[color:var(--color-fg-muted)]">

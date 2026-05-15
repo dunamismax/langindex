@@ -78,12 +78,12 @@ const isActive = (href: string) => {
     <meta name="color-scheme" content="dark light" />
     <meta
       name="theme-color"
-      content="#0b0d0c"
+      content="#0d1117"
       media="(prefers-color-scheme: dark)"
     />
     <meta
       name="theme-color"
-      content="#f8f9f7"
+      content="#ffffff"
       media="(prefers-color-scheme: light)"
     />
     <link
@@ -170,10 +170,11 @@ const isActive = (href: string) => {
             data-mobile-nav-toggle
             aria-expanded="false"
             aria-controls="mobile-nav"
-            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)] md:hidden"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-fg-muted)] transition-colors hover:text-[color:var(--color-fg-strong)] md:hidden"
           >
             <span class="sr-only">Toggle navigation</span>
             <svg
+              data-mobile-nav-icon-open
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -182,6 +183,21 @@ const isActive = (href: string) => {
             >
               <path
                 d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"></path>
+            </svg>
+            <svg
+              data-mobile-nav-icon-close
+              class="hidden"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 6l12 12M18 6L6 18"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"></path>
@@ -298,11 +314,16 @@ const isActive = (href: string) => {
     <script>
       const toggle = document.querySelector("[data-mobile-nav-toggle]");
       const panel = document.querySelector("[data-mobile-nav]");
+      const iconOpen = document.querySelector("[data-mobile-nav-icon-open]");
+      const iconClose = document.querySelector("[data-mobile-nav-icon-close]");
       if (toggle && panel) {
         toggle.addEventListener("click", () => {
           const expanded = toggle.getAttribute("aria-expanded") === "true";
-          toggle.setAttribute("aria-expanded", String(!expanded));
-          (panel as HTMLElement).hidden = expanded;
+          const next = !expanded;
+          toggle.setAttribute("aria-expanded", String(next));
+          (panel as HTMLElement).hidden = !next;
+          iconOpen?.classList.toggle("hidden", next);
+          iconClose?.classList.toggle("hidden", !next);
         });
       }
     </script>
