@@ -2,10 +2,6 @@
   <img src="public/brand/langindex-banner-dark.png" alt="LangIndex" width="1200">
 </p>
 
-<p align="center">
-  <img src="public/brand/langindex-logo-192.png" alt="LangIndex project logo" width="96">
-</p>
-
 LangIndex is an open source, self-hosted reference for programming languages.
 
 Live site: [langindex.dev](https://langindex.dev)
