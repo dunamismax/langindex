@@ -24,9 +24,12 @@ Observed on 2026-05-15:
   - Rust
   - Go
   - TypeScript
+  - Python
 - Current supporting content:
   - Rust vs Go comparison
+  - Python vs Go comparison
   - Choosing a systems language guide
+  - Choosing Python for scripting, backend, data, and AI work guide
   - Ownership concept page
 - Current local baseline:
 
@@ -189,12 +192,12 @@ justify the extra network time.
 
 ### Phase 4 - Python
 
-- [ ] Add a complete Python page.
-- [ ] Cover CPython, Python Enhancement Proposals, package tooling, virtual
+- [x] Add a complete Python page.
+- [x] Cover CPython, Python Enhancement Proposals, package tooling, virtual
       environments, typing, packaging friction, data/AI ecosystem, scripting,
       web services, and deployment constraints.
-- [ ] Add Python vs JavaScript or Python vs Go comparison.
-- [ ] Add Python to relevant guides for scripting, backend services, data,
+- [x] Add Python vs JavaScript or Python vs Go comparison.
+- [x] Add Python to relevant guides for scripting, backend services, data,
       and AI-adjacent work.
 
 ### Phase 5 - JavaScript

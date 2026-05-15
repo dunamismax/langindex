@@ -1,0 +1,117 @@
+---
+title: Python vs Go
+slug: python-vs-go
+summary: "Python and Go both work for backend services, tools, and automation, but Python favors ecosystem breadth and iteration speed while Go favors static binaries, simple concurrency, and operational predictability."
+languages:
+  - python
+  - go
+useCases:
+  - backend services
+  - automation
+  - command-line tools
+  - infrastructure
+  - data workflows
+sources:
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: venv - Creation of Virtual Environments
+    url: https://docs.python.org/3/library/venv.html
+    publisher: Python Software Foundation
+  - title: typing - Support for Type Hints
+    url: https://docs.python.org/3/library/typing.html
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: PEP 703 - Making the Global Interpreter Lock Optional in CPython
+    url: https://peps.python.org/pep-0703/
+    publisher: Python Software Foundation
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+  - title: The Go Programming Language Specification
+    url: https://go.dev/ref/spec
+    publisher: Go Project
+  - title: Effective Go
+    url: https://go.dev/doc/effective_go
+    publisher: Go Project
+  - title: How to Write Go Code
+    url: https://go.dev/doc/code
+    publisher: Go Project
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+  - title: Go 1 and the Future of Go Programs
+    url: https://go.dev/doc/go1compat
+    publisher: Go Project
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is about practical choices for backend services, automation, command-line tools, infrastructure code, data-adjacent workflows, and internal platforms. It is not a universal ranking. Python and Go can both produce maintainable production systems, but they optimize for different kinds of work.
+
+## Shared Territory
+
+Python and Go both cover scripts, CLIs, HTTP APIs, worker services, data movement, platform tools, and integration code. Both have open source implementations, package ecosystems, standard test workflows, and strong editor support. Both are common choices for service teams that need productive language defaults without moving all the way down to C, C++, or Rust.
+
+The overlap is strongest in internal tools and services where developer time, deployment shape, and ecosystem access matter more than language ideology.
+
+## Key Differences
+
+| Dimension        | Python                                                                                    | Go                                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Runtime model    | Managed interpreter, usually CPython, with bytecode execution and runtime typing          | Ahead-of-time native binaries with the Go runtime included                               |
+| Type system      | Dynamic with optional type hints for static analysis and editor support                   | Static with structural interfaces and explicit compile-time checking                     |
+| Memory model     | Garbage collected; CPython commonly uses reference counting plus cyclic GC                | Garbage-collected runtime with explicit pointers and value semantics                     |
+| Concurrency      | Threads, `asyncio`, processes, native extensions, and implementation-specific constraints | Goroutines, channels, `context`, and runtime scheduling built into the standard workflow |
+| Packaging        | PyPI, `pip`, virtual environments, build backends, and platform-specific wheels           | Go modules and the `go` command                                                          |
+| Deployment       | Interpreter plus dependencies, often through virtual environments or containers           | Usually a target-specific executable or container image                                  |
+| Ecosystem center | Automation, web, data analysis, scientific computing, notebooks, ML, glue code            | Network services, infrastructure tools, CLIs, distributed systems, control planes        |
+| Learning curve   | Low entry cost; discipline grows around packaging, typing, testing, and deployment        | Small language surface; more compile-time rules and explicit service structure           |
+
+## Choose Python When
+
+- The work is scripting, automation, data cleaning, notebooks, scientific computing, ML workflows, or AI-adjacent application code.
+- Library reach matters more than single-binary deployment.
+- Developers, analysts, researchers, or operations staff need to share readable code.
+- The project benefits from dynamic iteration, interactive exploration, or a REPL/notebook workflow.
+- A mature Python web or task-processing ecosystem already fits the team and deployment environment.
+- Performance-critical work can be delegated to vectorized libraries, native extensions, subprocesses, or separate services.
+
+## Choose Go When
+
+- The primary target is a network service, CLI, agent, control plane, or infrastructure tool.
+- Static typing, fast builds, standard formatting, and simple deployment artifacts are high-value constraints.
+- The workload is mostly I/O-bound and benefits from goroutines, channels, contexts, HTTP packages, profiling, and standard library networking.
+- The team wants a smaller language surface and less packaging variation.
+- Runtime dependencies should be minimized or captured in a single target-specific executable.
+- The project needs predictable service conventions more than notebooks, scientific libraries, or dynamic scripting ergonomics.
+
+## Watch Points
+
+Python's productivity can hide deployment cost. Dependency isolation, native wheels, Python version support, transitive dependency review, and runtime validation need to be designed deliberately. Type hints help maintenance, but they do not turn external data into trusted values.
+
+Go's operational simplicity can hide language fit costs. It has a smaller ecosystem for data science, notebooks, and many ML workflows, and its type system is less expressive than languages that offer algebraic data types or advanced compile-time modeling. Goroutines still need cancellation, bounds, backpressure, and data-race discipline.
+
+## Backend Services
+
+For HTTP APIs and backend services, choose by the dominant constraint. Python is often attractive when the service is close to data processing, ML inference orchestration, complex business libraries, or a Python-heavy organization. Go is often attractive when the service is a network-facing component, platform API, proxy, control plane, or operational tool where binary deployment and concurrency shape matter.
+
+Neither language removes the need for production basics: dependency updates, runtime validation, logging, metrics, timeouts, health checks, tests, and a repeatable deployment path.
+
+## Automation And Data Work
+
+Python is usually the stronger default for scripts that grow into data workflows or analyst-facing tools. It has direct access to notebooks, data frames, numerical libraries, plotting, ML packages, and a large amount of domain-specific glue.
+
+Go is usually the stronger default for automation that must become a distributed binary, a long-running daemon, a Kubernetes-facing tool, or a service with many concurrent network operations. Its standard `go test`, `go fmt`, module, and build workflows make those tools easier to standardize across a platform team.
+
+## Migration Or Interoperability Notes
+
+Python and Go often work together cleanly at process and network boundaries. A common architecture is Python for data, research, ML orchestration, and internal scripting, with Go for network services, agents, control planes, and deployment tools.
+
+Direct in-process interoperability is possible through C ABI layers, generated bindings, RPC libraries, or embedding, but the operational boundary is usually clearer through HTTP, gRPC, message queues, files, or database contracts. Keep the boundary typed, tested, and versioned rather than relying on one language to absorb the other's runtime model.

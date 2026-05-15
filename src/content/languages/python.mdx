@@ -1,0 +1,237 @@
+---
+title: Python
+slug: python
+status: active
+summary: Python is a dynamically typed, general-purpose language centered on readability, a large standard library, and a broad package ecosystem for scripting, automation, web services, data work, scientific computing, and machine learning.
+firstReleased: 1991
+creators:
+  - Guido van Rossum
+paradigms:
+  - multi-paradigm
+  - procedural
+  - object-oriented
+  - functional
+typing:
+  discipline: dynamic
+  strength: strong with optional static type hints
+memory:
+  model: garbage collected; CPython primarily uses reference counting plus cyclic garbage collection
+runtime:
+  model: interpreted bytecode on CPython and other Python implementations
+officialSite: https://www.python.org/
+repository: https://github.com/python/cpython
+packageManagers:
+  - pip
+  - PyPI
+  - venv
+comparedWith:
+  - go
+  - javascript
+  - ruby
+  - r
+bestFor:
+  - Scripts, automation, command-line utilities, glue code, and operational tooling where readability and library reach matter.
+  - Data analysis, scientific computing, notebooks, machine learning workflows, and AI-adjacent application code built around the Python ecosystem.
+  - Web services and backend applications where framework maturity and developer velocity matter more than single-binary deployment.
+  - Teams that need a language approachable enough for developers, analysts, researchers, and operations staff to share.
+poorFit:
+  - Low-level systems software, hard real-time components, embedded firmware, and workloads that need tight control over allocation and layout.
+  - CPU-bound parallel programs that expect ordinary Python threads on CPython to scale across cores without native extensions, multiprocessing, or free-threaded builds.
+  - Projects that require compile-time type guarantees as the main safety mechanism.
+  - Deployment environments where packaging native dependencies, virtual environments, or interpreter versions cannot be controlled.
+sources:
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: General Python FAQ
+    url: https://docs.python.org/3/faq/general.html
+    publisher: Python Software Foundation
+  - title: History and License
+    url: https://docs.python.org/3/license.html
+    publisher: Python Software Foundation
+  - title: The Python Language Reference
+    url: https://docs.python.org/3/reference/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: venv - Creation of Virtual Environments
+    url: https://docs.python.org/3/library/venv.html
+    publisher: Python Software Foundation
+  - title: typing - Support for Type Hints
+    url: https://docs.python.org/3/library/typing.html
+    publisher: Python Software Foundation
+  - title: asyncio - Asynchronous I/O
+    url: https://docs.python.org/3/library/asyncio.html
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: pip Documentation
+    url: https://pip.pypa.io/en/stable/
+    publisher: Python Packaging Authority
+  - title: PEP 1 - PEP Purpose and Guidelines
+    url: https://peps.python.org/pep-0001/
+    publisher: Python Software Foundation
+  - title: PEP 13 - Python Language Governance
+    url: https://peps.python.org/pep-0013/
+    publisher: Python Software Foundation
+  - title: PEP 484 - Type Hints
+    url: https://peps.python.org/pep-0484/
+    publisher: Python Software Foundation
+  - title: PEP 602 - Annual Release Cycle for Python
+    url: https://peps.python.org/pep-0602/
+    publisher: Python Software Foundation
+  - title: PEP 703 - Making the Global Interpreter Lock Optional in CPython
+    url: https://peps.python.org/pep-0703/
+    publisher: Python Software Foundation
+  - title: CPython GitHub Repository
+    url: https://github.com/python/cpython
+    publisher: Python Software Foundation
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+  - title: PyTorch Documentation
+    url: https://docs.pytorch.org/docs/stable/index.html
+    publisher: PyTorch
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+Python was created by Guido van Rossum and grew out of work that began at CWI in the Netherlands. The official history notes that Python's implementation started in the late 1980s and that early public releases appeared in the early 1990s. The language was shaped by readability, interactive use, a compact core syntax, batteries-included standard-library design, and the ability to write useful programs without heavy boilerplate.
+
+That design center still explains Python's practical role. Python is often chosen because it lets a team move quickly from a small script to a maintained tool, service, data pipeline, or research notebook while staying in one language. The tradeoff is that Python's most common implementation, CPython, is a managed interpreter with runtime typing, packaging decisions, and concurrency constraints that teams must understand before treating it as a universal default.
+
+## Runtime, Implementations, And Deployment
+
+Python source code is normally executed by an implementation that compiles modules to bytecode and runs that bytecode in a virtual machine. CPython is the reference implementation and the implementation most packaging, extension, and deployment workflows assume by default. Other implementations exist, but CPython compatibility is the safest assumption for mainstream Python projects.
+
+This runtime model is excellent for interactive development, scripts, notebooks, test automation, web applications, and glue code. It is less direct than languages that normally produce a single native executable. Production Python deployments usually need a chosen interpreter version, a virtual environment or equivalent isolation layer, pinned dependencies, platform-compatible wheels or build tooling, and an explicit process manager or container image.
+
+The standard library is large enough that many useful programs can start without third-party dependencies. Python includes modules for filesystems, subprocesses, JSON, HTTP clients and servers, SQLite, compression, logging, testing, typing support, concurrency primitives, `asyncio`, and more. For production applications, however, dependency packaging and runtime reproducibility become part of the design, not a final cleanup step.
+
+## Type System
+
+Python is dynamically typed: values carry types at runtime, and names can be rebound to different kinds of values. It is also strongly typed in the ordinary sense that operations do not silently coerce unrelated values just because a program asks for them. This makes quick iteration and generic scripting natural, but many mistakes are found by tests, execution paths, linters, or type checkers rather than by the interpreter before the program starts.
+
+Modern Python supports optional type hints. PEP 484 introduced a standard syntax and vocabulary for type annotations, and the `typing` module documents the library support. Type hints are primarily for static analysis, editors, documentation, and API contracts. They do not make Python a statically typed language at runtime, and they do not replace validation for untrusted data from files, databases, users, or network APIs.
+
+Useful type-hinting practice is usually boundary-focused:
+
+- Annotate public functions, data models, library APIs, and code that changes often.
+- Use runtime validation for external input.
+- Keep annotations simple enough that non-specialists can still read the program.
+- Treat gradual typing as a maintenance tool rather than a promise that every runtime state is proven safe.
+
+## Memory Model And Concurrency
+
+Python is garbage collected. In CPython, object lifetimes are primarily managed through reference counting, with cyclic garbage collection handling reference cycles. This is an implementation detail, not a general guarantee across every Python implementation, but it matters in practice because many libraries, C extensions, and operational expectations are CPython-centered.
+
+Concurrency depends on the workload and implementation. CPython has historically used a global interpreter lock, commonly called the GIL, which allows only one thread to execute Python bytecode at a time in a process. Threads are still useful for I/O-bound work, blocking system calls, and libraries that release the GIL in native code, but ordinary CPU-bound Python code should not assume thread-level parallel speedup.
+
+Common approaches:
+
+- Use `asyncio` for structured asynchronous I/O when the application stack supports it.
+- Use threads for I/O-bound work and integration with blocking libraries.
+- Use multiprocessing, worker processes, job queues, or native extensions for CPU-bound parallelism.
+- Use vectorized libraries such as NumPy, pandas, PyTorch, or domain-specific native code when numeric work should run outside ordinary Python loops.
+
+PEP 703 makes the GIL optional in CPython builds on a gradual path. That is important for Python's future, but production projects should still verify whether their exact interpreter, dependencies, and deployment target support free-threaded operation before designing around it.
+
+## Packages, Environments, And Builds
+
+Python packaging is powerful but fragmented enough to deserve early attention. The core public package index is PyPI, and `pip` is the standard installer. The standard library's `venv` module creates isolated environments, which keeps a project's installed packages separate from the system Python and from other projects.
+
+The modern packaging center is `pyproject.toml`, where projects declare build-system requirements and metadata through standardized fields and backend-specific configuration. That model supports many project shapes, but it also means teams must choose a build backend, lock or pin dependencies, and decide how development tools are installed.
+
+Watch points:
+
+- Native extension dependencies can require platform-specific wheels, compilers, headers, or system libraries.
+- Application dependency locking is not solved by `pip install` alone; teams usually add constraints, lock files, or an environment manager.
+- Import paths, editable installs, monorepos, and test environments should be made explicit early.
+- Reproducible containers are often easier to operate than mutating system Python installations.
+
+## Syntax Example
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+
+
+@dataclass(frozen=True)
+class Language:
+    name: str
+    domains: tuple[str, ...]
+
+
+def load_languages(path: Path) -> list[Language]:
+    languages: list[Language] = []
+
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+
+        name, domains = line.split(":", maxsplit=1)
+        languages.append(
+            Language(
+                name=name.strip(),
+                domains=tuple(part.strip() for part in domains.split(",")),
+            )
+        )
+
+    return languages
+
+
+for language in load_languages(Path("languages.txt")):
+    print(f"{language.name}: {', '.join(language.domains)}")
+```
+
+This example uses standard-library features only: `pathlib` for filesystem paths, `dataclasses` for a small immutable data carrier, type annotations for readers and tools, and straightforward text processing.
+
+## Data, Scientific, And AI-Adjacent Work
+
+Python's largest ecosystem advantage is not the core language alone; it is the surrounding library and tooling network. NumPy provides array computing foundations, pandas provides data-frame workflows, notebooks support exploratory analysis, and machine-learning frameworks such as PyTorch make Python a common control language around native numeric kernels.
+
+That division is important. Python often orchestrates the work, while performance-critical numeric operations run in optimized native code. This is a strong fit for data cleaning, modeling workflows, experimentation, internal tools, and AI-adjacent application layers. It is a weaker fit when the hot path is a large amount of custom per-element Python code that cannot be vectorized, compiled, parallelized, or moved into a native extension.
+
+## Web Services And Automation
+
+Python is a practical backend language when framework maturity, readable application code, and library reach matter. Its ecosystem includes long-running web frameworks, ASGI/WSGI deployment patterns, task queues, API clients, ORMs, and operational tooling. Python is also one of the strongest languages for scripts that need to bridge files, shells, APIs, data formats, and local services.
+
+The operational constraint is deployment discipline. A Python service needs a clear interpreter version, dependency isolation, repeatable builds, health checks, process management, logging, and an answer for native dependencies. For high-concurrency I/O services, teams should choose synchronous worker processes, async frameworks, or hybrid designs deliberately rather than assuming the language makes the concurrency model invisible.
+
+## Best-Fit Use Cases
+
+Python is a strong fit for:
+
+- Automation scripts, operational tools, command-line utilities, and glue code.
+- Data analysis, notebooks, scientific computing, machine learning workflows, and AI-adjacent product code.
+- Web APIs and backend services where mature frameworks and library coverage matter.
+- Test automation, build support, release tooling, and infrastructure scripts.
+- Teams where developers, analysts, researchers, and operations staff need to collaborate in one approachable language.
+
+## Poor-Fit Or Risky Use Cases
+
+Python can be a poor fit when:
+
+- The project needs native-code performance in custom hot loops and cannot rely on vectorized libraries, native extensions, compiled accelerators, or another language at the boundary.
+- The deployment target cannot control Python versions, virtual environments, native wheels, or operating-system package dependencies.
+- The team expects type hints to provide the same guarantees as a statically typed language.
+- CPU-bound parallel execution must scale through ordinary threads on standard CPython without careful verification.
+- The product is low-level systems software, firmware, kernels, hard real-time code, or an environment where interpreter startup and runtime dependencies are unacceptable.
+
+## Governance, Releases, And Compatibility
+
+Python evolves through Python Enhancement Proposals. PEP 1 defines the PEP process, while PEP 13 defines the current language governance model through the Python Steering Council. CPython development happens in the open in the `python/cpython` repository.
+
+PEP 602 defines Python's annual feature-release cadence. That predictable rhythm helps teams plan upgrades, but it also means production Python users should track interpreter support windows, dependency compatibility, and deprecations instead of freezing indefinitely on an old runtime. Python's compatibility story is practical rather than absolute: code that stays within documented behavior and maintained dependencies is usually easier to carry forward than code that depends on private APIs, old packaging behavior, or implementation-specific details.
+
+## Comparison Notes
+
+Go is the nearby choice when scripts or backend services need static binaries, faster startup, simpler deployment artifacts, or built-in concurrency for network services. Python is usually stronger for automation breadth, data work, scientific computing, notebooks, and AI-adjacent workflows.
+
+JavaScript and TypeScript enter the decision when browser compatibility, full-stack JavaScript, or npm ecosystem access is central. Ruby is nearby for expressive scripting and web applications. R is nearby for statistics and data analysis, especially in teams already built around R packages and reporting workflows.
