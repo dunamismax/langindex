@@ -1,0 +1,306 @@
+---
+title: JavaScript
+slug: javascript
+status: active
+summary: JavaScript is a dynamically typed, garbage-collected, prototype-based language standardized as ECMAScript and used across browsers, servers, edge runtimes, tools, and application scripting.
+firstReleased: 1995
+creators:
+  - Brendan Eich
+  - Netscape
+paradigms:
+  - multi-paradigm
+  - prototype-based object-oriented
+  - functional
+  - imperative
+typing:
+  discipline: dynamic
+  strength: runtime typing with implicit coercion rules
+memory:
+  model: garbage collected by host engine
+runtime:
+  model: browser, server, edge, and embedded JavaScript runtimes
+officialSite: https://tc39.es/ecma262/
+repository: https://github.com/tc39/ecma262
+packageManagers:
+  - npm
+  - pnpm
+  - Yarn
+  - Bun
+comparedWith:
+  - typescript
+  - python
+  - php
+  - dart
+bestFor:
+  - Browser applications and progressive enhancement where direct access to the web platform is the primary constraint.
+  - Node.js, edge, and full-stack applications that benefit from shared language, package, and tooling conventions across client and server code.
+  - Build scripts, automation, prototypes, and small services where dynamic typing and direct execution keep setup cost low.
+  - Libraries and tools that need to publish into the npm package ecosystem or interoperate with existing JavaScript packages.
+poorFit:
+  - Large, long-lived codebases that need compile-time type contracts but will not use TypeScript, JSDoc checking, or another static analysis layer.
+  - CPU-bound or memory-sensitive hot paths that need predictable native performance, low-level layout control, or hard real-time behavior.
+  - Security-sensitive applications that rely on unvetted npm dependency trees without lockfiles, review, updates, and supply-chain controls.
+  - Projects that need one portable runtime API across browsers, Node.js, Deno, Bun, and embedded hosts without compatibility work.
+sources:
+  - title: ECMAScript Language Specification
+    url: https://tc39.es/ecma262/
+    publisher: Ecma TC39
+  - title: TC39 Process
+    url: https://tc39.es/process-document/
+    publisher: Ecma TC39
+  - title: TC39 Technical Committee
+    url: https://ecma-international.org/technical-committees/tc39/
+    publisher: Ecma International
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: JavaScript Guide
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide
+    publisher: MDN Web Docs
+  - title: Inheritance and the Prototype Chain
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain
+    publisher: MDN Web Docs
+  - title: Using Promises
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+    publisher: MDN Web Docs
+  - title: JavaScript Modules
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+    publisher: MDN Web Docs
+  - title: Web APIs
+    url: https://developer.mozilla.org/en-US/docs/Web/API
+    publisher: MDN Web Docs
+  - title: HTML Standard - Event Loops
+    url: https://html.spec.whatwg.org/multipage/webappapis.html#event-loops
+    publisher: WHATWG
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: Modules - Packages
+    url: https://nodejs.org/api/packages.html
+    publisher: OpenJS Foundation
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
+  - title: Deno Runtime
+    url: https://docs.deno.com/runtime/
+    publisher: Deno
+  - title: Bun Documentation
+    url: https://bun.com/docs
+    publisher: Bun
+lastVerified: 2026-05-15
+---
+
+## Origin And Standardization
+
+JavaScript was created by Brendan Eich at Netscape and first appeared in the
+browser era of the mid-1990s. The standardized language is ECMAScript, defined
+by ECMA-262 and evolved by Ecma Technical Committee 39. The current TC39 process
+moves language proposals through maturity stages, with completed Stage 4
+features integrated into the draft specification and yearly standard
+publications.
+
+That history explains JavaScript's unusual shape. It began as the scripting
+language of web pages, then became the required language for browser
+interactivity, then expanded into servers, build tools, desktop applications,
+edge runtimes, embedded hosts, and automation. Modern JavaScript is therefore
+both a language and a deployment ecosystem shaped by host APIs: the ECMAScript
+specification defines the core language, while browsers, Node.js, Deno, Bun,
+and other hosts define much of what useful programs can actually do.
+
+## Runtime And Host APIs
+
+JavaScript normally runs inside a host runtime rather than as a standalone
+language environment with one universal standard library. Browsers expose the
+DOM, Web APIs, storage, networking, workers, rendering hooks, and security
+constraints. Node.js exposes server-oriented APIs such as filesystem access,
+networking, process control, streams, and package execution. Deno and Bun expose
+their own runtime, security, toolchain, and compatibility choices.
+
+This host boundary is the first practical design decision:
+
+- Browser JavaScript is the direct path to the web platform.
+- Node.js is a common runtime target for server-side JavaScript packages, CLIs,
+  and build tools.
+- Edge runtimes often support web-standard APIs but may restrict filesystem,
+  process, native module, or networking behavior.
+- Deno and Bun can reduce toolchain friction in some projects, but
+  compatibility should be checked against the exact packages and APIs in use.
+
+Portable JavaScript is possible, but it requires avoiding host-specific globals
+or isolating them behind clear boundaries.
+
+## Type System, Objects, And Prototypes
+
+JavaScript is dynamically typed. Values carry their runtime type, variables can
+be rebound, and many mistakes are discovered by tests, execution paths, linters,
+or static analysis rather than by a compiler before the program runs. The
+language also has coercion rules that can be useful in small expressions and
+surprising in larger systems, so production code usually favors explicit
+conversion, strict equality, lint rules, and tests around boundary behavior.
+
+Objects are prototype-based. Property lookup can follow an object's prototype
+chain until a property is found or the chain ends. Modern `class` syntax is
+widely used and usually easier to read than constructor functions, but it does
+not replace the underlying prototype model. Understanding prototypes still
+matters when debugging inherited methods, monkey patching, serialization,
+framework objects, and package behavior.
+
+JavaScript is garbage collected by the host engine. The exact collector,
+optimization strategy, and performance profile are implementation details, so
+code that depends on allocation behavior or finalization timing needs careful
+measurement in the target runtime.
+
+## Async Model And Concurrency
+
+JavaScript's async style is built around callbacks, promises, `async`/`await`,
+tasks, microtasks, and host event loops. A promise represents the eventual
+completion or failure of an asynchronous operation; `async`/`await` makes many
+promise flows read like direct control flow while still running through the
+runtime's scheduling model.
+
+The model is strong for I/O-heavy work: browser events, network requests,
+timers, streams, file operations, and service calls. It is not the same as
+automatic CPU parallelism. Browser workers, Node.js worker threads, child
+processes, queues, native extensions, WebAssembly, or separate services may be
+needed when CPU-bound work must run without blocking responsiveness or request
+handling.
+
+## Modules, Packages, And Builds
+
+Modern JavaScript has standard ECMAScript modules through `import` and
+`export`. Browser modules can be loaded directly, and dynamic `import()` lets
+programs load code when needed. Node.js supports both ECMAScript modules and
+CommonJS, with package behavior shaped by file extensions, the nearest
+`package.json`, and fields such as `"type"`, `"main"`, and `"exports"`.
+
+The package ecosystem centers on npm-compatible workflows. A package is
+described by `package.json`, published packages commonly live on the npm
+registry, and projects often choose npm, pnpm, Yarn, or Bun for install,
+workspace, lockfile, and script behavior. That package access is a major
+practical reason to stay in JavaScript, but dependency review, lockfiles,
+transitive updates, module-format compatibility, bundler behavior, and
+supply-chain risk all become part of the engineering surface.
+
+Browser applications commonly use bundlers or framework build systems to
+combine modules, transform syntax, optimize assets, split code, and target
+specific browser versions. Small scripts and runtime-native server projects can
+often run directly, but the moment a project needs TypeScript, JSX, CSS
+processing, asset pipelines, or legacy browser support, the build system
+becomes a first-class dependency.
+
+## Syntax Example
+
+```js
+class Language {
+  constructor(name, domains) {
+    this.name = name;
+    this.domains = domains;
+  }
+
+  fits(domain) {
+    return this.domains.includes(domain);
+  }
+}
+
+const languages = [
+  new Language("JavaScript", ["web", "scripts", "node"]),
+  new Language("Python", ["scripts", "data", "backend"]),
+  new Language("Go", ["backend", "cli", "infrastructure"]),
+];
+
+function namesFor(domain) {
+  return languages
+    .filter((language) => language.fits(domain))
+    .map((language) => language.name)
+    .sort();
+}
+
+const domain = "scripts";
+console.log(`${domain}: ${namesFor(domain).join(", ")}`);
+```
+
+This example uses classes, arrays, methods, callbacks, lexical `const`, template
+strings, and ordinary runtime objects. The same core language can run in a
+browser console, Node.js, Deno, Bun, or many other JavaScript hosts; host APIs
+determine what else the program can access.
+
+## Web, Server, And Scripting Use
+
+JavaScript is the default language for browser interactivity because browsers
+execute it directly and expose web platform APIs to it. It is a strong fit for
+progressive enhancement, single-page applications, interactive documentation,
+browser extensions, design systems, and UI frameworks. The constraint is that
+browser code must respect network latency, accessibility, rendering cost,
+bundle size, security policy, and differences in supported web APIs.
+
+On the server, Node.js is a common runtime for JavaScript services and tools.
+Its event-driven model fits I/O-heavy applications,
+proxies, APIs, real-time systems, build tools, CLIs, and full-stack frameworks.
+Server JavaScript becomes less attractive when the workload is dominated by
+CPU-bound computation, strict latency under heavy compute, native dependency
+complexity, or deployment environments that prefer one static binary.
+
+For scripting, JavaScript is practical when the script lives near a web or Node
+toolchain: project generators, build steps, package maintenance, content
+processing, small CLIs, and automation around JSON, HTTP, and npm packages.
+Python, shell, Go, or Rust may be better when the script needs broader
+operating-system conventions, simple pipeline composition, static distribution,
+or stronger compile-time guarantees.
+
+## Best-Fit Use Cases
+
+JavaScript is a strong fit for:
+
+- Browser features, interactive sites, web applications, and web platform
+  integration.
+- Full-stack projects where sharing language, packages, validation logic,
+  tooling, and team knowledge across client and server is valuable.
+- Node.js services, edge functions, build tools, CLIs, and automation that are
+  I/O-heavy or tightly connected to npm packages.
+- Prototypes and small tools where direct execution and low setup matter more
+  than static contracts.
+- Libraries that need to meet the JavaScript ecosystem where it already is.
+
+## Poor-Fit Or Risky Use Cases
+
+JavaScript can be a poor fit when:
+
+- The project needs strong compile-time contracts and the team is unwilling to
+  use TypeScript, JSDoc checking, or another static analysis strategy.
+- The hot path is CPU-bound and cannot move work to workers, native code,
+  WebAssembly, separate services, or another runtime.
+- The deployment target cannot tolerate runtime dependencies, module-format
+  complexity, or bundler/toolchain variance.
+- The team treats npm package installation as a substitute for dependency
+  review, lockfile discipline, update policy, and supply-chain monitoring.
+- The code must behave identically across browser, Node.js, Deno, Bun, and edge
+  hosts without explicit compatibility testing.
+
+## Governance And Compatibility
+
+The ECMAScript language is standardized through Ecma TC39. The specification is
+developed openly, proposals advance through the TC39 process, and yearly
+standard revisions capture completed work. This gives JavaScript a public,
+vendor-neutral language evolution path, but compatibility pressure is unusually
+strong because existing web content and npm packages are difficult to break.
+
+Runtime governance is separate. Browsers, Node.js, Deno, Bun, bundlers, and
+frameworks each make implementation and release decisions that affect real
+projects. A production JavaScript system should therefore track both language
+support and runtime support: ECMAScript feature availability, Web API
+availability, Node.js release lines, package module formats, bundler targets,
+and framework support windows.
+
+## Comparison Notes
+
+TypeScript is the closest comparison because it keeps the JavaScript runtime and
+package ecosystem while adding static analysis. Choose JavaScript when direct
+execution, lower setup cost, dynamic code, or small scope matters more than
+compile-time contracts. Choose TypeScript when module boundaries, API surfaces,
+refactors, framework-generated types, and shared packages need stronger
+maintenance support.
+
+Python is nearby for scripting, automation, data work, and backend services.
+PHP is nearby for server-rendered web applications and shared hosting history.
+Dart, Kotlin, and C# enter the decision when a framework or non-JavaScript
+platform is the main reason to target JavaScript output.

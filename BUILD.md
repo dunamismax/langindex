@@ -21,6 +21,7 @@ Observed on 2026-05-15:
   exist.
 - `origin` fetches from GitHub and pushes to GitHub plus Codeberg.
 - Current language pages:
+  - JavaScript
   - Rust
   - Go
   - TypeScript
@@ -202,12 +203,12 @@ justify the extra network time.
 
 ### Phase 5 - JavaScript
 
-- [ ] Add a complete JavaScript page.
-- [ ] Cover ECMAScript, browser runtimes, Node.js and other server runtimes,
+- [x] Add a complete JavaScript page.
+- [x] Cover ECMAScript, browser runtimes, Node.js and other server runtimes,
       npm ecosystem, prototype model, async model, module systems, and web
       platform coupling.
-- [ ] Add JavaScript vs TypeScript comparison.
-- [ ] Add JavaScript to web and scripting guides.
+- [x] Add JavaScript vs TypeScript comparison.
+- [x] Add JavaScript to web and scripting guides.
 
 ### Phase 6 - Java
 

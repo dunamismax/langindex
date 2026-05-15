@@ -41,6 +41,15 @@ sources:
   - title: PyTorch Documentation
     url: https://docs.pytorch.org/docs/stable/index.html
     publisher: PyTorch
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
 lastVerified: 2026-05-15
 ---
 
@@ -61,7 +70,7 @@ Prefer Python over shell when:
 - Several teams will maintain the script and readability matters more than terseness.
 - The script may grow into a packaged tool or service.
 
-Prefer shell when the job is mostly a short pipeline around existing Unix commands. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
+Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer shell when the job is mostly a short pipeline around existing Unix commands. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
 
 ## Choose Python For Backend Services When
 
@@ -76,6 +85,8 @@ Make the deployment model explicit:
 - Add runtime validation for request bodies, files, database rows, and other external inputs.
 
 Use Go instead when the service is mostly network plumbing, a control plane, an infrastructure daemon, or a CLI-adjacent service where static binaries and built-in concurrency are central. Use TypeScript when full-stack JavaScript integration and shared frontend/backend package infrastructure are the main constraints.
+
+Use JavaScript instead of TypeScript for backend services only when the service is small, intentionally dynamic, or already covered well enough by runtime tests that a type-checking step would not repay its configuration cost. For long-lived Node.js services with shared API contracts, TypeScript is usually the more maintainable JavaScript-family choice.
 
 ## Choose Python For Data And Scientific Work When
 

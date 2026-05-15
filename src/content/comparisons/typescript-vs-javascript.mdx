@@ -1,7 +1,7 @@
 ---
 title: TypeScript vs JavaScript
 slug: typescript-vs-javascript
-summary: TypeScript adds static analysis and type annotations to JavaScript, while JavaScript remains the runtime language executed directly by browsers, servers, and tooling.
+summary: JavaScript is the runtime language of the web and npm ecosystem, while TypeScript adds a development-time static type layer that compiles back to JavaScript.
 languages:
   - typescript
   - javascript
@@ -11,6 +11,21 @@ useCases:
   - frontend frameworks
   - library publishing
 sources:
+  - title: ECMAScript Language Specification
+    url: https://tc39.es/ecma262/
+    publisher: Ecma TC39
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: JavaScript Modules
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+    publisher: MDN Web Docs
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
   - title: TypeScript for JavaScript Programmers
     url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
     publisher: Microsoft
@@ -20,34 +35,42 @@ sources:
   - title: TypeScript Design Goals
     url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
     publisher: Microsoft
-  - title: JavaScript Language Overview
-    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Language_overview
-    publisher: MDN Web Docs
-  - title: ECMAScript Language Specification
-    url: https://tc39.es/ecma262/
-    publisher: Ecma International
 lastVerified: 2026-05-15
 ---
 
 ## Scope
 
-This comparison is about application and library development in the JavaScript ecosystem. It is not a comparison between separate runtimes: JavaScript is the runtime language, while TypeScript is a statically checked source language that usually compiles to JavaScript.
+This comparison is about application, library, and tooling work in the JavaScript ecosystem. It is not a runtime comparison. JavaScript is the language executed by browsers, Node.js, Deno, Bun, edge runtimes, and embedded hosts. TypeScript is a statically checked source language that usually emits JavaScript for those same hosts.
+
+Use this comparison when the team has already decided to stay near browser, npm, Node.js, or full-stack JavaScript infrastructure and needs to decide whether plain JavaScript is enough.
 
 ## Shared Territory
 
-Both are used for browser applications, server-side JavaScript, front-end frameworks, command-line tools, build scripts, and package publishing. TypeScript intentionally preserves JavaScript runtime behavior, so teams using TypeScript still need to understand JavaScript modules, async behavior, object semantics, runtime APIs, and package tooling.
+Both are used for browser applications, server-side JavaScript, front-end frameworks, command-line tools, build scripts, package publishing, tests, and framework configuration. TypeScript intentionally preserves JavaScript runtime behavior, so teams using TypeScript still need to understand JavaScript modules, promises, object semantics, prototype behavior, runtime APIs, package managers, and bundler output.
+
+They also share the same operational risks: dependency review, lockfiles, transitive package updates, runtime compatibility, framework support windows, and validation of untrusted input.
 
 ## Key Differences
 
-| Dimension          | TypeScript                                                          | JavaScript                                                      |
-| ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Runtime            | Compiles to JavaScript for existing runtimes                        | Runs directly in JavaScript runtimes                            |
-| Type checking      | Static, gradual, structural type checking before runtime            | Dynamic typing at runtime                                       |
-| Adoption path      | Can be introduced gradually into JavaScript projects                | No compiler required for ordinary execution                     |
-| Refactoring        | Stronger editor feedback across module and API boundaries           | Depends more on tests, runtime coverage, and editor inference   |
-| Runtime guarantees | Types are erased, so validation still needs runtime code            | Runtime behavior is the source of truth                         |
-| Library publishing | Can emit `.d.ts` declarations for typed consumers                   | May ship declarations separately or through JSDoc/type packages |
-| Configuration      | Usually needs `tsconfig.json` plus framework or bundler integration | Can be simpler for scripts and small projects                   |
+| Dimension          | JavaScript                                                      | TypeScript                                                          |
+| ------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Runtime            | Runs directly in JavaScript runtimes                            | Compiles to JavaScript for existing runtimes                        |
+| Type checking      | Dynamic typing at runtime                                       | Static, gradual, structural type checking before runtime            |
+| Setup cost         | No compiler required for ordinary execution                     | Usually needs `tsconfig.json` plus framework or bundler integration |
+| Refactoring        | Depends more on tests, runtime coverage, and editor inference   | Stronger editor feedback across module and API boundaries           |
+| Runtime guarantees | Runtime behavior is the source of truth                         | Types are erased, so validation still needs runtime code            |
+| Library publishing | May ship declarations separately or through JSDoc/type packages | Can emit `.d.ts` declarations for typed consumers                   |
+| Dynamic patterns   | Natural for metaprogramming, loose data, and small scripts      | Possible, but heavy use of `any` or assertions erodes the benefit   |
+| Build pipeline     | Optional for small scripts and runtime-native code              | Usually part of the normal development workflow                     |
+
+## Choose JavaScript When
+
+- The code is a small script, prototype, content enhancement, build hook, or automation task where a compile step adds more friction than value.
+- Runtime behavior changes frequently enough that static modeling would be mostly churn.
+- The project is intentionally dynamic, plugin-heavy, or metaprogrammed in ways that would require excessive assertions or `any`.
+- The team already has strong tests and does not need cross-module type contracts.
+- The environment values direct execution and minimal toolchain setup.
+- New contributors are expected to understand browser or Node.js behavior before adding a static type layer.
 
 ## Choose TypeScript When
 
@@ -55,18 +78,23 @@ Both are used for browser applications, server-side JavaScript, front-end framew
 - Framework code, server code, generated types, and shared packages benefit from a common static contract.
 - A library wants to serve typed consumers with declaration files.
 - The team can maintain compiler configuration and keep runtime validation separate from static types.
-- Existing JavaScript can be migrated gradually without leaving the JavaScript ecosystem.
+- Existing JavaScript can be checked, annotated, and migrated gradually without leaving the JavaScript ecosystem.
+- Public function boundaries, component props, API payloads, and configuration objects are important enough to document as types.
 
-## Choose JavaScript When
+## Runtime And Validation Boundary
 
-- The code is a small script, prototype, content enhancement, or automation task where a compile step adds more friction than value.
-- Runtime behavior changes frequently enough that static modeling would be mostly churn.
-- The team already has strong tests and does not need cross-module type contracts.
-- The environment values direct execution and minimal toolchain setup.
-- The code is intentionally dynamic in ways that would require excessive assertions or `any`.
+TypeScript does not make runtime values safer by itself. Both JavaScript and TypeScript need runtime validation for request bodies, form input, JSON files, database rows, environment variables, message queues, and third-party API responses. TypeScript can describe expected shapes and catch inconsistent use inside the codebase, but emitted JavaScript still receives whatever the runtime gives it.
+
+The practical difference is where mistakes are caught. JavaScript pushes more confidence into tests, runtime checks, reviews, and execution paths. TypeScript catches many naming, shape, nullability, and refactor errors earlier, but only when the type model is maintained and escape hatches are limited.
+
+## Tooling And Package Notes
+
+Plain JavaScript can still use modern tooling: linting, formatting, tests, bundlers, JSDoc comments, editor inference, package exports, and framework conventions. TypeScript adds `tsc`, TSConfig choices, declaration output, stricter module resolution questions, and framework-specific type generation.
+
+For package authors, the decision affects consumers. JavaScript libraries can publish JSDoc, bundled declarations, generated declarations, or separate `@types` packages. TypeScript libraries can emit declarations from source, but they still need to decide which JavaScript module formats and runtime targets they support.
 
 ## Migration Or Interoperability Notes
 
 TypeScript and JavaScript interoperate because the boundary is designed around JavaScript compatibility. A migration can start with editor checking and JSDoc, move selected files to `.ts`, and tighten strictness later. Mixed projects should decide how `allowJs`, `checkJs`, generated declaration files, test transforms, and bundler output work before relying on the compiler as a quality gate.
 
-The most common migration risk is confusing static types with runtime validation. TypeScript can describe the expected shape of an API response, but only runtime code can prove that a response actually has that shape.
+The most common migration risk is confusing static types with runtime validation. Another common risk is stopping halfway: a project can pay TypeScript's configuration cost while keeping enough `any`, unchecked assertions, stale declarations, or untyped generated code that the expected maintenance benefit does not arrive.

@@ -10,6 +10,12 @@ candidates:
   - kotlin
   - csharp
 sources:
+  - title: ECMAScript Language Specification
+    url: https://tc39.es/ecma262/
+    publisher: Ecma TC39
+  - title: TC39 Process
+    url: https://tc39.es/process-document/
+    publisher: Ecma TC39
   - title: TypeScript for JavaScript Programmers
     url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
     publisher: Microsoft
@@ -17,8 +23,20 @@ sources:
     url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
     publisher: Microsoft
   - title: JavaScript Language Overview
-    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Language_overview
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
     publisher: MDN Web Docs
+  - title: JavaScript Modules
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+    publisher: MDN Web Docs
+  - title: Web APIs
+    url: https://developer.mozilla.org/en-US/docs/Web/API
+    publisher: MDN Web Docs
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
   - title: Dart Overview
     url: https://dart.dev/overview
     publisher: Dart
@@ -44,15 +62,19 @@ Choose the source language by the constraints the team needs to optimize:
 
 ## Choose JavaScript When
 
-Plain JavaScript is usually enough for small scripts, prototypes, progressive enhancement, build glue, and codebases where runtime tests already cover the important behavior. It keeps execution direct and avoids TypeScript configuration, generated types, and compile-time gates.
+Plain JavaScript is usually enough for small scripts, prototypes, progressive enhancement, build glue, package maintenance tasks, and codebases where runtime tests already cover the important behavior. It keeps execution direct and avoids TypeScript configuration, generated types, and compile-time gates.
 
 The cost is that larger refactors depend more on tests, runtime coverage, and developer discipline. For long-lived applications, that cost often grows as module boundaries and API contracts multiply.
+
+JavaScript is also the right starting point when the main learning target is the web platform itself. Browser APIs, event handling, modules, promises, accessibility-sensitive DOM changes, and network behavior need to be understood whether or not TypeScript is later added.
 
 ## Choose TypeScript When
 
 TypeScript is the conservative upgrade path for teams already committed to JavaScript runtimes and packages. It is strongest when the project needs editor feedback, safer refactoring, checked component props or API payloads, and declaration files for shared packages.
 
 TypeScript is also the best default for gradual adoption because existing JavaScript can be checked, annotated, and tightened over time. The team still needs runtime validation for untrusted data, and the build pipeline must stay aligned with the actual runtime.
+
+For production web applications, TypeScript is often worth the setup once route data, component props, server/client boundaries, generated framework types, and shared packages become part of daily maintenance. It is less compelling for isolated page enhancements, one-off scripts, or dynamic build hooks that would mostly accumulate assertions.
 
 ## Choose Another Compile-to-JavaScript Language When
 
@@ -64,10 +86,12 @@ The constraint is ecosystem distance. A language can target JavaScript while sti
 
 - Is JavaScript runtime compatibility the primary constraint, or is a different platform driving the decision?
 - Will the codebase be maintained long enough for static contracts to repay the setup cost?
+- Is the project mostly browser behavior, server behavior, package tooling, or shared full-stack code?
 - Does the team need declaration files, generated framework types, or shared package APIs?
 - Are external inputs validated at runtime, independent of static types?
 - Does the chosen framework document a first-class TypeScript, JavaScript, or alternate-language path?
 - Would a non-JavaScript source language isolate the team from the package ecosystem they need every day?
+- Which runtime APIs are required, and do they exist in the target browsers, Node.js version, edge runtime, Deno, or Bun?
 
 ## Practical Default
 
