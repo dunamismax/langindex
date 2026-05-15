@@ -1,0 +1,105 @@
+---
+title: Swift vs Objective-C
+slug: swift-vs-objective-c
+summary: Swift and Objective-C are both central to Apple-platform development, but Swift is the modern default for new app and package code while Objective-C remains important for legacy Apple codebases, dynamic runtime patterns, and C-family interoperability.
+languages:
+  - swift
+  - objective-c
+useCases:
+  - Apple-platform applications
+  - iOS
+  - macOS
+  - legacy modernization
+  - mixed-language migration
+  - platform frameworks
+sources:
+  - title: About Swift
+    url: https://www.swift.org/about/
+    publisher: Swift.org
+  - title: Swift Documentation
+    url: https://www.swift.org/documentation/
+    publisher: Swift.org
+  - title: Apple Developer Swift
+    url: https://developer.apple.com/swift/
+    publisher: Apple Developer
+  - title: Imported C and Objective-C APIs
+    url: https://developer.apple.com/documentation/swift/imported-c-and-objective-c-apis
+    publisher: Apple Developer
+  - title: Importing Objective-C into Swift
+    url: https://developer.apple.com/documentation/swift/importing-objective-c-into-swift
+    publisher: Apple Developer
+  - title: Migrating Your Objective-C Code to Swift
+    url: https://developer.apple.com/documentation/swift/migrating-your-objective-c-code-to-swift
+    publisher: Apple Developer
+  - title: Programming with Objective-C
+    url: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/
+    publisher: Apple Developer Archive
+  - title: Adopting Modern Objective-C
+    url: https://developer.apple.com/library/archive/releasenotes/ObjectiveC/ModernizationObjC/AdoptingModernObjective-C/AdoptingModernObjective-C.html
+    publisher: Apple Developer Archive
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for Apple-platform teams deciding whether new code, migrated code, framework code, or legacy-maintenance work should be centered in Swift or Objective-C. It is not a general-purpose language ranking. On iOS, macOS, watchOS, tvOS, and visionOS, both languages usually appear through Apple frameworks, build tools, runtime behavior, and existing code.
+
+## Shared Territory
+
+Swift and Objective-C can both build Apple-platform applications and frameworks. Both can call into C APIs, use Apple SDKs, work with Foundation and Cocoa-family frameworks, and coexist in the same Xcode project. Mixed projects are common because Apple explicitly supports importing Objective-C declarations into Swift and exposing eligible Swift declarations back to Objective-C.
+
+The practical difference is default direction. Swift is the better center for new application code, SwiftUI-heavy code, package APIs, and teams that want modern type-system help. Objective-C remains relevant where existing code, runtime dynamism, C compatibility, mature framework surfaces, or gradual migration shape the work.
+
+## Key Differences
+
+| Dimension      | Swift                                                             | Objective-C                                                   |
+| -------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- |
+| Apple role     | Modern default for new app, package, and SwiftUI-centered code    | Legacy and existing Apple codebases, older framework surfaces |
+| Type model     | Static typing, optionals, generics, protocols, value types        | C superset with object types, dynamic typing, and messaging   |
+| Runtime style  | Native Swift plus platform runtime and interop where needed       | Dynamic Objective-C runtime and message dispatch              |
+| Memory         | ARC for class instances, value types, exclusivity, unsafe APIs    | ARC or older retain/release patterns for Objective-C objects  |
+| Interop        | Imports Objective-C/C APIs; exposes selected APIs through `@objc` | Direct C compatibility; can call generated Swift interfaces   |
+| Tooling center | Xcode, SwiftPM, Swift compiler, SourceKit-LSP                     | Xcode, Clang/LLVM, headers, modules, Objective-C runtime      |
+| New-code fit   | Strong default                                                    | Usually justified by existing code or runtime constraints     |
+
+## Choose Swift When
+
+- The feature is new iOS, macOS, watchOS, tvOS, or visionOS application code.
+- The UI is built with SwiftUI or newer Apple APIs whose documentation and samples are Swift-centered.
+- The team wants optionals, value types, generics, protocols, Swift concurrency, and compiler-enforced initialization and memory-access checks.
+- The code will be published as a Swift package or consumed primarily by Swift developers.
+- Objective-C interoperability is needed, but the new API surface can be designed around Swift first.
+
+## Choose Objective-C When
+
+- The codebase is already large, stable, and Objective-C-heavy, and migration risk is higher than the benefit of changing language.
+- The feature depends heavily on dynamic runtime behavior, selectors, KVC/KVO, method swizzling, message forwarding, old framework patterns, or C/Objective-C plugin boundaries.
+- Public APIs must remain natural for Objective-C consumers.
+- The work is bug fixing, maintenance, or incremental modernization inside a legacy Apple application.
+- The team needs Objective-C++ as a bridge to C++ libraries or existing native code.
+
+## Migration And Interoperability
+
+Treat Swift adoption in Objective-C projects as an incremental migration, not a rewrite by default. Apple's migration guidance describes replacing Objective-C classes one at a time and using interoperability so migrated features can continue to work with the rest of the app.
+
+The boundary deserves design work:
+
+- Add Objective-C nullability annotations before importing APIs into Swift.
+- Keep bridging headers and umbrella headers small.
+- Decide which Swift declarations need `@objc` exposure.
+- Avoid exposing Swift-only concepts where Objective-C callers need a stable API.
+- Test mixed-language behavior around errors, generics, collections, selectors, delegates, and subclassing.
+
+Swift and Objective-C interop is mature enough for real production migration, but it is not a reason to blur every boundary. New Swift modules should hide legacy runtime details where possible; legacy Objective-C modules should expose cleaner headers before Swift depends on them.
+
+## Watch Points
+
+Swift can become costly when a team migrates code mainly for preference while ignoring framework boundaries, QA risk, build churn, or Objective-C behavior that Swift cannot express cleanly. Migrate leaf features, tests, and well-bounded classes first.
+
+Objective-C can become costly when new code keeps inheriting older nullability, manual patterns, stringly typed selectors, and runtime dynamism even though Swift's type system would catch mistakes earlier. For new Apple-platform code, the burden of proof is usually on Objective-C.
+
+## Practical Default
+
+Use Swift for new Apple-platform application, package, and framework code unless an existing Objective-C boundary creates a concrete reason not to.
+
+Keep Objective-C for stable legacy code, runtime-heavy integrations, existing public Objective-C APIs, and migration bridges. Modernize Objective-C headers and nullability before Swift depends on them, then migrate one feature at a time where the payoff is visible.

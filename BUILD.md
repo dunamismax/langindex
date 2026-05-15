@@ -32,6 +32,7 @@ Observed on 2026-05-15:
   - SQL
   - PHP
   - Kotlin
+  - Swift
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -45,6 +46,7 @@ Observed on 2026-05-15:
   - PHP vs JavaScript/Node.js comparison
   - PHP vs Ruby comparison
   - Kotlin vs Swift comparison
+  - Swift vs Objective-C comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -53,6 +55,7 @@ Observed on 2026-05-15:
   - Choosing SQL for data access and application architecture guide
   - Choosing PHP for web backends and CMS work guide
   - Choosing Kotlin for Android, JVM, and multiplatform work guide
+  - Choosing Swift for Apple-platform and mobile work guide
   - Ownership concept page
 - Current local baseline:
 
@@ -295,12 +298,12 @@ justify the extra network time.
 
 ### Phase 13 - Swift
 
-- [ ] Add a complete Swift page.
-- [ ] Cover Apple platform role, Swift Evolution, memory management, value
+- [x] Add a complete Swift page.
+- [x] Cover Apple platform role, Swift Evolution, memory management, value
       types, concurrency, package manager, server-side status, and Objective-C
       interoperability.
-- [ ] Add Swift vs Kotlin and Swift vs Objective-C comparisons.
-- [ ] Add Swift to mobile and Apple-platform guides.
+- [x] Add Swift vs Kotlin and Swift vs Objective-C comparisons.
+- [x] Add Swift to mobile and Apple-platform guides.
 
 ### Phase 14 - Ruby
 

@@ -1,0 +1,256 @@
+---
+title: Swift
+slug: swift
+status: active
+summary: Swift is a statically typed, compiled Apple-origin language for iOS, macOS, watchOS, tvOS, visionOS, server-side Linux services, command-line tools, packages, and emerging cross-platform targets, best known for optionals, value types, ARC, Swift concurrency, and Objective-C/C/C++ interoperability.
+firstReleased: 2014
+creators:
+  - Apple
+paradigms:
+  - object-oriented
+  - protocol-oriented
+  - functional
+  - imperative
+  - concurrent
+typing:
+  discipline: static
+  strength: strong with type inference, generics, protocols, and optionals
+memory:
+  model: automatic reference counting for class instances, value semantics for structs and enums, exclusivity checks, and explicit unsafe pointer escape hatches
+runtime:
+  model: native code through Swift toolchains, LLVM, platform SDKs, the Swift runtime, and target-specific standard/core libraries
+officialSite: https://www.swift.org/
+repository: https://github.com/swiftlang/swift
+packageManagers:
+  - Swift Package Manager
+  - Xcode
+  - CocoaPods
+comparedWith:
+  - kotlin
+  - objective-c
+  - cpp
+  - rust
+  - csharp
+bestFor:
+  - Native iOS, macOS, watchOS, tvOS, and visionOS applications that depend on Apple frameworks, Xcode, SwiftUI, UIKit, AppKit, Foundation, and platform release tooling.
+  - New Apple-platform features in mixed Swift and Objective-C codebases where incremental adoption is safer than rewriting the app.
+  - Swift packages, command-line tools, and libraries whose consumers live mainly in the Swift and Apple developer ecosystem.
+  - Server-side Swift services where the team wants Swift's type system, concurrency model, Linux toolchains, and the Swift server package ecosystem.
+poorFit:
+  - Android-first applications where Kotlin and Android's official tooling are the primary platform path.
+  - Web frontend projects where JavaScript and TypeScript ecosystem fit is more important than sharing Swift code.
+  - Cross-platform products that expect one Swift UI or package layer to remove platform-specific Android, web, Windows, or Apple SDK work.
+  - Low-level code where C, C++, Rust, Zig, or a narrow C ABI is the existing contract and Swift interop would add more complexity than safety.
+sources:
+  - title: Swift Programming Language
+    url: https://www.swift.org/
+    publisher: Swift.org
+  - title: About Swift
+    url: https://www.swift.org/about/
+    publisher: Swift.org
+  - title: Swift Documentation
+    url: https://www.swift.org/documentation/
+    publisher: Swift.org
+  - title: Swift source code
+    url: https://www.swift.org/documentation/source-code/
+    publisher: Swift.org
+  - title: Swift Evolution
+    url: https://www.swift.org/swift-evolution/
+    publisher: Swift.org
+  - title: Swift Evolution Process
+    url: https://github.com/swiftlang/swift-evolution/blob/main/process.md
+    publisher: Swift.org
+  - title: Swift source compatibility
+    url: https://www.swift.org/documentation/source-compatibility/
+    publisher: Swift.org
+  - title: Install Swift
+    url: https://www.swift.org/install/
+    publisher: Swift.org
+  - title: Swift 6.3 Released
+    url: https://www.swift.org/blog/swift-6.3-released/
+    publisher: Swift.org
+  - title: The Swift Programming Language - Automatic Reference Counting
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/
+    publisher: Swift.org
+  - title: The Swift Programming Language - Memory Safety
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/memorysafety/
+    publisher: Swift.org
+  - title: The Swift Programming Language - Concurrency
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/
+    publisher: Swift.org
+  - title: Swift Package Manager
+    url: https://docs.swift.org/package-manager/index.html
+    publisher: Swift.org
+  - title: Apple Developer Swift
+    url: https://developer.apple.com/swift/
+    publisher: Apple Developer
+  - title: Imported C and Objective-C APIs
+    url: https://developer.apple.com/documentation/swift/imported-c-and-objective-c-apis
+    publisher: Apple Developer
+  - title: Importing Objective-C into Swift
+    url: https://developer.apple.com/documentation/swift/importing-objective-c-into-swift
+    publisher: Apple Developer
+  - title: Swift Server Workgroup
+    url: https://www.swift.org/sswg/
+    publisher: Swift.org
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+Swift was introduced by Apple in 2014 and later opened through Swift.org in December 2015, when the language, supporting libraries, debugger, and package manager were published under an Apache 2.0 license with a runtime library exception. Swift.org describes Swift as a general-purpose language intended for systems programming, mobile and desktop apps, cloud services, packages, command-line tools, and newer platform targets.
+
+The design center is a safer, more expressive native language that still works with Apple platform frameworks and existing C-family code. Swift keeps direct interop with Objective-C and C, supports modern type-system features, and compiles to native code instead of running on a managed virtual machine. It also tries to make common mistakes harder: variables must be initialized before use, optionals make absence explicit, arrays and integer operations have checked behavior by default, and memory is managed automatically unless the program deliberately enters unsafe APIs.
+
+Swift is therefore not only "the iOS language." Its strongest production home is Apple-platform application development, but the language and toolchain also support packages, command-line tools, Linux services, Windows toolchains, WebAssembly work, embedded work, and cross-platform experiments. Those non-Apple-platform stories vary in maturity and ecosystem depth, so the target platform still drives the decision.
+
+## Apple Platform Role
+
+Swift is the current default language for new Apple-platform application work. It is deeply integrated with Xcode, Apple SDKs, SwiftUI, UIKit, AppKit, Foundation, XCTest, package integration, code completion, debugging, signing, simulators, previews, and App Store release workflows.
+
+That first-party fit matters more than syntax preference. Apple-platform apps often need platform APIs, entitlements, background modes, accessibility APIs, notifications, media frameworks, persistence, localization, widgets, watch extensions, and OS-version availability checks. Swift gives those APIs a natural language surface while still allowing mixed-language projects with Objective-C, C, Objective-C++, and, increasingly, C++ interoperability.
+
+The main constraint is platform ownership. A team that chooses Swift for iOS or macOS also chooses Xcode, Apple SDK release timing, provisioning, deployment targets, and platform UI conventions. Swift can be used beyond Apple platforms, but a Swift decision for Android, browser UI, Windows desktop, or shared mobile UI should be validated against the current toolchain, package support, debugging, CI, and expected developer pool.
+
+## Runtime, Toolchains, And Targets
+
+Swift normally compiles ahead of time to native code using Swift toolchains and LLVM. On Apple platforms, Swift works with the Objective-C runtime where that runtime is needed to access frameworks such as UIKit and AppKit. Swift.org also documents open-source Swift toolchains for Linux and Windows, with the compiler, standard library, LLDB debugger, SourceKit-LSP, and core libraries available outside Apple's OSes.
+
+The runtime story differs by target:
+
+- Apple apps use Xcode, Apple SDKs, platform frameworks, app bundles, and OS-distributed Swift runtime behavior for supported deployment targets.
+- Linux command-line tools and services use Swift toolchains, Swift Package Manager, core libraries, containers or system packages, and server ecosystem packages.
+- Windows Swift exists for libraries and applications but needs closer validation of dependency support and platform APIs than Apple targets.
+- WebAssembly, embedded, Android, and other targets are active areas of Swift development, but they should be treated as target-specific engineering decisions rather than assumed equivalents to iOS or macOS development.
+
+Swift 5 established ABI stability on Apple platforms, and Swift.org continues to publish source compatibility and release material. For production work, distinguish the Swift language mode, compiler version, package tools version, Xcode version, SDK version, deployment target, and dependency support.
+
+## Type System, Optionals, And Value Types
+
+Swift is statically typed with local type inference, generics, protocols, associated types, extensions, enums with associated values, closures, error handling, access control, and optionals. Its object model includes classes, but Swift code often leans heavily on value types: structs and enums can have properties, methods, initializers, extensions, protocol conformances, and generic behavior.
+
+Optionals are central to Swift's safety model. A value of type `String` cannot be `nil`; a value of type `String?` can. Code must unwrap or transform optional values through optional binding, optional chaining, nil coalescing, pattern matching, or explicit force unwraps. This does not make runtime failures impossible, but it moves absence into the type system instead of making every object reference implicitly nullable.
+
+Swift's protocol-oriented style is also important. Protocols describe required behavior, extensions can provide shared implementations, and generics can express reusable algorithms over conforming types. This is useful for app models, networking clients, test doubles, package APIs, and framework boundaries, but advanced generics and associated types can raise API complexity if overused.
+
+## Memory Management And Safety
+
+Swift manages memory automatically. Class instances are reference-counted through ARC, while structs and enums are value types whose storage and copying behavior are optimized by the compiler. The language also enforces exclusive access to memory for many ordinary mutations, which helps catch overlapping mutable access that would otherwise be a subtle bug.
+
+ARC is not the same as tracing garbage collection. Object lifetimes are tied to reference counts, and reference cycles can keep objects alive unless one side of a relationship is marked `weak` or `unowned`. This matters in UIKit/AppKit object graphs, closures that capture `self`, delegates, observers, async tasks, and long-lived service objects.
+
+Swift also has unsafe escape hatches. Interop with C and low-level systems APIs can require `UnsafePointer`, `UnsafeMutablePointer`, raw buffers, unmanaged references, or manual lifetime rules. These APIs are part of Swift's power, but they should be isolated behind small, tested boundaries.
+
+## Concurrency
+
+Swift concurrency provides `async`/`await`, tasks, task groups, actors, structured concurrency, cancellation, and `Sendable` checking. The model is designed to make asynchronous code easier to read while giving the compiler more information about isolation and data sharing.
+
+In Apple apps, Swift concurrency fits networking, storage, background work, UI-facing tasks, and actor-isolated state. In server-side Swift, it fits request handling, clients, streaming APIs, and concurrent service work. Swift 6 and later language modes make data-race checking more prominent, while Swift 6.2 and 6.3 continued to refine the concurrency and package/build experience.
+
+Concurrency still requires design discipline. Blocking APIs can still block a thread, cancellation must be propagated, actors do not remove all ordering concerns, Objective-C and C APIs may not carry Swift concurrency annotations, and older callback or delegate APIs often need careful bridging.
+
+## Objective-C, C, And C++ Interoperability
+
+Swift's Apple-platform adoption depends on interoperability. Apple documents using Objective-C and Swift files in the same app or framework target, importing Objective-C headers into Swift through bridging headers or umbrella headers, and importing Swift declarations back into Objective-C through generated headers and `@objc` exposure where appropriate.
+
+This makes incremental migration practical. A codebase can add Swift files to an Objective-C app, migrate one class or feature at a time, and keep existing Objective-C framework surfaces while new code uses Swift. The boundary is not free: nullability annotations, Objective-C generics, `NSError` patterns, selector exposure, dynamic dispatch, subclassing limits, macros, KVO/KVC behavior, and Swift-only features all affect API shape.
+
+Swift also imports C functions, pointer types, and many C APIs directly, and current Swift work includes C++ interoperability. Use those tools for small, clear boundaries around platform SDKs, native libraries, and performance-sensitive code. Avoid spreading unsafe pointer or dynamic runtime assumptions through ordinary app code.
+
+## Syntax Example
+
+```swift
+struct Language: Identifiable {
+    let id: String
+    let name: String
+    let firstReleased: Int
+    let tags: [String]
+}
+
+enum CatalogError: Error {
+    case missingLanguage(String)
+}
+
+struct Catalog {
+    private var languages: [String: Language]
+
+    init(_ languages: [Language]) {
+        self.languages = Dictionary(uniqueKeysWithValues: languages.map { ($0.id, $0) })
+    }
+
+    func language(named id: String) throws -> Language {
+        guard let language = languages[id] else {
+            throw CatalogError.missingLanguage(id)
+        }
+
+        return language
+    }
+}
+
+let catalog = Catalog([
+    Language(id: "swift", name: "Swift", firstReleased: 2014, tags: ["apple", "native"]),
+    Language(id: "kotlin", name: "Kotlin", firstReleased: 2016, tags: ["android", "jvm"]),
+])
+
+do {
+    let swift = try catalog.language(named: "swift")
+    print("\(swift.name) first appeared in \(swift.firstReleased).")
+} catch CatalogError.missingLanguage(let id) {
+    print("No language named \(id) was found.")
+}
+```
+
+This small example shows common Swift shapes: a struct value type, `Identifiable` protocol conformance, an enum error, immutable `let` properties, a private dictionary, `guard` early exit, throwing functions, pattern matching in `catch`, and string interpolation.
+
+## Tooling, Packages, And Builds
+
+Swift Package Manager is the official package and build tool for Swift packages, command-line tools, libraries, and many server-side projects. Package manifests declare products, targets, dependencies, supported platforms, Swift language versions, resources, and build settings. Xcode integrates Swift packages into Apple-platform app and framework projects.
+
+For Apple apps, Xcode is still the center. It owns project configuration, build settings, signing, provisioning, asset catalogs, SwiftUI previews, simulators, XCTest, Instruments, and App Store packaging. SwiftPM is important, but a production app often involves Xcode workspaces, Apple SDKs, third-party package managers, generated code, build phases, and deployment-target compatibility.
+
+Older and mixed Apple codebases may still use CocoaPods or Carthage for dependencies, especially when maintaining existing projects. For new Swift libraries and cross-platform packages, SwiftPM should usually be the starting point unless a platform or dependency constraint says otherwise.
+
+## Server-Side Swift
+
+Server-side Swift is real, but it is more specialized than Swift on Apple platforms. Swift.org has a Swift Server Workgroup, server guides, package ecosystem material, and server-oriented packages around networking, logging, metrics, tracing, OpenAPI, databases, and frameworks such as Vapor and Hummingbird.
+
+Choose Swift for a server when the team already knows Swift, wants shared models or libraries with Apple clients, values Swift's type system and concurrency model, or has a measured reason to use Swift's native performance profile. Validate Linux deployment, Docker images, package support, observability, hiring, framework maturity, and operational familiarity before betting a backend platform on Swift.
+
+Prefer Go, Java, Kotlin, C#, TypeScript, Python, or Rust when their ecosystems, deployment conventions, libraries, hiring pool, or existing infrastructure better match the service. Swift can be an excellent backend choice in the right organization; it is not the default industry baseline for general backend services.
+
+## Best-Fit Use Cases
+
+Swift is a strong fit for:
+
+- New iOS, macOS, watchOS, tvOS, and visionOS apps.
+- Apple-platform features inside existing Objective-C applications.
+- SwiftUI and modern Apple SDK work where the API surface is Swift-centered.
+- Swift packages and libraries intended for Swift consumers.
+- Command-line tools and server services maintained by Swift-fluent teams.
+- Shared model or domain code between Apple clients and Swift server/package code when the boundary is deliberate.
+
+## Poor-Fit Or Risky Use Cases
+
+Swift can be a poor fit when:
+
+- Android, browser frontend, or cross-platform UI is the main target and a platform-native or web-native ecosystem is stronger.
+- The team expects Swift to remove the need for Apple-platform release, signing, or SDK expertise.
+- The project depends heavily on dynamic Objective-C behavior that does not map cleanly to Swift.
+- The package ecosystem needed for a Linux service is weaker than equivalent Go, Java, Kotlin, C#, TypeScript, Python, or Rust options.
+- Low-level ABI, firmware, kernel, or embedded constraints are already solved by C, C++, Rust, or a platform SDK.
+
+## Governance, Evolution, And Compatibility
+
+Swift is open source and managed as a collection of projects, including the compiler, standard library, core libraries, LLDB support, SourceKit-LSP, and Swift Package Manager. Swift.org describes governance through the Swift Core Team, code owners, and project workgroups. The Language Steering Group has delegated authority over language and standard-library evolution, while Swift Evolution provides the proposal and review process for substantial language and library design changes.
+
+Compatibility is a central production concern. Swift.org documents source compatibility as a strong goal and maintains a source compatibility test suite. Swift 5 brought ABI stability on Apple platforms, and later releases continue to evolve language modes, diagnostics, libraries, tooling, and platform support.
+
+Teams should track Swift as a full toolchain rather than a single language version: Xcode, Swift compiler, SDKs, SwiftPM tools version, package dependencies, deployment targets, and CI images all affect real builds.
+
+## Comparison Notes
+
+Kotlin is the closest mobile-platform comparison. Swift is the direct fit for Apple-platform UI and first-party Apple frameworks. Kotlin is the direct fit for Android, JVM services, and Kotlin Multiplatform shared business logic.
+
+Objective-C is the comparison for existing Apple codebases. Swift is usually the better center for new Apple-platform code, while Objective-C remains important for legacy apps, dynamic runtime patterns, old frameworks, and mixed-language migration.
+
+C++ and Rust are comparisons when the workload is native systems code, game engines, embedded work, or performance-critical libraries. Swift has native compilation and unsafe interop, but its strongest ecosystem remains app, package, and server-side Swift work rather than broad systems replacement.

@@ -37,9 +37,18 @@ sources:
   - title: Swift Evolution
     url: https://www.swift.org/swift-evolution/
     publisher: Swift.org
+  - title: Swift source compatibility
+    url: https://www.swift.org/documentation/source-compatibility/
+    publisher: Swift.org
+  - title: Swift 6.3 Released
+    url: https://www.swift.org/blog/swift-6.3-released/
+    publisher: Swift.org
   - title: Swift Package Manager
     url: https://docs.swift.org/package-manager/index.html
     publisher: Swift.org
+  - title: Imported C and Objective-C APIs
+    url: https://developer.apple.com/documentation/swift/imported-c-and-objective-c-apis
+    publisher: Apple Developer
 lastVerified: 2026-05-15
 ---
 
@@ -58,7 +67,7 @@ The overlap appears when a team wants native-feeling mobile apps, shared domain 
 | Dimension       | Kotlin                                                       | Swift                                                        |
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Platform center | Android, JVM, Java libraries, Kotlin Multiplatform           | iOS, macOS, watchOS, tvOS, visionOS, Apple frameworks        |
-| Runtime targets | JVM, Android, JavaScript, Wasm, Native through LLVM          | Apple platforms, Linux, Windows, and other Swift toolchains  |
+| Runtime targets | JVM, Android, JavaScript, Wasm, Native through LLVM          | Apple platforms, Linux, Windows, Wasm, and other toolchains  |
 | Null model      | Nullable and non-nullable types, platform types from Java    | Optionals and non-optional values                            |
 | Memory model    | Target-dependent GC or native GC                             | Automatic memory management, commonly ARC on Apple platforms |
 | Async model     | Coroutines through `kotlinx.coroutines`                      | Swift concurrency with async/await, tasks, and actors        |
@@ -92,6 +101,8 @@ This can reduce duplicated logic, but it changes team responsibilities. Develope
 Kotlin can become costly when the build graph hides too much platform complexity. Watch Gradle configuration, target support, native framework generation, coroutine usage across platform boundaries, binary size, IDE performance, and whether iOS developers can debug the shared code effectively.
 
 Swift can become costly for cross-platform products when business rules, network models, validation, and persistence logic are duplicated manually across iOS and Android. If the duplicated layer is large and frequently changed, evaluate Kotlin Multiplatform, a service-side boundary, generated clients, or another sharing strategy.
+
+Swift is also expanding beyond Apple platforms, including Linux server work and newer SDK targets. Treat those as specific Swift toolchain decisions, not as a reason to use Swift as the default Android language. Kotlin remains the normal Android choice; Swift remains the normal Apple-platform choice.
 
 ## Practical Default
 

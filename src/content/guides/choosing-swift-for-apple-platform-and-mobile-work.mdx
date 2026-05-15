@@ -1,0 +1,153 @@
+---
+title: Choosing Swift For Apple-Platform And Mobile Work
+slug: choosing-swift-for-apple-platform-and-mobile-work
+summary: A decision guide for teams evaluating Swift for iOS, macOS, Apple-platform features, mixed Objective-C migrations, server-side Swift, or broader mobile architecture.
+audience: Developers and teams deciding whether Swift should be their primary language for Apple-platform applications, Swift packages, iOS features, or mobile code that touches Android and backend systems.
+candidates:
+  - swift
+  - kotlin
+  - objective-c
+  - dart
+  - csharp
+  - typescript
+sources:
+  - title: Swift Programming Language
+    url: https://www.swift.org/
+    publisher: Swift.org
+  - title: About Swift
+    url: https://www.swift.org/about/
+    publisher: Swift.org
+  - title: Swift Documentation
+    url: https://www.swift.org/documentation/
+    publisher: Swift.org
+  - title: Swift Evolution
+    url: https://www.swift.org/swift-evolution/
+    publisher: Swift.org
+  - title: Swift Package Manager
+    url: https://docs.swift.org/package-manager/index.html
+    publisher: Swift.org
+  - title: Apple Developer Swift
+    url: https://developer.apple.com/swift/
+    publisher: Apple Developer
+  - title: Importing Objective-C into Swift
+    url: https://developer.apple.com/documentation/swift/importing-objective-c-into-swift
+    publisher: Apple Developer
+  - title: Migrating Your Objective-C Code to Swift
+    url: https://developer.apple.com/documentation/swift/migrating-your-objective-c-code-to-swift
+    publisher: Apple Developer
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+lastVerified: 2026-05-15
+---
+
+## Start With The Platform
+
+Swift is the natural starting point when the platform is iOS, macOS, watchOS, tvOS, visionOS, or a Swift package intended for Apple-platform developers. It is less automatic when the product is Android-first, browser-first, Windows-first, or a cross-platform mobile product whose main risk is shared UI and platform consistency.
+
+Ask first where the code must live:
+
+- Apple-platform app UI and platform features.
+- Existing Objective-C app modernization.
+- Shared model, networking, or domain code.
+- Android app code.
+- Backend or cloud services.
+- Cross-platform UI stack.
+
+Swift is strongest in the first two categories, useful in the third when boundaries are clear, and case-by-case everywhere else.
+
+## Choose Swift For Apple Apps When
+
+Start with Swift for new iOS, macOS, watchOS, tvOS, and visionOS work. It fits first-party Apple SDKs, SwiftUI, UIKit, AppKit, Foundation, XCTest, Swift concurrency, Xcode, Swift Package Manager, and modern Apple documentation.
+
+Swift is especially practical for:
+
+- SwiftUI screens and state-driven Apple-platform UI.
+- UIKit or AppKit apps adding new features.
+- App models, networking, persistence, and package code.
+- Widgets, extensions, watch apps, and visionOS surfaces where Apple samples and APIs are Swift-centered.
+- Teams that want optionals, value types, protocols, generics, and concurrency checks in ordinary application code.
+
+Do not choose Swift as a substitute for platform expertise. Apple apps still require SDK knowledge, accessibility, signing, provisioning, review rules, device testing, performance profiling, and OS-version compatibility.
+
+## Use Swift With Objective-C Deliberately
+
+For existing Apple applications, use Swift incrementally. Good first candidates are new features, tests, leaf modules, model transformations, networking clients, or classes without many Objective-C subclasses.
+
+Before importing Objective-C APIs into Swift, improve the boundary:
+
+- Add nullability annotations to Objective-C headers.
+- Keep bridging headers small and explicit.
+- Decide where Swift APIs must be visible to Objective-C.
+- Test generated Swift-to-Objective-C headers.
+- Keep dynamic runtime behavior isolated when Swift callers do not need to know about it.
+
+Keep Objective-C when a mature subsystem is stable, heavily dynamic, exposed to Objective-C consumers, or tied to Objective-C++ and C++ libraries. Swift adoption should reduce maintenance cost, not create a mixed-language maze.
+
+## Choose Kotlin For Android
+
+Use Kotlin as the default for new Android app work. Android documentation and modern Jetpack material are Kotlin-first, and Kotlin fits Android Studio, Gradle, Compose, coroutines, flows, and Java interoperability.
+
+For a product that ships on both iOS and Android, the practical default is Swift for Apple-platform UI and Kotlin for Android UI. Evaluate Kotlin Multiplatform when there is a substantial shared domain layer, but keep platform UI and platform release work honest.
+
+Swift can appear in Android-adjacent work through newer SDK and cross-platform experiments, but it should not be treated as the current default Android application language.
+
+## Shared Mobile Code
+
+Shared mobile code is most valuable when the shared layer is stable, testable, and genuinely platform-neutral. Good candidates include:
+
+- API clients and generated models.
+- Validation rules and calculations.
+- Authentication/session logic.
+- Feature flags and domain workflows.
+- Persistence abstractions with platform-specific implementations.
+
+Poor candidates include platform UI, accessibility behavior, camera/media integrations, payments, notifications, app lifecycle, background execution, and OS-specific interaction patterns. Those parts usually need native platform code even when business logic is shared.
+
+Compare options by boundary:
+
+- Swift plus Kotlin duplicates more code but keeps platform ownership direct.
+- Kotlin Multiplatform can share domain logic across Android and iOS while still using Swift for Apple UI.
+- Flutter/Dart or .NET MAUI/C# can share more UI, but the product then depends on that framework's platform fidelity and release model.
+- TypeScript is often a better shared language for web and API-adjacent code than native mobile UI.
+
+## Server-Side Swift
+
+Server-side Swift is worth evaluating when Swift knowledge, shared Swift packages, or native performance characteristics are real advantages. Swift.org has a server workgroup, server guides, Linux tooling, and packages for networking, logging, metrics, tracing, OpenAPI, and frameworks.
+
+Ask before choosing Swift for services:
+
+- Does the team already know Swift well enough to own production incidents?
+- Are required database, queue, auth, observability, and deployment libraries mature enough?
+- Is Linux container deployment straightforward in CI?
+- Is hiring or onboarding Swift server developers realistic?
+- Would Go, Java, Kotlin, C#, TypeScript, Python, or Rust fit the organization's infrastructure better?
+
+Swift can be a strong backend language for Swift-fluent teams. It is not the lowest-risk default for generic backend hiring and ecosystem depth.
+
+## Build And Release Questions
+
+Swift ownership includes toolchain ownership. Decide:
+
+- Xcode version and minimum deployment targets.
+- Swift language mode and compiler version.
+- SwiftPM tools version and dependency policy.
+- Whether CocoaPods, Carthage, or existing dependency managers remain.
+- CI image, simulator, device, and signing strategy.
+- How Objective-C, C, C++, and Swift module boundaries are tested.
+- How Swift concurrency warnings or errors are managed during migration.
+
+These details are part of the language decision. A Swift codebase that cannot reproduce builds or validate mixed-language boundaries will lose the benefits of a safer language quickly.
+
+## Practical Default
+
+Start with Swift for Apple-platform app code and Swift packages.
+
+Start with Kotlin for Android app code.
+
+Keep Objective-C for legacy Apple code that is stable, runtime-heavy, or expensive to migrate.
+
+Evaluate Kotlin Multiplatform, Flutter/Dart, .NET MAUI/C#, or TypeScript-based approaches only after identifying exactly which code should be shared and which platform-specific work remains.
