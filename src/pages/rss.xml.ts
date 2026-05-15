@@ -56,8 +56,7 @@ export async function GET({ site }: { site: URL }) {
     })),
   ].sort((a, b) => b.date.getTime() - a.date.getTime());
 
-  const buildDate =
-    entries[0]?.date.toUTCString() ?? new Date().toUTCString();
+  const buildDate = entries[0]?.date.toUTCString() ?? new Date().toUTCString();
   const siteUrl = site.toString().replace(/\/$/, "");
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>

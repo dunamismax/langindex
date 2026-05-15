@@ -19,7 +19,10 @@ for (const route of routes) {
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
-    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
+    expect(
+      results.violations,
+      JSON.stringify(results.violations, null, 2),
+    ).toEqual([]);
   });
 }
 

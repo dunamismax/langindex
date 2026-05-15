@@ -14,14 +14,19 @@ const { sources, lastVerified } = Astro.props;
 const verified = lastVerified.toISOString().slice(0, 10);
 ---
 
-<section class="mt-12 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-5">
+<section
+  class="mt-12 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-5"
+>
   <div class="flex items-center justify-between gap-3">
     <h2 class="text-base font-semibold text-[color:var(--color-fg-strong)]">
       Sources
     </h2>
     <p class="text-xs text-[color:var(--color-fg-muted)]">
       <span>Last verified</span>
-      <time datetime={verified} class="ml-1 font-mono text-[color:var(--color-fg)]">{verified}</time>
+      <time
+        datetime={verified}
+        class="ml-1 font-mono text-[color:var(--color-fg)]">{verified}</time
+      >
     </p>
   </div>
   <ul class="mt-4 space-y-2 text-sm">

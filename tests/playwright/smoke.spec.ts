@@ -18,7 +18,7 @@ test("homepage exposes search and language discovery", async ({ page }) => {
 test("language filters narrow results", async ({ page }) => {
   await page.goto("/languages/");
 
-  await page.getByLabel("Search", { exact: true }).fill("ownership");
+  await page.getByLabel("Search", { exact: true }).fill("borrowing");
 
   await expect(page.getByRole("link", { name: "Open Rust" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open Go" })).toHaveCount(0);

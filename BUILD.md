@@ -166,14 +166,15 @@ justify the extra network time.
 
 ### Phase 2 - Go Completion
 
-- [ ] Expand the Go page to the completion standard.
-- [ ] Cover design goals, goroutines, channels, garbage collection, standard
+- [x] Expand the Go page to the completion standard.
+- [x] Cover design goals, goroutines, channels, garbage collection, standard
       library strength, modules, formatting, testing, release policy, and
       toolchain compatibility.
-- [ ] Expand Rust vs Go with more practical tradeoff dimensions.
-- [ ] Add or update comparisons for Go vs Java, Go vs Python, and Go vs C#
-      when those pages exist.
-- [ ] Update systems and services guides with Go-specific constraints.
+- [x] Expand Rust vs Go with more practical tradeoff dimensions.
+- [x] Add or update comparisons for Go vs Java, Go vs Python, and Go vs C#
+      when those pages exist. Java, Python, and C# pages do not exist yet, so
+      this remains comparison metadata only until their phases land.
+- [x] Update systems and services guides with Go-specific constraints.
 
 ### Phase 3 - Rust Completion
 

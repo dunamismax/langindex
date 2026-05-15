@@ -36,9 +36,22 @@ const isActive = (href: string) => {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#0b0d0c" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f8f9f7" media="(prefers-color-scheme: light)" />
-    <link rel="alternate" type="application/rss+xml" title="LangIndex updates" href="/rss.xml" />
+    <meta
+      name="theme-color"
+      content="#0b0d0c"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta
+      name="theme-color"
+      content="#f8f9f7"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="LangIndex updates"
+      href="/rss.xml"
+    />
     <title>{pageTitle}</title>
     <script is:inline>
       (function () {
@@ -112,8 +125,18 @@ const isActive = (href: string) => {
             class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)] md:hidden"
           >
             <span class="sr-only">Toggle navigation</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"></path>
             </svg>
           </button>
         </div>
@@ -125,7 +148,9 @@ const isActive = (href: string) => {
         hidden
         class="border-t border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] md:hidden"
       >
-        <ul class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 text-sm sm:px-6">
+        <ul
+          class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 text-sm sm:px-6"
+        >
           {
             navItems.map((item) => (
               <li>
@@ -173,15 +198,43 @@ const isActive = (href: string) => {
             Content is community-maintained and licensed CC-BY-SA-4.0.
           </p>
         </div>
-        <nav aria-label="Footer" class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm">
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/languages">Languages</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/comparisons">Comparisons</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/guides">Guides</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/concepts">Concepts</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/about">About</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/contribute">Contribute</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="https://github.com/dunamismax/langindex" rel="noopener">GitHub</a>
-          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/rss.xml">RSS</a>
+        <nav
+          aria-label="Footer"
+          class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm"
+        >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/languages">Languages</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/comparisons">Comparisons</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/guides">Guides</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/concepts">Concepts</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/about">About</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/contribute">Contribute</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="https://github.com/dunamismax/langindex"
+            rel="noopener">GitHub</a
+          >
+          <a
+            class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]"
+            href="/rss.xml">RSS</a
+          >
         </nav>
       </div>
       <div

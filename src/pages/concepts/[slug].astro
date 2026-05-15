@@ -21,9 +21,12 @@ const { Content } = await render(concept);
       aria-label="Breadcrumb"
       class="text-sm text-[color:var(--color-fg-subtle)]"
     >
-      <a class="hover:text-[color:var(--color-fg)]" href="/concepts">Concepts</a>
+      <a class="hover:text-[color:var(--color-fg)]" href="/concepts">Concepts</a
+      >
       <span aria-hidden="true" class="px-1.5">/</span>
-      <span class="text-[color:var(--color-fg-muted)]">{concept.data.title}</span>
+      <span class="text-[color:var(--color-fg-muted)]"
+        >{concept.data.title}</span
+      >
     </nav>
     <p
       class="mt-6 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-accent)]"
