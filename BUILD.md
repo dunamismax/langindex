@@ -21,6 +21,7 @@ Observed on 2026-05-15:
   exist.
 - `origin` fetches from GitHub and pushes to GitHub plus Codeberg.
 - Current language pages:
+  - C
   - C#
   - JavaScript
   - Rust
@@ -30,6 +31,8 @@ Observed on 2026-05-15:
   - Java
 - Current supporting content:
   - Rust vs Go comparison
+  - Rust vs C comparison
+  - C vs C++ comparison
   - Python vs Go comparison
   - C# vs TypeScript comparison
   - Java vs C# comparison
@@ -37,6 +40,7 @@ Observed on 2026-05-15:
   - Java vs Kotlin comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
+  - Choosing an embedded language guide
   - Choosing Python for scripting, backend, data, and AI work guide
   - Choosing Java for backend, enterprise, and JVM work guide
   - Ownership concept page
@@ -237,12 +241,12 @@ justify the extra network time.
 
 ### Phase 8 - C
 
-- [ ] Add a complete C page.
-- [ ] Cover ISO C, compilers, undefined behavior, manual memory management,
+- [x] Add a complete C page.
+- [x] Cover ISO C, compilers, undefined behavior, manual memory management,
       ABI stability, systems programming, embedded use, package/build
       fragmentation, and interoperability.
-- [ ] Add C vs Rust and C vs C++ comparisons.
-- [ ] Add C to systems and embedded guides.
+- [x] Add C vs Rust and C vs C++ comparisons.
+- [x] Add C to systems and embedded guides.
 
 ### Phase 9 - C++
 

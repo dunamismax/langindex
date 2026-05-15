@@ -40,6 +40,21 @@ sources:
   - title: Go 1 and the Future of Go Programs
     url: https://go.dev/doc/go1compat
     publisher: Go Project
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
 lastVerified: 2026-05-15
 ---
 
@@ -64,7 +79,9 @@ Choose a no-GC language when:
 
 Choose Rust when the project needs no required garbage collector and the team wants the compiler to enforce ownership, borrowing, and many thread-sharing rules. This is a strong fit for new systems components, parsers, libraries, agents, embedded modules, WebAssembly, and code where lifetime errors would be expensive.
 
-Choose C or C++ when existing code, ABI requirements, vendor SDKs, platform conventions, or mature domain libraries dominate the decision. In those languages, ownership can be very disciplined, but the discipline usually lives in guidelines, APIs, tools, and review rather than in a Rust-style borrow checker.
+Choose C when existing code, ABI requirements, vendor SDKs, platform conventions, freestanding targets, or broad compiler reach dominate the decision. C is often the integration language for operating-system interfaces, embedded SDKs, language runtimes, and plugin surfaces. Ownership can be disciplined in C, but the discipline usually lives in API contracts, documentation, coding standards, sanitizers, static analysis, fuzzing, and review rather than in the type system.
+
+Choose C++ when the project needs native control plus richer abstraction tools such as RAII, templates, constructors/destructors, standard containers, and stronger library modeling. C++ is often a better fit than C for large native applications and performance-sensitive frameworks when the organization has mature C++ practices.
 
 Choose Zig when explicit allocation, simple language mechanics, and C-oriented control are attractive, and the team accepts a younger ecosystem and more manual responsibility.
 
@@ -88,6 +105,20 @@ Rust is most valuable when its constraints line up with the problem. Before choo
 - Does the crate ecosystem cover the domain well enough, or will the team build foundational libraries first?
 
 If the answer to several of these is unclear, Rust may still be viable, but the first milestone should be a prototype that tests the hard target, dependency, and ownership questions rather than a broad rewrite.
+
+## C Adoption Constraints
+
+C is still one of the most portable answers for native boundaries, but it should not be treated as low-risk just because it is familiar. Before starting new C work, answer these questions:
+
+- Which C standard or dialect is required: C17, C23, GNU C, MSVC C, or a vendor embedded dialect?
+- Which compilers, C libraries, architectures, operating systems, and ABIs are supported?
+- Is the target hosted, freestanding, or embedded with vendor startup and linker scripts?
+- How will ownership rules be documented for every pointer, buffer, handle, and callback?
+- Which warnings, sanitizers, static analyzers, fuzzers, and test suites are mandatory?
+- How will dependencies be obtained: system packages, vendored source, SDKs, Conan, vcpkg, pkg-config, or manual build wiring?
+- Which APIs must remain stable at the source or binary level?
+
+If these answers are vague, C's small syntax will not save the project. The language gives control, but the engineering system around it has to supply many of the guardrails.
 
 ## Concurrency And Services
 
@@ -119,7 +150,7 @@ The best technical fit can still fail if the team cannot maintain the code. Rust
 
 Go usually asks less from the reader. The language is smaller, formatting is uniform, package structure is conventional, and many service patterns are easy to recognize. The tradeoff is that some invariants remain social, test-driven, or operational rather than statically enforced.
 
-C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify.
+C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
 
 ## Questions To Ask
 

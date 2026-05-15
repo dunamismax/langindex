@@ -1,0 +1,275 @@
+---
+title: C
+slug: c
+status: active
+summary: C is a standardized systems programming language for native interfaces, operating-system and embedded work, language runtimes, and portable low-level libraries where explicit memory, layout, and ABI control matter.
+firstReleased: 1972
+creators:
+  - Dennis Ritchie
+paradigms:
+  - procedural
+  - imperative
+  - systems
+typing:
+  discipline: static
+  strength: explicit types with implicit conversions and casts
+memory:
+  model: manual memory management with automatic, static, allocated, and implementation-defined storage
+runtime:
+  model: native code through hosted or freestanding implementations with no required garbage collector
+officialSite: https://www.c-language.org/
+packageManagers:
+  - Conan
+  - vcpkg
+  - pkg-config
+comparedWith:
+  - rust
+  - cpp
+  - go
+  - zig
+bestFor:
+  - Operating-system interfaces, kernels, firmware, drivers, embedded systems, runtime internals, native libraries, and ABI-stable integration layers.
+  - Code that must run with minimal runtime assumptions, direct memory/layout control, and broad compiler or platform support.
+  - Interoperability surfaces consumed by many languages through C headers, shared libraries, or platform SDKs.
+  - Existing C estates where incremental hardening, testing, and narrow modernization are safer than a full rewrite.
+poorFit:
+  - Application code where memory safety, string handling, and ownership rules would be better enforced by a safer language or managed runtime.
+  - Teams without strong review, testing, sanitizers, static analysis, and dependency discipline for low-level code.
+  - Projects that need a uniform package/build/dependency workflow comparable to Cargo, Go modules, npm, Maven, or NuGet.
+  - Complex concurrent services where manual lifetime and synchronization choices add risk without a clear systems constraint.
+sources:
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: C language about page
+    url: https://www.c-language.org/about
+    publisher: C language project
+  - title: The Development of the C Language
+    url: https://www.cs.tufts.edu/~nr/cs257/archive/dennis-ritchie/chist.pdf
+    publisher: Dennis M. Ritchie
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: ISO/IEC 9899:2011 Committee Draft N1570
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Dialect Options
+    url: https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
+  - title: Microsoft C/C++ language conformance by Visual Studio version
+    url: https://learn.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance?view=msvc-170
+    publisher: Microsoft Learn
+  - title: CMake Tutorial
+    url: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+    publisher: Kitware
+  - title: GNU make manual
+    url: https://www.gnu.org/software/make/manual/make.html
+    publisher: GNU Project
+  - title: Conan 2 documentation
+    url: https://docs.conan.io/2/
+    publisher: Conan
+  - title: vcpkg documentation
+    url: https://learn.microsoft.com/en-us/vcpkg/
+    publisher: Microsoft Learn
+  - title: pkg-config
+    url: https://www.freedesktop.org/wiki/Software/pkg-config/
+    publisher: freedesktop.org
+  - title: External blocks - The Rust Reference
+    url: https://doc.rust-lang.org/reference/items/external-blocks.html
+    publisher: Rust Project
+  - title: Python/C API reference manual
+    url: https://docs.python.org/3.14/c-api/
+    publisher: Python Software Foundation
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+C was designed by Dennis Ritchie at Bell Labs in the early 1970s, growing out of B, BCPL, and the early Unix implementation environment. Ritchie's history of the language places the most creative period in 1972 and describes C as a system implementation language for Unix. The first widely available description was Kernighan and Ritchie's 1978 book, and the first formal standardization effort came later through ANSI X3J11.
+
+The design center is close-to-the-machine programming with a small language core: objects, arithmetic, pointers, arrays, structs, unions, functions, translation units, a preprocessor, and a standard library. C is high level enough to be portable across machines, but low level enough that layout, representation, addressability, and calling conventions remain part of everyday engineering.
+
+That is C's durable strength and its risk. The language makes it practical to write kernels, firmware, allocators, runtimes, drivers, compression libraries, database internals, language extensions, and platform APIs. It also leaves many correctness properties to the programmer, implementation, build settings, analysis tools, tests, and review culture.
+
+## Standardization And Implementations
+
+C is standardized by ISO/IEC JTC1/SC22/WG14. The current published C standard is C23, ISO/IEC 9899:2024, adopted by ISO and IEC in 2024. Earlier commonly referenced editions include C89/C90, C99, C11, and C17. WG14 also publishes project status, draft documents, defect records, technical reports, and committee material around the language.
+
+Most production C work is mediated through compilers and platforms rather than by the standard alone. GCC documents support for C90, C99, C11, C17, C23, GNU dialects, hosted implementations, and freestanding implementations. Clang publishes a feature-status page for C89 through C23 and the upcoming C2y work. MSVC has its own C conformance story and Windows platform constraints. Embedded vendors often ship compilers, linkers, startup files, libraries, board support packages, and debugging tools as one toolchain.
+
+For a project, "we use C" is therefore incomplete. A real compatibility statement should name:
+
+- The language standard or dialect, such as `-std=c17`, `-std=c23`, `-std=gnu17`, or a vendor mode.
+- The compiler family and supported versions.
+- Whether the target is hosted or freestanding.
+- The C library or runtime assumptions, such as glibc, musl, newlib, MSVCRT/UCRT, or a vendor embedded library.
+- The target ABIs, architectures, and operating systems.
+- Required warnings, sanitizers, static analysis, and test coverage.
+
+## Runtime, ABI, And Deployment
+
+C normally compiles ahead of time to native object code and then links with other objects, libraries, startup code, and runtime support for the target. The language does not require a garbage collector, virtual machine, reflection runtime, package manager, or standard project layout.
+
+The standard distinguishes hosted and freestanding implementations. Hosted implementations provide the full standard library and ordinary program startup through `main`. Freestanding implementations have fewer library guarantees and leave startup, linking, memory layout, interrupts, and I/O to the target. Kernels, bootloaders, firmware, and some embedded targets are freestanding or close to it.
+
+C's ABI role is one of its strongest practical reasons to exist. Operating systems and foreign-function interfaces often expose C-callable functions and C-compatible data layouts. Rust's reference, for example, defines external blocks as the basis of Rust FFI and documents `extern "C"` for the platform C ABI. Python's C API documents how C and C++ programmers extend or embed CPython. The exact ABI is still platform-specific: calling convention, integer widths, alignment, struct layout, symbol names, dynamic linking, and allocator ownership must be treated as contracts, not guesses.
+
+Deployment ranges from tiny firmware images and statically linked command-line tools to shared libraries, kernel modules, OS packages, Python extension modules, and platform SDKs. That flexibility is useful, but it means teams must own the build and release rules explicitly.
+
+## Type System, Pointers, And Undefined Behavior
+
+C is statically typed, but its type system is intentionally permissive compared with Rust, C#, Java, or TypeScript. It has arithmetic types, pointers, arrays, functions, structs, unions, enumerations, qualifiers, and casts. The language relies heavily on conversions and implementation-defined choices around sizes, representation, alignment, and character signedness.
+
+Pointers are ordinary C values and a central abstraction. They can refer to objects, functions, arrays, allocated storage, memory-mapped registers, buffers from another library, or invalid addresses if the program gets lifetime or provenance wrong. C does not have a borrow checker, automatic bounds checking, sum types, pattern matching, or guaranteed initialization for every object in the way safer languages often provide.
+
+Undefined behavior is not an edge topic in C; it is part of the optimization and portability model. The C standard's portability annex collects examples of undefined, unspecified, and implementation-defined behavior. Programs that read outside object bounds, use an object after its lifetime ends, violate effective type assumptions, overflow signed integers, or race on shared data can stop being meaningful C programs from the compiler's point of view.
+
+Practical C engineering therefore depends on a layered defense:
+
+- Compile with strict warnings and treat important warnings as errors.
+- Use sanitizers for address, undefined-behavior, leak, and thread issues where the toolchain supports them.
+- Run static analysis and linters suited to the domain.
+- Keep ownership and lifetime rules visible in APIs and documentation.
+- Prefer small, testable modules over pointer-heavy global designs.
+- Fuzz parsers, codecs, protocol handlers, and untrusted-input boundaries.
+
+## Memory Management
+
+C gives developers direct control over storage duration and allocation strategy. Ordinary local objects have automatic storage duration. Static objects live for the duration of the program. Dynamically allocated objects are obtained through allocation APIs such as `malloc` and released through matching deallocation APIs such as `free`, or through platform, arena, pool, region, object-lifetime, or custom allocator patterns.
+
+That control is why C remains useful in systems work. It lets code define binary layouts, stack usage, allocator boundaries, memory pools, embedded buffers, ring buffers, interrupt-safe regions, and zero-copy interfaces. It also means many common defects are possible: leaks, double frees, use-after-free, buffer overruns, uninitialized reads, invalid alignment, mismatched allocators, and stale ownership assumptions.
+
+Good C APIs make ownership explicit:
+
+- Who allocates the object?
+- Who frees it?
+- Which allocator or library owns the memory?
+- Can the callee retain the pointer after the call?
+- Is the buffer length passed with the pointer?
+- Is the pointer allowed to be null?
+- What happens on partial failure?
+
+Without those contracts, the type signature alone rarely tells enough of the truth.
+
+## Concurrency And Atomics
+
+C has standardized threads and atomics in modern editions, but production concurrency is usually shaped by the target platform: POSIX threads, Windows threading APIs, RTOS primitives, interrupt handlers, lock-free structures, event loops, or platform-specific atomics. C code that shares mutable data across threads or interrupt contexts must have a synchronization story.
+
+The risk profile is sharp because C combines shared mutable memory, pointers, manual lifetime, and implementation-specific runtime behavior. Race conditions, stale pointers, signal-safety mistakes, reentrancy problems, and lock-order bugs are not automatically contained by the language. Use well-reviewed synchronization primitives, document ownership transitions, and keep concurrent C interfaces narrow.
+
+## Build, Packaging, And Tooling
+
+C has no single standard build system or package manager. That is a major difference from Rust's Cargo, Go modules, npm, Maven, NuGet, or Python packaging workflows. C projects commonly use Make, CMake, Meson, Autotools, Ninja, compiler-specific project files, embedded IDE project files, or custom build scripts. Dependencies may come from OS package managers, vendored source, submodules, prebuilt SDKs, Conan, vcpkg, pkg-config metadata, or manually configured include and library paths.
+
+The lack of one workflow is not just inconvenience. It affects reproducibility, cross-compilation, dependency review, static versus dynamic linking, compiler flags, security updates, and ABI compatibility. A serious C project should make the build contract boring:
+
+- Pin the supported compilers and target triples.
+- Keep warnings, standard dialect, feature macros, and sanitizer settings in version control.
+- Separate public headers from private implementation headers.
+- Define whether dependencies are system-provided, vendored, or package-managed.
+- Test clean builds in CI for each supported platform.
+- Build examples and tests with the same public headers users will consume.
+
+## Syntax Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct language {
+    char *name;
+    unsigned users;
+};
+
+static void language_destroy(struct language *language) {
+    if (language == NULL) {
+        return;
+    }
+
+    free(language->name);
+    free(language);
+}
+
+static struct language *language_create(const char *name, unsigned users) {
+    struct language *language = malloc(sizeof *language);
+    if (language == NULL) {
+        return NULL;
+    }
+
+    language->name = malloc(strlen(name) + 1);
+    if (language->name == NULL) {
+        free(language);
+        return NULL;
+    }
+
+    strcpy(language->name, name);
+    language->users = users;
+    return language;
+}
+
+int main(void) {
+    struct language *c = language_create("C", 1972);
+    if (c == NULL) {
+        fputs("allocation failed\n", stderr);
+        return 1;
+    }
+
+    printf("%s: %u\n", c->name, c->users);
+    language_destroy(c);
+    return 0;
+}
+```
+
+This example is intentionally plain. It shows the core obligations that safer languages often encode for you: allocation can fail, every allocation needs a matching cleanup path, string copies need enough storage, and the caller must know who owns the returned object.
+
+## Embedded And Systems Fit
+
+C is a default option in embedded and systems environments because it maps well to memory-mapped I/O, registers, interrupts, startup code, fixed layouts, vendor SDKs, and compiler support across many microcontrollers and processors. WG14 has also published an Embedded C technical report, which reflects the language's long role in constrained systems.
+
+For embedded work, C is often the practical baseline when the vendor SDK, RTOS, debugger, board support package, and certification evidence are built around C. It can still be the wrong choice for application layers where Rust, C++, Ada/SPARK, or a managed embedded runtime would reduce risk enough to justify integration cost.
+
+For operating systems and runtime internals, C remains valuable because it can express low-level interfaces with minimal assumptions. The tradeoff is that every memory, alignment, concurrency, initialization, and portability rule must be explicit somewhere outside the compiler's usual type checks.
+
+## Best-Fit Use Cases
+
+C is a strong fit for:
+
+- Kernels, bootloaders, drivers, firmware, embedded applications, and RTOS integration.
+- C ABI libraries consumed by many languages or platforms.
+- Runtime internals, interpreters, allocators, networking stacks, databases, compression libraries, codecs, and file-format parsers.
+- Existing C codebases where the ecosystem, ABI, and platform dependencies are already stable.
+- Narrow low-level modules inside a larger system written mostly in safer or higher-level languages.
+
+## Poor-Fit Or Risky Use Cases
+
+C can be a poor fit when:
+
+- The project is ordinary application or service code and does not need manual memory or ABI control.
+- The team does not have strong C review practices, fuzzing, sanitizers, static analysis, and CI across target compilers.
+- Untrusted input dominates the workload and safer languages can meet the same performance and integration requirements.
+- The project depends on fast iteration with a uniform package ecosystem and cross-platform dependency resolution.
+- The code would need complex shared ownership, large object graphs, or high-level concurrency where the language offers little help.
+
+## Governance And Compatibility
+
+C's governance is formal rather than foundation-led in the style of Rust or Go. ISO/IEC JTC1/SC22/WG14 maintains the language standard, records change and clarification requests, publishes project milestones, and coordinates future revisions. The standard defines language semantics, but not a universal ABI, package manager, build system, operating-system API, or compiler extension set.
+
+Compatibility in C is therefore layered. Source compatibility depends on the selected standard, implementation-defined behavior, extension usage, headers, feature macros, and platform APIs. Binary compatibility depends on the target ABI, compiler settings, library versions, calling conventions, and allocation boundaries. A stable C API can be a very durable interface, but only when those layers are deliberately specified and tested.
+
+## Comparison Notes
+
+Rust is the nearby choice for new systems components when the team wants native code and no required garbage collector but also wants ownership, borrowing, stronger type modeling, and Cargo-based tooling. C remains simpler at ABI boundaries and in many vendor-controlled embedded stacks, but it pushes more safety work into discipline and tools.
+
+C++ is the nearby choice when a project wants C-like control plus RAII, constructors/destructors, references, templates, overloading, namespaces, exceptions, standard containers, and a much larger abstraction surface. It can improve resource management through idioms such as RAII, but it also adds language and ABI complexity.
+
+Go is often a better fit for network services, infrastructure tools, and command-line utilities when a garbage-collected runtime is acceptable and team readability matters more than manual memory control. Zig is a closer low-level comparison when explicit allocation, C interop, and simple compilation mechanics are attractive, but its ecosystem and stability profile are younger.

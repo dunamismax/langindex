@@ -1,0 +1,93 @@
+---
+title: C vs C++
+slug: c-vs-cpp
+summary: C and C++ both serve native systems work, but C favors a smaller procedural language and broad ABI role while C++ adds richer abstraction tools, RAII, templates, standard containers, and a larger language/runtime surface.
+languages:
+  - c
+  - cpp
+useCases:
+  - systems programming
+  - embedded
+  - native libraries
+  - performance-sensitive software
+sources:
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: C language about page
+    url: https://www.c-language.org/about
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: ISO/IEC JTC1/SC22/WG21 - The C++ Standards Committee
+    url: https://www.open-std.org/jtc1/sc22/wg21/
+    publisher: ISO/IEC JTC1/SC22/WG21
+  - title: The Committee - Standard C++
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for native code decisions where both C and C++ are plausible: embedded systems, platform libraries, operating-system-adjacent work, performance-sensitive components, engine code, SDKs, and long-lived native codebases. It is not a claim that either language is the right default for ordinary application or service code.
+
+## Practical Difference
+
+C is a smaller procedural language with direct access to memory, pointers, structs, arrays, functions, translation units, and the preprocessor. Its public value is often ABI reach: a C header and C-compatible shared library can be consumed from many languages and platforms. That makes C especially useful for narrow boundaries, firmware, C-first SDKs, kernels, runtimes, and old code that must stay easy to link.
+
+C++ grew from C but is a separate ISO-standardized language with a much larger abstraction surface. It adds constructors and destructors, references, classes, access control, templates, overloads, namespaces, exceptions, standard containers, algorithms, smart pointers, RAII, and many modern compile-time features. That makes C++ better suited than C for large native applications and libraries that need strong abstractions while staying close to the machine.
+
+The tradeoff is complexity. C asks the programmer to make ownership and cleanup explicit by convention. C++ gives more language tools for ownership and cleanup, especially RAII, but also introduces more rules around object lifetimes, templates, overload resolution, exceptions, ABI, standard-library versions, and build systems.
+
+## Memory And Resource Management
+
+C resource management is explicit. If a function allocates memory, opens a file descriptor, locks a mutex, or maps a region, the API must document how that resource is released and who owns it. This can be simple in small modules, but it scales poorly when ownership is shared, failure paths are complex, or cleanup crosses many layers.
+
+C++ resource management is usually centered on RAII: tie resource lifetime to object lifetime, let destructors perform cleanup, and compose ownership through value types, containers, and smart pointers. Well-written C++ can make cleanup paths much less repetitive than equivalent C. Poorly bounded C++ can still be unsafe if it relies on raw pointers, unclear ownership, data races, exception-unsafe code, or incompatible allocator boundaries.
+
+## Abstraction And API Design
+
+C APIs tend to expose plain functions, structs, opaque handles, callback tables, integer status codes, and manually documented invariants. This style is stable and easy to consume from many languages, but the compiler cannot express many API rules. Header design, naming, versioning, and binary compatibility matter heavily.
+
+C++ APIs can use types to carry more intent: constructors establish invariants, destructors release resources, references distinguish non-null object access by convention, templates express generic code, overloads improve call sites, and standard containers remove many manual allocation paths. The cost is that C++ APIs are harder to expose as stable cross-compiler binary boundaries. Many projects still publish a C ABI even when their implementation is C++.
+
+## Build, ABI, And Tooling
+
+Both languages have fragmented build and dependency ecosystems compared with languages that ship one standard package manager. C projects often use Make, CMake, Meson, Autotools, compiler project files, system packages, vendored source, or SDK tooling. C++ projects use many of the same tools plus heavier template and standard-library concerns.
+
+C's ABI story is usually simpler. A C ABI is a common interop target, although it is still platform-specific. C++ ABI stability is harder because name mangling, exceptions, RTTI, standard-library types, templates, compiler versions, and object layout can become part of the boundary. For public plugins, SDKs, and dynamic libraries, a C ABI around a C++ implementation is often a pragmatic compromise.
+
+## Choose C When
+
+- The deliverable is a C ABI, platform SDK, firmware layer, kernel interface, or runtime integration point.
+- The target environment is constrained, freestanding, vendor-controlled, or easier to support with C compilers.
+- The team needs a small language surface and is prepared to enforce ownership, bounds, and cleanup rules through APIs and tools.
+- Existing code, certification evidence, test harnesses, or platform conventions are already C-centered.
+- Cross-language consumption matters more than richer in-language abstractions.
+
+## Choose C++ When
+
+- The codebase is large enough that RAII, containers, templates, namespaces, and stronger abstraction tools reduce real maintenance cost.
+- The domain already depends on C++ engines, graphics stacks, native UI frameworks, compilers, databases, simulation libraries, or performance tooling.
+- The team has mature C++ standards, review, sanitizers, static analysis, fuzzing, and build expertise.
+- The public boundary can avoid exposing unstable C++ ABI details, or the consumer/compiler environment is tightly controlled.
+- Modernization inside an existing C++ estate is lower risk than rewriting to C, Rust, or another language.
+
+## Watch Points
+
+C is not automatically simpler at project scale. A large C system with ad hoc ownership, macros, global state, and unclear error handling can be harder to maintain than disciplined C++.
+
+C++ is not automatically safer because it has RAII and smart pointers. If the codebase ignores modern idioms, passes raw owning pointers freely, relies on exception-unsafe cleanup, or exposes unstable ABI details, it can carry C's memory risks plus C++'s complexity.
+
+For mixed projects, use a deliberate boundary. Keep C headers small and stable, hide C++ implementation details behind opaque handles, define allocator ownership, and test the boundary from the same languages and compilers that users will use.

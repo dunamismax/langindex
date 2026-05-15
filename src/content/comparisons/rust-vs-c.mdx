@@ -1,7 +1,7 @@
 ---
 title: Rust vs C
 slug: rust-vs-c
-summary: Rust and C both target low-level systems work, but Rust adds ownership, borrowing, stronger type modeling, and Cargo-based tooling where C favors minimal language machinery, broad ABI reach, and decades of existing code.
+summary: Rust and C both target low-level systems work, but Rust adds ownership, borrowing, stronger type modeling, and Cargo-based tooling where C favors minimal language machinery, broad ABI reach, compiler portability, and decades of existing code.
 languages:
   - rust
   - c
@@ -26,21 +26,58 @@ sources:
   - title: ISO/IEC JTC1/SC22/WG14 - C
     url: https://www.open-std.org/jtc1/sc22/wg14/
     publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C language about page
+    url: https://www.c-language.org/about
+    publisher: C language project
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
   - title: Dynamic memory management
     url: https://en.cppreference.com/w/c/memory
     publisher: cppreference
+  - title: External blocks - The Rust Reference
+    url: https://doc.rust-lang.org/reference/items/external-blocks.html
+    publisher: Rust Project
 lastVerified: 2026-05-15
 ---
 
 ## Scope
 
-This is a prepared comparison for Rust and C while the standalone C page is still pending. It focuses on systems programming, embedded work, operating-system boundaries, native libraries, and C ABI integration.
+This comparison focuses on new systems programming, embedded work, operating-system boundaries, native libraries, and C ABI integration. It assumes the project genuinely needs native code and no required garbage collector; if the work is an ordinary service or application layer, Go, Java, C#, Python, or TypeScript may be the more practical baseline.
 
 ## Practical Difference
 
-C is still the lowest common denominator for many native interfaces. Operating systems, embedded SDKs, language runtimes, and foreign-function interfaces commonly expose C headers and C ABI boundaries. That makes C hard to avoid even when new implementation work happens elsewhere.
+C is still the lowest common denominator for many native interfaces. Operating systems, embedded SDKs, language runtimes, and foreign-function interfaces commonly expose C headers and C ABI boundaries. That makes C hard to avoid even when new implementation work happens elsewhere. The current C standard is C23, but real portability still depends on the selected dialect, compiler, C library, target ABI, and platform APIs.
 
-Rust enters the same space when teams want native code with stronger compile-time guarantees. Ownership, borrowing, lifetimes, and safe abstractions can prevent many mistakes that C leaves to discipline, review, sanitizers, and testing. Rust still interoperates with C, but FFI code must define ownership, allocation, panic, threading, and layout boundaries carefully.
+Rust enters the same space when teams want native code with stronger compile-time guarantees. Ownership, borrowing, lifetimes, and safe abstractions can prevent many mistakes that C leaves to discipline, review, sanitizers, static analysis, and testing. Rust still interoperates with C, but FFI code must define ownership, allocation, panic, threading, and layout boundaries carefully.
+
+The choice is often less about performance and more about where invariants live. In Rust, many ownership and thread-sharing rules are represented in types and checked before the program runs. In C, those rules usually live in API conventions, comments, coding standards, tests, analysis tools, and review checklists.
+
+## Memory And Safety Model
+
+C gives direct control over object layout, pointers, allocation, and deallocation. That is valuable for kernels, firmware, runtimes, allocators, data structures, and ABI surfaces. It also means buffer bounds, null handling, object lifetime, allocator pairing, and synchronization are programmer obligations.
+
+Rust gives similar low-level reach for many targets but tries to keep most ordinary code in safe Rust. The compiler checks ownership, borrowing, move semantics, and many data-race patterns. `unsafe` Rust is still available for FFI, hardware, raw pointers, custom data structures, and low-level abstractions, but it marks proof obligations that safe code does not have to re-prove at every call site.
+
+That changes failure modes. C code can be small and clear, but a missed lifetime rule can become a use-after-free or memory corruption bug. Rust code can be harder to design up front, but once an API's ownership model compiles, many classes of lifetime and aliasing mistakes are mechanically constrained.
+
+## ABI And Interoperability
+
+C is usually the better default for the boundary itself. A stable C header and platform ABI are easy for other languages, dynamic loaders, operating systems, and tooling to consume. If the deliverable is a plugin ABI, system SDK, embedded vendor API, or low-level OS interface, C may be the least surprising public surface even when the implementation behind it is mixed.
+
+Rust can expose C-callable interfaces and call C libraries through FFI. That is practical, but it should be treated as a boundary design task rather than a syntax detail. Decide who allocates and frees memory, which allocator is used, whether callbacks may cross threads, how errors are represented, whether panics can cross the boundary, and which structs have stable layout.
+
+## Build And Dependency Workflow
+
+Rust's Cargo workflow is a major advantage for new Rust code. Cargo handles package metadata, dependency resolution, builds, tests, documentation, workspaces, and registry publishing through one standard tool. That does not remove dependency review, but it gives most Rust projects a common baseline.
+
+C has no equivalent universal workflow. Projects may use Make, CMake, Meson, Autotools, custom scripts, embedded IDE files, OS packages, vendored source, Conan, vcpkg, pkg-config, or SDK-provided build systems. This flexibility is useful for old and unusual targets, but it increases the need to pin compilers, flags, target triples, C libraries, dependency sources, and cross-compilation rules.
 
 ## Choose Rust When
 
@@ -49,6 +86,7 @@ Rust enters the same space when teams want native code with stronger compile-tim
 - A public library API can benefit from explicit error types, enums, traits, and borrowing rules.
 - The team can use Cargo, rustup, tests, fuzzing, and CI for the target platforms.
 - Unsafe code can be isolated behind small reviewed modules.
+- The project can absorb Rust's learning curve, compile-time feedback, and target support constraints.
 
 ## Choose C When
 
@@ -57,6 +95,7 @@ Rust enters the same space when teams want native code with stronger compile-tim
 - The target environment cannot support the Rust toolchain or required dependencies.
 - The team needs to maintain a large existing C codebase and cannot introduce Rust build complexity yet.
 - The code must be easy to consume from many languages through a stable C interface.
+- The organization already has mature C analysis, sanitizer, fuzzing, review, and release practices.
 
 ## Watch Points
 
@@ -64,6 +103,8 @@ Rust does not remove low-level risk at FFI boundaries. Raw pointers, external al
 
 C keeps the language and ABI surface small, but that means more invariants live outside the compiler. Memory lifetime, buffer bounds, aliasing assumptions, initialization, cleanup, and synchronization must be enforced through conventions, tools, tests, and review.
 
-## Prepared Follow-Up
+## Migration Notes
 
-When the C page lands, this comparison should add C-specific frontmatter links, examples of C ABI wrappers, and a more detailed section on build systems, standards versions, undefined behavior, and embedded vendor tooling.
+For existing C code, a useful Rust adoption path is usually narrow: new parsers, new libraries, memory-sensitive modules, isolated tools, or new APIs behind a C-compatible surface. A broad rewrite is much harder to justify unless the current defect profile, staffing model, and test coverage support it.
+
+For new code, consider starting in Rust when safety and ownership are central product requirements. Consider starting in C when the core requirement is an ABI, vendor SDK, freestanding target, or platform surface where C is the integration language.
