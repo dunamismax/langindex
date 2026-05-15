@@ -1,0 +1,46 @@
+---
+interface Props {
+  class?: string;
+  eager?: boolean;
+}
+
+const { class: className = "", eager = false } = Astro.props;
+const loading = eager ? "eager" : "lazy";
+const fetchPriority = eager ? "high" : "auto";
+const sizes = "(min-width: 1024px) 520px, calc(100vw - 2rem)";
+---
+
+<div class:list={["brand-switch", className]} aria-hidden="true">
+  <picture class="brand-switch__image brand-switch__dark">
+    <source
+      type="image/webp"
+      srcset="/brand/langindex-banner-dark-724.webp 724w, /brand/langindex-banner-dark-1448.webp 1448w, /brand/langindex-banner-dark.webp 2172w"
+      sizes={sizes}
+    />
+    <img
+      src="/brand/langindex-banner-dark.png"
+      alt=""
+      width="2172"
+      height="724"
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchPriority}
+    />
+  </picture>
+  <picture class="brand-switch__image brand-switch__light">
+    <source
+      type="image/webp"
+      srcset="/brand/langindex-banner-light-724.webp 724w, /brand/langindex-banner-light-1448.webp 1448w, /brand/langindex-banner-light.webp 2172w"
+      sizes={sizes}
+    />
+    <img
+      src="/brand/langindex-banner-light.png"
+      alt=""
+      width="2172"
+      height="724"
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchPriority}
+    />
+  </picture>
+</div>
