@@ -1,0 +1,74 @@
+---
+title: Choosing JavaScript, TypeScript, Or Compile-to-JavaScript
+slug: choosing-javascript-typescript-or-compile-to-javascript
+summary: A decision guide for teams choosing between plain JavaScript, TypeScript, or another language that targets JavaScript runtimes.
+audience: Teams building browser, Node.js, edge, or framework-based applications in the JavaScript ecosystem.
+candidates:
+  - javascript
+  - typescript
+  - dart
+  - kotlin
+  - csharp
+sources:
+  - title: TypeScript for JavaScript Programmers
+    url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+    publisher: Microsoft
+  - title: TypeScript Design Goals
+    url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
+    publisher: Microsoft
+  - title: JavaScript Language Overview
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Language_overview
+    publisher: MDN Web Docs
+  - title: Dart Overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: Kotlin/JavaScript
+    url: https://kotlinlang.org/docs/js-overview.html
+    publisher: Kotlin
+  - title: Blazor
+    url: https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor
+    publisher: Microsoft .NET
+lastVerified: 2026-05-15
+---
+
+## Start With The Runtime
+
+If the code must run in ordinary browsers, Node.js, edge workers, or mainstream JavaScript frameworks, JavaScript is the execution target. The question is whether the source language should stay plain JavaScript, add TypeScript, or use another language that compiles to JavaScript.
+
+Choose the source language by the constraints the team needs to optimize:
+
+- Direct runtime compatibility and lowest tooling overhead.
+- Static contracts for a growing JavaScript codebase.
+- A framework ecosystem that is strongest in another language.
+- Shared code with a non-JavaScript platform.
+
+## Choose JavaScript When
+
+Plain JavaScript is usually enough for small scripts, prototypes, progressive enhancement, build glue, and codebases where runtime tests already cover the important behavior. It keeps execution direct and avoids TypeScript configuration, generated types, and compile-time gates.
+
+The cost is that larger refactors depend more on tests, runtime coverage, and developer discipline. For long-lived applications, that cost often grows as module boundaries and API contracts multiply.
+
+## Choose TypeScript When
+
+TypeScript is the conservative upgrade path for teams already committed to JavaScript runtimes and packages. It is strongest when the project needs editor feedback, safer refactoring, checked component props or API payloads, and declaration files for shared packages.
+
+TypeScript is also the best default for gradual adoption because existing JavaScript can be checked, annotated, and tightened over time. The team still needs runtime validation for untrusted data, and the build pipeline must stay aligned with the actual runtime.
+
+## Choose Another Compile-to-JavaScript Language When
+
+Another language can make sense when its home framework or platform is the real reason for the choice. Dart is usually evaluated because of Flutter. Kotlin can matter when a team is sharing code across JVM, Android, or multiplatform projects. C# can enter the conversation when .NET and WebAssembly tooling are already strategic.
+
+The constraint is ecosystem distance. A language can target JavaScript while still making npm packages, framework examples, debugging tools, hiring, and community patterns less direct than JavaScript or TypeScript.
+
+## Questions To Ask
+
+- Is JavaScript runtime compatibility the primary constraint, or is a different platform driving the decision?
+- Will the codebase be maintained long enough for static contracts to repay the setup cost?
+- Does the team need declaration files, generated framework types, or shared package APIs?
+- Are external inputs validated at runtime, independent of static types?
+- Does the chosen framework document a first-class TypeScript, JavaScript, or alternate-language path?
+- Would a non-JavaScript source language isolate the team from the package ecosystem they need every day?
+
+## Practical Default
+
+For most new production web and Node.js applications, start with TypeScript in strict mode unless the project is intentionally small or short-lived. For tiny scripts and experiments, start with JavaScript and add TypeScript only when the maintenance surface justifies it. Choose Dart, Kotlin, C#, or another compile-to-JavaScript language only when that language's platform, framework, or shared-code story is the primary requirement.

@@ -154,14 +154,14 @@ justify the extra network time.
 
 ### Phase 1 - TypeScript Completion
 
-- [ ] Expand the TypeScript page to the completion standard.
-- [ ] Cover type erasure, structural typing, gradual adoption, compiler
+- [x] Expand the TypeScript page to the completion standard.
+- [x] Cover type erasure, structural typing, gradual adoption, compiler
       options, JavaScript runtime boundaries, declaration files, package
       manager reality, and modern framework usage.
-- [ ] Add or expand TypeScript vs JavaScript comparison.
-- [ ] Add comparison links for JavaScript, Dart, Kotlin, and C# where
+- [x] Add or expand TypeScript vs JavaScript comparison.
+- [x] Add comparison links for JavaScript, Dart, Kotlin, and C# where
       useful.
-- [ ] Add a guide section for when teams should choose JavaScript,
+- [x] Add a guide section for when teams should choose JavaScript,
       TypeScript, or another compile-to-JavaScript language.
 
 ### Phase 2 - Go Completion

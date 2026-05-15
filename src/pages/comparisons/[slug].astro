@@ -17,6 +17,14 @@ const languages = await getCollection("languages");
 const languageTitles = new Map(
   languages.map((entry) => [entry.data.slug, entry.data.title]),
 );
+const pendingLanguageTitles: Record<string, string> = {
+  c: "C",
+  cpp: "C++",
+  csharp: "C#",
+  dart: "Dart",
+  javascript: "JavaScript",
+  kotlin: "Kotlin",
+};
 ---
 
 <BaseLayout title={comparison.data.title} description={comparison.data.summary}>
@@ -25,9 +33,13 @@ const languageTitles = new Map(
       aria-label="Breadcrumb"
       class="text-sm text-[color:var(--color-fg-subtle)]"
     >
-      <a class="hover:text-[color:var(--color-fg)]" href="/comparisons">Comparisons</a>
+      <a class="hover:text-[color:var(--color-fg)]" href="/comparisons"
+        >Comparisons</a
+      >
       <span aria-hidden="true" class="px-1.5">/</span>
-      <span class="text-[color:var(--color-fg-muted)]">{comparison.data.title}</span>
+      <span class="text-[color:var(--color-fg-muted)]"
+        >{comparison.data.title}</span
+      >
     </nav>
     <p
       class="mt-6 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-accent)]"
@@ -46,16 +58,23 @@ const languageTitles = new Map(
       {comparison.data.summary}
     </p>
     <div class="mt-4 flex flex-wrap items-center gap-2">
-      <span class="text-xs text-[color:var(--color-fg-subtle)]">Languages:</span>
+      <span class="text-xs text-[color:var(--color-fg-subtle)]">Languages:</span
+      >
       {
-        comparison.data.languages.map((slug) => (
-          <a
-            href={`/languages/${slug}`}
-            class="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-2.5 py-1 text-xs font-medium text-[color:var(--color-fg)] hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)]"
-          >
-            {languageTitles.get(slug) ?? slug}
-          </a>
-        ))
+        comparison.data.languages.map((slug) =>
+          languageTitles.has(slug) ? (
+            <a
+              href={`/languages/${slug}`}
+              class="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-2.5 py-1 text-xs font-medium text-[color:var(--color-fg)] hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)]"
+            >
+              {languageTitles.get(slug)}
+            </a>
+          ) : (
+            <span class="rounded-full border border-dashed border-[color:var(--color-border)] px-2.5 py-1 text-xs font-medium text-[color:var(--color-fg-subtle)]">
+              {pendingLanguageTitles[slug] ?? slug}
+            </span>
+          ),
+        )
       }
     </div>
     <div class="sr-only" aria-hidden="true">

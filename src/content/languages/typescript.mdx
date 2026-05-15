@@ -24,15 +24,18 @@ packageManagers:
   - pnpm
   - Yarn
 comparedWith:
-  - javascript
+  - csharp
   - dart
+  - javascript
   - kotlin
 bestFor:
-  - Large JavaScript applications that need type checking and editor feedback.
-  - Web, Node.js, and cross-platform codebases that already depend on JavaScript ecosystems.
+  - JavaScript applications that need type checking, editor feedback, and safer refactoring across many modules.
+  - Web, Node.js, and cross-platform codebases that need to stay inside the JavaScript package and runtime ecosystem.
+  - Gradual migrations where existing JavaScript can be checked, annotated, and tightened over time.
 poorFit:
   - Projects that need runtime type guarantees without separate validation.
-  - Very small scripts where a compile step adds more process than value.
+  - Small scripts or throwaway automation where a compiler step and project configuration add more process than value.
+  - Teams expecting a separate runtime, standard library, or end-to-end build pipeline from the language itself.
 sources:
   - title: TypeScript Documentation
     url: https://www.typescriptlang.org/docs/
@@ -40,30 +43,161 @@ sources:
   - title: TypeScript for JavaScript Programmers
     url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
     publisher: Microsoft
+  - title: The Basics - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/2/basic-types.html
+    publisher: Microsoft
+  - title: TypeScript Design Goals
+    url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
+    publisher: Microsoft
+  - title: Type Declarations
+    url: https://www.typescriptlang.org/docs/handbook/2/type-declarations.html
+    publisher: Microsoft
+  - title: TSConfig Reference
+    url: https://www.typescriptlang.org/tsconfig/
+    publisher: Microsoft
+  - title: JavaScript Language Overview
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Language_overview
+    publisher: MDN Web Docs
+  - title: Using TypeScript
+    url: https://react.dev/learn/typescript
+    publisher: React
+  - title: What is Angular?
+    url: https://angular.dev/overview
+    publisher: Angular
+  - title: Using Vue with TypeScript
+    url: https://vuejs.org/guide/typescript/overview
+    publisher: Vue.js
+  - title: TypeScript
+    url: https://nextjs.org/docs/app/api-reference/config/typescript
+    publisher: Next.js
   - title: TypeScript GitHub Repository
     url: https://github.com/microsoft/TypeScript
     publisher: Microsoft
 lastVerified: 2026-05-15
 ---
 
-## Practical Fit
+## Origin And Design Goals
 
-TypeScript is strongest when JavaScript reach is required but a team needs earlier feedback for API shape, refactors, and cross-file contracts. The type system is erased during compilation, so external input still needs runtime validation.
+TypeScript was created at Microsoft and first released publicly in 2012 as a typed layer over JavaScript. Its design center is not a new runtime. The project goals emphasize identifying likely errors statically, structuring larger JavaScript programs, preserving JavaScript runtime behavior, emitting recognizable JavaScript, and using an erasable structural type system.
 
-## Tooling
+That makes TypeScript most useful when a codebase needs JavaScript's deployment reach but also needs stronger editor feedback, API contracts, and refactoring support than plain JavaScript alone provides. The tradeoff is that TypeScript must model real JavaScript patterns, including dynamic ones that do not always fit neatly into a fully sound static type system.
 
-The TypeScript compiler checks types and emits JavaScript. Most projects use it through npm-compatible package managers and bundlers.
+## Runtime And Compilation Boundary
+
+TypeScript normally runs as a development-time checker and compiler. The code that reaches production is JavaScript executed by a host runtime such as a browser, Node.js, Deno, Bun, an edge runtime, or a framework's build pipeline. Type annotations and most type-only constructs are removed during compilation, so they do not validate JSON, form input, network responses, database rows, or other runtime values.
+
+That boundary is central to using TypeScript well:
+
+- Use TypeScript types to describe expected program shapes and catch mistakes before code runs.
+- Use runtime checks, schema validation, protocol validation, or framework guards for untrusted input.
+- Treat emitted JavaScript, module format, target version, and runtime APIs as deployment decisions, not just type-system decisions.
+
+The compiler can emit JavaScript directly, emit declaration files for libraries, or run in `noEmit` mode when another tool handles transpilation and bundling.
+
+## Type System
+
+TypeScript is static, gradual, and structural. Static means the checker reasons about code before runtime. Gradual means annotations can be introduced incrementally, and escape hatches such as `any` exist for dynamic or unmodeled code. Structural means compatibility is based mostly on the shape of values rather than explicit nominal declarations: if a value has the required members, it can often satisfy an interface without declaring that relationship.
+
+Common strengths:
+
+- Object, function, array, tuple, union, intersection, literal, generic, mapped, conditional, and template-literal types can describe many JavaScript APIs.
+- Inference reduces annotation burden in local code while preserving explicit boundaries for exported APIs.
+- Narrowing lets checks such as `typeof`, discriminant fields, and control flow refine union types.
+- Declaration files let TypeScript understand JavaScript libraries and runtime APIs without changing their implementation.
+
+Common constraints:
+
+- TypeScript is intentionally not a runtime validation system.
+- Unsound or permissive areas exist to support JavaScript compatibility and migration.
+- Over-complex type programming can make library internals harder to maintain even when call-site ergonomics are good.
+
+## Gradual Adoption
+
+TypeScript can be adopted in several stages. A team can start by checking JavaScript with editor support and JSDoc, add `allowJs` or `checkJs` in selected projects, rename files to `.ts` or `.tsx`, then tighten compiler options over time. Existing JavaScript can remain valid while the team adds types around module boundaries, shared APIs, and code that changes often.
+
+For new codebases, `strict` mode is usually the better default because it turns on stronger checks such as stricter handling of implicit `any` and nullable values. For migrations, a looser first step can be pragmatic if it keeps working JavaScript moving while type coverage improves.
+
+## Syntax Example
 
 ```ts
-type Language = {
+type PackageState =
+  | { kind: "published"; version: string; downloads?: number }
+  | { kind: "private"; reason: string };
+
+interface PackageInfo {
   name: string;
-  runtime: string;
-};
+  state: PackageState;
+}
 
-const language: Language = {
-  name: "TypeScript",
-  runtime: "JavaScript",
-};
+function describePackage(pkg: PackageInfo): string {
+  if (pkg.state.kind === "private") {
+    return `${pkg.name} is private: ${pkg.state.reason}`;
+  }
 
-console.log(`${language.name} targets ${language.runtime}`);
+  const downloads = pkg.state.downloads?.toLocaleString() ?? "unknown";
+  return `${pkg.name}@${pkg.state.version} has ${downloads} downloads`;
+}
+
+const packages: PackageInfo[] = [
+  {
+    name: "langindex",
+    state: { kind: "published", version: "0.0.1", downloads: 1200 },
+  },
+  { name: "internal-tools", state: { kind: "private", reason: "workspace" } },
+];
+
+for (const pkg of packages) {
+  console.log(describePackage(pkg));
+}
 ```
+
+The discriminated union lets `describePackage` handle each package state explicitly. Optional chaining and nullish coalescing remain JavaScript runtime features; the type checker only verifies that the code is used consistently.
+
+## Tooling And Ecosystem
+
+The core tool is `tsc`, the TypeScript compiler. In application projects, `tsc` is often used for type checking while a bundler or framework handles JavaScript output. In library projects, declaration output matters because `.d.ts` files describe the package API for downstream TypeScript and JavaScript users.
+
+Important project choices usually live in `tsconfig.json`:
+
+- `target` controls the JavaScript language level that TypeScript emits.
+- `module` and `moduleResolution` align TypeScript with the runtime or bundler's module rules.
+- `strict` controls the main strictness bundle.
+- `allowJs` and `checkJs` support mixed JavaScript and TypeScript projects.
+- `declaration` and `emitDeclarationOnly` support library publishing.
+- `noEmit` is common when TypeScript checks code but another tool emits the final files.
+
+Package management is inherited from the JavaScript ecosystem rather than defined by TypeScript itself. Most projects use npm-compatible workflows through npm, pnpm, Yarn, or a framework wrapper. Types for dependencies may be bundled with a package, supplied through DefinitelyTyped packages under the `@types` scope, generated by a build, or written locally for untyped modules.
+
+## Framework Usage
+
+TypeScript is a practical default in many modern web stacks because frameworks such as React, Angular, Vue, and Next.js document TypeScript paths and integrate with JavaScript tooling. The details vary: some frameworks type-check separately from transpilation, some rely on generated types for file-based routes or components, and some need framework-specific configuration around JSX, single-file components, server/client boundaries, or environment globals.
+
+This means framework TypeScript quality depends on both TypeScript itself and the surrounding toolchain. A good setup makes generated types, module resolution, test tooling, and runtime validation explicit instead of assuming the compiler alone covers the full application boundary.
+
+## Best-Fit Use Cases
+
+TypeScript is a strong fit for:
+
+- Web applications where browser, server, and build-tool code share JavaScript infrastructure.
+- Node.js or edge services where API contracts, refactors, and editor feedback matter.
+- Libraries that expose JavaScript APIs but want declaration files for typed consumers.
+- Large front-end codebases where component props, state, event payloads, and data-fetching boundaries benefit from static checking.
+- Incremental migrations from JavaScript where rewriting into another language would be too disruptive.
+
+## Poor-Fit Or Risky Use Cases
+
+TypeScript can be a poor fit when:
+
+- The main problem is runtime validation of untrusted data and no separate validation layer is planned.
+- A project needs a language-defined runtime, standard library, deployment format, or package manager.
+- The target environment cannot afford the build step or configuration overhead.
+- A team will lean heavily on `any`, unchecked type assertions, or generated types without reviewing whether they match runtime behavior.
+- The codebase needs hard nominal domain modeling or stronger soundness guarantees than TypeScript is designed to provide.
+
+## Governance And Implementation
+
+TypeScript is developed by Microsoft in the open on GitHub. The implementation includes the compiler, language service, and related tooling used by editors and build systems. The language evolves alongside ECMAScript rather than replacing it: TypeScript generally tries to align with current and future JavaScript while adding types and tooling support around the language developers already run.
+
+## Comparison Notes
+
+The closest comparison is JavaScript because TypeScript code is ultimately JavaScript code with static analysis layered on top. Dart, Kotlin, and C# enter the decision when a team wants stronger language-level guarantees, a different runtime, or a framework ecosystem outside ordinary JavaScript. Those choices can be better in their home domains, but they usually give up some of the direct package and runtime compatibility that makes TypeScript attractive.
