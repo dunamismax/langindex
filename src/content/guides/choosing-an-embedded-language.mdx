@@ -33,6 +33,15 @@ sources:
   - title: The Committee - Standard C++
     url: https://isocpp.org/std/the-committee
     publisher: Standard C++ Foundation
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
 lastVerified: 2026-05-15
 ---
 
@@ -91,6 +100,8 @@ Use C++ when:
 - Existing embedded frameworks, middleware, or generated code are C++-oriented.
 
 Be explicit about which C++ features are allowed. Exception handling, dynamic allocation, RTTI, static initialization, templates, and standard-library use may all need target-specific rules.
+
+C++ is strongest in embedded systems when it is used as a controlled tool, not as an unrestricted language surface. A project might allow `constexpr`, templates, stack-based value types, RAII wrappers for handles and locks, and a fixed standard-library subset while banning exceptions after startup, heap allocation in interrupt paths, RTTI, or dynamic initialization. The exact policy should be written down and enforced in CI.
 
 ## Runtime And Allocation Constraints
 

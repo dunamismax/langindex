@@ -1,0 +1,106 @@
+---
+title: Choosing A Game Development Language
+slug: choosing-a-game-development-language
+summary: A practical guide for choosing C++, C#, Rust, JavaScript, Lua, or engine-specific scripting by engine, platform targets, iteration speed, performance constraints, and team workflow.
+audience: Developers choosing a language for gameplay code, game engines, tools, native plugins, simulations, prototypes, or shipped game projects.
+candidates:
+  - cpp
+  - csharp
+  - rust
+  - javascript
+  - lua
+sources:
+  - title: Programming with C++ in Unreal Engine
+    url: https://dev.epicgames.com/documentation/en-us/unreal-engine/programming-with-cplusplus-in-unreal-engine
+    publisher: Epic Games
+  - title: Programming in Unity
+    url: https://docs.unity3d.com/Manual/scripting.html
+    publisher: Unity
+  - title: What is GDExtension?
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html
+    publisher: Godot Engine
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+lastVerified: 2026-05-15
+---
+
+## Start With The Engine
+
+Game language choice is usually an engine decision before it is a language decision. Unreal, Unity, Godot, custom engines, web engines, console SDKs, middleware, asset pipelines, and editor tooling constrain the answer more than general language preference.
+
+Choose the language that fits:
+
+- The engine's primary programming model.
+- The target platforms and console/vendor requirements.
+- The editor workflow used by designers and artists.
+- The performance-sensitive parts of the game loop.
+- The team's debugging, profiling, build, and hot-reload expectations.
+- Native plugin, middleware, anti-cheat, platform, and rendering needs.
+
+If the engine already owns the architecture, fighting its language model can cost more than it saves.
+
+## When C++ Is The Center
+
+C++ is the default serious candidate for engine code, native plugins, rendering, physics, animation systems, memory allocators, platform layers, and performance-critical gameplay systems. Unreal Engine documents C++ gameplay classes, reflection metadata, containers, delegates, and gameplay architecture as a primary development path.
+
+Choose C++ when:
+
+- The project is built on Unreal Engine or another C++-centered engine.
+- The team needs engine-level customization, native plugins, low-level platform APIs, or console SDK integration.
+- Frame-time stability, memory layout, allocation policy, and data-oriented design are central.
+- Existing middleware, engine code, tools, or platform libraries are already C++.
+- The team can sustain native build times, debugging, sanitizers, profiling, and coding standards.
+
+C++ is not automatically the best language for every gameplay script. Use it where native control and engine integration matter, and keep higher-level gameplay code in the engine's most productive layer when that is safer.
+
+## When C# Fits
+
+C# is a strong game language when Unity is the engine center. Unity's programming documentation describes programming as authoring project functionality in code through public Unity APIs, with topics for scripts, tools, compilation, optimization, testing, and diagnostics.
+
+Choose C# when:
+
+- Unity is the engine and the project benefits from its editor, asset pipeline, and platform support.
+- Gameplay code, editor tools, prototypes, and production systems can live comfortably in managed code.
+- Iteration speed and team accessibility matter more than direct native control.
+- Garbage collection and managed allocation can be profiled and controlled enough for the target platforms.
+
+Use C++ alongside C# when native plugins, engine internals, platform APIs, or middleware require it.
+
+## When Rust Is Worth Evaluating
+
+Rust is worth evaluating for custom engines, game-adjacent tools, asset pipelines, network services, plugins, and safety-sensitive native systems where ownership checks and no required garbage collector are important.
+
+Rust is a weaker default when the engine, documentation, asset workflow, and community examples are C++ or C# centered. In games, ecosystem fit and editor workflow often beat language elegance. Prototype the build integration, debugger, platform targets, and content pipeline before committing.
+
+## Scripting And Tool Languages
+
+Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua or another embedded scripting language for modding or data-driven logic, and JavaScript or TypeScript for web games or tooling.
+
+Do not choose a scripting layer only because it is easy to start. Check how it handles:
+
+- Editor integration.
+- Debugging and hot reload.
+- Save data and serialization.
+- Versioning and mod compatibility.
+- Performance cliffs in the frame loop.
+- Ownership between engine objects and script objects.
+
+## Practical Default
+
+Start with C++ for Unreal, custom engines, native middleware, and engine-level performance work.
+
+Start with C# for Unity gameplay, editor tooling, and teams that want a managed language inside a mature commercial engine.
+
+Start with the engine-native scripting language for prototypes, designer-authored logic, small games, and workflows where iteration speed matters more than maximum control.
+
+Evaluate Rust for custom native components and tools when its safety model is worth the integration cost.

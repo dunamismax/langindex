@@ -1,0 +1,264 @@
+---
+title: C++
+slug: cpp
+status: active
+summary: C++ is a standardized, multi-paradigm systems language for performance-critical native software, large C++ codebases, game engines, embedded application layers, libraries, and domains where zero-overhead abstractions and direct control must coexist.
+firstReleased: 1985
+creators:
+  - Bjarne Stroustrup
+paradigms:
+  - systems
+  - object-oriented
+  - generic
+  - procedural
+  - functional
+typing:
+  discipline: static
+  strength: strong with templates, overloads, implicit conversions, and explicit casts
+memory:
+  model: deterministic object lifetimes, RAII, smart pointers, value semantics, and manual escape hatches
+runtime:
+  model: native code through implementation-defined compilers, standard libraries, ABIs, and optional runtime features
+officialSite: https://isocpp.org/
+repository: https://github.com/cplusplus/draft
+packageManagers:
+  - Conan
+  - vcpkg
+  - CMake
+  - pkg-config
+comparedWith:
+  - c
+  - rust
+  - java
+  - csharp
+  - go
+bestFor:
+  - Game engines, graphics, browser engines, databases, compilers, native desktop applications, scientific and simulation software, and performance-sensitive libraries.
+  - Large native systems where RAII, templates, containers, value types, and compile-time abstraction reduce maintenance cost without adding a garbage-collected runtime.
+  - Existing C++ estates where platform SDKs, engines, toolchains, libraries, and team expertise make incremental modernization safer than a rewrite.
+  - Embedded or low-latency application layers where the compiler, standard library subset, exceptions, RTTI, allocation, and ABI are deliberately controlled.
+poorFit:
+  - New application services where a managed runtime, simpler deployment, or safer default language can meet the same latency and integration requirements.
+  - Teams without strong C++ review, build discipline, sanitizers, static analysis, fuzzing, and clear ownership rules.
+  - Public binary plugin or SDK boundaries that cannot tightly control compiler, standard library, ABI, allocator, exception, and RTTI compatibility.
+  - Projects that want one official package manager, one conventional project layout, and uniform dependency resolution across platforms.
+sources:
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: ISO/IEC JTC1/SC22/WG21 - The C++ Standards Committee
+    url: https://www.open-std.org/jtc1/sc22/wg21/
+    publisher: ISO/IEC JTC1/SC22/WG21
+  - title: Bjarne Stroustrup's FAQ
+    url: https://www.stroustrup.com/bs_faq.html
+    publisher: Bjarne Stroustrup
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: C++ Support in Clang
+    url: https://clang.llvm.org/cxx_status
+    publisher: LLVM Project
+  - title: Microsoft C/C++ language conformance by Visual Studio version
+    url: https://learn.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance?view=msvc-170
+    publisher: Microsoft Learn
+  - title: CMake Tutorial
+    url: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+    publisher: Kitware
+  - title: Conan 2 documentation
+    url: https://docs.conan.io/2/
+    publisher: Conan
+  - title: vcpkg documentation
+    url: https://learn.microsoft.com/en-us/vcpkg/
+    publisher: Microsoft Learn
+  - title: Programming with C++ in Unreal Engine
+    url: https://dev.epicgames.com/documentation/en-us/unreal-engine/programming-with-cplusplus-in-unreal-engine
+    publisher: Epic Games
+  - title: What is GDExtension?
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html
+    publisher: Godot Engine
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+C++ was created by Bjarne Stroustrup at Bell Labs. Stroustrup started work on the language in 1979 as "C with Classes"; the first commercial implementation and the first edition of _The C++ Programming Language_ arrived in 1985. His stated goal was to write efficient systems programs in the style encouraged by Simula, adding better type checking, data abstraction, and object-oriented programming to C.
+
+That origin still explains C++ better than a short slogan. C++ is not simply "C plus classes," and modern C++ is not only object-oriented programming. It is a multi-paradigm language for native software where user-defined types, value semantics, generic programming, deterministic cleanup, and direct hardware or operating-system access can all matter in the same codebase.
+
+The central tradeoff is power versus responsibility. C++ can express high-level abstractions that compile to tight native code, but it also keeps unsafe operations, implicit conversions, pointer arithmetic, manual allocation, preprocessor use, implementation-defined behavior, and ABI details close at hand. A serious C++ project needs a language subset, toolchain policy, review culture, tests, and build discipline, not just a compiler.
+
+## Standardization And Implementations
+
+C++ is standardized by ISO/IEC JTC1/SC22/WG21. The current published ISO C++ standard is C++23, formally ISO/IEC 14882:2024. The Standard C++ Foundation notes that C++23 was named for the year technical work completed, while the ISO publication suffix is 2024. WG21 maintains committee pages, papers, meeting records, standing documents, and working material for the next revision.
+
+Production C++ is mediated through implementations. GCC documents dialect support selected with `-std=` flags including C++98, C++11, C++14, C++17, C++20, C++23, and experimental C++26. Clang publishes C++ language-status pages showing partial support for C++20, C++23, and upcoming C++26 work. Microsoft documents MSVC language and library conformance by Visual Studio version.
+
+Those pages are not trivia. Portable C++ depends on the intersection of:
+
+- The chosen standard or dialect, such as `-std=c++17`, `-std=c++20`, `-std=c++23`, or `/std:c++20`.
+- The compiler family and exact versions.
+- The standard library implementation, such as libstdc++, libc++, or MSVC STL.
+- The platform ABI, exception model, RTTI policy, calling conventions, and allocator boundaries.
+- Build flags, warnings, sanitizers, static analysis, and feature-test assumptions.
+
+For new code, avoid saying "we use modern C++" without defining a baseline. C++17, C++20, C++23, and vendor preview modes can mean materially different language, library, module, ranges, coroutine, constexpr, and tooling behavior.
+
+## Runtime, ABI, And Deployment
+
+C++ normally compiles ahead of time to native object code, then links with a standard library, platform libraries, startup code, and other native dependencies. The language does not require a garbage collector or virtual machine. It does include runtime mechanisms for features such as exceptions, RTTI, static initialization, thread-local storage, and standard-library services when an implementation and project policy enable them.
+
+This makes C++ suitable for binaries, shared libraries, plugins, games, firmware images, device software, scientific applications, desktop software, and performance-sensitive server components. It also means deployment is not uniform. A C++ release may depend on shared-library versions, C runtime choices, dynamic loader behavior, symbol visibility, platform SDKs, GPU drivers, console SDKs, package manager artifacts, or a container image that fixes the entire native environment.
+
+C++ ABI stability is one of the language's sharpest operational issues. Name mangling, object layout, templates, inline functions, standard-library types, exceptions, RTTI, alignment, calling conventions, and compiler flags can leak into binary boundaries. Public SDKs and plugins often expose a C ABI or a deliberately narrow C-compatible wrapper even when the implementation is C++.
+
+## Type System, Templates, And Abstraction
+
+C++ is statically typed and supports procedural programming, class-based object-oriented programming, generic programming through templates, compile-time programming, lambdas, overloading, namespaces, concepts, and standard-library abstractions. The language gives built-in and user-defined types much of the same treatment: a small value type can have constructors, destructors, copy and move operations, operators, invariants, and efficient storage.
+
+Templates are one of C++'s defining abstraction tools. They let libraries write generic containers, algorithms, numeric types, iterators, allocators, views, and policy-based components that are resolved at compile time. C++20 concepts improve template interfaces by letting APIs express constraints more directly than older substitution-failure patterns.
+
+The cost is complexity. Template-heavy APIs can produce long compile times, difficult diagnostics, large binaries, and subtle compatibility constraints. Overload resolution, implicit conversions, reference categories, move semantics, lifetime extension, class templates, partial specialization, and argument-dependent lookup all matter in real programs. Good C++ libraries hide that machinery behind small, documented interfaces.
+
+## RAII, Value Semantics, And Memory Management
+
+Modern C++ resource management is centered on RAII: acquire a resource in an object, release it in the object's destructor, and let scope, ownership, and value lifetime drive cleanup. The C++ Core Guidelines recommend RAII to avoid leaks and the complexity of manual resource management.
+
+RAII applies beyond heap memory:
+
+- `std::vector`, `std::string`, and other containers own dynamic storage.
+- `std::unique_ptr` expresses exclusive heap ownership.
+- `std::shared_ptr` expresses shared ownership when that cost and lifetime model are justified.
+- File, socket, lock, transaction, GPU, and operating-system handles can be wrapped in destructors.
+- `std::lock_guard` and `std::unique_lock` make mutex release scope-bound.
+
+Value semantics are just as important. A well-designed C++ type can be copied, moved, compared, stored in containers, returned by value, and composed without exposing allocation or cleanup details. This is one of the main reasons C++ can scale beyond C for large native libraries and applications.
+
+C++ still permits manual memory management and unsafe operations. Raw pointers, `new`/`delete`, casts, unchecked indexing, dangling references, data races, uninitialized reads, iterator invalidation, lifetime mistakes, allocator mismatches, and undefined behavior remain real risks. Modern C++ reduces those risks through RAII, containers, smart pointers, spans, references, rules, static analysis, sanitizers, and code review; it does not remove them from the language.
+
+## Concurrency And Low-Latency Work
+
+C++ has a standardized memory model, threads, mutexes, condition variables, atomics, futures, parallel algorithms, coroutines, and many library-level concurrency patterns. In practice, concurrency is also shaped by operating-system APIs, thread pools, async I/O frameworks, game-engine task systems, real-time requirements, GPU queues, lock-free structures, and domain-specific runtimes.
+
+The language is attractive in low-latency and performance-critical domains because allocation, layout, inlining, dispatch, object lifetime, and synchronization can be controlled closely. That same control makes mistakes expensive. A data race in C++ is undefined behavior, and a project that mixes shared mutable state, raw pointers, custom allocators, exceptions, callbacks, and threads needs strict boundaries.
+
+For services or tools where simple concurrent I/O is the main requirement, compare C++ with Go, Java, C#, Rust, or TypeScript before accepting the native complexity. Use C++ when native libraries, latency ceilings, engine integration, or memory/layout control are actual requirements.
+
+## Build, Packaging, And Tooling
+
+C++ has no single standard build system or package manager. Common build systems include CMake, Meson, Bazel, Make, Ninja, MSBuild, Xcode projects, vendor embedded IDEs, and custom build scripts. Common dependency routes include Conan, vcpkg, system package managers, vendored source, Git submodules, package registry mirrors, SDKs, and manually configured include/library paths.
+
+CMake is the closest thing to a cross-platform default for many C++ projects, but it is a build-system generator and project language, not a package manager by itself. Conan describes itself as an open source decentralized C/C++ package manager that works across platforms, build systems, and compilers. Microsoft describes vcpkg as a cross-platform C/C++ package manager with CMake, MSBuild, Visual Studio, and other integrations.
+
+A maintainable C++ project should pin and document:
+
+- Compiler and standard-library versions.
+- Language standard, feature flags, warning policy, and sanitizer settings.
+- Build system version and generator assumptions.
+- Dependency source, versioning, lockfiles or manifests, and binary cache policy.
+- Static versus dynamic linking rules.
+- Public headers, symbol visibility, ABI policy, and allocator ownership.
+- Test matrix across compilers and target platforms.
+
+Without those rules, C++ dependency and build work can become the hidden cost of every feature.
+
+## Syntax Example
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <span>
+#include <string>
+#include <vector>
+
+struct Language {
+    std::string name;
+    int first_release;
+};
+
+class Catalog {
+public:
+    void add(Language language) {
+        languages_.push_back(std::move(language));
+    }
+
+    [[nodiscard]] const Language* find(std::string_view name) const {
+        auto match = std::ranges::find(
+            languages_,
+            name,
+            [](const Language& language) { return language.name; });
+
+        return match == languages_.end() ? nullptr : &*match;
+    }
+
+    [[nodiscard]] std::span<const Language> all() const {
+        return languages_;
+    }
+
+private:
+    std::vector<Language> languages_;
+};
+
+int main() {
+    Catalog catalog;
+    catalog.add({"C++", 1985});
+    catalog.add({"Rust", 2015});
+
+    if (const Language* cpp = catalog.find("C++")) {
+        std::cout << cpp->name << ": " << cpp->first_release << '\n';
+    }
+
+    for (const auto& language : catalog.all()) {
+        std::cout << language.name << '\n';
+    }
+}
+```
+
+This example uses value types, move-aware insertion, a standard container, a non-owning `std::span`, `std::ranges::find`, and a pointer return for an optional borrowed result. It is small, but it shows the modern C++ preference for library types and ownership-aware interfaces over raw arrays and manual cleanup.
+
+## Embedded, Games, And Performance-Critical Fit
+
+C++ is common in embedded application layers when teams want stronger abstractions than C while keeping native code, deterministic destructors, templates, and close control over allocation. It is also common in robotics, automotive software, simulation, control systems, and device software. The fit depends on the compiler, standard-library subset, exception policy, RTTI policy, startup model, linker scripts, interrupt rules, and allocation limits.
+
+Game development is one of C++'s clearest domains. Unreal Engine's documentation treats C++ as a primary programming path and documents gameplay classes, reflection metadata, containers, delegates, and gameplay architecture. Godot's GDExtension system can load native shared libraries and commonly uses godot-cpp for C++ bindings. Even when a game project uses C# or a visual scripting layer for gameplay, C++ often remains relevant for engines, native plugins, middleware, rendering, physics, platform layers, and performance-critical systems.
+
+For high-performance computing, trading, simulation, media, databases, compilers, and native infrastructure, C++ is attractive because it can combine value-oriented design, compile-time abstraction, SIMD or vendor intrinsics, custom allocators, memory layout control, and low-level profiling. The caveat is that performance claims must be measured on the target workload. C++ gives access to mechanisms; it does not guarantee that a codebase uses them well.
+
+## Best-Fit Use Cases
+
+C++ is a strong fit for:
+
+- Game engines, rendering systems, native plugins, simulation, physics, audio, and real-time media.
+- Performance-sensitive libraries where call overhead, allocation policy, memory layout, and ABI boundaries matter.
+- Large native applications such as browsers, desktop software, databases, compilers, CAD, robotics, and scientific tools.
+- Embedded application layers where C++ features are allowed under a controlled target policy.
+- Existing C++ estates where modernization with RAII, tests, sanitizers, and guidelines is lower risk than platform migration.
+
+## Poor-Fit Or Risky Use Cases
+
+C++ can be a poor fit when:
+
+- The product is an ordinary web service, CRUD application, or internal tool where Java, C#, Go, TypeScript, Python, or Rust can meet requirements with less native complexity.
+- The team cannot sustain a cross-platform C++ build, dependency, ABI, and compiler test matrix.
+- Public binary compatibility must be promised across unknown compilers and standard libraries.
+- Memory safety is a central requirement and the project can use Rust or a managed runtime without losing necessary platform reach.
+- Developers intend to use "modern C++" without agreeing on a standard, subset, review rules, analyzers, and migration path for older idioms.
+
+## Governance, Evolution, And Compatibility
+
+C++ governance is standards-body driven. WG21 consists of accredited experts from ISO/IEC JTC1/SC22 member nations and is organized into subgroups for language wording, library wording, evolution, tooling, concurrency, games and low latency, safety and security, and other domains. Proposals move through committee process before becoming part of a published standard.
+
+C++ evolves steadily, but compatibility is one of its defining constraints. The language carries a large installed base, so old syntax, old build systems, C compatibility concerns, and ABI realities remain important. This is why C++ modernization is usually incremental: raise the language standard, introduce safer library types, improve warnings, add tests, shrink unsafe surfaces, and isolate ABI boundaries rather than expecting one rewrite to fix a codebase.
+
+## Comparison Notes
+
+C is the comparison when the main question is a small procedural language, freestanding targets, C ABI boundaries, or vendor SDK compatibility. C++ adds stronger abstraction tools and RAII, but also brings a larger language and ABI surface.
+
+Rust is the comparison for new native components where memory safety and ownership checks are central. Rust makes many lifetime and sharing rules compiler-enforced; C++ has broader legacy reach, more mature C++ libraries in many domains, and a more permissive model that depends heavily on local discipline.
+
+Java is the comparison when teams are choosing between native performance/control and a managed runtime with mature service tooling. Java is usually a better default for enterprise backend systems. C++ is usually justified when native dependencies, latency ceilings, memory layout, games, embedded constraints, or existing C++ assets dominate.

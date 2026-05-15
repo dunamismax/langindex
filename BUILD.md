@@ -250,12 +250,12 @@ justify the extra network time.
 
 ### Phase 9 - C++
 
-- [ ] Add a complete C++ page.
-- [ ] Cover ISO standardization, major compilers, templates, RAII, value
+- [x] Add a complete C++ page.
+- [x] Cover ISO standardization, major compilers, templates, RAII, value
       semantics, memory safety tradeoffs, package/build ecosystem, ABI
       issues, performance-critical domains, and modern C++ evolution.
-- [ ] Add C++ vs Rust, C++ vs C, and C++ vs Java comparisons.
-- [ ] Add C++ to systems, games, embedded, and performance guides.
+- [x] Add C++ vs Rust, C++ vs C, and C++ vs Java comparisons.
+- [x] Add C++ to systems, games, embedded, and performance guides.
 
 ### Phase 10 - SQL
 

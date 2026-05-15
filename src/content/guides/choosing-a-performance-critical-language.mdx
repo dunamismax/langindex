@@ -1,0 +1,103 @@
+---
+title: Choosing A Performance-Critical Language
+slug: choosing-a-performance-critical-language
+summary: A practical guide for choosing C++, Rust, C, Go, Java, or C# when latency, throughput, memory footprint, native integration, or predictable resource behavior is part of the product requirement.
+audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
+candidates:
+  - cpp
+  - rust
+  - c
+  - go
+  - java
+  - csharp
+sources:
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+lastVerified: 2026-05-15
+---
+
+## Define Performance Before Choosing
+
+"Performance-critical" is too broad to choose a language. Name the constraint first:
+
+- Tail latency.
+- Throughput.
+- Startup time.
+- Binary size.
+- Memory footprint.
+- Cache locality and data layout.
+- Predictable allocation behavior.
+- Real-time deadlines.
+- Native library or device integration.
+- Developer feedback loop.
+- Operational cost under load.
+
+The right language for a low-latency matching engine may be wrong for a high-throughput HTTP service, a mobile game, a browser module, a scientific simulation, or a data pipeline.
+
+## When C++ Fits
+
+Choose C++ when the project needs native control plus strong abstraction tools. It is a natural fit for game engines, rendering, simulation, databases, compilers, media, high-performance libraries, trading systems, native desktop applications, and code where layout, allocation, inlining, and ABI boundaries matter.
+
+C++ works best when the team can define a disciplined subset: RAII, containers, smart pointers, value types, explicit ownership, strict warnings, sanitizers, static analysis, profiling, and a pinned build/dependency story. Without that engineering system, C++ can spend its performance budget on complexity and defects.
+
+## When Rust Fits
+
+Choose Rust when the project needs native code without a required garbage collector and the team wants ownership, borrowing, and thread-sharing rules enforced by the compiler. Rust is strong for parsers, protocol implementations, command-line tools, agents, embedded modules, WebAssembly, infrastructure components, and security-sensitive native libraries.
+
+Rust can be slower to adopt when the workload depends on C++-first engines, vendor SDKs, specialized libraries, or platform tooling. Measure compile times, dependency maturity, async/runtime choices, and FFI boundaries early.
+
+## When C Fits
+
+Choose C when the work is close to hardware, firmware, kernels, runtime internals, C ABI libraries, platform SDKs, or very narrow native interfaces. C has a smaller language surface and excellent compiler reach, but ownership, cleanup, bounds, and concurrency discipline live mostly in APIs, tools, and review.
+
+C is usually a poor default for large application logic if C++ or Rust can provide safer abstractions without losing the needed target support.
+
+## When Managed Runtimes Fit
+
+Go, Java, and C# can be excellent performance choices when the real requirement is service throughput, operational clarity, mature libraries, and fast development rather than manual memory control.
+
+Use Go for network services, agents, CLIs, and infrastructure systems when goroutines, simple deployment, and standard tooling fit the workload.
+
+Use Java when the JVM ecosystem, service frameworks, observability, JIT optimization, and enterprise libraries fit the system.
+
+Use C# when .NET, ASP.NET Core, Unity, desktop tooling, Azure, or Microsoft-centered platforms are central.
+
+Managed runtimes need measurement. Garbage collection, allocation rate, startup time, warmup, container memory limits, and runtime tuning can matter. They are still often cheaper to operate than native complexity when the constraints allow them.
+
+## Questions To Answer
+
+- What exact metric must improve, and how will it be measured?
+- Is memory safety a product requirement or only a nice-to-have?
+- Can a garbage-collected runtime meet latency and memory requirements?
+- Does the system need stable native ABI boundaries?
+- Are the hottest paths isolated enough to use a lower-level language only there?
+- Which profilers, sanitizers, benchmarks, and load tests will gate changes?
+- Does the team already know how to operate the runtime in production?
+
+## Practical Default
+
+Start with the highest-level language and runtime that meet the measured constraint. Move down the stack only where the constraint proves it.
+
+Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.

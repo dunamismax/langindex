@@ -26,21 +26,64 @@ sources:
   - title: The Committee - Standard C++
     url: https://isocpp.org/std/the-committee
     publisher: Standard C++ Foundation
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
   - title: C++ Core Guidelines
     url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
     publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: C++ Support in Clang
+    url: https://clang.llvm.org/cxx_status
+    publisher: LLVM Project
+  - title: Conan 2 documentation
+    url: https://docs.conan.io/2/
+    publisher: Conan
 lastVerified: 2026-05-15
 ---
 
 ## Scope
 
-This is a prepared comparison for Rust and C++ while the standalone C++ page is still pending. It focuses on new native components, existing C++ estates, games, infrastructure libraries, performance-sensitive systems, and migration boundaries.
+This comparison is for new native components, existing C++ estates, games, infrastructure libraries, embedded application layers, performance-sensitive systems, and migration boundaries. Both languages can produce fast native code without a required garbage collector; the main difference is where they place safety, compatibility, and ecosystem costs.
 
 ## Practical Difference
 
 C++ has enormous reach: operating systems, browsers, game engines, trading systems, graphics stacks, databases, embedded software, and long-lived application frameworks. It has ISO standardization through WG21 and a large collection of compilers, libraries, build systems, and platform-specific practices.
 
 Rust is usually evaluated when a team wants native performance and control but wants new code to make memory ownership, borrowing, fallibility, and thread sharing more explicit. Rust's type system and borrow checker prevent many classes of mistakes that modern C++ guidelines try to reduce through RAII, smart pointers, static analysis, code review, and local rules.
+
+## Key Differences
+
+| Dimension       | Rust                                                    | C++                                                          |
+| --------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| Safety model    | Safe Rust enforces ownership and borrowing by default   | Safety depends on idioms, tools, reviews, and local rules    |
+| Memory model    | Ownership, borrowing, lifetimes, `Drop`, no required GC | RAII, value semantics, smart pointers, manual escape hatches |
+| Generic code    | Generics and traits with coherence rules                | Templates, concepts, overloads, specialization               |
+| Build ecosystem | Cargo, crates.io, rustup                                | CMake, MSBuild, Meson, Bazel, Conan, vcpkg, SDKs             |
+| Legacy reach    | Younger ecosystem and more FFI work in C++ domains      | Large existing codebases, engines, SDKs, and libraries       |
+| ABI story       | Stable Rust ABI is not the public interop default       | Powerful but fragile C++ ABI; C ABI wrappers are common      |
+
+## Memory Safety And Resource Management
+
+Rust's default mode rejects many use-after-free, double-free, iterator invalidation, dangling-reference, and data-race patterns at compile time. Unsafe Rust exists for FFI, hardware, and low-level internals, but it is explicitly marked and can be isolated behind safe APIs.
+
+C++ relies on disciplined modern practice. RAII, constructors, destructors, standard containers, smart pointers, `std::span`, references, move semantics, and guidelines can make resource management robust. The language still permits raw owning pointers, unchecked indexing, invalid references, data races, allocator mismatches, and undefined behavior. A C++ team must decide which subset and tools are mandatory.
+
+## Ecosystem And Integration
+
+C++ is often the practical choice when the domain already has C++ gravity: Unreal Engine, browser engines, graphics APIs, native UI frameworks, high-performance databases, trading libraries, robotics stacks, vendor SDKs, embedded toolchains, scientific libraries, and large internal codebases.
+
+Rust is strongest when the project is new enough that Cargo, crates.io, `rustup`, ownership-oriented APIs, and a Rust-first dependency graph can be the center. It can integrate with C and C++, but mixed builds require explicit rules for ownership, allocation, exceptions, panics, symbol visibility, linking, debugging, and CI.
+
+## Build, ABI, And Tooling
+
+Rust's build story is more uniform. Cargo gives a standard project layout, dependency resolution, builds, tests, docs, workspaces, and publication flow. That consistency is a major advantage for new libraries and tools.
+
+C++ build work is more fragmented. CMake, MSBuild, Meson, Bazel, Make, Conan, vcpkg, OS packages, vendored source, and platform SDKs all appear in real projects. This can be powerful in established native environments, but it raises the cost of reproducibility and onboarding.
+
+C++ ABI compatibility is harder to promise across unknown compilers and standard libraries. Rust also does not promise a stable native Rust ABI for general external use. For both languages, public plugin and SDK boundaries often need a C ABI or another deliberately stable protocol.
 
 ## Choose Rust When
 
@@ -64,6 +107,10 @@ Rust adoption in a C++ environment is not just a language decision. It changes b
 
 C++ can be written with strong resource discipline, but the language permits many styles. A team comparing C++ and Rust should evaluate the actual codebase rules, not an idealized version of either language. Modern C++ with RAII, guidelines, sanitizers, and analysis is very different from unconstrained pointer-heavy C++.
 
-## Prepared Follow-Up
+## Migration Or Interoperability Notes
 
-When the C++ page lands, this comparison should add examples for RAII versus Rust `Drop`, templates versus traits/generics, exception policy versus `Result`, C++ package/build options, ABI stability, and a migration section for mixed Rust/C++ repositories.
+Do not start with a broad rewrite. Start with a boundary where Rust's ownership model or C++'s existing ecosystem clearly improves the result.
+
+For Rust inside a C++ estate, prove the build first: compilers, linkers, debug symbols, panic policy, exception policy, allocator ownership, target platforms, CI, and deployment packaging. Keep FFI functions small and boring.
+
+For C++ inside a Rust project, hide C++ dependencies behind a narrow wrapper and document who owns memory, which thread may call what, what happens on failure, and which compiler/standard-library versions are supported.

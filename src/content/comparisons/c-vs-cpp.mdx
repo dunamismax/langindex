@@ -26,6 +26,9 @@ sources:
   - title: ISO/IEC JTC1/SC22/WG21 - The C++ Standards Committee
     url: https://www.open-std.org/jtc1/sc22/wg21/
     publisher: ISO/IEC JTC1/SC22/WG21
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
   - title: The Committee - Standard C++
     url: https://isocpp.org/std/the-committee
     publisher: Standard C++ Foundation
@@ -91,3 +94,11 @@ C is not automatically simpler at project scale. A large C system with ad hoc ow
 C++ is not automatically safer because it has RAII and smart pointers. If the codebase ignores modern idioms, passes raw owning pointers freely, relies on exception-unsafe cleanup, or exposes unstable ABI details, it can carry C's memory risks plus C++'s complexity.
 
 For mixed projects, use a deliberate boundary. Keep C headers small and stable, hide C++ implementation details behind opaque handles, define allocator ownership, and test the boundary from the same languages and compilers that users will use.
+
+## Practical Default
+
+Start with C when the deliverable is a C ABI, a C-first firmware layer, a platform interface, or a narrow low-level library that many languages must consume.
+
+Start with C++ when the implementation is large enough to benefit from RAII, value types, standard containers, templates, stronger invariants, and higher-level native abstractions.
+
+For many projects, the most durable answer is both: a stable C boundary around a C++ implementation. That keeps cross-language consumption simple while allowing the implementation to use C++ abstractions internally.

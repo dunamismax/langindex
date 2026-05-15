@@ -55,6 +55,21 @@ sources:
   - title: C Support in Clang
     url: https://clang.llvm.org/c_status.html
     publisher: LLVM Project
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee - Standard C++
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: C++ Support in Clang
+    url: https://clang.llvm.org/cxx_status
+    publisher: LLVM Project
 lastVerified: 2026-05-15
 ---
 
@@ -120,6 +135,22 @@ C is still one of the most portable answers for native boundaries, but it should
 
 If these answers are vague, C's small syntax will not save the project. The language gives control, but the engineering system around it has to supply many of the guardrails.
 
+## C++ Adoption Constraints
+
+C++ is the native-systems choice when a project needs C-like control plus stronger abstraction tools: RAII, constructors and destructors, value types, templates, standard containers, smart pointers, namespaces, overloads, and large existing native ecosystems. It is often the practical center for game engines, browser engines, databases, compilers, desktop applications, graphics stacks, trading systems, robotics, simulation, and large native codebases.
+
+Before starting new C++ work, answer these questions:
+
+- Which C++ standard or dialect is required: C++17, C++20, C++23, vendor preview modes, or a restricted embedded subset?
+- Which compilers, standard libraries, operating systems, ABIs, and architectures are supported?
+- Are exceptions, RTTI, dynamic allocation, static initialization, and modules allowed on the target?
+- What is the ownership policy for raw pointers, references, `std::unique_ptr`, `std::shared_ptr`, views, spans, and custom allocators?
+- Which warnings, sanitizers, static analyzers, fuzzers, and coding guidelines are mandatory?
+- How will dependencies be obtained: Conan, vcpkg, system packages, vendored source, SDKs, or hand-written build rules?
+- What binary interfaces must remain stable, and should they be C ABI boundaries instead of C++ ABI boundaries?
+
+If these answers are not explicit, "modern C++" can mean too many incompatible things. Define the subset and toolchain before the codebase grows around accidental defaults.
+
 ## Concurrency And Services
 
 For services, the concurrency model often matters more than benchmark-oriented language comparisons. Go's goroutines and channels make it straightforward to structure concurrent I/O, background work, cancellation, and request fan-out. The standard library also includes practical building blocks for HTTP, TLS, contexts, synchronization, profiling, and testing.
@@ -143,6 +174,8 @@ Deployment shape should be decided early:
 - How will toolchain versions and minimum supported versions be pinned?
 
 For Go, the single-binary path is often a practical advantage for internal tools and services. For Rust, the lack of a required garbage collector and the control over dependencies can be decisive for lower-level components.
+
+C++ can ship native binaries and libraries, but the deployment shape is usually more platform-specific. Linkage, runtime libraries, C++ standard-library versions, compiler flags, symbol visibility, exception boundaries, and ABI policy should be part of the release plan. A C++ build that only works on one developer machine is not a systems-language advantage.
 
 ## Team Skill And Maintenance
 
@@ -171,7 +204,7 @@ Start with Rust when the project is a low-level component, performance-sensitive
 
 Start with C when the work is a narrow ABI layer, platform interface, firmware target, or existing C estate where toolchain reach and integration outweigh stronger language checks.
 
-Start with C++ when the domain already depends on C++ engines, frameworks, libraries, or performance tooling, and the organization has a real plan for modern C++ safety practices.
+Start with C++ when the domain already depends on C++ engines, frameworks, libraries, or performance tooling, and the organization has a real plan for modern C++ safety practices, ABI boundaries, and build reproducibility.
 
 Start with Zig when explicit control, cross-compilation, and C replacement work are the draw, and the project can absorb a younger language and ecosystem.
 

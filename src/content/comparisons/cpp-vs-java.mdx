@@ -1,0 +1,89 @@
+---
+title: C++ vs Java
+slug: cpp-vs-java
+summary: C++ and Java are both mature general-purpose languages, but C++ centers native control and zero-overhead abstraction while Java centers the JVM, managed memory, portability, and enterprise runtime tooling.
+languages:
+  - cpp
+  - java
+useCases:
+  - backend services
+  - enterprise applications
+  - native applications
+  - performance-sensitive software
+  - long-lived systems
+sources:
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: JDK 26 Documentation
+    url: https://docs.oracle.com/en/java/javase/26/
+    publisher: Oracle
+  - title: What is Maven?
+    url: https://maven.apache.org/what-is-maven.html
+    publisher: Apache Maven Project
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams choosing between C++ and Java for long-lived systems, performance-sensitive software, backend services, infrastructure, enterprise applications, and large codebases. It is not a claim that one language is universally more serious. The practical difference is runtime and operational shape.
+
+## Shared Territory
+
+C++ and Java are both statically typed, mature, widely tooled languages with large ecosystems, strong IDE support, generics, exceptions, object-oriented features, standard libraries, testing frameworks, and decades of production use. Both can support large teams and long-lived codebases.
+
+The overlap appears in high-scale services, trading systems, databases, desktop tools, enterprise platforms, and infrastructure where correctness, performance, maintainability, and operational support all matter. The decision usually turns on whether native control or managed-runtime leverage matters more.
+
+## Key Differences
+
+| Dimension        | C++                                                             | Java                                                       |
+| ---------------- | --------------------------------------------------------------- | ---------------------------------------------------------- |
+| Runtime model    | Native code with implementation-defined ABI and library choices | JVM bytecode on Java Virtual Machine implementations       |
+| Memory           | RAII, value semantics, smart pointers, manual escape hatches    | Garbage-collected heap with managed references             |
+| Generics         | Templates and concepts, mostly compile-time instantiation       | Type-erased generics with runtime class model              |
+| Deployment       | Native binaries/libraries, platform SDKs, ABI and linker rules  | JDK/runtime image/container, JVM flags, bytecode libraries |
+| Ecosystem center | Engines, native libraries, systems, desktop, embedded, HPC      | Backend services, enterprise systems, JVM frameworks       |
+| Build tooling    | CMake, MSBuild, Make, Meson, Bazel, Conan, vcpkg, SDKs          | Maven, Gradle, Maven Central, JDK tooling                  |
+
+## Choose C++ When
+
+- Native libraries, hardware access, platform SDKs, embedded targets, game engines, GPU/graphics stacks, or existing C++ assets are central.
+- Memory layout, deterministic cleanup, allocation strategy, object lifetime, binary size, or latency ceilings must be controlled closely.
+- The team has mature C++ standards, build expertise, sanitizer/static-analysis use, fuzzing, and review discipline.
+- Public boundaries can be kept narrow enough to manage ABI, allocator, exception, RTTI, and compiler compatibility.
+- Modernizing an existing C++ system is lower risk than moving the platform to a JVM stack.
+
+## Choose Java When
+
+- The main workload is backend services, enterprise applications, integration systems, workers, or long-running business software.
+- Managed memory, JVM observability, mature service frameworks, and strong runtime tooling are more valuable than native layout control.
+- Maven, Gradle, Spring, Jakarta EE, JVM agents, and existing Java libraries fit the organization.
+- Cross-vendor JDK support, compatibility expectations, and operations familiarity are important.
+- The team wants to avoid C++ ABI, native dependency, and manual lifetime risks.
+
+## Watch Points
+
+C++ can be the wrong choice when "performance" is not tied to measured latency, memory, layout, or native integration requirements. A C++ service with fragile builds, unclear ownership, and poor observability can be harder to operate than a JVM service that meets the same performance target.
+
+Java can be the wrong choice when a garbage-collected runtime, JVM startup, heap behavior, or managed object model conflicts with the product requirement. It is also a poor fit for firmware, low-level platform libraries, and public native SDK layers where C or C++ ABIs are the real contract.
+
+## Migration Or Interoperability Notes
+
+Treat C++ and Java interoperability as a systems boundary. JNI and native libraries are available, but they bring ownership, threading, exception, allocator, crash, and build questions into the JVM process. Prefer service, file, database, message, or narrow native-library boundaries unless in-process native integration is the actual requirement.
+
+For modernization, avoid rewriting only for language preference. Move the components whose runtime model should change: Java for service or enterprise layers that benefit from the JVM, C++ for native libraries, engine code, and platform-specific performance work.
