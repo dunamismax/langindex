@@ -1,0 +1,106 @@
+---
+title: "C# vs TypeScript"
+slug: csharp-vs-typescript
+summary: "C# is a managed .NET language for services, enterprise apps, desktop, and Unity, while TypeScript is a typed source language for JavaScript runtimes and the web ecosystem."
+languages:
+  - csharp
+  - typescript
+useCases:
+  - backend services
+  - web applications
+  - full-stack applications
+  - enterprise applications
+  - tooling
+sources:
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: The .NET Compiler Platform SDK
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/
+    publisher: Microsoft Learn
+  - title: An introduction to NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+  - title: TypeScript Documentation
+    url: https://www.typescriptlang.org/docs/
+    publisher: Microsoft
+  - title: TypeScript for JavaScript Programmers
+    url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+    publisher: Microsoft
+  - title: TypeScript Design Goals
+    url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
+    publisher: Microsoft
+  - title: JavaScript Language Overview
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Language_overview
+    publisher: MDN Web Docs
+  - title: Blazor
+    url: https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor
+    publisher: Microsoft .NET
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams choosing between .NET-centered C# and JavaScript-centered TypeScript for applications, services, tooling, and full-stack work. It is not a syntax contest. The important difference is platform gravity: C# brings .NET, CLR behavior, NuGet, ASP.NET Core, desktop UI stacks, and Unity. TypeScript brings JavaScript runtimes, npm, browser APIs, front-end frameworks, and direct compatibility with existing JavaScript.
+
+## Shared Territory
+
+Both languages are statically checked at development time, support modern IDE workflows, generics, async programming, object-oriented and functional styles, package ecosystems, large codebases, and backend services. Both can be used for web applications, command-line tools, test code, cloud functions, internal platforms, and shared libraries.
+
+The overlap is strongest in backend APIs and full-stack applications where either ASP.NET Core with C# or Node.js/framework code with TypeScript could plausibly work. The right default depends on runtime target, surrounding libraries, deployment model, staff experience, and whether the browser or .NET is the harder boundary.
+
+## Key Differences
+
+| Dimension        | C#                                                      | TypeScript                                                   |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| Runtime          | .NET runtime and CLR execution model                    | JavaScript runtimes after type erasure                       |
+| Type model       | Static nominal typing with runtime metadata             | Static gradual structural typing erased before runtime       |
+| Package center   | NuGet, .NET SDK, MSBuild                                | npm-compatible package managers and JavaScript build tools   |
+| Web fit          | ASP.NET Core, Blazor, server-rendered and API backends  | Browser, Node.js, front-end frameworks, edge runtimes        |
+| Desktop/game fit | Windows UI stacks, .NET MAUI, Unity, MonoGame           | Electron/Tauri-style shells, browser-like app models         |
+| Runtime checks   | Types exist in CLR metadata, but input still validates  | Types are erased; runtime validation must be separate        |
+| Platform gravity | Microsoft/.NET ecosystem, Azure, Visual Studio, Unity   | Web platform, npm, JavaScript frameworks, browser tooling    |
+| Deployment       | .NET apps, containers, self-contained builds, AOT cases | JavaScript bundles, Node services, browser assets, edge code |
+
+## Choose C# When
+
+- .NET is already the production platform or the cleanest route to the target system.
+- ASP.NET Core, Azure, Microsoft identity, Windows integration, SQL Server, or existing .NET libraries are central.
+- The project needs one language across backend services, internal tools, desktop apps, and Unity scripting.
+- Runtime type metadata, Roslyn analyzers, source generators, strong refactoring, and mature IDE tooling are high-value.
+- The team can operate .NET runtime versions, NuGet dependencies, containers, and support windows deliberately.
+
+## Choose TypeScript When
+
+- The application is browser-first, Node.js-first, edge-runtime-first, or deeply tied to npm packages.
+- Front-end framework integration, component props, route types, generated API types, and bundler behavior are daily work.
+- The team needs gradual migration from JavaScript without leaving JavaScript runtime semantics.
+- Direct use of Web APIs, JavaScript libraries, and browser debugging tools matters more than .NET integration.
+- A small full-stack team wants one language across client, server, build scripts, and package tooling.
+
+## Browser And Full-Stack Boundaries
+
+TypeScript is the direct path for browser work because browsers execute JavaScript. TypeScript's type layer helps maintain the source code, but the deployed artifact is still JavaScript that interacts directly with DOM APIs, Web APIs, modules, framework runtimes, and npm packages.
+
+C# can reach browsers through Blazor and WebAssembly, and that can be valuable when a team wants .NET code and C# models across client and server. It is still a different ecosystem choice. Browser APIs, package examples, UI libraries, debugging assumptions, hiring pools, and third-party integrations are usually more direct in TypeScript.
+
+## Backend And Enterprise Boundaries
+
+For backend services, both can work well. C# is usually stronger when the service benefits from ASP.NET Core, .NET libraries, static runtime metadata, Microsoft enterprise integration, mature IDE refactoring, and long-lived platform support. TypeScript is usually stronger when the service sits close to a JavaScript front end, shares models and validation schemas with browser code, or depends heavily on npm infrastructure.
+
+Do not choose TypeScript for backend work only because the front end uses it, and do not choose C# only because the organization owns Microsoft tooling. In both cases, check the operational model: dependency review, runtime upgrades, observability, test speed, cold start, container size, framework conventions, and team knowledge.
+
+## Runtime Validation
+
+Neither language removes the need to validate untrusted input. C# has runtime type metadata and a managed runtime, but JSON bodies, query strings, environment variables, database rows, messages, and external API responses still need validation and error handling. TypeScript's type annotations are erased, so validation must be even more explicit at runtime boundaries.
+
+The practical difference is where the type system helps most. C# gives stronger language/runtime integration and nominal APIs inside .NET. TypeScript gives a flexible static model for the shapes that JavaScript code already passes around.
+
+## Migration Or Interoperability Notes
+
+Direct C# and TypeScript interoperability usually happens over service or build boundaries: HTTP, OpenAPI, gRPC, JSON schemas, message queues, generated clients, shared protocol definitions, or WebAssembly modules. Treat those contracts as products. Generate types where useful, but keep runtime validation and compatibility tests in place.
+
+A common architecture is C# for backend services and TypeScript for the browser. Another is TypeScript across front end and Node services. A third is C# across services and Blazor or desktop clients. Each can be reasonable when the platform boundary is explicit.

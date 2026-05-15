@@ -1,0 +1,248 @@
+---
+title: "C#"
+slug: csharp
+status: active
+summary: "C# is a statically typed, managed language centered on .NET, used for backend services, enterprise applications, Windows and cross-platform desktop apps, Unity games, cloud workloads, and tooling."
+firstReleased: 2000
+creators:
+  - Anders Hejlsberg
+  - Scott Wiltamuth
+  - Peter Golde
+  - Microsoft
+paradigms:
+  - object-oriented
+  - imperative
+  - functional
+  - concurrent
+typing:
+  discipline: static
+  strength: strong with nominal types, reified generics, nullable analysis, and dynamic escape hatches
+memory:
+  model: garbage collected managed heap with value types, spans, disposal patterns, and unsafe interop escape hatches
+runtime:
+  model: .NET runtime and Common Language Runtime execution model
+officialSite: https://dotnet.microsoft.com/en-us/languages/csharp
+repository: https://github.com/dotnet/roslyn
+packageManagers:
+  - NuGet
+  - dotnet CLI
+  - MSBuild
+comparedWith:
+  - java
+  - typescript
+  - go
+  - kotlin
+  - fsharp
+bestFor:
+  - Backend APIs, workers, cloud services, enterprise applications, and internal platforms that fit the .NET ecosystem.
+  - Teams using ASP.NET Core, Azure, Microsoft identity, Windows integration, Visual Studio, or existing .NET libraries.
+  - Unity game projects where C# is the normal scripting language and the Unity runtime model is acceptable.
+  - Desktop applications built with Windows Forms, WPF, WinUI, .NET MAUI, Avalonia, or other .NET UI stacks.
+poorFit:
+  - Browser-first or npm-first applications where JavaScript and TypeScript ecosystem compatibility is the primary constraint.
+  - Tiny scripts, shell-adjacent automation, or one-off data work where the .NET project and runtime model would dominate the task.
+  - Low-level kernels, firmware, hard real-time systems, and allocation-sensitive components that cannot tolerate a managed runtime.
+  - Teams that need to avoid Microsoft stewardship or .NET platform gravity as an architectural constraint.
+sources:
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: C# Language Specification - Introduction
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/introduction
+    publisher: Microsoft Learn
+  - title: The history of C#
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history
+    publisher: Microsoft Learn
+  - title: What's new in C# 14
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: Common Language Runtime overview
+    url: https://learn.microsoft.com/en-us/dotnet/standard/clr
+    publisher: Microsoft Learn
+  - title: .NET garbage collection
+    url: https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/
+    publisher: Microsoft Learn
+  - title: Asynchronous programming with async and await
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
+    publisher: Microsoft Learn
+  - title: Language Integrated Query
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/linq/
+    publisher: Microsoft Learn
+  - title: Generic types overview
+    url: https://learn.microsoft.com/en-us/dotnet/standard/generics
+    publisher: Microsoft Learn
+  - title: The .NET Compiler Platform SDK
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/
+    publisher: Microsoft Learn
+  - title: An introduction to NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+  - title: .NET and .NET Core Support Policy
+    url: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
+    publisher: Microsoft .NET
+  - title: C# Language Design
+    url: https://github.com/dotnet/csharplang
+    publisher: .NET Foundation
+  - title: Ecma standards
+    url: https://learn.microsoft.com/en-us/dotnet/fundamentals/standards
+    publisher: Microsoft Learn
+  - title: Programming in Unity
+    url: https://docs.unity3d.com/Manual/scripting.html
+    publisher: Unity
+  - title: Unity .NET features
+    url: https://docs.unity3d.com/Manual/overview-of-dot-net-in-unity.html
+    publisher: Unity
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+C# was developed within Microsoft for the .NET platform. The C# language specification identifies Anders Hejlsberg, Scott Wiltamuth, and Peter Golde as the principal inventors, and describes the first widely distributed implementation as part of Microsoft's .NET Framework initiative in July 2000.
+
+The original design goals were practical rather than academic: a simple, modern, general-purpose, object-oriented language with strong type checking, automatic garbage collection, component-oriented deployment, source portability, and familiarity for developers coming from C, C++, and Java. Those goals still show in modern C#: it keeps a C-family surface, but it has accumulated high-level features for data modeling, asynchronous programming, pattern matching, resource management, and runtime-integrated tooling.
+
+Modern C# is best understood as the primary language of .NET. The language can be standardized and implemented outside Microsoft, but most production use is shaped by the .NET SDK, CLR runtime model, NuGet packages, Visual Studio and Visual Studio Code tooling, ASP.NET Core, Unity, and Microsoft's release/support policies.
+
+## Runtime, .NET, And CLR
+
+C# source code is normally compiled by the Roslyn compiler into Intermediate Language and metadata that run on the .NET runtime. The Common Language Runtime provides services such as loading, metadata, verification, native code generation, security boundaries, exception handling, garbage collection, and interoperation with other managed code.
+
+.NET is now a free, open-source, cross-platform developer platform maintained by Microsoft and the community. Current .NET supports Windows, Linux, macOS, Arm64, x64, and x86 across supported operating-system versions. Teams usually build through the .NET SDK with commands such as `dotnet build`, `dotnet test`, and `dotnet publish`, then deploy as framework-dependent apps, self-contained apps, containers, native AOT artifacts where appropriate, or platform-specific packages.
+
+This runtime is a strength when a project benefits from a mature standard library, strong IDE support, JIT optimization, diagnostics, managed memory, async I/O, and framework depth. It is a cost when the target needs minimal startup, tiny images, hard real-time guarantees, or a deployment model where installing or shipping a .NET runtime is not acceptable.
+
+## Type System And Language Model
+
+C# is statically typed and mostly nominal. Classes, structs, interfaces, delegates, records, enums, generics, attributes, access modifiers, namespaces, assemblies, and nullable annotations all shape API contracts. Unlike Java's mostly erased generics, .NET generics are represented in runtime metadata and are central to collection, LINQ, async, reflection, serialization, and framework APIs.
+
+The language has continued to evolve from its object-oriented baseline. Modern C# includes records, pattern matching, tuples, extension methods, lambdas, local functions, `var`, init-only properties, top-level statements, collection expressions, required members, nullable reference type analysis, and performance-oriented features around `Span<T>`, `ref struct`, `in`, `ref`, and unsafe code.
+
+C#'s type system is practical rather than purely strict. Nullable reference types are a static analysis feature, not a runtime guarantee. `dynamic`, reflection, serialization, interop, nullable suppression, unsafe code, and unchecked casts can bypass parts of the type model. Production code should treat those features as explicit boundaries, especially around web requests, JSON, databases, plug-ins, native calls, and generated code.
+
+## Memory Management
+
+Ordinary C# code runs with automatic memory management. Objects are allocated on a managed heap, and the .NET garbage collector reclaims unreachable objects. The runtime also supports value types, stack allocation, spans, pooling, `IDisposable`, `using`, finalizers, weak references, pinned memory, and unsafe/native interop for cases where lifetime and layout need more control.
+
+This model removes most manual `free`/`delete` mistakes from normal application code, but it does not remove memory engineering. Allocation rate, object lifetime, large object heap behavior, pooling, async state machines, closure captures, serialization, and framework allocations can affect latency and throughput. Long-running services and games should measure allocations rather than assume managed memory is automatically cheap.
+
+Unity adds another important constraint. Unity integrates .NET and C#, but the exact API surface, compiler support, and runtime behavior depend on the Unity version, selected API compatibility level, target platform, and scripting backend. A C# technique that is idiomatic in server-side .NET may need adjustment inside Unity's frame loop, object model, serialization rules, and platform build pipeline.
+
+## Concurrency And Async
+
+C# has threads, tasks, thread pools, concurrent collections, locks, channels, timers, cancellation tokens, async streams, and language-level `async`/`await`. The Task-based asynchronous pattern is central to modern .NET I/O: web servers, HTTP clients, database clients, file APIs, queues, and UI applications often expose asynchronous APIs to avoid blocking threads while external work completes.
+
+`async`/`await` is one of C#'s major ergonomic strengths. It lets asynchronous code keep ordinary control-flow structure while the compiler generates the state machine needed to resume work later. That does not make concurrency automatic. Teams still need cancellation, timeouts, backpressure, bounded queues, request limits, thread-safety rules, and care around shared mutable state.
+
+For CPU-bound work, async is not a substitute for parallelism. Use tasks, data parallel APIs, channels, or worker processes only when the workload and runtime behavior justify it. For UI and Unity work, understand the main-thread model before moving work across threads.
+
+## LINQ, Data, And Expressiveness
+
+Language Integrated Query is a defining part of C#'s everyday style. LINQ lets developers query and transform objects, collections, XML, databases, and provider-backed data sources through a shared set of language and library patterns. Query expressions and method chains compile into strongly typed calls, giving C# concise tools for filtering, grouping, projecting, joining, and aggregating data.
+
+The tradeoff is that LINQ can hide execution details. In-memory LINQ, deferred enumeration, provider-translated database queries, asynchronous query APIs, and multiple enumeration all behave differently. C# teams should know when a query is local code, when it is translated by an ORM or provider, and when materialization happens.
+
+## Syntax Example
+
+```csharp
+using System.Net;
+
+var targets = new[]
+{
+    new Endpoint("C#", new Uri("https://dotnet.microsoft.com/en-us/languages/csharp")),
+    new Endpoint(".NET", new Uri("https://learn.microsoft.com/en-us/dotnet/core/introduction")),
+};
+
+using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+
+var checks = targets.Select(async target =>
+{
+    var status = await HeadStatus(client, target.Url);
+    return new CheckResult(target.Name, status);
+});
+
+foreach (var result in await Task.WhenAll(checks))
+{
+    Console.WriteLine($"{result.Name}: {(int)result.StatusCode} {result.StatusCode}");
+}
+
+static async Task<HttpStatusCode> HeadStatus(HttpClient client, Uri uri)
+{
+    using var request = new HttpRequestMessage(HttpMethod.Head, uri);
+    using var response = await client.SendAsync(request);
+    return response.StatusCode;
+}
+
+record Endpoint(string Name, Uri Url);
+record CheckResult(string Name, HttpStatusCode StatusCode);
+```
+
+This example uses top-level statements, records, LINQ, `async`/`await`, `HttpClient`, and `using` disposal. It is ordinary .NET console-app style rather than Unity style.
+
+## Tooling And Package Ecosystem
+
+The standard developer workflow centers on the .NET SDK, Roslyn, NuGet, MSBuild, and IDE tooling. Roslyn is both the C# compiler implementation and a compiler platform: analyzers, code fixes, source generators, refactorings, IntelliSense, and formatting tools can inspect syntax and semantic models instead of treating source code as text.
+
+NuGet is the package manager for .NET. Packages are usually referenced from project files, restored by `dotnet restore` or build commands, and resolved through public or private feeds. Production teams should pin package versions deliberately, review transitive dependencies, decide how private feeds are authenticated, and keep SDK and runtime versions aligned across local development, CI, containers, and deployment targets.
+
+The ecosystem is broad:
+
+- ASP.NET Core for web APIs, server-rendered apps, real-time services, and middleware-heavy backend systems.
+- Entity Framework Core, Dapper, database clients, identity libraries, messaging clients, gRPC, OpenTelemetry, and cloud SDKs for service work.
+- Windows Forms, WPF, WinUI, .NET MAUI, Avalonia, Uno Platform, and other UI stacks for desktop or cross-platform apps.
+- Unity for a large share of C# game scripting, plus MonoGame and other smaller game frameworks.
+- xUnit, NUnit, MSTest, BenchmarkDotNet, analyzers, source generators, and strong IDE refactoring tools for engineering workflows.
+
+Depth is not the same as simplicity. .NET projects still need dependency policy, runtime version planning, container base-image updates, test isolation, analyzer configuration, and framework boundaries.
+
+## Backend And Enterprise Fit
+
+C# is a strong backend language when .NET is the platform a team wants to operate. ASP.NET Core, the .NET hosting model, dependency injection, configuration, logging, health checks, OpenTelemetry support, database libraries, authentication middleware, and Azure integration make it a practical choice for APIs, workers, internal platforms, business applications, and integration-heavy systems.
+
+The enterprise fit is strongest when the organization already uses Microsoft identity, Azure, Windows infrastructure, Visual Studio, SQL Server, existing .NET libraries, or .NET support contracts. It can still be a good cross-platform backend choice outside Azure or Windows, but the decision should be explicit: compare .NET operations, hiring, library needs, container strategy, and support windows against Java, Go, TypeScript, Python, Kotlin, and Rust.
+
+## Desktop, Game, And Client Work
+
+C# has a stronger desktop story than many server-oriented languages, but it is not one desktop platform. Windows Forms and WPF remain important for Windows desktop applications. WinUI targets modern Windows app development. .NET MAUI targets multi-platform client apps. Avalonia and other community frameworks provide additional cross-platform choices.
+
+Choose the UI stack by target platform, accessibility requirements, installer/updater model, native integration, team experience, and long-term maintenance. A Windows-only internal tool, a cross-platform desktop app, and a mobile app with shared business logic have different constraints even when all can use C#.
+
+For games, C# is most often evaluated because of Unity. In Unity, C# scripts interact with engine APIs, serialized components, assets, scenes, frame lifecycle methods, and platform build settings. That makes C# a practical gameplay and tooling language, but Unity C# should not be treated as identical to backend .NET. Engine lifecycle, garbage collection pressure, frame budgets, platform-specific APIs, and Unity's .NET compatibility level all matter.
+
+## Best-Fit Use Cases
+
+C# is a strong fit for:
+
+- Backend APIs, workers, cloud services, and business applications where .NET libraries and operations fit the team.
+- Enterprise systems that depend on Microsoft identity, Azure, Windows integration, SQL Server, Visual Studio, or long-lived .NET codebases.
+- Unity games and interactive applications where the engine choice makes C# the normal scripting language.
+- Windows desktop tools and internal applications that need mature UI frameworks and strong IDE support.
+- Teams that value modern static typing, refactoring, async I/O, analyzers, managed memory, and a single language across services, tools, and some client work.
+
+## Poor-Fit Or Risky Use Cases
+
+C# can be a poor fit when:
+
+- The application is primarily browser, npm, or JavaScript-framework work where TypeScript gives the most direct ecosystem compatibility.
+- The problem is a small script, notebook, shell pipeline, or one-off automation task where the project structure and runtime are more than the task needs.
+- The target requires manual memory layout, hard real-time behavior, kernel-level integration, tiny embedded deployment, or C ABI-first distribution.
+- The organization does not want Microsoft and .NET release/support decisions to shape its platform roadmap.
+- The team assumes managed memory, async, NuGet, source generators, or Unity integration remove the need for measurement, dependency governance, and runtime understanding.
+
+## Governance, Standards, And Releases
+
+C# is stewarded in practice through Microsoft and the .NET Foundation ecosystem. Language design happens in the open through the `dotnet/csharplang` repository, where proposals, design meeting notes, and version history are tracked. Roslyn is the reference compiler implementation used by the .NET SDK and tooling.
+
+C# and the Common Language Infrastructure also have Ecma and ISO standardization history. The current standardization work matters for portability and independent implementations, but the standardized spec can lag current shipping C# features. For current language behavior, teams usually need the C# language reference, feature specifications, Roslyn behavior, and the target .NET SDK version.
+
+.NET follows an annual major release cadence, with Long Term Support and Standard Term Support tracks. As of this page's verification date, .NET 10 is the current LTS release, .NET 9 is an STS release, and .NET 8 is still supported as an LTS release. Production teams should pick an SDK/runtime line intentionally, keep current patches installed, and test upgrades before the old line reaches end of support.
+
+## Comparison Notes
+
+Java is C#'s closest managed-runtime peer for backend and enterprise teams. Java usually fits best where the JVM, Spring, Jakarta EE, Maven/Gradle, and cross-vendor JDK deployments are the durable assets. C# usually fits best where .NET, ASP.NET Core, Azure, Windows integration, Visual Studio, or Unity are central.
+
+TypeScript is the more direct choice for browser, Node.js, and npm-centered applications. C# can reach the browser through Blazor and WebAssembly and can share .NET code across some client/server boundaries, but it is not a drop-in replacement for JavaScript ecosystem work.
+
+Go is a common backend alternative when teams want small services, simple deployment, static binaries, and a smaller language surface. C# usually offers a richer managed runtime, more expressive language features, and deeper enterprise tooling, at the cost of more runtime and framework surface area.

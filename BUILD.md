@@ -21,6 +21,7 @@ Observed on 2026-05-15:
   exist.
 - `origin` fetches from GitHub and pushes to GitHub plus Codeberg.
 - Current language pages:
+  - C#
   - JavaScript
   - Rust
   - Go
@@ -30,9 +31,11 @@ Observed on 2026-05-15:
 - Current supporting content:
   - Rust vs Go comparison
   - Python vs Go comparison
+  - C# vs TypeScript comparison
   - Java vs C# comparison
   - Java vs Go comparison
   - Java vs Kotlin comparison
+  - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing Python for scripting, backend, data, and AI work guide
   - Choosing Java for backend, enterprise, and JVM work guide
@@ -181,8 +184,7 @@ justify the extra network time.
       toolchain compatibility.
 - [x] Expand Rust vs Go with more practical tradeoff dimensions.
 - [x] Add or update comparisons for Go vs Java, Go vs Python, and Go vs C#
-      when those pages exist. Java, Python, and C# pages do not exist yet, so
-      this remains comparison metadata only until their phases land.
+      as those pages land; Java, Python, and C# now exist.
 - [x] Update systems and services guides with Go-specific constraints.
 
 ### Phase 3 - Rust Completion
@@ -226,12 +228,12 @@ justify the extra network time.
 
 ### Phase 7 - C#
 
-- [ ] Add a complete C# page.
-- [ ] Cover .NET, CLR, Roslyn, NuGet, async/await, LINQ, generics, memory
+- [x] Add a complete C# page.
+- [x] Cover .NET, CLR, Roslyn, NuGet, async/await, LINQ, generics, memory
       management, cross-platform status, game development with Unity, and
       Microsoft stewardship.
-- [ ] Add C# vs Java and C# vs TypeScript comparisons.
-- [ ] Add C# to backend, desktop, game, and enterprise guides.
+- [x] Add C# vs Java and C# vs TypeScript comparisons.
+- [x] Add C# to backend, desktop, game, and enterprise guides.
 
 ### Phase 8 - C
 
