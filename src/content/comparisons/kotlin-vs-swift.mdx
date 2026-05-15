@@ -1,0 +1,98 @@
+---
+title: Kotlin vs Swift
+slug: kotlin-vs-swift
+summary: Kotlin and Swift are modern statically typed languages with strong mobile identities, but Kotlin centers Android, JVM, Java interop, and multiplatform shared code while Swift centers Apple platforms, Swift-native APIs, and Apple toolchains.
+languages:
+  - kotlin
+  - swift
+useCases:
+  - mobile applications
+  - Android
+  - iOS
+  - cross-platform mobile
+  - shared business logic
+  - platform-native applications
+sources:
+  - title: Kotlin FAQ
+    url: https://kotlinlang.org/docs/faq.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Kotlin/Native
+    url: https://kotlinlang.org/docs/native-overview.html
+    publisher: JetBrains
+  - title: What's new in Kotlin 1.9.20
+    url: https://kotlinlang.org/docs/whatsnew1920.html
+    publisher: JetBrains
+  - title: Swift About
+    url: https://www.swift.org/about/
+    publisher: Swift.org
+  - title: Swift Documentation
+    url: https://www.swift.org/documentation/
+    publisher: Swift.org
+  - title: Swift Evolution
+    url: https://www.swift.org/swift-evolution/
+    publisher: Swift.org
+  - title: Swift Package Manager
+    url: https://docs.swift.org/package-manager/index.html
+    publisher: Swift.org
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams deciding how Kotlin and Swift fit into Android, iOS, mobile shared-code, and platform-native application work. It is not a generic "mobile winner" comparison. Most serious products that ship on both Android and iOS will use both languages somewhere unless they choose a separate cross-platform stack.
+
+## Shared Territory
+
+Kotlin and Swift are both modern, statically typed languages with concise syntax, type inference, generics, closures or lambdas, nullability or optionality features, and strong IDE-centered workflows. Both are used heavily in mobile development and both can support large production applications.
+
+The overlap appears when a team wants native-feeling mobile apps, shared domain models, safer API boundaries, and less boilerplate than older platform language defaults. The practical difference is platform center. Kotlin is the first-class modern language for Android and JVM work. Swift is the first-class modern language for Apple platforms.
+
+## Key Differences
+
+| Dimension       | Kotlin                                                       | Swift                                                        |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Platform center | Android, JVM, Java libraries, Kotlin Multiplatform           | iOS, macOS, watchOS, tvOS, visionOS, Apple frameworks        |
+| Runtime targets | JVM, Android, JavaScript, Wasm, Native through LLVM          | Apple platforms, Linux, Windows, and other Swift toolchains  |
+| Null model      | Nullable and non-nullable types, platform types from Java    | Optionals and non-optional values                            |
+| Memory model    | Target-dependent GC or native GC                             | Automatic memory management, commonly ARC on Apple platforms |
+| Async model     | Coroutines through `kotlinx.coroutines`                      | Swift concurrency with async/await, tasks, and actors        |
+| Interop center  | Java interop, JVM libraries, Kotlin/Native C and Obj-C/Swift | Objective-C, C, C++, Apple frameworks                        |
+| Build tooling   | Gradle, Maven, Android Gradle Plugin, Kotlin plugin          | Xcode, SwiftPM, Apple SDKs, Swift toolchains                 |
+
+## Choose Kotlin When
+
+- Android is the primary application platform.
+- The project needs JVM libraries, Java interoperability, Spring, Ktor, Gradle, Maven Central, or existing Java infrastructure.
+- Shared Android/iOS business logic is valuable and the team can support Kotlin Multiplatform.
+- The Android codebase is moving from Java toward Kotlin incrementally.
+- Coroutine-based asynchronous code fits the app or backend architecture.
+
+## Choose Swift When
+
+- iOS, macOS, watchOS, tvOS, or visionOS is the primary application platform.
+- The application depends heavily on SwiftUI, UIKit, AppKit, Foundation, Combine, Swift concurrency, Apple SDKs, or Xcode workflows.
+- The team needs the most direct Apple-platform API surface and debugger/build integration.
+- Shared code is less important than platform-native UI, platform conventions, and Apple release tooling.
+- The project is a Swift package, Apple framework, or application that should feel natural to Apple-platform developers.
+
+## Kotlin Multiplatform And iOS
+
+Kotlin Multiplatform is often the bridge between Kotlin and Swift rather than a replacement for Swift. A common architecture shares Kotlin code for networking, persistence abstractions, validation, domain rules, and state-independent business logic, then exposes that code to an iOS app written in Swift.
+
+This can reduce duplicated logic, but it changes team responsibilities. Developers still need to understand Xcode, Swift, Apple UI frameworks, app signing, release tooling, native debugging, and Objective-C/Swift interop boundaries. KMP is strongest when the shared module is well-defined and platform UI stays platform-native or is adopted deliberately through Compose Multiplatform.
+
+## Watch Points
+
+Kotlin can become costly when the build graph hides too much platform complexity. Watch Gradle configuration, target support, native framework generation, coroutine usage across platform boundaries, binary size, IDE performance, and whether iOS developers can debug the shared code effectively.
+
+Swift can become costly for cross-platform products when business rules, network models, validation, and persistence logic are duplicated manually across iOS and Android. If the duplicated layer is large and frequently changed, evaluate Kotlin Multiplatform, a service-side boundary, generated clients, or another sharing strategy.
+
+## Practical Default
+
+Use Kotlin for Android. Use Swift for Apple-platform UI and deep Apple integration. Consider Kotlin Multiplatform when there is a real shared domain layer and the team is prepared to own the build, interop, and platform-boundary work. Do not choose either language as a universal mobile abstraction without proving which code can be shared cleanly.

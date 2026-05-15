@@ -31,6 +31,7 @@ Observed on 2026-05-15:
   - Java
   - SQL
   - PHP
+  - Kotlin
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -43,6 +44,7 @@ Observed on 2026-05-15:
   - Java vs Kotlin comparison
   - PHP vs JavaScript/Node.js comparison
   - PHP vs Ruby comparison
+  - Kotlin vs Swift comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -50,6 +52,7 @@ Observed on 2026-05-15:
   - Choosing Java for backend, enterprise, and JVM work guide
   - Choosing SQL for data access and application architecture guide
   - Choosing PHP for web backends and CMS work guide
+  - Choosing Kotlin for Android, JVM, and multiplatform work guide
   - Ownership concept page
 - Current local baseline:
 
@@ -284,11 +287,11 @@ justify the extra network time.
 
 ### Phase 12 - Kotlin
 
-- [ ] Add a complete Kotlin page.
-- [ ] Cover JVM, Android, Kotlin Multiplatform, null safety, coroutines,
+- [x] Add a complete Kotlin page.
+- [x] Cover JVM, Android, Kotlin Multiplatform, null safety, coroutines,
       Gradle, interoperability with Java, and JetBrains stewardship.
-- [ ] Add Kotlin vs Java and Kotlin vs Swift comparisons.
-- [ ] Add Kotlin to JVM, Android, and multiplatform guides.
+- [x] Add Kotlin vs Java and Kotlin vs Swift comparisons.
+- [x] Add Kotlin to JVM, Android, and multiplatform guides.
 
 ### Phase 13 - Swift
 

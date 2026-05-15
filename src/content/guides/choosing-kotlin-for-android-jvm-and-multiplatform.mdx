@@ -1,0 +1,136 @@
+---
+title: Choosing Kotlin For Android, JVM, And Multiplatform Work
+slug: choosing-kotlin-for-android-jvm-and-multiplatform
+summary: A decision guide for teams evaluating Kotlin for Android apps, JVM services, Java modernization, or Kotlin Multiplatform shared-code projects.
+audience: Developers and teams deciding whether Kotlin should be their primary language for Android, JVM backend services, Java-adjacent modernization, or shared multiplatform application code.
+candidates:
+  - kotlin
+  - java
+  - swift
+  - typescript
+  - csharp
+sources:
+  - title: Kotlin FAQ
+    url: https://kotlinlang.org/docs/faq.html
+    publisher: JetBrains
+  - title: Get started with Kotlin
+    url: https://kotlinlang.org/docs/getting-started.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+  - title: Coroutines
+    url: https://kotlinlang.org/docs/coroutines-overview.html
+    publisher: JetBrains
+  - title: Kotlin/Native
+    url: https://kotlinlang.org/docs/native-overview.html
+    publisher: JetBrains
+  - title: Kotlin/JavaScript
+    url: https://kotlinlang.org/docs/js-overview.html
+    publisher: JetBrains
+  - title: What's new in Kotlin 1.9.20
+    url: https://kotlinlang.org/docs/whatsnew1920.html
+    publisher: JetBrains
+  - title: Gradle
+    url: https://kotlinlang.org/docs/gradle.html
+    publisher: JetBrains
+  - title: Swift About
+    url: https://www.swift.org/about/
+    publisher: Swift.org
+lastVerified: 2026-05-15
+---
+
+## Start With The Platform
+
+Kotlin is strongest when the target platform is already one of Kotlin's strengths: Android, the JVM, Java-adjacent application code, or shared Kotlin Multiplatform modules. It is weaker when it is chosen mainly for syntax while the real ecosystem belongs elsewhere.
+
+Ask first where the code must run:
+
+- Android app code.
+- JVM backend or enterprise services.
+- Shared Android/iOS business logic.
+- Browser or Node.js code.
+- Native command-line or platform code.
+
+Kotlin can target all of these in some form, but the maturity, tooling, libraries, and team expectations are different for each target.
+
+## Choose Kotlin For Android When
+
+Start with Kotlin for new Android applications and new Android feature work unless an existing Java codebase creates a strong reason not to. Android development is Kotlin-first, and modern Android guidance, Jetpack, KTX extensions, Compose, coroutine material, and Android Studio workflows all assume Kotlin fluency.
+
+Kotlin is especially practical for:
+
+- Compose UI and state-driven Android screens.
+- ViewModels, flows, coroutines, and repository layers.
+- Null-sensitive application code.
+- Incremental modernization of Java Android applications.
+- Shared logic with iOS or backend modules through Kotlin Multiplatform.
+
+Keep Java in Android code when the project is legacy Java-heavy, the team needs a staged migration, or a library/tooling constraint makes Kotlin adoption risky. Mixed Java/Kotlin Android projects are normal, but they need style and interop rules.
+
+## Choose Kotlin For JVM Services When
+
+Choose Kotlin for backend services when the JVM ecosystem is useful and Kotlin's language features are worth the extra compiler and build layer. Kotlin works well with Java libraries, Maven Central, Spring, Ktor, Micronaut, Quarkus, Gradle, observability tools, and existing JVM deployment practices.
+
+Kotlin is often a good fit when:
+
+- The service already depends on Java libraries or JVM operations.
+- Data classes, sealed result types, extension functions, and null-safety features reduce maintenance cost.
+- Coroutines fit request handling, clients, streams, or asynchronous workflows.
+- The team uses IntelliJ IDEA and can maintain Gradle or Maven cleanly.
+- Java interoperability allows incremental adoption instead of a rewrite.
+
+Prefer Java when broad JVM readability, conservative compatibility, Java-first tooling, or public Java library consumers matter more than Kotlin concision. Prefer Go, C#, TypeScript, Python, or Rust when their deployment model or ecosystem is the actual constraint.
+
+## Choose Kotlin Multiplatform When
+
+Kotlin Multiplatform is a good candidate when multiple platforms share real domain logic and the shared layer can stay focused. Good shared-code candidates include DTOs, validation, authentication rules, API clients, serialization, persistence abstractions, feature flags, calculations, state machines, and business workflows.
+
+KMP is less compelling when the main challenge is UI polish, platform-native interaction, camera/media APIs, Bluetooth, payments, OS-specific background behavior, or app-store release mechanics. Those areas usually need platform code regardless of shared business logic.
+
+Before adopting KMP, answer:
+
+- Which code will be shared, and which code stays platform-specific?
+- Will iOS developers be comfortable debugging Kotlin-generated frameworks from Swift?
+- Which targets are required: Android, iOS, JVM, web, desktop, native, or Wasm?
+- Are the required libraries available for common code and each target?
+- Who owns Gradle, Kotlin plugin, Android Gradle Plugin, Xcode, and CI compatibility?
+- What is the rollback plan if the shared layer becomes harder to maintain than duplicated platform code?
+
+## Use Kotlin With Java Deliberately
+
+Kotlin's Java interoperability is a major adoption advantage, but mixed projects still need conventions. Define how nullability annotations are used, whether public APIs must be friendly to Java callers, how generated code is handled, and where coroutines cross Java blocking APIs.
+
+For application code, Kotlin can usually be introduced gradually. For libraries, test APIs from both Kotlin and Java. Kotlin features such as default parameters, top-level functions, companion objects, extension functions, suspend functions, and Kotlin collections may need explicit JVM annotations or wrapper APIs to feel natural from Java.
+
+## Build And Tooling Questions
+
+Kotlin ownership includes build ownership. Decide:
+
+- Gradle or Maven for JVM work.
+- Kotlin Gradle plugin version and language version.
+- Android Gradle Plugin and Compose compiler compatibility for Android.
+- KSP or kapt for generated code.
+- Dependency version catalogs, lockfiles, or platform BOMs.
+- Kotlin/Native and Xcode requirements for Apple targets.
+- CI cache strategy and build-time budget.
+
+These are not secondary details. Kotlin's language benefits are easiest to keep when the build is boring, reproducible, and understood by the team.
+
+## Practical Default
+
+Start with Kotlin for new Android work.
+
+Start with Kotlin for JVM services when Java ecosystem access matters and the team wants Kotlin's null-safety, concision, data modeling, and coroutines.
+
+Start with Java when the JVM is required but the team values conservative language evolution and broad Java readability more than Kotlin features.
+
+Start with Swift for Apple-platform UI and platform-specific app code.
+
+Start with Kotlin Multiplatform only when there is a clear shared domain layer and the team is ready to own platform boundaries instead of pretending they disappear.

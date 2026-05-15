@@ -1,0 +1,242 @@
+---
+title: Kotlin
+slug: kotlin
+status: active
+summary: Kotlin is a statically typed JetBrains language for JVM, Android, JavaScript, Wasm, and native targets, best known for Java interoperability, null-safety features, coroutines, and Kotlin Multiplatform shared-code workflows.
+firstReleased: 2016
+creators:
+  - JetBrains
+paradigms:
+  - object-oriented
+  - functional
+  - imperative
+  - concurrent
+typing:
+  discipline: static
+  strength: strong with nullable and non-nullable types
+memory:
+  model: managed by target runtime, including JVM garbage collection and Kotlin/Native tracing garbage collection
+runtime:
+  model: JVM bytecode, Android, JavaScript, Wasm, or native binaries through Kotlin target backends
+officialSite: https://kotlinlang.org/
+repository: https://github.com/JetBrains/kotlin
+packageManagers:
+  - Gradle
+  - Maven
+  - Maven Central
+  - npm
+comparedWith:
+  - java
+  - swift
+  - typescript
+  - scala
+bestFor:
+  - New Android applications, Android feature work, and Android teams adopting modern Jetpack and Compose APIs.
+  - JVM backend services where Java libraries and deployment are useful but teams want more concise source code, null-safety features, and coroutine-based asynchronous code.
+  - Shared mobile or multiplatform business logic across Android, iOS, JVM, web, and native targets when the team can handle Kotlin Multiplatform build and platform-boundary complexity.
+  - Incremental modernization of Java-heavy JVM codebases that can adopt Kotlin module by module.
+poorFit:
+  - Tiny scripts or simple services where Gradle, compiler plugins, or JVM/Kotlin project setup would dominate the work.
+  - Broad public JVM libraries whose consumers are mostly Java and where Kotlin-specific APIs would make Java calling code awkward.
+  - Cross-platform UI or native-platform projects that require the lowest possible platform abstraction risk and cannot tolerate evolving Kotlin Multiplatform, Compose Multiplatform, or native interop constraints.
+  - Low-level systems software, kernels, hard real-time code, or embedded firmware where Kotlin's managed or compiler-runtime model is not the deployment contract.
+sources:
+  - title: Kotlin FAQ
+    url: https://kotlinlang.org/docs/faq.html
+    publisher: JetBrains
+  - title: Kotlin language specification
+    url: https://kotlinlang.org/spec/introduction.html
+    publisher: JetBrains
+  - title: Kotlin release process
+    url: https://kotlinlang.org/docs/releases.html
+    publisher: JetBrains
+  - title: Get started with Kotlin
+    url: https://kotlinlang.org/docs/getting-started.html
+    publisher: JetBrains
+  - title: Null safety
+    url: https://kotlinlang.org/docs/null-safety.html
+    publisher: JetBrains
+  - title: Coroutines
+    url: https://kotlinlang.org/docs/coroutines-overview.html
+    publisher: JetBrains
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+  - title: Gradle
+    url: https://kotlinlang.org/docs/gradle.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Kotlin/Native
+    url: https://kotlinlang.org/docs/native-overview.html
+    publisher: JetBrains
+  - title: Kotlin/JavaScript
+    url: https://kotlinlang.org/docs/js-overview.html
+    publisher: JetBrains
+  - title: What's new in Kotlin 1.9.20
+    url: https://kotlinlang.org/docs/whatsnew1920.html
+    publisher: JetBrains
+  - title: Kotlin evolution principles
+    url: https://kotlinlang.org/docs/kotlin-evolution-principles.html
+    publisher: JetBrains
+  - title: Kotlin Foundation Structure
+    url: https://kotlinfoundation.org/structure/
+    publisher: Kotlin Foundation
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+Kotlin was created by JetBrains. The project began in 2010, was open source early in its life, and reached its first official 1.0 release in February 2016. JetBrains describes Kotlin as an open source, statically typed language that targets the JVM, Android, JavaScript, Wasm, and Native.
+
+The design center is pragmatic interoperability. Kotlin is meant to fit existing platforms, especially Java and the JVM, while reducing everyday friction through type inference, properties, data classes, extension functions, expression-oriented syntax, nullable and non-nullable types, and coroutine support. It is not a new virtual machine or a replacement for platform APIs; it is a source language that tries to make those platforms more concise and safer to use.
+
+That origin explains Kotlin's strongest production shape. It is most valuable when a team already wants the JVM, Android, or shared-code multiplatform story, but wants fewer null-related mistakes, less boilerplate, and better language support for asynchronous code than plain Java historically offered.
+
+## Targets And Runtime Model
+
+Kotlin has several target backends. Kotlin/JVM compiles to JVM bytecode and can use Java libraries, JVM tools, Maven Central artifacts, profilers, debuggers, and server frameworks. On Android, Kotlin is integrated into Android Studio and the modern Android documentation, Jetpack, and Compose ecosystem.
+
+Kotlin/Native compiles Kotlin to native binaries through an LLVM-based backend and includes a native implementation of the standard library. It is designed for targets where a virtual machine is not desirable or available, including iOS and other native platforms. Kotlin/JavaScript transpiles Kotlin code and compatible dependencies to JavaScript, and Kotlin/Wasm is part of the broader web and multiplatform target story.
+
+This target breadth is useful, but it is not the same as platform independence. JVM libraries do not automatically work on Native or JavaScript targets. Platform APIs, UI frameworks, threading behavior, packaging, binary size, debugging, build configuration, and dependency support vary by target. A Kotlin decision should therefore begin with the runtime target, not only the language syntax.
+
+## Type System And Null Safety
+
+Kotlin is statically typed with local type inference, generics, nullable and non-nullable types, declaration-site variance, smart casts, sealed classes and interfaces, data classes, extension functions, lambdas, and higher-order functions. The language specification defines the core grammar and type-system model, while the practical documentation emphasizes Kotlin's null-safety design.
+
+Nullability is explicit in Kotlin types. A `String` is non-nullable, while `String?` may contain `null`. The compiler requires safe calls, explicit checks, the Elvis operator, safe casts, or the not-null assertion operator when nullable values are used. This reduces accidental null dereferences in Kotlin code, but it is not a proof that null-related failures are impossible.
+
+The main escape hatches are deliberate assertions, initialization mistakes, and interoperability. Java APIs may enter Kotlin as platform types when nullability is not fully known. Java nullability annotations can improve that boundary, and Kotlin supports several annotation families, but mixed Java/Kotlin projects still need API conventions and compiler settings.
+
+## Java Interoperability
+
+Kotlin's JVM adoption depends heavily on Java interoperability. Kotlin code can call Java classes, implement Java interfaces, use Java annotations, depend on Maven artifacts, and run in Java-centered frameworks. Java code can also call Kotlin code, but the result depends on API design.
+
+Interop is smoothest when Kotlin is used inside application code or modules whose public surface is mostly Kotlin. It becomes more sensitive for public libraries, annotation processors, generated code, reflection-heavy frameworks, checked exceptions, overloaded methods, companion objects, top-level functions, default arguments, and Kotlin collection or nullability semantics as seen from Java.
+
+For incremental adoption, introduce Kotlin in tests, leaf modules, Android feature code, or isolated service layers first. Define conventions for nullability annotations, `@JvmName`, `@JvmOverloads`, coroutine boundaries, generated sources, package layout, and whether public APIs must be comfortable from Java.
+
+## Coroutines And Concurrency
+
+Kotlin's concurrency story is centered on coroutines for many application workloads. Suspending functions can pause without blocking a thread, and coroutine builders such as `launch` and `async` run inside a `CoroutineScope`. The `kotlinx.coroutines` library provides the core tools for structured concurrency, dispatchers, jobs, channels, flows, and cancellation.
+
+Coroutines are a useful fit for Android UI work, service calls, backend request handling, streams, and asynchronous workflows where sequential-looking code is easier to maintain than nested callbacks or manually chained futures. They still require discipline. Cancellation must be propagated, blocking calls must be isolated, dispatchers need to match the workload, shared mutable state needs coordination, and Java APIs do not become non-blocking just because they are called from a coroutine.
+
+On the JVM, Kotlin code can also use Java threads, executors, virtual threads, futures, locks, atomics, and framework-specific concurrency APIs. The right model depends on the surrounding stack.
+
+## Memory Model
+
+Kotlin's memory model depends on the target. Kotlin/JVM and Android code uses the managed heap and garbage collection behavior of the underlying runtime. Kotlin/JS uses the host JavaScript environment's object and garbage-collection model. Kotlin/Native uses its own automatic memory manager with tracing garbage collection, and JetBrains documents integration with Swift and Objective-C ARC for Apple interop scenarios.
+
+The practical consequence is that Kotlin is not a manual memory-management language. It removes explicit allocation/free decisions from ordinary application code, but developers still need to understand allocation rate, object lifetime, leaks through references, native interop handles, coroutine lifetimes, platform UI lifecycles, and target-specific runtime costs.
+
+## Syntax Example
+
+```kotlin
+data class CheckResult(val name: String, val status: Int)
+
+sealed interface Health {
+    data class Ok(val result: CheckResult) : Health
+    data class Failed(val name: String, val reason: String) : Health
+}
+
+fun parseStatus(name: String, rawStatus: String?): Health {
+    val status = rawStatus?.toIntOrNull()
+        ?: return Health.Failed(name, "missing or invalid status")
+
+    return if (status in 200..399) {
+        Health.Ok(CheckResult(name, status))
+    } else {
+        Health.Failed(name, "unexpected HTTP status $status")
+    }
+}
+
+fun main() {
+    val reports = listOf(
+        parseStatus("Kotlin", "200"),
+        parseStatus("Example", null),
+        parseStatus("Archive", "503"),
+    )
+
+    for (report in reports) {
+        when (report) {
+            is Health.Ok -> println("${report.result.name}: ok")
+            is Health.Failed -> println("${report.name}: ${report.reason}")
+        }
+    }
+}
+```
+
+This example uses Kotlin features that show up in ordinary application code: data classes for small values, sealed interfaces for closed result shapes, nullable input, the Elvis operator for early return, ranges, string templates, and exhaustive `when` handling.
+
+## Tooling, Packages, And Builds
+
+Gradle is the dominant build tool for Kotlin, especially for Android, JVM applications, and Kotlin Multiplatform projects. Kotlin projects commonly use Gradle Kotlin DSL, the Kotlin Gradle plugin, Maven Central dependencies, compiler options, build caches, and IDE integration through IntelliJ IDEA or Android Studio. Maven is also supported, and Kotlin/JS projects can interact with npm packages through the JavaScript toolchain.
+
+This tooling is powerful, but Gradle and compiler-plugin complexity is part of the cost. Android projects may involve the Android Gradle Plugin, Kotlin plugin versions, Jetpack Compose compiler support, KSP or kapt, generated code, dependency catalogs, and compatibility matrices. Multiplatform projects add target declarations, source-set hierarchy, platform-specific dependencies, and native toolchain requirements such as Xcode for Apple targets.
+
+Kotlin's package ecosystem is therefore partly Kotlin-specific and partly inherited from its targets. On the JVM, Maven Central and Java libraries are major assets. On Android, Jetpack and Google tooling matter. On JavaScript, npm interop matters. On Native and iOS, platform frameworks and Kotlin/Native interop matter.
+
+## Android
+
+Android is Kotlin's most visible production home. Android development has been Kotlin-first since Google I/O 2019, and Android's current documentation, samples, Jetpack libraries, Compose UI guidance, KTX extensions, and coroutine material are centered on Kotlin while Java remains supported.
+
+Choose Kotlin first for new Android applications unless an existing Java-heavy codebase, team constraint, or library requirement argues otherwise. Kotlin works well for UI state, ViewModels, coroutines, flows, Compose, null-sensitive app code, and incremental feature development inside existing Android apps.
+
+The risks are not usually the language basics. They are Android lifecycle management, Gradle version alignment, generated code, annotation processing migration, coroutine cancellation, binary size, app startup, and the cost of adopting Kotlin conventions across a large team.
+
+## Kotlin Multiplatform
+
+Kotlin Multiplatform lets projects share common Kotlin code across targets such as Android, iOS, JVM, web, and native while keeping platform-specific implementations where needed. Kotlin 1.9.20 marked Kotlin Multiplatform as stable, with continued caveats for advanced or experimental features.
+
+The strongest fit is shared business logic, data models, validation rules, networking clients, persistence abstractions, and domain workflows across mobile or client/server surfaces. It can reduce duplicated logic without forcing every platform to use the same UI stack.
+
+The weaker fit is pretending that platform work disappears. iOS still has Swift, Xcode, Apple frameworks, signing, platform UI expectations, and release tooling. Web targets still involve JavaScript runtime and package realities. Teams should evaluate KMP by the code they can share cleanly, the platform code they still need, and whether the build system is understandable to the people maintaining it.
+
+## Backend And Server-Side Kotlin
+
+Kotlin is a practical backend language when the JVM is already desirable. It can use Java libraries and deployment practices while offering concise data modeling, null-safety features, extension functions, coroutines, and framework support from Spring, Ktor, Micronaut, Quarkus, and related tools.
+
+Prefer Kotlin for JVM services when the team values Kotlin's language features enough to accept the extra compiler and build-tool layer. Prefer Java when broad JVM readability, conservative language evolution, and lowest interop risk matter more. Prefer Go, C#, TypeScript, Python, or Rust when the target ecosystem, deployment model, or team skill points away from the JVM.
+
+## Governance, Releases, And Stewardship
+
+JetBrains created Kotlin and continues to drive its development with the community and the Kotlin Foundation. The Kotlin Foundation is a nonprofit corporation with board representation from JetBrains, Google, and other members. It appoints the lead language designer and language committee, while JetBrains remains the central steward of the compiler, IDE integration, and language evolution work.
+
+Kotlin uses language, tooling, and bug-fix releases. The current stable release observed during this edit is Kotlin 2.3.21, published on April 23, 2026. Kotlin's evolution principles emphasize pragmatic language evolution, feedback before stabilization, deprecation cycles, migration tools, and review for incompatible changes.
+
+Production teams should distinguish between the Kotlin language version, Kotlin compiler and Gradle plugin version, Android Gradle Plugin version, IDE version, Compose compiler expectations, library versions, and target platform support. These move together often enough that version governance is part of Kotlin ownership.
+
+## Best-Fit Use Cases
+
+Kotlin is a strong fit for:
+
+- New Android applications and modern Android feature work.
+- JVM backend services where Java ecosystem access and concise Kotlin source code are both valuable.
+- Java codebases that can modernize incrementally without a rewrite.
+- Shared mobile or multiplatform business logic where the team can keep platform-specific UI and integration code honest.
+- Teams already using IntelliJ IDEA, Android Studio, Gradle, Maven Central, Java libraries, or Jetpack.
+
+## Poor-Fit Or Risky Use Cases
+
+Kotlin can be a poor fit when:
+
+- The project does not benefit from JVM, Android, JavaScript, Native, or multiplatform targets.
+- Build complexity would outweigh language benefits.
+- A public library needs the most natural Java API surface possible.
+- The team expects Kotlin Multiplatform to remove the need for iOS, Swift, Xcode, platform UI, or release expertise.
+- Strict real-time, kernel, firmware, tiny embedded, or native ABI constraints dominate.
+- The organization cannot maintain Kotlin, Gradle, Android, compiler plugin, and platform-version alignment.
+
+## Comparison Notes
+
+Java is the closest JVM comparison. Kotlin offers null-safety features, less boilerplate, data classes, extension functions, and coroutines. Java remains the conservative JVM baseline with the broadest existing codebase and the least Kotlin-specific interop surface.
+
+Swift is the closest mobile-platform comparison. Kotlin is strongest for Android, JVM, and shared multiplatform logic. Swift is strongest for Apple-platform applications and first-party Apple frameworks. Kotlin Multiplatform can connect Android and iOS codebases, but it does not replace Swift for native Apple UI and platform integration.
+
+TypeScript is a comparison when the target is web, Node.js, or shared frontend/backend JavaScript. Kotlin/JS exists, but TypeScript is usually the direct default for JavaScript ecosystems unless Kotlin's multiplatform or JVM connection is the real reason for the choice.
