@@ -283,6 +283,10 @@ Expected checks as the site matures:
 Broaden checks as risk grows. If a command cannot run, say why and what
 was verified instead.
 
+For source-heavy content phases, run `just check-links-external` before
+committing. Official documentation sites can have plausible stale URLs; the
+link checker is the fastest way to catch them before publishing.
+
 ---
 
 ## Persistent Instructions
