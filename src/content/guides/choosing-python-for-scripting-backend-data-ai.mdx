@@ -5,6 +5,7 @@ summary: A decision guide for teams evaluating Python across automation, backend
 audience: Developers and teams deciding whether Python should be the main language, a workflow language, or a boundary language for scripts, services, data, and AI-adjacent work.
 candidates:
   - python
+  - sql
   - go
   - javascript
   - typescript
@@ -41,6 +42,12 @@ sources:
   - title: PyTorch Documentation
     url: https://docs.pytorch.org/docs/stable/index.html
     publisher: PyTorch
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: Query Language Understood by SQLite
+    url: https://www.sqlite.org/lang.html
+    publisher: SQLite
   - title: JavaScript
     url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
     publisher: MDN Web Docs
@@ -102,6 +109,8 @@ This is a good fit for:
 
 Watch the hot path. If most time is spent in Python-level loops over large data, the design may need vectorization, native extensions, compiled accelerators, multiprocessing, or a different language at the boundary.
 
+Use SQL directly when the work is fundamentally relational: filtering, joining, grouping, ordering, transactional updates, constraints, reporting queries, or transformations that should run inside a database or warehouse. Python and SQL are often complements. Let SQL reduce and protect the data near storage, then let Python orchestrate files, APIs, notebooks, models, visualization, and custom workflow code around that boundary.
+
 ## AI-Adjacent Systems
 
 For AI-adjacent work, Python is often the integration language because model tooling, notebooks, data preparation, evaluation scripts, and framework examples are commonly Python-first. That does not mean every production component should be Python.
@@ -122,6 +131,7 @@ Keep the architecture honest:
 - Does the workload need CPU parallelism, and if so, will it use processes, native libraries, free-threaded builds, or another runtime?
 - Will the project need a package, a container, a service, a notebook, or a one-file script?
 - Which parts of the system need Python, and which parts only need a stable protocol boundary?
+- Which work should stay in SQL because it belongs to the database's schema, constraints, indexes, transactions, or query optimizer?
 
 ## Practical Default
 
@@ -132,3 +142,5 @@ Start with Go for network services, CLIs, platform tools, and infrastructure com
 Start with TypeScript or JavaScript when browser compatibility, full-stack JavaScript, npm packages, or framework integration are the main constraints.
 
 Start with R when the team and workflow are centered on statistical analysis, reporting, and R-specific packages. Start with Rust or C++ when the core requirement is native performance, memory control, or low-level integration rather than orchestration.
+
+Start with SQL when the immediate job is relational data access, database-side transformation, reporting, integrity constraints, or transaction-local work. Use Python around SQL when the system needs orchestration, notebooks, APIs, files, ML libraries, or broader application behavior.

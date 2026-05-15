@@ -12,6 +12,7 @@ const unique = (values: string[]) =>
   Array.from(new Set(values.map(normalize))).sort((a, b) => a.localeCompare(b));
 const useCaseRules = [
   { label: "cli tools", terms: ["command-line", "scripts"] },
+  { label: "data", terms: ["data", "analytics", "querying"] },
   { label: "infrastructure", terms: ["infrastructure", "distributed"] },
   { label: "network services", terms: ["network services", "services"] },
   { label: "systems software", terms: ["systems software", "embedded"] },

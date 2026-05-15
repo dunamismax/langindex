@@ -5,6 +5,7 @@ summary: A decision guide for teams evaluating Java as a backend language, enter
 audience: Developers and teams deciding whether Java should be their main language for services, enterprise applications, JVM platforms, Android-adjacent maintenance, or long-lived integration systems.
 candidates:
   - java
+  - sql
   - go
   - csharp
   - kotlin
@@ -29,6 +30,12 @@ sources:
   - title: The Java Plugin
     url: https://docs.gradle.org/current/userguide/java_plugin.html
     publisher: Gradle
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: The Java Database Connectivity API
+    url: https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/
+    publisher: Oracle
   - title: The Go Programming Language Specification
     url: https://go.dev/ref/spec
     publisher: Go Project
@@ -63,6 +70,8 @@ Prefer Java when:
 - The system is expected to outlive the current team and needs conservative maintenance defaults.
 
 Use Go instead when the service is mainly network plumbing, an infrastructure component, a CLI-adjacent service, or a control plane where static binaries and a smaller language surface matter more. Use TypeScript when the dominant constraint is full-stack JavaScript integration. Use Python when the service is close to data, automation, notebooks, or ML orchestration.
+
+Treat SQL as part of the backend language decision when the service owns durable relational state. Java can own application structure, request handling, workers, validation, and integration code, while SQL owns schema, constraints, indexes, migrations, reporting queries, and transaction-local data work. A Java service that hides all SQL behind framework defaults still depends on database behavior; review the generated queries and migration path.
 
 ## Choose Java For Enterprise Systems When
 
@@ -107,6 +116,7 @@ Before choosing Java, answer these:
 - Will deployments use a full JDK, a runtime image, a container, or a platform runtime?
 - How will dependencies be pinned, reviewed, scanned, and upgraded?
 - Which build tool owns the project: Maven or Gradle?
+- Which database dialect, migration tool, schema rules, transaction isolation assumptions, and generated SQL patterns will production depend on?
 - Are framework defaults understood, or only copied from a starter template?
 
 These questions are not bureaucratic overhead. They are the work that turns Java's runtime depth into a production advantage.
@@ -122,3 +132,5 @@ Start with C# when the organization is centered on .NET, Azure, ASP.NET Core, Wi
 Start with Kotlin when the JVM is desired but source-code concision, null safety, Android-first development, or coroutines are central.
 
 Start with Python or TypeScript when the surrounding ecosystem, not the JVM, is the real reason for the language choice.
+
+Start with SQL as a first-class companion when backend correctness depends on relational constraints, transactional updates, reporting queries, and database-side execution. The JVM should make those database contracts explicit, not bury them.

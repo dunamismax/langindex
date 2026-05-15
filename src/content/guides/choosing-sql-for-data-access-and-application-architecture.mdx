@@ -1,0 +1,102 @@
+---
+title: Choosing SQL For Data Access And Application Architecture
+slug: choosing-sql-for-data-access-and-application-architecture
+summary: A guide for deciding where SQL should own relational data, transactions, reporting queries, migrations, stored procedures, and boundaries with application languages.
+audience: Developers and teams designing backend services, data workflows, reporting surfaces, migrations, and database boundaries around relational systems.
+candidates:
+  - sql
+  - python
+  - java
+  - csharp
+  - typescript
+  - go
+sources:
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: PostgreSQL Transactions
+    url: https://www.postgresql.org/docs/current/tutorial-transactions.html
+    publisher: PostgreSQL Global Development Group
+  - title: PostgreSQL SQL Conformance
+    url: https://www.postgresql.org/docs/current/features.html
+    publisher: PostgreSQL Global Development Group
+  - title: Query Language Understood by SQLite
+    url: https://www.sqlite.org/lang.html
+    publisher: SQLite
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: Oracle Database SQL Language Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
+    publisher: Oracle
+  - title: The Java Database Connectivity API
+    url: https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/
+    publisher: Oracle
+  - title: sqlite3 - DB-API 2.0 interface for SQLite databases
+    url: https://docs.python.org/3/library/sqlite3.html
+    publisher: Python Software Foundation
+  - title: ADO.NET Overview
+    url: https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-overview
+    publisher: Microsoft Learn
+lastVerified: 2026-05-15
+---
+
+## Start With Ownership
+
+SQL is not only a way to fetch records. In relational systems, SQL often owns part of the application architecture: schema, constraints, indexes, transactions, migrations, reporting queries, permissions, and data-local logic.
+
+Decide early which responsibilities belong to the database and which belong to the application language. The database is usually the right owner for durable relational invariants. Application code is usually the right owner for request handling, user workflows, service coordination, external API calls, files, and general-purpose control flow.
+
+## Put SQL At The Data Boundary When
+
+Use SQL deliberately when the system needs:
+
+- Primary keys, foreign keys, uniqueness, `CHECK` constraints, and `NOT NULL` rules.
+- Transactional changes that must commit or roll back together.
+- Queries that filter, join, aggregate, window, or sort large relational data sets.
+- Views or materialized views that create stable reporting or application surfaces.
+- Database permissions, roles, row-level policies, or audit-friendly data access.
+- Migrations that make schema history reviewable and repeatable.
+
+These are not implementation details. They are product behavior. If the database rejects impossible states, the application has a stronger foundation.
+
+## Keep Application Code In Charge When
+
+Prefer Java, C#, Python, TypeScript, Go, or another application language for:
+
+- HTTP handlers, background workers, CLIs, and user workflows.
+- Calls to external services, queues, filesystems, and object stores.
+- Rich validation that needs application context or third-party libraries.
+- Long-running orchestration, retries, scheduling, and observability.
+- Domain behavior that must be tested without a database fixture.
+- Data transformations that depend on non-relational libraries or ML tools.
+
+The application should still respect database constraints. Runtime validation is useful, but it should not be the only thing preventing corrupt shared data.
+
+## Choose A Primary Dialect
+
+Portable SQL is valuable, but production SQL is always mediated by a database engine. PostgreSQL, SQLite, MySQL, SQL Server, Oracle Database, Db2, and cloud warehouses differ in types, functions, DDL behavior, transaction details, locking, indexing, JSON support, upsert syntax, procedural extensions, and optimizer behavior.
+
+For most applications, choose one primary database and make its dialect explicit. Use generic SQL where it costs little, but do not avoid a database feature that protects real correctness or performance only to preserve imaginary portability. If multiple databases are supported, run the same migration and query tests against every supported engine.
+
+## Use ORMs With Eyes Open
+
+ORMs and query builders can be useful. They can map rows to host-language types, parameterize queries, reduce boilerplate, and centralize common access patterns. They do not remove SQL from the system.
+
+Review generated queries on important paths. Add indexes for actual access patterns. Test migrations. Understand lazy loading, eager loading, transaction scopes, batching, connection pools, isolation, and how errors map into application exceptions. If an ORM makes the SQL invisible, the team still owns the behavior it emits.
+
+## Stored Procedures, Triggers, And Functions
+
+Stored procedures, triggers, and database functions are useful when logic must run close to data, inside a transaction, under database permissions, or as part of an invariant that multiple clients share. Examples include audit records, denormalized counters, data cleanup, validation around bulk imports, and batch operations.
+
+Use them carefully. Database-resident logic needs source control, review, migration ordering, tests, observability, and rollback plans. If stored procedures become a hidden application, the architecture becomes harder to reason about than either SQL or application code alone.
+
+## Data And Analytics Workflows
+
+For analytics, SQL is usually the first language to reach for when the data is already structured in a database or warehouse. It is strong for joins, filters, aggregations, window functions, reproducible transformations, and dashboard-facing views.
+
+Use Python, R, or another data language when the work needs notebooks, statistical libraries, machine learning frameworks, file processing, visualization, or custom orchestration. Keep the boundary practical: push large set operations into the database, then pull only the data the data-language workflow actually needs.
+
+## Practical Default
+
+Treat SQL as a first-class language when relational data is part of the product. Keep schemas, constraints, indexes, migrations, and important queries under review. Choose a database dialect intentionally, test against the real engine, and let application languages own the work that is not naturally database-local.

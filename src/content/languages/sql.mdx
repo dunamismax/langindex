@@ -1,0 +1,238 @@
+---
+title: SQL
+slug: sql
+status: active
+summary: SQL is a standardized relational database language and dialect family for defining schemas, querying tables, changing data, expressing transactions, and moving work close to database engines.
+firstReleased: 1974
+creators:
+  - Donald D. Chamberlin
+  - Raymond F. Boyce
+  - IBM
+paradigms:
+  - declarative
+  - relational
+  - data
+  - query
+  - procedural extensions
+typing:
+  discipline: static
+  strength: schema-defined with implementation-specific type systems, coercions, null rules, and procedural extensions
+memory:
+  model: database-managed storage, buffers, indexes, transactions, and execution memory
+runtime:
+  model: interpreted and optimized by relational database engines and dialect-specific execution layers
+officialSite: https://www.iso.org/standard/76583.html
+packageManagers: []
+comparedWith:
+  - python
+  - java
+  - csharp
+  - javascript
+bestFor:
+  - Relational data modeling, querying, filtering, joining, aggregation, integrity constraints, and transactional updates.
+  - Backend systems where durable data, consistency boundaries, indexes, migrations, reporting queries, and operational database behavior shape the application.
+  - Analytics and data workflows where set-based operations, views, materialized views, warehouses, and database-side execution are stronger than row-by-row application code.
+  - Shared data contracts that need to be inspected by application developers, database administrators, analysts, reporting tools, and migration systems.
+poorFit:
+  - General-purpose application logic that needs rich control flow, filesystem access, network clients, long-lived process state, or ordinary package ecosystems.
+  - Highly portable programs that assume one SQL file will behave identically across PostgreSQL, SQLite, MySQL, SQL Server, Oracle Database, Db2, and cloud warehouses.
+  - Workloads where the data model is not relational and a document, graph, search, event, time-series, object, or key-value model is the real center.
+  - Teams that treat SQL as an ORM implementation detail and do not test migrations, query plans, transaction isolation, indexes, and database-specific behavior directly.
+sources:
+  - title: SEQUEL - A Structured English Query Language
+    url: https://research.ibm.com/publications/sequel-a-struciured-english-query-language
+    publisher: IBM Research
+  - title: ISO/IEC 9075-1:2023 - SQL Framework
+    url: https://www.iso.org/standard/76583.html
+    publisher: International Organization for Standardization
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: ISO/IEC 9075-4:2023 - Persistent Stored Modules
+    url: https://www.iso.org/standard/76586.html
+    publisher: International Organization for Standardization
+  - title: PostgreSQL SQL Conformance
+    url: https://www.postgresql.org/docs/current/features.html
+    publisher: PostgreSQL Global Development Group
+  - title: PostgreSQL Transactions
+    url: https://www.postgresql.org/docs/current/tutorial-transactions.html
+    publisher: PostgreSQL Global Development Group
+  - title: Query Language Understood by SQLite
+    url: https://www.sqlite.org/lang.html
+    publisher: SQLite
+  - title: MySQL 8.4 Reference Manual
+    url: https://dev.mysql.com/doc/refman/8.4/en/
+    publisher: Oracle
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: Oracle Database SQL Language Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
+    publisher: Oracle
+  - title: Oracle Database PL/SQL Language Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/
+    publisher: Oracle
+  - title: Db2 SQL
+    url: https://www.ibm.com/docs/en/db2/12.1.0?topic=reference-sql
+    publisher: IBM
+lastVerified: 2026-05-15
+---
+
+## Origin And Scope
+
+SQL began at IBM Research as SEQUEL, a query language for the System R relational database work. Donald D. Chamberlin and Raymond F. Boyce described SEQUEL in 1974 as a structured English query language for relational data. The name later became SQL, and the language became the common vocabulary for relational database systems.
+
+The useful way to describe SQL today is as both a standard and a language family. ISO/IEC 9075 defines standard SQL in multiple parts, including framework, foundation, and persistent stored module specifications. Production systems then implement their own dialects, extensions, functions, data types, procedural languages, optimizer behavior, catalog objects, security models, and tooling.
+
+That family shape is not a footnote. A query that is ordinary in PostgreSQL may need changes for SQLite, MySQL, SQL Server, Oracle Database, Db2, or a cloud warehouse. SQL is portable at the level of relational ideas and many core constructs, but serious projects must choose a target database and test against it.
+
+## Relational Model Basics
+
+SQL works with tables, rows, columns, values, constraints, expressions, and relations produced by queries. A table normally has a declared schema. Columns have data types. Constraints such as primary keys, foreign keys, unique constraints, `CHECK` constraints, and `NOT NULL` constraints let the database enforce rules at the data boundary.
+
+The core query operation is `SELECT`. A query can project columns, filter rows with `WHERE`, join tables, group rows, aggregate values, sort results, limit output, and compose subqueries or common table expressions. The declarative model is central: a query says what result is wanted, while the database optimizer chooses an execution plan using statistics, indexes, join algorithms, storage layout, and engine-specific rules.
+
+This makes SQL different from ordinary application loops. A set-based query can let the database push filtering, joining, grouping, sorting, and aggregation close to stored data. The same feature can also hide cost. A small query can scan a large table, block on locks, spill to disk, choose a poor plan, or change behavior after statistics and data distribution shift.
+
+## Query Semantics And Nulls
+
+SQL query semantics are shaped by tables, bags, expressions, predicates, joins, grouping, ordering, and null handling. Many SQL results are multisets rather than mathematical sets: duplicate rows can exist unless a query removes them with `DISTINCT` or a schema prevents them with constraints.
+
+`NULL` is one of SQL's most important semantic differences from many host languages. It represents missing or unknown data, and comparisons involving `NULL` use three-valued logic rather than ordinary Boolean logic. `x = NULL` is not the same as `x IS NULL`. Aggregates, joins, constraints, indexes, unique constraints, and application mappers can all expose null behavior differently across databases.
+
+Ordering is another common source of bugs. Without an `ORDER BY`, a query result should not be treated as stable presentation order. If pagination, reports, tests, or exports depend on order, express the order directly and include a deterministic tie breaker.
+
+## Data Definition, Data Manipulation, And Transactions
+
+SQL covers both schema and data work. Data definition language statements create and change objects such as tables, indexes, views, schemas, constraints, functions, procedures, triggers, roles, and permissions. Data manipulation language statements insert, update, delete, merge, and query rows.
+
+Transactions are one of SQL's central reasons to exist in application architecture. A transaction groups related reads and writes so the database can commit them together or roll them back together. PostgreSQL's documentation describes the all-or-nothing property with the ordinary bank-transfer example: either both account changes happen, or neither does. Real systems also need to choose isolation behavior, retry strategy, lock timeouts, migration safety, and how much work belongs inside a transaction.
+
+Transactions are database behavior, not only syntax. PostgreSQL, SQL Server, Oracle Database, MySQL/InnoDB, SQLite, and Db2 each have documented transaction and isolation rules. Teams should test the database they run, especially for concurrent writes, long reports, background jobs, queue tables, uniqueness races, and cross-service workflows.
+
+## Dialects And Portability Limits
+
+Standard SQL gives teams a shared foundation, but dialects are unavoidable in production.
+
+Important differences include:
+
+- Data types, especially text, JSON, arrays, temporal types, numerics, UUIDs, binary values, and geospatial extensions.
+- Identity, sequence, auto-increment, generated, and computed column behavior.
+- Upsert syntax such as `ON CONFLICT`, `ON DUPLICATE KEY UPDATE`, `MERGE`, or vendor-specific alternatives.
+- Date/time arithmetic, time zone behavior, string functions, regular expressions, and full-text search.
+- Window functions, recursive queries, lateral joins, common table expression materialization, and optimizer hints.
+- Transaction isolation names and implementation behavior.
+- Stored procedure languages, triggers, packages, user-defined functions, and extension systems.
+- DDL transaction behavior, online index creation, migration locking, and replication constraints.
+
+Portability is still possible when a project defines a deliberate subset and tests every supported database. It is risky when portability is assumed from syntax alone. For most applications, choose a primary database, write SQL for that database, isolate vendor-specific features behind clear boundaries, and keep migration tests close to production.
+
+## Procedural Extensions
+
+SQL is mostly declarative, but database systems also offer procedural extensions. The SQL standard includes persistent stored modules, while vendors expose practical languages such as PL/pgSQL in PostgreSQL, PL/SQL in Oracle Database, Transact-SQL in SQL Server, and SQL procedural language features in Db2 and MySQL.
+
+Procedural SQL is useful when logic must run next to data, inside a transaction, under database permissions, or as part of triggers, functions, procedures, validation, maintenance, and batch jobs. It can reduce network round trips and centralize invariant enforcement.
+
+The tradeoff is coupling. Stored procedures and triggers can hide behavior from application code, complicate version control, require database-specific testing, and make migrations more delicate. Use procedural SQL for database-owned rules and data-local work, not as a substitute for a maintainable application architecture.
+
+## Type System, Schema, And Constraints
+
+SQL is schema-centered. A database column's type, nullability, default, collation, generated expression, and constraints are part of the program. Application code that treats the database as a loosely typed store gives up one of SQL's main advantages.
+
+Good SQL design usually makes invariants visible:
+
+- Primary keys identify rows.
+- Foreign keys express references and protect integrity.
+- Unique constraints protect names, slugs, emails, account numbers, or natural identifiers where appropriate.
+- `CHECK` constraints protect local value rules.
+- `NOT NULL` marks required data.
+- Views expose stable query surfaces.
+- Indexes align with lookup, join, sorting, and uniqueness requirements.
+
+Types and constraints are also portability boundaries. PostgreSQL arrays, SQLite dynamic typing rules, MySQL SQL modes, SQL Server computed columns, Oracle packages, and Db2-specific features can all be the right choice in their own systems. They should be chosen consciously, not accidentally.
+
+## Tooling And Ecosystem
+
+SQL tooling is database-specific and workflow-specific rather than centered on one package manager. Common tools include vendor CLIs, graphical clients, migration systems, schema diff tools, ORMs, query builders, database drivers, JDBC, ODBC, linters, formatters, backup tools, replication tooling, and data transformation frameworks.
+
+Backend teams usually encounter SQL through a driver or ORM, such as JDBC in Java, ADO.NET or Entity Framework in .NET, database libraries in Python, or query builders in JavaScript and TypeScript. ORMs can reduce boilerplate and provide a host-language model, but they do not remove SQL semantics. Indexes, joins, isolation, cardinality, constraints, lock behavior, and generated queries still need review.
+
+Data teams often use SQL through warehouses, notebooks, dashboards, dbt-style transformation projects, or BI tools. In that context, naming, lineage, reproducible transformations, incremental models, permissions, and reviewable query changes matter as much as syntax.
+
+## Syntax Example
+
+```sql
+CREATE TABLE languages (
+  id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name text NOT NULL UNIQUE,
+  first_released integer CHECK (first_released > 1800)
+);
+
+CREATE TABLE language_uses (
+  language_id integer NOT NULL REFERENCES languages(id),
+  use_case text NOT NULL,
+  PRIMARY KEY (language_id, use_case)
+);
+
+INSERT INTO languages (name, first_released)
+VALUES
+  ('SQL', 1974),
+  ('Python', 1991);
+
+INSERT INTO language_uses (language_id, use_case)
+SELECT id, 'data querying'
+FROM languages
+WHERE name = 'SQL';
+
+SELECT
+  l.name,
+  l.first_released,
+  count(u.use_case) AS use_case_count
+FROM languages AS l
+LEFT JOIN language_uses AS u ON u.language_id = l.id
+GROUP BY l.id, l.name, l.first_released
+ORDER BY l.name;
+```
+
+This example shows ordinary SQL concerns: schema definition, primary and foreign keys, a uniqueness rule, a check constraint, set-based insertion from a query, a left join, grouping, aggregation, and explicit ordering. The exact identity-column syntax is standard SQL, but database support and preferred idioms vary.
+
+## Best-Fit Use Cases
+
+SQL is a strong fit for:
+
+- Application data models where relationships, constraints, transactions, and long-lived storage matter.
+- Backend services that need durable state, reporting queries, operational debugging, and migration history.
+- Analytics over structured data, especially when filtering, joining, aggregation, and windowing can run in the database or warehouse.
+- Administrative, audit, billing, inventory, account, catalog, permission, and workflow systems where correctness at the data boundary is central.
+- Shared data surfaces used by applications, analysts, jobs, dashboards, and maintenance scripts.
+
+SQL is often most valuable when it is treated as a first-class language in the project. That means reviewed schema changes, tested migrations, query plans for important paths, explicit transaction boundaries, and a clear policy for how application code and database code share responsibility.
+
+## Poor-Fit Or Risky Use Cases
+
+SQL can be a poor fit when:
+
+- The system needs rich general-purpose computation more than durable relational data.
+- The data naturally lives as deeply nested documents, graph traversals, search indexes, append-only event streams, or key-value access patterns.
+- The team needs exact cross-database portability but also wants advanced vendor features.
+- Application developers cannot inspect or test the generated SQL that an ORM emits.
+- Stored procedures and triggers become an invisible second application without normal review, tests, and deployment discipline.
+- Long-running analytical queries share the same operational database without workload isolation, read replicas, warehouses, or resource controls.
+
+The practical lesson is not to avoid SQL. It is to decide which part of the system SQL owns, choose the database deliberately, and test the behavior that the application depends on.
+
+## Governance And Implementation
+
+SQL standardization is handled through ISO/IEC 9075. The 2023 SQL standard is split into parts, including a framework part, foundation part, and persistent stored modules part. Public standard pages document the formal standard, but complete standard texts are usually obtained through standards-body publication channels rather than ordinary project documentation.
+
+Implementation is decentralized. PostgreSQL publishes a SQL conformance appendix and extensive reference documentation. SQLite documents the query language its engine understands. Oracle documents both Oracle SQL and PL/SQL. Microsoft documents Transact-SQL for SQL Server and related products. MySQL and Db2 document their own SQL references. Cloud warehouses and embedded engines add more dialects.
+
+For production, the database engine is the implementation. SQL competence therefore includes the language, the chosen database's dialect, the optimizer, storage behavior, transaction rules, backup and restore workflow, upgrade policy, and the team's migration practice.
+
+## Comparison Notes
+
+Python is the nearby choice for data work when the question is orchestration, notebooks, files, APIs, machine learning libraries, or general-purpose scripting. SQL is the nearby choice when the work is relational querying, integrity constraints, and database-side execution.
+
+Java, C#, TypeScript, JavaScript, Go, Python, and other application languages usually call SQL rather than replace it. The application language owns process structure, APIs, user workflows, service boundaries, and integration code. SQL owns relational data access, schema contracts, constraints, and transaction-local work.
+
+NoSQL and specialized data systems are the comparison when the data model is not mainly relational. The right question is not whether SQL is old or modern. It is whether the system's invariants, access patterns, and operational needs fit a relational database and its dialect.

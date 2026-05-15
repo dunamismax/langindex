@@ -29,10 +29,12 @@ Observed on 2026-05-15:
   - TypeScript
   - Python
   - Java
+  - SQL
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
   - C vs C++ comparison
+  - SQL vs Python for Data Work comparison
   - Python vs Go comparison
   - C# vs TypeScript comparison
   - Java vs C# comparison
@@ -43,6 +45,7 @@ Observed on 2026-05-15:
   - Choosing an embedded language guide
   - Choosing Python for scripting, backend, data, and AI work guide
   - Choosing Java for backend, enterprise, and JVM work guide
+  - Choosing SQL for data access and application architecture guide
   - Ownership concept page
 - Current local baseline:
 
@@ -259,12 +262,12 @@ justify the extra network time.
 
 ### Phase 10 - SQL
 
-- [ ] Add a complete SQL page.
-- [ ] Treat SQL as a language family with standard SQL plus major dialects.
-- [ ] Cover relational model basics, query semantics, procedural extensions,
+- [x] Add a complete SQL page.
+- [x] Treat SQL as a language family with standard SQL plus major dialects.
+- [x] Cover relational model basics, query semantics, procedural extensions,
       portability limits, database-specific dialects, transactions, and
       tooling.
-- [ ] Add SQL to data, backend, and application architecture guides.
+- [x] Add SQL to data, backend, and application architecture guides.
 
 ### Phase 11 - PHP
 

@@ -1,0 +1,96 @@
+---
+title: SQL vs Python For Data Work
+slug: sql-vs-python-for-data-work
+summary: "SQL and Python often work together in data systems: SQL is strongest for relational querying and database-side execution, while Python is strongest for orchestration, notebooks, files, APIs, and general-purpose data programming."
+languages:
+  - sql
+  - python
+useCases:
+  - data workflows
+  - analytics
+  - backend services
+  - reporting
+  - application architecture
+sources:
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: PostgreSQL SQL Conformance
+    url: https://www.postgresql.org/docs/current/features.html
+    publisher: PostgreSQL Global Development Group
+  - title: Query Language Understood by SQLite
+    url: https://www.sqlite.org/lang.html
+    publisher: SQLite
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: sqlite3 - DB-API 2.0 interface for SQLite databases
+    url: https://docs.python.org/3/library/sqlite3.html
+    publisher: Python Software Foundation
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is about data workflows, analytics, reporting, backend data access, and application architecture. SQL and Python are not substitutes in the broad language sense. SQL is a relational database language and dialect family. Python is a general-purpose programming language with a large data ecosystem.
+
+The useful question is usually where each language should own the work. A healthy data system often uses both: SQL for relational queries and database-enforced contracts, Python for orchestration, files, APIs, notebooks, tests, and integration code.
+
+## Key Differences
+
+| Dimension        | SQL                                                                       | Python                                                                  |
+| ---------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Primary role     | Querying, defining, and changing relational data                          | General-purpose programming, orchestration, scripting, and data tooling |
+| Execution model  | Parsed, optimized, and executed by a database engine                      | Executed by Python implementations, usually CPython                     |
+| Data model       | Tables, rows, columns, relations, constraints, views, and transactions    | Objects, modules, files, packages, data frames, arrays, and libraries   |
+| Type boundary    | Schema-defined database types and constraints                             | Runtime values with optional type hints                                 |
+| Strength         | Set-based operations close to durable data                                | Flexible control flow and broad package ecosystem                       |
+| Portability risk | Database dialects, functions, types, transactions, and optimizer behavior | Interpreter, dependency, packaging, and native extension behavior       |
+
+## Choose SQL When
+
+- The work is filtering, joining, aggregating, sorting, or updating relational data.
+- Correctness depends on constraints, foreign keys, uniqueness, transactions, or database permissions.
+- The data is already in a database or warehouse and moving it into application memory would be slower or riskier.
+- Reports, dashboards, migrations, and operational investigations need reviewable database-side logic.
+- Backend services need explicit transaction boundaries and predictable data access paths.
+
+SQL is especially important when the database is the shared contract between several applications, jobs, analysts, and support workflows.
+
+## Choose Python When
+
+- The task needs filesystem access, HTTP calls, APIs, background jobs, notebooks, tests, or command-line workflows.
+- Data must move between formats such as CSV, JSON, Parquet, APIs, model outputs, files, and databases.
+- The work depends on Python libraries such as pandas, NumPy, scientific packages, visualization tools, or machine learning frameworks.
+- Control flow, custom validation, retries, scheduling, service APIs, or user-facing application behavior dominate the problem.
+- The result is a maintained tool, service, pipeline, or exploratory notebook rather than a database object.
+
+Python can call SQL directly through database drivers, use an ORM or query builder, or delegate local relational work to SQLite. The boundary still needs tests and clear ownership.
+
+## Use Them Together When
+
+Most production data systems should expect both languages:
+
+- SQL defines tables, constraints, indexes, views, and migrations.
+- SQL performs database-local filtering, joins, aggregation, and transactional updates.
+- Python orchestrates files, services, jobs, notebooks, validation, tests, and operational glue.
+- Python libraries handle analysis, visualization, ML workflows, and non-relational transformations.
+- Application code parameterizes SQL, validates inputs, handles errors, and manages retries.
+
+The handoff matters. Avoid pulling millions of rows into Python only to filter them row by row when the database can do the work. Also avoid forcing complex API calls, filesystem workflows, or business process orchestration into stored procedures only because the data starts in a database.
+
+## Watch Points
+
+SQL's risks are dialect coupling and invisible cost. A query can look small while scanning a large table, using a poor plan, waiting on locks, or depending on vendor-specific behavior. Important SQL needs migrations, tests, query review, and production-shaped data.
+
+Python's risks are environment and memory cost. Pulling too much data into Python can exhaust memory or bypass database constraints. Scripts that started as analysis can become production pipelines without dependency locking, tests, observability, or retry behavior.
+
+## Practical Default
+
+Start with SQL for relational storage, constraints, transactions, and database-side set operations. Start with Python for orchestration, notebooks, APIs, files, services, and data tooling around the database. Treat the boundary as a real interface: parameterize queries, version migrations, test representative data, and keep database-specific assumptions visible.
