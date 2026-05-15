@@ -1,0 +1,11 @@
+{$SITE_ADDRESS} {
+	root * /srv
+	encode zstd gzip
+	file_server
+
+	header {
+		Permissions-Policy "interest-cohort=()"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Content-Type-Options "nosniff"
+	}
+}

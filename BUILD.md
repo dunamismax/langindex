@@ -16,8 +16,8 @@ Treat unchecked boxes as plan. Move stable material into `docs/`,
 - Public production domain is [https://langindex.dev](https://langindex.dev).
 - Initial `README.md` and `CONTRIBUTING.md` describe the product and
   contribution standard.
-- Project code is licensed under GPL-3.0. The content/data license is
-  not finalized.
+- Project code is licensed under GPL-3.0. Content and data are licensed
+  under CC-BY-SA-4.0 unless noted otherwise.
 - Repo-local `AGENTS.md` and this `BUILD.md` define the initial build
   direction.
 - Astro 6 static skeleton exists with Tailwind CSS 4, MDX, typed content
@@ -293,7 +293,7 @@ state where documented verification passes on a clean checkout.
 - [x] Write repo-local `AGENTS.md`.
 - [x] Write this `BUILD.md`.
 - [x] Decide code license.
-- [ ] Decide content/data license.
+- [x] Decide content/data license.
 - [x] Add `.gitignore`.
 - [x] Add `.editorconfig`.
 
@@ -361,24 +361,24 @@ Suggested seed languages:
 
 ### Phase 4 - Contributor Workflow
 
-- [ ] Add issue templates.
-- [ ] Add pull request template.
-- [ ] Add language page template.
-- [ ] Add comparison page template.
-- [ ] Add source/citation guidance.
+- [x] Add issue templates.
+- [x] Add pull request template.
+- [x] Add language page template.
+- [x] Add comparison page template.
+- [x] Add source/citation guidance.
 - [ ] Add CODEOWNERS only when maintainers or review owners exist.
-- [ ] Add link checking or source validation checks.
-- [ ] Add docs for local development.
+- [x] Add link checking or source validation checks.
+- [x] Add docs for local development.
 
 ### Phase 5 - Self-Hosted Deployment
 
-- [ ] Add `Dockerfile`.
-- [ ] Add `compose.yaml`.
-- [ ] Add Caddy config under `deploy/caddy/`.
-- [ ] Add `docs/deployment.md`.
-- [ ] Build production image locally.
-- [ ] Verify container serves static build.
-- [ ] Validate Caddy config.
+- [x] Add `Dockerfile`.
+- [x] Add `compose.yaml`.
+- [x] Add Caddy config under `deploy/caddy/`.
+- [x] Add `docs/deployment.md`.
+- [x] Build production image locally.
+- [x] Verify container serves static build.
+- [x] Validate Caddy config.
 - [ ] Deploy to Ubuntu VM after Stephen approves.
 - [ ] Confirm [https://langindex.dev](https://langindex.dev) serves the
       static site.
@@ -462,3 +462,9 @@ have changed.
 - 2026-05-15 - Added Pagefind indexing and search UI, filterable language
   discovery, related-language and comparison links on language pages, and
   `/languages.json` metadata output.
+- 2026-05-15 - Added CC-BY-SA-4.0 content licensing, contributor issue and
+  pull request templates, source validation, content templates, local
+  development docs, and Docker/Caddy deployment wiring.
+- 2026-05-15 - Built the local production image, validated the Caddy config
+  with the Caddy container, and verified the static site from the local
+  LangIndex container.

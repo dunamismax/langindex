@@ -58,4 +58,6 @@ The first milestone is to define the content model and publish a small, high-qua
 
 ## License
 
-Project code is licensed under GPL-3.0. The content/data license is not finalized yet and should be decided before accepting broad external content contributions.
+Project code is licensed under GPL-3.0. LangIndex content and data are
+licensed under Creative Commons Attribution-ShareAlike 4.0 International
+(`CC-BY-SA-4.0`) unless noted otherwise. See [LICENSE-CONTENT.md](LICENSE-CONTENT.md).

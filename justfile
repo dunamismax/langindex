@@ -9,6 +9,9 @@ check:
 test:
   pnpm test
 
+validate-sources:
+  pnpm validate:sources
+
 build:
   pnpm build
 

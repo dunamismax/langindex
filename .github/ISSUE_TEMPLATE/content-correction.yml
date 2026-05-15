@@ -1,0 +1,40 @@
+name: Content correction
+description: Report a factual issue, stale source, or unclear language page.
+title: "[Content]: "
+labels:
+  - content
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for factual corrections, stale details, missing source links, or unclear tradeoff framing.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Link to the affected LangIndex page or repository file.
+      placeholder: https://langindex.dev/languages/rust
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What should change?
+      description: Describe the factual issue or unclear wording.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Prefer official docs, specs, release notes, governance pages, or repositories.
+      placeholder: |
+        - https://www.rust-lang.org/
+        - https://doc.rust-lang.org/reference/
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Include uncertainty, scope limits, or context for reviewers.

@@ -1,0 +1,36 @@
+name: Language page request
+description: Suggest a new programming language page.
+title: "[Language]: "
+labels:
+  - language
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: Zig
+    validations:
+      required: true
+  - type: textarea
+    id: fit
+    attributes:
+      label: Why should this page be added?
+      description: Note the practical developer questions this page should answer.
+    validations:
+      required: true
+  - type: textarea
+    id: official-sources
+    attributes:
+      label: Official sources
+      description: Link official docs, specs, release notes, repositories, or governance pages.
+      placeholder: |
+        - Official site:
+        - Language reference:
+        - Repository:
+    validations:
+      required: true
+  - type: textarea
+    id: comparisons
+    attributes:
+      label: Common comparisons
+      description: Which nearby languages should this page link to or compare against?

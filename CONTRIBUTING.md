@@ -55,6 +55,8 @@ Use citations for claims about:
 
 Prefer official sources. If no official source exists, use the most authoritative available source and make the limitation clear.
 
+See [docs/sources.md](docs/sources.md) for source and citation guidance.
+
 ## Comparison Standard
 
 Comparisons should be dimensional, not tribal.
@@ -79,3 +81,7 @@ Pull requests should include:
 - Notes about anything uncertain or intentionally omitted
 
 Small, focused pull requests are easier to review than broad rewrites.
+
+Use the templates in [docs/templates/](docs/templates/) when adding language
+or comparison pages. Local setup and verification commands live in
+[docs/local-development.md](docs/local-development.md).
