@@ -15,10 +15,34 @@ test("homepage exposes search and language discovery", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("language filters narrow results", async ({ page }) => {
+test("mobile navigation opens and exposes primary links", async ({ page }) => {
+  test.skip(
+    test.info().project.name !== "mobile-chrome",
+    "Mobile navigation is only visible in the mobile project.",
+  );
+
+  await page.goto("/");
+
+  const toggle = page.getByRole("button", { name: /toggle navigation/i });
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByRole("navigation", { name: "Mobile" })).toBeVisible();
+  await expect(
+    page.getByRole("navigation", { name: "Mobile" }).getByRole("link", {
+      name: "Languages",
+    }),
+  ).toBeVisible();
+});
+
+test("language filters narrow results and stay visible", async ({ page }) => {
   await page.goto("/languages/");
 
-  await page.getByLabel("Search", { exact: true }).fill("borrowing");
+  const search = page.getByLabel("Search", { exact: true });
+  await expect(search).toBeVisible();
+  await search.fill("borrowing");
 
   await expect(page.getByRole("link", { name: "Open Rust" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open Go" })).toHaveCount(0);
@@ -37,6 +61,25 @@ test("language profile shows sources and comparison links", async ({
   await expect(
     page.getByRole("link", { name: /Rust vs Go/i }).first(),
   ).toBeVisible();
+});
+
+test("language cards and comparison tables fit narrow viewports", async ({
+  page,
+}) => {
+  await page.goto("/languages/");
+  await expect(
+    page.getByRole("link", { name: "Open TypeScript" }),
+  ).toBeVisible();
+
+  await page.goto("/comparisons/rust-vs-go/");
+  await expect(
+    page.getByRole("heading", { name: "Rust vs Go", level: 1 }),
+  ).toBeVisible();
+
+  const hasHorizontalOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > window.innerWidth,
+  );
+  expect(hasHorizontalOverflow).toBe(false);
 });
 
 test("comparison page renders sourced comparison content", async ({ page }) => {

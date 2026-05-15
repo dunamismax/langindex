@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import SourceList from "../../components/layout/SourceList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { languageTitleForSlug } from "../../lib/language-registry";
 
 export async function getStaticPaths() {
   const languages = await getCollection("languages");
@@ -19,27 +20,13 @@ const comparisons = await getCollection("comparisons");
 const languageTitles = new Map(
   allLanguages.map((entry) => [entry.data.slug, entry.data.title]),
 );
-const pendingLanguageTitles: Record<string, string> = {
-  c: "C",
-  cpp: "C++",
-  csharp: "C#",
-  dart: "Dart",
-  java: "Java",
-  javascript: "JavaScript",
-  kotlin: "Kotlin",
-  python: "Python",
-  r: "R",
-  ruby: "Ruby",
-  swift: "Swift",
-  zig: "Zig",
-};
 const comparisonMatches = comparisons
   .filter((comparison) => comparison.data.languages.includes(data.slug))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
 const relatedLanguages = data.comparedWith
   .map((slug) => ({
     slug,
-    title: languageTitles.get(slug) ?? pendingLanguageTitles[slug] ?? slug,
+    title: languageTitles.get(slug) ?? languageTitleForSlug(slug),
   }))
   .sort((a, b) => a.title.localeCompare(b.title));
 

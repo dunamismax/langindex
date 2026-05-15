@@ -107,33 +107,21 @@ a {
   overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: var(--color-surface);
+  background-image: image-set(
+    url("/brand/langindex-banner-dark-724.webp") 1x,
+    url("/brand/langindex-banner-dark-1448.webp") 2x
+  );
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--color-surface);
+  background-size: cover;
 }
 
-.brand-switch__image,
-.brand-switch__image img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.brand-switch__image {
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-.brand-switch__image img {
-  object-fit: cover;
-}
-
-[data-theme="dark"] .brand-switch__dark,
-:root:not([data-theme="light"]) .brand-switch__dark {
-  opacity: 1;
-}
-
-[data-theme="light"] .brand-switch__light {
-  opacity: 1;
+[data-theme="light"] .brand-switch {
+  background-image: image-set(
+    url("/brand/langindex-banner-light-724.webp") 1x,
+    url("/brand/langindex-banner-light-1448.webp") 2x
+  );
 }
 
 ::selection {
@@ -245,6 +233,13 @@ a {
 
 .content-body li {
   margin: 0.35rem 0;
+}
+
+.content-body table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
 }
 
 .content-body a {

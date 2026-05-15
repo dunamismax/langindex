@@ -12,6 +12,30 @@ const {
   description = "LangIndex is a self-hosted reference for programming languages.",
 } = Astro.props;
 const pageTitle = title === "LangIndex" ? title : `${title} | LangIndex`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const siteUrl = new URL("/", canonicalUrl).toString();
+const shareImage = new URL("/brand/langindex-logo-512.png", canonicalUrl);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: pageTitle,
+  description,
+  url: canonicalUrl.toString(),
+  isPartOf: {
+    "@type": "WebSite",
+    name: "LangIndex",
+    url: siteUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  },
+};
+const structuredDataJson = JSON.stringify(structuredData).replaceAll(
+  "<",
+  "\\u003c",
+);
 const navItems = [
   { href: "/languages", label: "Languages" },
   { href: "/comparisons", label: "Comparisons" },
@@ -39,6 +63,18 @@ const isActive = (href: string) => {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl.toString()} />
+    <meta property="og:site_name" content="LangIndex" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl.toString()} />
+    <meta property="og:image" content={shareImage.toString()} />
+    <meta property="og:image:alt" content="LangIndex" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage.toString()} />
     <meta name="color-scheme" content="dark light" />
     <meta
       name="theme-color"
@@ -57,6 +93,11 @@ const isActive = (href: string) => {
       href="/rss.xml"
     />
     <title>{pageTitle}</title>
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={structuredDataJson}
+    />
     <script is:inline>
       (function () {
         try {

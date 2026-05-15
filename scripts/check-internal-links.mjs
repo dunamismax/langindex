@@ -38,6 +38,18 @@ function routeToFile(pathname) {
   return { withExtension, withoutExtension };
 }
 
+function fileToPathname(filePath) {
+  const relativePath = path
+    .relative(distRoot, filePath)
+    .split(path.sep)
+    .join("/");
+  if (relativePath === "index.html") return "/";
+  if (relativePath.endsWith("/index.html")) {
+    return `/${relativePath.slice(0, -"index.html".length)}`;
+  }
+  return `/${relativePath}`;
+}
+
 function extractLinks(text) {
   const links = [];
   const patterns = [
@@ -52,9 +64,45 @@ function extractLinks(text) {
   return links;
 }
 
+function extractAnchors(text) {
+  const anchors = new Set();
+  for (const match of text.matchAll(/\bid=["']([^"']+)["']/gi)) {
+    anchors.add(match[1]);
+  }
+  for (const match of text.matchAll(/\bname=["']([^"']+)["']/gi)) {
+    anchors.add(match[1]);
+  }
+  return anchors;
+}
+
+async function resolveTargetFile(pathname) {
+  const target = routeToFile(pathname);
+  if (typeof target === "string") {
+    return (await pathExists(target)) ? target : null;
+  }
+
+  if (await pathExists(target.withExtension)) return target.withExtension;
+  if (await pathExists(target.withoutExtension)) return target.withoutExtension;
+  return null;
+}
+
+async function validateHash(sourceFile, targetFile, url) {
+  if (!url.hash) return;
+  if (path.extname(targetFile) && path.extname(targetFile) !== ".html") return;
+
+  const id = decodeURIComponent(url.hash.slice(1));
+  if (!id) return;
+
+  const targetText = await readFile(targetFile, "utf8");
+  if (!extractAnchors(targetText).has(id)) {
+    errors.push(
+      `${path.relative(repoRoot, sourceFile)} links to missing anchor ${url.pathname}${url.hash}`,
+    );
+  }
+}
+
 async function validateInternalLink(sourceFile, rawLink) {
   if (
-    rawLink.startsWith("#") ||
     rawLink.startsWith("mailto:") ||
     rawLink.startsWith("tel:") ||
     rawLink.startsWith("data:")
@@ -64,7 +112,10 @@ async function validateInternalLink(sourceFile, rawLink) {
 
   let url;
   try {
-    url = new URL(rawLink, "https://langindex.dev/");
+    url = new URL(
+      rawLink,
+      `https://langindex.dev${fileToPathname(sourceFile)}`,
+    );
   } catch {
     errors.push(
       `${path.relative(repoRoot, sourceFile)} has invalid link: ${rawLink}`,
@@ -74,24 +125,15 @@ async function validateInternalLink(sourceFile, rawLink) {
 
   if (url.origin !== "https://langindex.dev") return;
 
-  const target = routeToFile(url.pathname);
-  if (typeof target === "string") {
-    if (!(await pathExists(target))) {
-      errors.push(
-        `${path.relative(repoRoot, sourceFile)} links to missing ${url.pathname}`,
-      );
-    }
-    return;
-  }
-
-  if (
-    !(await pathExists(target.withExtension)) &&
-    !(await pathExists(target.withoutExtension))
-  ) {
+  const targetFile = await resolveTargetFile(url.pathname);
+  if (!targetFile) {
     errors.push(
       `${path.relative(repoRoot, sourceFile)} links to missing ${url.pathname}`,
     );
+    return;
   }
+
+  await validateHash(sourceFile, targetFile, url);
 }
 
 if (!(await pathExists(distRoot))) {

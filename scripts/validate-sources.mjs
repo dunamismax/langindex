@@ -4,7 +4,12 @@ import { parse } from "yaml";
 
 const repoRoot = process.cwd();
 const contentRoot = path.join(repoRoot, "src", "content");
-const requiredSourceCollections = new Set(["languages", "comparisons"]);
+const requiredSourceCollections = new Set([
+  "languages",
+  "comparisons",
+  "guides",
+  "concepts",
+]);
 const today = new Date();
 today.setHours(23, 59, 59, 999);
 
