@@ -1,29 +1,34 @@
 # BUILD.md
 
-Active build plan for LangIndex. `README.md` introduces the product.
-This file tracks stack choices, content model, phases, deployment, and
-verification while the site is built.
+Active content build plan for LangIndex. `README.md` introduces the
+product. `AGENTS.md` defines durable operating rules. This file now tracks
+the next stage: turning the live skeleton into a deep, source-backed
+programming language reference.
 
-Treat unchecked boxes as plan. Move stable material into `docs/`,
-`README.md`, or runbooks as the implementation matures.
+The previous foundation phases are complete. Do not re-add old scaffold
+work here unless it becomes active again. Move stable technical material
+into `docs/`; keep this file focused on current content expansion.
 
 ---
 
-## What's Live Now
+## Current Baseline
 
-- Repository exists at `dunamismax/langindex`.
+Observed on 2026-05-15:
+
+- Public site is live at [https://langindex.dev](https://langindex.dev).
+- Astro 6 static site, TypeScript, MDX, Astro Content Collections, Zod,
+  Tailwind CSS 4, Pagefind, Playwright, Docker, Compose, and Caddy wiring
+  exist.
 - `origin` fetches from GitHub and pushes to GitHub plus Codeberg.
-- Public production domain is [https://langindex.dev](https://langindex.dev).
-- Initial `README.md` and `CONTRIBUTING.md` describe the product and
-  contribution standard.
-- Project code is licensed under GPL-3.0. Content and data are licensed
-  under CC-BY-SA-4.0 unless noted otherwise.
-- Repo-local `AGENTS.md` and this `BUILD.md` define the initial build
-  direction.
-- Astro 6 static skeleton exists with Tailwind CSS 4, MDX, typed content
-  collections, seed content, and CI.
-
-Current local baseline observed on 2026-05-15:
+- Current language pages:
+  - Rust
+  - Go
+  - TypeScript
+- Current supporting content:
+  - Rust vs Go comparison
+  - Choosing a systems language guide
+  - Ownership concept page
+- Current local baseline:
 
 ```text
 Node.js: v26.0.0
@@ -32,382 +37,451 @@ pnpm: 10.32.1
 
 ---
 
-## Stack Decisions
+## Content Objective
 
-- **Astro** for the framework.
-- **TypeScript** for app code, content helpers, and validation.
-- **MDX** for long-form language, comparison, guide, and concept pages.
-- **Astro Content Collections** for typed content loading.
-- **Zod schemas** through content collections for structured frontmatter.
-- **Pagefind** for static search.
-- **Tailwind CSS** for styling.
-- **pnpm** for package management.
-- **justfile** as the primary command runner once the skeleton exists.
-- **Docker Compose** for production build/deploy wiring.
-- **Caddy** on Stephen's Ubuntu VM for TLS and static file serving.
+LangIndex should expand one language at a time, with each language page
+treated as a durable reference rather than a stub. Accuracy beats coverage,
+but expansion order should still favor languages developers are most likely
+to search for, compare, or use in production.
 
-No database in v1. Add PostgreSQL only when dynamic product features
-earn it: accounts, review queues, moderation, private drafts, analytics,
-or authenticated maintainer workflows.
+Each language phase should leave the site better in four ways:
+
+- A complete, source-backed language profile.
+- At least one useful comparison or comparison update.
+- Improved browse/search metadata for that language's ecosystem.
+- Clear contributor surface for maintainers or community experts to correct
+  the page.
 
 ---
 
-## Product Invariants
+## Completion Standard
 
-- LangIndex is a field guide and reference for programming languages.
-- Accuracy beats coverage.
-- Git is the source of truth for content, review history, and
-  contribution workflow.
-- Public pages must be useful without login, tracking, or client-heavy
-  application code.
-- Every language page should be easy for its community to correct.
-- Facts should be source-backed. Opinions should be clearly framed as
-  tradeoffs.
-- Comparisons are dimensional, not tribal.
-- Search and browse are primary workflows.
-- The site must be self-hostable from a clean checkout.
+A language page is not considered complete until it has:
 
----
-
-## Editorial Invariants
-
-- Prefer official sources.
-- Do not invent citations or imply sources were checked when they were
-  not.
-- Mark unknowns and disputed details directly.
-- Keep examples idiomatic and minimal.
-- Avoid benchmark claims until there is a documented benchmark policy.
-- Avoid adoption rankings until there is a documented methodology.
-- Use current-state wording instead of historical narration unless
-  history is the point.
-- Every substantial page should include a visible `lastVerified` date.
-
----
-
-## Content Model
-
-The content model should be strict enough for reliable browsing,
-filtering, comparison, and search.
-
-Recommended collections:
-
-```text
-languages     -- individual language profiles
-comparisons   -- language-to-language or family comparisons
-guides        -- use-case and decision guides
-concepts      -- glossary/reference pages for cross-language ideas
-```
-
-Initial language frontmatter shape:
-
-```yaml
-title: Rust
-slug: rust
-status: active
-firstReleased: 2015
-creators:
-  - Graydon Hoare
-paradigms:
-  - systems
-  - multi-paradigm
-typing:
-  discipline: static
-  strength: strong
-memory:
-  model: ownership
-runtime:
-  model: native
-officialSite: https://www.rust-lang.org/
-repository: https://github.com/rust-lang/rust
-packageManagers:
-  - Cargo
-comparedWith:
-  - c
-  - cpp
-  - zig
-lastVerified: 2026-05-15
-```
-
-Expect the schema to evolve. Prefer migration scripts or focused PRs over
-ad hoc drift once real content exists.
-
----
-
-## Target Source Layout
-
-```text
-src/
-  content/
-    languages/
-    comparisons/
-    guides/
-    concepts/
-  components/
-    language/
-    search/
-    layout/
-  layouts/
-  pages/
-  styles/
-  lib/
-public/
-docs/
-  content-model.md
-  editorial-standard.md
-  deployment.md
-  sources.md
-deploy/
-  caddy/
-  docker/
-tests/
-  playwright/
-astro.config.mjs
-package.json
-pnpm-lock.yaml
-tailwind.config.*
-tsconfig.json
-justfile
-Dockerfile
-compose.yaml
-```
-
----
-
-## Target Routes
-
-Core public routes:
-
-```text
-GET /                         searchable language discovery
-GET /languages                full language index
-GET /languages/{slug}         language profile
-GET /comparisons              comparison index
-GET /comparisons/{slug}       comparison page
-GET /guides                   guide index
-GET /guides/{slug}            decision guide
-GET /concepts                 concept/glossary index
-GET /concepts/{slug}          concept page
-GET /about                    project purpose and governance
-GET /contribute               contributor entrypoint
-```
-
-Machine-readable routes to consider:
-
-```text
-GET /languages.json           public language metadata
-GET /search/                  Pagefind assets
-GET /sitemap-index.xml
-GET /rss.xml                  project updates, optional
-```
-
----
-
-## Page Requirements
-
-Language page:
-
-- Clear summary of what the language is for.
+- Accurate frontmatter for stable metadata: release date, creators or
+  organization, status, paradigms, typing, memory model, runtime model,
+  package managers, official site, repository, related languages, and
+  `lastVerified`.
+- A concise above-the-fold summary that explains what the language is for.
 - Origin and design goals.
-- Best-fit use cases.
-- Poor-fit or risky use cases.
-- Highlights and tradeoffs.
-- Syntax examples.
-- Tooling and ecosystem notes.
-- Governance and implementation notes where relevant.
-- Compared-with links.
-- Official resources.
-- Sources and last verified date.
+- Current implementation, runtime, compiler, interpreter, or target story.
+- Type system, memory model, concurrency model, module/package system, and
+  build/deployment model where relevant.
+- Best-fit use cases and poor-fit/risky use cases, framed as constraints.
+- Practical idiomatic examples that are small and runnable when possible.
+- Tooling and ecosystem notes, including standard package/build/test tools.
+- Governance, standards, ownership, release cadence, and compatibility
+  policy where those concepts apply.
+- Source-backed facts from official sources first, then high-quality
+  secondary sources only when official sources do not cover the claim.
+- Comparisons with nearby languages.
+- Visible sources and a current `lastVerified` date.
 
-Comparison page:
-
-- Scope: which languages and which use cases are being compared.
-- Shared territory.
-- Key differences.
-- Tradeoff table.
-- Migration or interoperability notes where relevant.
-- "Choose X when..." and "Choose Y when..." guidance.
-- Sources and last verified date.
-
-Guide page:
-
-- Concrete developer problem.
-- Evaluation criteria.
-- Candidate languages.
-- Tradeoffs and constraints.
-- Links into language and comparison pages.
+For every phase, update comparison, guide, concept, and navigation content
+when the language exposes gaps in the surrounding reference graph.
 
 ---
 
-## Design Direction
+## Source Policy
 
-- Content-forward, fast, and quiet.
-- Reference-site density without clutter.
-- Strong typography and scanning hierarchy.
-- No marketing-first landing page.
-- Homepage should expose real browsing/search value immediately.
-- Language cards should be compact and comparable.
-- Source quality and last verification should be visible.
-- Use color sparingly for categories, status, and affordances.
-- Avoid a one-note palette.
+Prefer, in order:
+
+1. Official language specifications, docs, release notes, governance pages,
+   package manager docs, and repositories.
+2. Standards bodies and foundation pages.
+3. Maintainer-authored posts or project RFCs/proposals.
+4. Carefully labeled secondary sources for historical or ecosystem context.
+
+Do not publish popularity, performance, safety, adoption, production-ready,
+or maturity claims without a specific source and methodology. If a source
+was not checked during the edit, do not imply it was.
 
 ---
 
-## Deployment Target
+## Expansion Order Methodology
 
-Production target:
+There is no single authoritative popularity ranking. Use a composite order
+and re-check it before each major batch:
 
-```text
-Ubuntu VM
-Docker Compose
-Caddy
-langindex.dev
+- Developer usage survey signal: Stack Overflow Developer Survey 2025
+  programming/scripting/markup language usage.
+- Repository activity signal: GitHub Octoverse 2025 language usage and new
+  repository activity.
+- Search/community signal: TIOBE Index, checked monthly.
+- LangIndex product judgment: prioritize languages that unlock high-value
+  comparisons, common production decisions, and broad contributor interest.
+
+Sources checked for this planning rewrite:
+
+- Stack Overflow Developer Survey 2025:
+  <https://survey.stackoverflow.co/2025/technology/>
+- GitHub Octoverse 2025:
+  <https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/>
+- TIOBE Index, May 2026:
+  <https://www.tiobe.com/tiobe-index/>
+
+The phase order below is therefore an editorial expansion order, not a
+claim that LangIndex has measured exact global language usage.
+
+---
+
+## Per-Language Workflow
+
+For each language phase:
+
+- Research official sources first.
+- Update or create `src/content/languages/{slug}.mdx`.
+- Add or update at least one comparison when the language has an obvious
+  adjacent choice.
+- Add or update concepts when a recurring idea needs explanation.
+- Add or update guides when a practical developer decision emerges.
+- Run local verification before commit:
+
+```sh
+git diff --check
+just fmt
+just check
+just test
+just build
 ```
 
-Expected production shape:
-
-- Build static site in a container or CI job.
-- Serve generated `dist/` through Caddy.
-- Caddy owns TLS for `langindex.dev`.
-- No production secrets required for v1.
-- Deployment should be reproducible from repo docs.
-
-Do not deploy or change production Caddy/DNS without explicit Stephen
-approval.
+Use `just check-links-external` when source changes are broad enough to
+justify the extra network time.
 
 ---
 
 ## Phases
 
-Ordered intent, not rigid sequence. Each phase should leave the repo in a
-state where documented verification passes on a clean checkout.
+### Phase 1 - TypeScript Completion
 
-### Phase 0 - Project Foundation
+- [ ] Expand the TypeScript page to the completion standard.
+- [ ] Cover type erasure, structural typing, gradual adoption, compiler
+      options, JavaScript runtime boundaries, declaration files, package
+      manager reality, and modern framework usage.
+- [ ] Add or expand TypeScript vs JavaScript comparison.
+- [ ] Add comparison links for JavaScript, Dart, Kotlin, and C# where
+      useful.
+- [ ] Add a guide section for when teams should choose JavaScript,
+      TypeScript, or another compile-to-JavaScript language.
 
-- [x] Choose project name and domain.
-- [x] Configure public domain in Cloudflare.
-- [x] Create GitHub and Codeberg repositories.
-- [x] Clone repository into `/Users/sawyer/github/langindex`.
-- [x] Normalize dual-push remote configuration.
-- [x] Write `README.md`.
-- [x] Write `CONTRIBUTING.md`.
-- [x] Write repo-local `AGENTS.md`.
-- [x] Write this `BUILD.md`.
-- [x] Decide code license.
-- [x] Decide content/data license.
-- [x] Add `.gitignore`.
-- [x] Add `.editorconfig`.
+### Phase 2 - Go Completion
 
-### Phase 1 - Astro Skeleton
+- [ ] Expand the Go page to the completion standard.
+- [ ] Cover design goals, goroutines, channels, garbage collection, standard
+      library strength, modules, formatting, testing, release policy, and
+      toolchain compatibility.
+- [ ] Expand Rust vs Go with more practical tradeoff dimensions.
+- [ ] Add or update comparisons for Go vs Java, Go vs Python, and Go vs C#
+      when those pages exist.
+- [ ] Update systems and services guides with Go-specific constraints.
 
-- [x] Initialize Astro with TypeScript.
-- [x] Add Tailwind CSS.
-- [x] Add MDX integration.
-- [x] Add Astro Content Collections.
-- [x] Add initial Zod schemas for `languages`, `comparisons`, `guides`,
-      and `concepts`.
-- [x] Add `justfile` with `fmt`, `check`, `test`, `build`, and `dev`.
-- [x] Add basic layout, typography, and navigation.
-- [x] Add homepage, language index, language detail route, and about page.
-- [x] Add CI for install, type-check, and build.
+### Phase 3 - Rust Completion
 
-### Phase 2 - Content Model And Seed Pages
+- [ ] Expand the Rust page to the completion standard.
+- [ ] Cover ownership and borrowing, lifetimes, traits, `unsafe`, editions,
+      Cargo, crates.io, rustup, embedded/WebAssembly targets, governance,
+      and compatibility policy.
+- [ ] Expand Rust vs Go and prepare Rust vs C, Rust vs C++, and Rust vs Zig.
+- [ ] Expand the ownership concept page so it supports Rust and future
+      systems-language pages.
+- [ ] Add systems-language guide material for Rust adoption constraints.
 
-- [x] Document the content model in `docs/content-model.md`.
-- [x] Document the editorial standard in `docs/editorial-standard.md`.
-- [x] Add first language pages with verified sources.
-- [x] Add first comparison pages.
-- [x] Add first guide page.
-- [x] Validate all content through collection schemas.
-- [x] Add visible source and `lastVerified` sections to page templates.
+### Phase 4 - Python
 
-Suggested seed languages:
+- [ ] Add a complete Python page.
+- [ ] Cover CPython, Python Enhancement Proposals, package tooling, virtual
+      environments, typing, packaging friction, data/AI ecosystem, scripting,
+      web services, and deployment constraints.
+- [ ] Add Python vs JavaScript or Python vs Go comparison.
+- [ ] Add Python to relevant guides for scripting, backend services, data,
+      and AI-adjacent work.
 
-- C
-- C++
-- Rust
-- Zig
-- Go
-- Java
-- Kotlin
-- C#
-- JavaScript
-- TypeScript
-- Python
-- Ruby
-- PHP
-- Swift
-- Elixir
-- Erlang
-- Haskell
-- OCaml
-- Clojure
-- Lua
-- Julia
-- R
-- Nim
-- Crystal
-- Dart
-- SQL
+### Phase 5 - JavaScript
 
-### Phase 3 - Search And Discovery
+- [ ] Add a complete JavaScript page.
+- [ ] Cover ECMAScript, browser runtimes, Node.js and other server runtimes,
+      npm ecosystem, prototype model, async model, module systems, and web
+      platform coupling.
+- [ ] Add JavaScript vs TypeScript comparison.
+- [ ] Add JavaScript to web and scripting guides.
 
-- [x] Add Pagefind indexing after Astro build.
-- [x] Add search UI with keyboard-friendly behavior.
-- [x] Add filters for paradigm, typing, runtime target, ecosystem, and
-      use case.
-- [x] Add language family and related-language browsing.
-- [x] Add comparison discovery from language pages.
-- [x] Add generated metadata pages or JSON only if useful.
+### Phase 6 - Java
 
-### Phase 4 - Contributor Workflow
+- [ ] Add a complete Java page.
+- [ ] Cover JVM, JDK, JEPs, bytecode, garbage collection, generics,
+      concurrency, Maven/Gradle, long-term support releases, enterprise
+      ecosystem, Android history, and governance through the JCP/OpenJDK.
+- [ ] Add Java vs C#, Java vs Go, and Java vs Kotlin comparisons.
+- [ ] Add Java to backend, enterprise, and JVM ecosystem guides.
 
-- [x] Add issue templates.
-- [x] Add pull request template.
-- [x] Add language page template.
-- [x] Add comparison page template.
-- [x] Add source/citation guidance.
+### Phase 7 - C#
+
+- [ ] Add a complete C# page.
+- [ ] Cover .NET, CLR, Roslyn, NuGet, async/await, LINQ, generics, memory
+      management, cross-platform status, game development with Unity, and
+      Microsoft stewardship.
+- [ ] Add C# vs Java and C# vs TypeScript comparisons.
+- [ ] Add C# to backend, desktop, game, and enterprise guides.
+
+### Phase 8 - C
+
+- [ ] Add a complete C page.
+- [ ] Cover ISO C, compilers, undefined behavior, manual memory management,
+      ABI stability, systems programming, embedded use, package/build
+      fragmentation, and interoperability.
+- [ ] Add C vs Rust and C vs C++ comparisons.
+- [ ] Add C to systems and embedded guides.
+
+### Phase 9 - C++
+
+- [ ] Add a complete C++ page.
+- [ ] Cover ISO standardization, major compilers, templates, RAII, value
+      semantics, memory safety tradeoffs, package/build ecosystem, ABI
+      issues, performance-critical domains, and modern C++ evolution.
+- [ ] Add C++ vs Rust, C++ vs C, and C++ vs Java comparisons.
+- [ ] Add C++ to systems, games, embedded, and performance guides.
+
+### Phase 10 - SQL
+
+- [ ] Add a complete SQL page.
+- [ ] Treat SQL as a language family with standard SQL plus major dialects.
+- [ ] Cover relational model basics, query semantics, procedural extensions,
+      portability limits, database-specific dialects, transactions, and
+      tooling.
+- [ ] Add SQL to data, backend, and application architecture guides.
+
+### Phase 11 - PHP
+
+- [ ] Add a complete PHP page.
+- [ ] Cover PHP runtime, Composer, Packagist, web hosting history, modern
+      framework ecosystem, type-system evolution, deployment model, and
+      common production constraints.
+- [ ] Add PHP vs JavaScript/Node.js and PHP vs Ruby comparisons.
+- [ ] Add PHP to web backend guides.
+
+### Phase 12 - Kotlin
+
+- [ ] Add a complete Kotlin page.
+- [ ] Cover JVM, Android, Kotlin Multiplatform, null safety, coroutines,
+      Gradle, interoperability with Java, and JetBrains stewardship.
+- [ ] Add Kotlin vs Java and Kotlin vs Swift comparisons.
+- [ ] Add Kotlin to JVM, Android, and multiplatform guides.
+
+### Phase 13 - Swift
+
+- [ ] Add a complete Swift page.
+- [ ] Cover Apple platform role, Swift Evolution, memory management, value
+      types, concurrency, package manager, server-side status, and Objective-C
+      interoperability.
+- [ ] Add Swift vs Kotlin and Swift vs Objective-C comparisons.
+- [ ] Add Swift to mobile and Apple-platform guides.
+
+### Phase 14 - Ruby
+
+- [ ] Add a complete Ruby page.
+- [ ] Cover MRI, RubyGems, Bundler, Rails influence, dynamic typing,
+      metaprogramming, concurrency constraints, release policy, and
+      productivity tradeoffs.
+- [ ] Add Ruby vs Python and Ruby vs PHP comparisons.
+- [ ] Add Ruby to web backend and scripting guides.
+
+### Phase 15 - R
+
+- [ ] Add a complete R page.
+- [ ] Cover statistical computing focus, CRAN, package ecosystem, data frame
+      workflows, RStudio/Posit ecosystem, interoperability, performance
+      constraints, and academic/research fit.
+- [ ] Add R vs Python comparison for data analysis.
+- [ ] Add R to data science and statistics guides.
+
+### Phase 16 - Bash / Shell
+
+- [ ] Add a complete Bash or shell scripting page with clear scope.
+- [ ] Cover POSIX shell boundaries, Bash-specific features, portability,
+      pipelines, process model, error handling risks, and automation fit.
+- [ ] Add Shell vs Python comparison for scripts.
+- [ ] Add shell scripting to operations and automation guides.
+
+### Phase 17 - Dart
+
+- [ ] Add a complete Dart page.
+- [ ] Cover Dart VM, AOT/JIT compilation, Flutter, package tooling, null
+      safety, web compilation, and ecosystem constraints outside Flutter.
+- [ ] Add Dart vs TypeScript and Dart vs Kotlin comparisons.
+- [ ] Add Dart to mobile and cross-platform guides.
+
+### Phase 18 - Lua
+
+- [ ] Add a complete Lua page.
+- [ ] Cover embeddability, Lua VM, tables, metatables, C API, package
+      ecosystem, game/plugin use, and implementation variants.
+- [ ] Add Lua vs JavaScript and Lua vs Python comparisons where useful.
+- [ ] Add Lua to embedded scripting and game scripting guides.
+
+### Phase 19 - Scala
+
+- [ ] Add a complete Scala page.
+- [ ] Cover JVM target, functional/object-oriented blend, type system,
+      implicits/givens, sbt, ecosystem, Akka/Pekko, Spark, and Scala 2 to 3
+      migration considerations.
+- [ ] Add Scala vs Java and Scala vs Kotlin comparisons.
+- [ ] Add Scala to JVM and data/backend guides.
+
+### Phase 20 - Perl
+
+- [ ] Add a complete Perl page.
+- [ ] Cover CPAN, text processing, Unix heritage, modern Perl status,
+      compatibility, regular expressions, package tooling, and maintenance
+      tradeoffs.
+- [ ] Add Perl vs Python and Perl vs Shell comparisons.
+- [ ] Add Perl to scripting and legacy-maintenance guides.
+
+### Phase 21 - Objective-C
+
+- [ ] Add a complete Objective-C page.
+- [ ] Cover C interoperability, Apple platform history, runtime messaging,
+      ARC, legacy codebase relevance, and migration to Swift.
+- [ ] Add Objective-C vs Swift comparison.
+- [ ] Add Objective-C to Apple-platform and legacy-maintenance guides.
+
+### Phase 22 - Fortran
+
+- [ ] Add a complete Fortran page.
+- [ ] Cover standards history, numerical computing, compilers, arrays,
+      interoperability with C, package/build tooling, and scientific legacy.
+- [ ] Add Fortran vs C++ and Fortran vs Python-for-numerics comparisons.
+- [ ] Add Fortran to scientific and high-performance computing guides.
+
+### Phase 23 - Delphi / Object Pascal
+
+- [ ] Add a complete Delphi/Object Pascal page.
+- [ ] Cover Pascal lineage, Delphi tooling, VCL/FMX, Windows desktop
+      history, cross-platform status, package ecosystem, and maintenance fit.
+- [ ] Add Delphi vs C# comparison.
+- [ ] Add Delphi to desktop and legacy-maintenance guides.
+
+### Phase 24 - Haskell
+
+- [ ] Add a complete Haskell page.
+- [ ] Cover purity, laziness, type classes, GHC, Cabal/Stack, ecosystem,
+      concurrency, production constraints, and education/research influence.
+- [ ] Add Haskell vs OCaml and Haskell vs Scala comparisons.
+- [ ] Add Haskell to functional programming concepts and guides.
+
+### Phase 25 - Elixir
+
+- [ ] Add a complete Elixir page.
+- [ ] Cover BEAM, OTP, fault tolerance, processes, Phoenix, Mix, Hex,
+      Erlang interoperability, and distributed systems fit.
+- [ ] Add Elixir vs Erlang and Elixir vs Ruby comparisons.
+- [ ] Add Elixir to concurrency and web/backend guides.
+
+### Phase 26 - Erlang
+
+- [ ] Add a complete Erlang page.
+- [ ] Cover BEAM, OTP, actor-style processes, fault tolerance, hot code
+      loading, telecom origins, syntax tradeoffs, and long-running systems.
+- [ ] Add Erlang vs Elixir comparison.
+- [ ] Add Erlang to concurrency and distributed systems guides.
+
+### Phase 27 - Clojure
+
+- [ ] Add a complete Clojure page.
+- [ ] Cover Lisp lineage, JVM target, immutability, persistent data
+      structures, REPL workflow, macros, dependency tooling, and ecosystem
+      constraints.
+- [ ] Add Clojure vs Java and Clojure vs Scala comparisons.
+- [ ] Add Clojure to Lisp and JVM guides.
+
+### Phase 28 - Julia
+
+- [ ] Add a complete Julia page.
+- [ ] Cover multiple dispatch, JIT compilation, package manager,
+      scientific/numerical computing, performance model, Python/R/C
+      interoperability, and deployment constraints.
+- [ ] Add Julia vs Python and Julia vs R comparisons.
+- [ ] Add Julia to scientific computing and data guides.
+
+### Phase 29 - Zig
+
+- [ ] Add a complete Zig page.
+- [ ] Cover explicit memory allocation, C interop, build system,
+      compile-time execution, cross-compilation, current maturity, package
+      manager status, and standardization status.
+- [ ] Add Zig vs C and Zig vs Rust comparisons.
+- [ ] Add Zig to systems and embedded guides.
+
+### Phase 30 - OCaml
+
+- [ ] Add a complete OCaml page.
+- [ ] Cover ML lineage, type inference, modules/functors, native and bytecode
+      compilation, opam, Dune, multicore effects status, and industrial use.
+- [ ] Add OCaml vs Haskell and OCaml vs Rust comparisons where useful.
+- [ ] Add OCaml to functional programming guides.
+
+### Phase 31 - F#
+
+- [ ] Add a complete F# page.
+- [ ] Cover .NET target, functional-first design, type providers, async
+      workflows, package/tooling story, C# interoperability, and ecosystem
+      fit.
+- [ ] Add F# vs C# and F# vs OCaml comparisons.
+- [ ] Add F# to .NET and functional programming guides.
+
+### Phase 32 - Nim
+
+- [ ] Add a complete Nim page.
+- [ ] Cover native compilation, Python-like syntax, macros, memory
+      management options, package tooling, C interop, and ecosystem maturity.
+- [ ] Add Nim vs Zig and Nim vs Rust comparisons.
+- [ ] Add Nim to systems and scripting-adjacent guides.
+
+### Phase 33 - Crystal
+
+- [ ] Add a complete Crystal page.
+- [ ] Cover Ruby-like syntax, static typing, native compilation, shards,
+      concurrency model, C bindings, and ecosystem maturity.
+- [ ] Add Crystal vs Ruby and Crystal vs Go comparisons.
+- [ ] Add Crystal to web/backend and compiled-scripting guides.
+
+### Phase 34 - Solidity
+
+- [ ] Add a complete Solidity page.
+- [ ] Cover Ethereum smart contracts, EVM target, tooling, security risks,
+      language evolution, contract verification, and domain-specific
+      constraints.
+- [ ] Add Solidity vs Rust-for-smart-contracts comparison only where the
+      scope is precise.
+- [ ] Add Solidity to domain-specific language and blockchain guides.
+
+---
+
+## Cross-Cutting Content Backlog
+
+- [ ] Create a documented popularity/adoption methodology page before
+      publishing any public ranking or "most popular" page.
 - [ ] Add CODEOWNERS only when maintainers or review owners exist.
-- [x] Add link checking or source validation checks.
-- [x] Add docs for local development.
-
-### Phase 5 - Self-Hosted Deployment
-
-- [x] Add `Dockerfile`.
-- [x] Add `compose.yaml`.
-- [x] Add Caddy config under `deploy/caddy/`.
-- [x] Add `docs/deployment.md`.
-- [x] Build production image locally.
-- [x] Verify container serves static build.
-- [x] Validate Caddy config.
-- [x] Deploy to Ubuntu VM after Stephen approves.
-- [x] Confirm [https://langindex.dev](https://langindex.dev) serves the
-      static site.
-
-### Phase 6 - Hardening
-
-- [x] Add Playwright smoke tests for homepage, search, language page, and
-      comparison page.
-- [x] Add internal link checking.
-- [x] Add external link checking with rate limits.
-- [x] Add accessibility checks.
-- [x] Add sitemap.
-- [x] Add robots.txt.
-- [x] Add RSS or changelog feed if useful.
-- [x] Add backup/restore note for repo and deployment artifacts.
+- [ ] Add a source-quality badge or field only after the editorial standard
+      defines levels clearly.
+- [ ] Add benchmark policy before publishing performance comparisons.
+- [ ] Add compatibility-policy fields if enough language pages expose
+      consistent data.
+- [ ] Add machine-readable language metadata fields only when a real route or
+      UI needs them.
+- [ ] Periodically re-run external link checks and refresh `lastVerified`
+      dates only when the sources were actually checked.
 
 ---
 
 ## Verification
 
-Narrowest useful command first, then broaden.
-
-Docs-only work:
+Docs-only change:
 
 ```sh
 git diff --check
 ```
 
-Once the skeleton exists:
+Normal content or UI change:
 
 ```sh
 just fmt
@@ -416,67 +490,13 @@ just test
 just build
 ```
 
-Expected checks as the site matures:
+Broader verification:
 
-- TypeScript type checking.
-- Astro build.
-- Astro content collection validation.
-- MDX linting.
-- Pagefind index generation.
-- Internal link checking.
-- External source link checking when relevant.
-- Playwright smoke tests.
-- Docker build.
-- Caddy validation for deployment changes.
+```sh
+just test-smoke
+just check-links-internal
+just check-links-external
+```
 
-If a command cannot run, report why and what was verified instead.
-
----
-
-## External Sources To Re-check
-
-Trust current primary docs over this file when implementation details may
-have changed.
-
-- Astro docs for project setup, MDX, content collections, adapters, and
-  build behavior.
-- Tailwind CSS docs for current Astro integration.
-- Pagefind docs for current indexing and UI integration.
-- Caddy docs for static file serving and config validation.
-- Docker docs for Compose behavior on Ubuntu.
-- GitHub and Codeberg docs for contribution templates and repository
-  mirroring behavior.
-
----
-
-## Recent Work
-
-- 2026-05-15 - Created initial project documentation, normalized dual
-  GitHub/Codeberg push configuration, and defined the Astro / TypeScript /
-  MDX / Content Collections / Pagefind / Tailwind / Docker Compose /
-  Caddy stack for LangIndex.
-- 2026-05-15 - Built the initial Astro static-site skeleton with
-  Tailwind CSS 4, MDX, strict content collections, seed Rust/Go/TypeScript
-  pages, Rust-vs-Go comparison, systems-language guide, ownership concept,
-  justfile, CI, and passing local checks.
-- 2026-05-15 - Added Pagefind indexing and search UI, filterable language
-  discovery, related-language and comparison links on language pages, and
-  `/languages.json` metadata output.
-- 2026-05-15 - Added CC-BY-SA-4.0 content licensing, contributor issue and
-  pull request templates, source validation, content templates, local
-  development docs, and Docker/Caddy deployment wiring.
-- 2026-05-15 - Built the local production image, validated the Caddy config
-  with the Caddy container, and verified the static site from the local
-  LangIndex container.
-- 2026-05-15 - Added sitemap and robots routes, internal and rate-limited
-  external link checking scripts, Playwright smoke tests, and loopback Compose
-  defaults for shared-host Caddy deployment.
-- 2026-05-15 - Added backup and restore notes for repository-backed static
-  deployment artifacts.
-- 2026-05-15 - Deployed the LangIndex container on the Ubuntu VM behind the
-  shared host Caddy service and confirmed `https://langindex.dev` serves the
-  static site.
-- 2026-05-15 - Introduced dark-first themed UI with light/dark toggle,
-  redesigned hero, language cards, language profile facts grid, breadcrumbs,
-  improved typography and spacing, sticky themed header, accessible mobile
-  navigation, axe-core Playwright accessibility checks, and an RSS feed.
+Deployment changes should also validate Docker/Compose and Caddy behavior as
+described in `docs/deployment.md`.
