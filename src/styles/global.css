@@ -5,16 +5,16 @@
 :root {
   color-scheme: dark;
   --color-bg: #0b0d0c;
-  --color-bg-elevated: #11161390;
-  --color-surface: #11161395;
-  --color-surface-strong: #131a17;
-  --color-surface-muted: #0e1311;
+  --color-bg-elevated: rgba(17, 22, 19, 0.86);
+  --color-surface: #131a17;
+  --color-surface-strong: #1a221e;
+  --color-surface-muted: #161d19;
   --color-border: #1f2a25;
   --color-border-strong: #2a3a33;
   --color-fg: #e8efe9;
   --color-fg-strong: #f6faf6;
   --color-fg-muted: #9aa8a0;
-  --color-fg-subtle: #6a7872;
+  --color-fg-subtle: #8a9890;
   --color-accent: #2dd4bf;
   --color-accent-strong: #5eead4;
   --color-accent-soft: #134e4a;
@@ -97,7 +97,7 @@ body {
 }
 
 a {
-  color: inherit;
+  text-decoration: none;
 }
 
 ::selection {

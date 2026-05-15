@@ -130,28 +130,30 @@ const browseSections = [
         </div>
       </div>
 
-      <dl
+      <ul
         class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4"
         aria-label="Site stats"
       >
         {
           stats.map((stat) => (
-            <a
-              href={stat.href}
-              class="group rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 transition-colors hover:border-[color:var(--color-accent)]/50"
-            >
-              <dt class="text-xs uppercase tracking-wider text-[color:var(--color-fg-subtle)]">
-                {stat.label}
-              </dt>
-              <dd class="mt-1 flex items-baseline gap-1">
-                <span class="font-mono text-2xl font-semibold text-[color:var(--color-fg-strong)] group-hover:text-[color:var(--color-accent)]">
-                  {stat.value}
+            <li>
+              <a
+                href={stat.href}
+                class="group block rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 text-[color:var(--color-fg)] transition-colors hover:border-[color:var(--color-accent)]/50"
+              >
+                <span class="block text-xs uppercase tracking-wider text-[color:var(--color-fg-subtle)]">
+                  {stat.label}
                 </span>
-              </dd>
-            </a>
+                <span class="mt-1 flex items-baseline gap-1">
+                  <span class="font-mono text-2xl font-semibold text-[color:var(--color-fg-strong)] group-hover:text-[color:var(--color-accent)]">
+                    {stat.value}
+                  </span>
+                </span>
+              </a>
+            </li>
           ))
         }
-      </dl>
+      </ul>
     </div>
   </section>
 

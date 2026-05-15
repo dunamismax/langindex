@@ -26,7 +26,7 @@ for (const route of routes) {
 test("theme toggle persists across reload", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await page.getByRole("button", { name: /switch to light theme/i }).click();
+  await page.getByRole("button", { name: /toggle color theme/i }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
