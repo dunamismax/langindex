@@ -1,0 +1,20 @@
+---
+interface Props {
+  id?: string;
+  label?: string;
+}
+
+const { id = "site-search", label = "Search LangIndex" } = Astro.props;
+---
+
+<section aria-labelledby={`${id}-label`} class="pagefind-panel">
+  <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
+  <script src="/pagefind/pagefind-component-ui.js" type="module" is:inline
+  ></script>
+  <h2 id={`${id}-label`} class="text-lg font-semibold text-stone-950">
+    {label}
+  </h2>
+  <div id={id} class="mt-3">
+    <pagefind-searchbox></pagefind-searchbox>
+  </div>
+</section>

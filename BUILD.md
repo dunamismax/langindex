@@ -351,13 +351,13 @@ Suggested seed languages:
 
 ### Phase 3 - Search And Discovery
 
-- [ ] Add Pagefind indexing after Astro build.
-- [ ] Add search UI with keyboard-friendly behavior.
-- [ ] Add filters for paradigm, typing, runtime target, ecosystem, and
+- [x] Add Pagefind indexing after Astro build.
+- [x] Add search UI with keyboard-friendly behavior.
+- [x] Add filters for paradigm, typing, runtime target, ecosystem, and
       use case.
-- [ ] Add language family and related-language browsing.
-- [ ] Add comparison discovery from language pages.
-- [ ] Add generated metadata pages or JSON only if useful.
+- [x] Add language family and related-language browsing.
+- [x] Add comparison discovery from language pages.
+- [x] Add generated metadata pages or JSON only if useful.
 
 ### Phase 4 - Contributor Workflow
 
@@ -459,3 +459,6 @@ have changed.
   Tailwind CSS 4, MDX, strict content collections, seed Rust/Go/TypeScript
   pages, Rust-vs-Go comparison, systems-language guide, ownership concept,
   justfile, CI, and passing local checks.
+- 2026-05-15 - Added Pagefind indexing and search UI, filterable language
+  discovery, related-language and comparison links on language pages, and
+  `/languages.json` metadata output.

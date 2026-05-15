@@ -14,6 +14,17 @@ export async function getStaticPaths() {
 const { language } = Astro.props;
 const { Content } = await render(language);
 const data = language.data;
+const allLanguages = await getCollection("languages");
+const comparisons = await getCollection("comparisons");
+const languageTitles = new Map(
+  allLanguages.map((entry) => [entry.data.slug, entry.data.title]),
+);
+const comparisonMatches = comparisons
+  .filter((comparison) => comparison.data.languages.includes(data.slug))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const relatedLanguages = data.comparedWith
+  .map((slug) => ({ slug, title: languageTitles.get(slug) ?? slug }))
+  .sort((a, b) => a.title.localeCompare(b.title));
 ---
 
 <BaseLayout title={data.title} description={data.summary}>
@@ -24,9 +35,40 @@ const data = language.data;
     <h1 class="mt-3 text-4xl font-semibold tracking-normal text-stone-950">
       {data.title}
     </h1>
-    <p class="mt-4 max-w-3xl text-lg leading-8 text-stone-700">
+    <p
+      class="mt-4 max-w-3xl text-lg leading-8 text-stone-700"
+      data-pagefind-meta="summary"
+    >
       {data.summary}
     </p>
+
+    <div class="sr-only" aria-hidden="true">
+      <span data-pagefind-filter="type">Language</span>
+      <span data-pagefind-filter="status">{data.status}</span>
+      <span data-pagefind-filter="typing">{data.typing.discipline}</span>
+      {
+        data.typing.strength && (
+          <span data-pagefind-filter="typing">{data.typing.strength}</span>
+        )
+      }
+      <span data-pagefind-filter="runtime">{data.runtime.model}</span>
+      <span data-pagefind-filter="memory">{data.memory.model}</span>
+      {
+        data.paradigms.map((paradigm) => (
+          <span data-pagefind-filter="paradigm">{paradigm}</span>
+        ))
+      }
+      {
+        data.packageManagers.map((manager) => (
+          <span data-pagefind-filter="ecosystem">{manager}</span>
+        ))
+      }
+      {
+        data.bestFor.map((fit) => (
+          <span data-pagefind-filter="use case">{fit}</span>
+        ))
+      }
+    </div>
 
     <section
       class="mt-8 grid gap-4 rounded-lg border border-stone-200 bg-white p-5 md:grid-cols-4"
@@ -71,6 +113,55 @@ const data = language.data;
     <div class="content-body mt-10 max-w-3xl">
       <Content />
     </div>
+
+    {
+      relatedLanguages.length > 0 && (
+        <section class="mt-10 border-t border-stone-200 pt-6">
+          <h2 class="text-lg font-semibold text-stone-950">
+            Related Languages
+          </h2>
+          <div class="mt-3 flex flex-wrap gap-2">
+            {relatedLanguages.map((related) =>
+              languageTitles.has(related.slug) ? (
+                <a
+                  class="rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-800 hover:bg-stone-100"
+                  href={`/languages/${related.slug}`}
+                >
+                  {related.title}
+                </a>
+              ) : (
+                <span class="rounded-full border border-stone-200 bg-stone-50 px-3 py-1.5 text-sm text-stone-600">
+                  {related.title}
+                </span>
+              ),
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      comparisonMatches.length > 0 && (
+        <section class="mt-8 border-t border-stone-200 pt-6">
+          <h2 class="text-lg font-semibold text-stone-950">Comparisons</h2>
+          <div class="mt-3 grid gap-3">
+            {comparisonMatches.map((comparison) => (
+              <a
+                class="rounded-lg border border-stone-200 bg-white p-4 hover:border-teal-700"
+                href={`/comparisons/${comparison.data.slug}`}
+              >
+                <span class="font-medium text-stone-950">
+                  {comparison.data.title}
+                </span>
+                <span class="mt-1 block text-sm leading-6 text-stone-700">
+                  {comparison.data.summary}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <SourceList sources={data.sources} lastVerified={data.lastVerified} />
   </article>

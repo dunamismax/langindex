@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import LanguageCard from "../components/language/LanguageCard.astro";
+import PagefindSearch from "../components/search/PagefindSearch.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const languages = (await getCollection("languages")).sort((a, b) =>
@@ -29,18 +30,7 @@ const languages = (await getCollection("languages")).sort((a, b) =>
         </p>
       </div>
       <div class="rounded-lg border border-stone-200 bg-stone-50 p-5">
-        <label class="text-sm font-medium text-stone-950" for="language-search"
-          >Search languages</label
-        >
-        <input
-          id="language-search"
-          class="mt-2 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-base text-stone-950"
-          type="search"
-          placeholder="Rust, Go, TypeScript..."
-        />
-        <p class="mt-3 text-sm text-stone-600">
-          Static Pagefind search will replace this starter control in Phase 3.
-        </p>
+        <PagefindSearch id="homepage-search" label="Search the reference" />
       </div>
     </div>
   </section>

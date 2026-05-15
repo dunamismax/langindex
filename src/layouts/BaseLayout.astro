@@ -33,7 +33,7 @@ const navItems = [
     <title>{pageTitle}</title>
   </head>
   <body>
-    <header class="border-b border-stone-200 bg-white/88">
+    <header class="border-b border-stone-200 bg-white/88" data-pagefind-ignore>
       <div
         class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
       >
@@ -57,10 +57,10 @@ const navItems = [
         </nav>
       </div>
     </header>
-    <main>
+    <main data-pagefind-body>
       <slot />
     </main>
-    <footer class="border-t border-stone-200 bg-white">
+    <footer class="border-t border-stone-200 bg-white" data-pagefind-ignore>
       <div
         class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-stone-600 sm:px-6 md:flex-row md:items-center md:justify-between"
       >

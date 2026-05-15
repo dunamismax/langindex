@@ -23,9 +23,25 @@ const { Content } = await render(comparison);
     <h1 class="mt-3 text-4xl font-semibold tracking-normal text-stone-950">
       {comparison.data.title}
     </h1>
-    <p class="mt-4 text-lg leading-8 text-stone-700">
+    <p
+      class="mt-4 text-lg leading-8 text-stone-700"
+      data-pagefind-meta="summary"
+    >
       {comparison.data.summary}
     </p>
+    <div class="sr-only" aria-hidden="true">
+      <span data-pagefind-filter="type">Comparison</span>
+      {
+        comparison.data.languages.map((language) => (
+          <span data-pagefind-filter="language">{language}</span>
+        ))
+      }
+      {
+        comparison.data.useCases.map((useCase) => (
+          <span data-pagefind-filter="use case">{useCase}</span>
+        ))
+      }
+    </div>
     <div class="content-body mt-10">
       <Content />
     </div>

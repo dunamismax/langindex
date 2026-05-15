@@ -43,6 +43,18 @@ a {
   outline-offset: 3px;
 }
 
+.pagefind-panel {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-primary: #0f766e;
+  --pagefind-ui-text: #1c241f;
+  --pagefind-ui-background: #ffffff;
+  --pagefind-ui-border: #d6ddd8;
+  --pagefind-ui-tag: #eef3ef;
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 6px;
+  --pagefind-ui-font: inherit;
+}
+
 .content-body {
   font-size: 1rem;
   line-height: 1.75;
