@@ -2,61 +2,276 @@
 title: Rust
 slug: rust
 status: active
-summary: Rust is a statically typed systems language focused on memory safety, performance, and reliable concurrency without a garbage collector.
+summary: Rust is a statically typed systems language for software that needs low-level control, predictable performance, and strong compile-time memory and concurrency checks without a required garbage collector.
 firstReleased: 2015
 creators:
   - Graydon Hoare
 paradigms:
   - systems
   - multi-paradigm
+  - concurrent
+  - functional
 typing:
   discipline: static
-  strength: strong
+  strength: strong with traits, generics, and lifetimes
 memory:
-  model: ownership and borrowing
+  model: ownership, borrowing, lifetimes, and RAII without a required garbage collector
 runtime:
-  model: native
+  model: native binaries with a small standard runtime; no required garbage collector
 officialSite: https://www.rust-lang.org/
 repository: https://github.com/rust-lang/rust
 packageManagers:
   - Cargo
+  - crates.io
+  - rustup
 comparedWith:
   - c
   - cpp
   - go
   - zig
 bestFor:
-  - Systems software that needs predictable performance and stronger memory-safety guarantees.
-  - Command-line tools, embedded targets, WebAssembly, and infrastructure services.
+  - Systems software, command-line tools, embedded work, WebAssembly modules, infrastructure agents, parsers, libraries, and security-sensitive components.
+  - Projects that need memory safety without a required garbage collector and can justify stronger compile-time modeling.
+  - Libraries or services where ownership, error handling, and resource cleanup should be visible in types and APIs.
+  - Teams willing to pay more learning and compile-time cost to reduce runtime lifetime, aliasing, and data-race mistakes.
 poorFit:
-  - Teams that need the lowest possible onboarding friction.
-  - Short scripts where compile time and ownership modeling add more ceremony than value.
+  - Short scripts, routine CRUD services, or throwaway tools where ownership modeling adds more process than value.
+  - Teams that need very fast onboarding and do not have time to learn borrowing, lifetimes, traits, and async runtime choices.
+  - Projects that depend on a domain ecosystem where another language has much deeper libraries or platform integration.
+  - Codebases that will rely heavily on `unsafe` without review discipline, tests, and clear abstraction boundaries.
 sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
+  - title: Announcing Rust 1.0
+    url: https://blog.rust-lang.org/2015/05/15/Rust-1.0/
+    publisher: Rust Project
   - title: The Rust Programming Language - Ownership
     url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
     publisher: Rust Project
-  - title: Cargo Book
+  - title: The Rust Programming Language - Traits
+    url: https://doc.rust-lang.org/book/ch10-02-traits.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Lifetimes
+    url: https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Cargo Book
     url: https://doc.rust-lang.org/cargo/
     publisher: Rust Project
+  - title: The rustup book
+    url: https://rust-lang.github.io/rustup/
+    publisher: Rust Project
+  - title: The Rust Edition Guide - What are editions?
+    url: https://doc.rust-lang.org/stable/edition-guide/editions/
+    publisher: Rust Project
+  - title: Rust Forge - Leadership Council
+    url: https://forge.rust-lang.org/governance/council.html
+    publisher: Rust Project
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+  - title: The Embedded Rust Book - no_std
+    url: https://doc.rust-lang.org/stable/embedded-book/intro/no-std.html
+    publisher: Rust Project
+  - title: WebAssembly - Rust Programming Language
+    url: https://www.rust-lang.org/what/wasm
+    publisher: Rust Foundation
 lastVerified: 2026-05-15
 ---
 
-## Practical Fit
+## Origin And Design Goals
 
-Rust is usually evaluated when C or C++ control is useful, but memory safety bugs are too expensive to keep accepting as normal operating risk. Its ownership and borrowing model moves many lifetime and aliasing mistakes into compile-time feedback.
+Rust began as a systems language shaped around a hard constraint: give programmers close control over memory and layout while preventing many memory-safety and thread-safety mistakes before runtime. Rust 1.0 was released on May 15, 2015, and the Rust project framed that release as the beginning of its stable-compatibility commitment.
 
-## Tooling
+The practical design center is software that would traditionally invite C or C++ because it needs native code, resource control, small runtime assumptions, or close interoperability with operating systems and hardware. Rust adds a more expressive static type system, ownership and borrowing, algebraic enums, pattern matching, traits, and explicit fallibility through `Result` and `Option`.
 
-Cargo is the standard package manager and build tool. A typical project can use Cargo for dependency resolution, builds, tests, documentation, and publishing.
+Rust is not just "C with safety." It asks developers to model ownership, borrowing, lifetimes, and API boundaries directly. That is a real cost, especially for teams new to the language, but it is also the mechanism that moves many lifetime and aliasing defects into compiler feedback.
+
+## Runtime, Compilation, And Deployment
+
+Rust normally compiles ahead of time to native code through `rustc`, with LLVM used for many supported targets. The standard library includes runtime support for details such as stack overflow handling, panics, thread-local storage, and operating-system integration, but Rust does not require a garbage collector or a large virtual machine.
+
+That shape makes Rust suitable for command-line tools, libraries, servers, embedded firmware, WebAssembly modules, and low-level components. The target story still matters. The rustc platform support page groups targets into tiers with different guarantees; a Tier 1 host target is much safer to bet on than an unusual Tier 3 or custom target. Embedded and freestanding work often uses `#![no_std]`, which links against `core` instead of the full standard library and leaves platform integration, allocation, startup, and I/O to the application or board support stack.
+
+Deployment can be simple for ordinary CLIs and services: build a binary for the target platform and ship it with its required dynamic libraries, or tune linking for the environment. Cross-compilation, C ABI integration, musl targets, embedded target triples, and WebAssembly targets are practical, but they should be tested in CI because platform support and dependency compatibility vary.
+
+## Ownership, Borrowing, And Lifetimes
+
+Ownership is Rust's central memory model. Values have owners, ownership can move, values are dropped when their owner goes out of scope, and borrowing lets code access a value without taking ownership. The usual rule is either many shared references or one mutable reference, but not both at the same time.
+
+Lifetimes are how the compiler reasons about whether references remain valid. Most lifetimes are inferred, so developers do not annotate every reference. Explicit lifetime parameters appear when relationships between input and output references are part of an API contract, especially in generic functions, structs that store references, iterators, and parser-like code.
+
+This model is strongest when resource ownership is an important part of correctness:
+
+- Files, sockets, locks, buffers, and handles can clean themselves up through `Drop`.
+- APIs can make sharing and mutation rules visible.
+- Many use-after-free, double-free, iterator invalidation, and data-race patterns are rejected before the program runs.
+- Concurrency is shaped by ownership and marker traits such as `Send` and `Sync`.
+
+The same model is also the source of Rust's learning curve. Data structures with shared mutation, cyclic references, self-referential values, async borrowing across suspension points, and fine-grained lifetime relationships can require design changes rather than local syntax fixes.
+
+## Type System And Traits
+
+Rust is statically typed and uses inference heavily inside functions. Its everyday type vocabulary includes structs, enums, tuples, arrays, slices, references, raw pointers, generics, traits, associated types, pattern matching, and modules.
+
+Traits define shared behavior. They can be used as bounds on generic code, implemented for local types, used through trait objects for dynamic dispatch, and combined with associated types or generic associated types for library APIs. This is one of Rust's main abstraction tools: a function can be generic over a capability without requiring inheritance.
+
+Common strengths:
+
+- Enums and pattern matching make many state machines and protocol states explicit.
+- `Result<T, E>` and `Option<T>` make fallible and absent values visible in signatures.
+- Trait bounds can keep generic APIs precise without runtime dispatch.
+- The orphan and coherence rules reduce conflicts between independently developed crates.
+
+Common constraints:
+
+- Trait bounds and lifetime parameters can make advanced APIs hard to read.
+- Compile errors can point to a design mismatch rather than a small typo.
+- Object safety, blanket implementations, and coherence rules matter for public library design.
+- The type system is strong, but it is not a proof assistant; runtime validation is still needed for untrusted input and external protocols.
+
+## Unsafe Rust
+
+Rust has two modes of writing: safe Rust and unsafe Rust. Safe Rust is checked by the compiler's safety rules. Unsafe Rust lets code perform operations that the compiler cannot prove safe, such as dereferencing raw pointers, calling unsafe functions, accessing mutable statics, implementing unsafe traits, or interacting with foreign interfaces.
+
+The important point is that `unsafe` does not make the rest of the compiler disappear. It marks a proof obligation: the programmer must uphold invariants that Rust cannot verify locally. Well-designed Rust libraries keep unsafe code small, documented, tested, and wrapped behind safe APIs where possible.
+
+Use `unsafe` deliberately when:
+
+- Interfacing with C, operating-system APIs, hardware registers, or foreign runtimes.
+- Implementing low-level data structures whose safe surface cannot be expressed directly.
+- Controlling layout, aliasing, atomics, or performance-critical internals beyond safe abstractions.
+
+Avoid normalizing `unsafe` as an escape hatch for ordinary application code. Heavy unsafe usage moves Rust closer to C or C++ risk while keeping Rust's complexity.
+
+## Concurrency And Async
+
+Rust's concurrency story is built on the same ownership rules as the rest of the language. Threads can share data through synchronization primitives, channels, atomics, reference counting, and other library abstractions. The compiler uses traits such as `Send` and `Sync` to restrict which values can cross thread boundaries or be shared safely.
+
+Async Rust is powerful but more ecosystem-shaped than Go's built-in goroutine model. The language provides `async` and `await`, while executors, timers, I/O drivers, and task orchestration normally come from libraries such as Tokio, async-std, smol, or domain-specific runtimes. That split gives flexibility but creates decisions a team must make early, especially for services and libraries.
+
+Rust is a strong fit when the project needs concurrent code with explicit ownership and no required garbage collector. It can be a poor fit when the team mainly needs simple concurrent request handling and does not need the extra safety and control that Rust makes them model.
+
+## Cargo, crates.io, And rustup
+
+Cargo is the standard package manager and build tool. It initializes packages, resolves dependencies, builds code, runs tests, formats and documents packages through standard commands, packages crates, and publishes to crates.io. A Rust package is usually a crate, and a workspace can group multiple related crates under one build.
+
+crates.io is the public Rust package registry used by Cargo by default. Teams should still review dependencies carefully: the registry gives discoverability and version resolution, not a guarantee that every package is maintained, audited, secure, or appropriate for production.
+
+rustup manages Rust toolchains, components, targets, and release channels. The standard workflow is to install stable Rust, add targets as needed, and pin project expectations through files such as `rust-toolchain.toml` and Cargo's `rust-version` field when a minimum supported Rust version matters.
+
+Typical commands:
+
+```sh
+cargo new demo
+cargo build
+cargo test
+cargo fmt
+cargo clippy
+cargo doc --open
+rustup target add wasm32-unknown-unknown
+```
+
+## Syntax Example
 
 ```rust
-fn main() {
-    let languages = ["Rust", "Go", "TypeScript"];
+use std::collections::BTreeMap;
+
+#[derive(Debug)]
+struct Language {
+    name: String,
+    domains: Vec<String>,
+}
+
+trait Summary {
+    fn summary(&self) -> String;
+}
+
+impl Summary for Language {
+    fn summary(&self) -> String {
+        format!("{}: {}", self.name, self.domains.join(", "))
+    }
+}
+
+fn index_by_name(languages: Vec<Language>) -> BTreeMap<String, Language> {
+    let mut index = BTreeMap::new();
+
     for language in languages {
-        println!("{language}");
+        index.insert(language.name.clone(), language);
+    }
+
+    index
+}
+
+fn main() {
+    let languages = vec![
+        Language {
+            name: String::from("Rust"),
+            domains: vec![String::from("systems"), String::from("wasm")],
+        },
+        Language {
+            name: String::from("Go"),
+            domains: vec![String::from("services"), String::from("tools")],
+        },
+    ];
+
+    let index = index_by_name(languages);
+
+    if let Some(rust) = index.get("Rust") {
+        println!("{}", rust.summary());
     }
 }
 ```
+
+The example moves each `Language` into the map, clones only the key string needed for lookup, uses a trait for shared behavior, and handles lookup through `Option` rather than assuming the key exists.
+
+## Embedded And WebAssembly Targets
+
+Rust is often considered for embedded and WebAssembly because it can run without a garbage collector and can expose low-level control while preserving many safe Rust checks.
+
+For embedded work, `no_std` is the key boundary. A `no_std` crate uses `core` and cannot assume ordinary operating-system services, standard I/O, threads, or allocation unless the target stack provides them. This is a good fit for firmware, bootloaders, kernels, and constrained devices, but it narrows the usable dependency set and increases the importance of target-specific tooling.
+
+For WebAssembly, Rust can compile to Wasm targets and interoperate with JavaScript through binding tools and generated glue. This is useful for compute-heavy browser modules, shared libraries, plugins, and sandboxed components. It is not automatically the right choice for every frontend: the JavaScript boundary, bundle size, debugging workflow, and DOM integration cost should be measured.
+
+## Best-Fit Use Cases
+
+Rust is a strong fit for:
+
+- Command-line tools and developer infrastructure where a native binary, strong error handling, and easy distribution matter.
+- Parsers, codecs, protocol implementations, cryptography-adjacent components, and security-sensitive libraries where invalid states should be hard to express.
+- Embedded, kernel-adjacent, operating-system, browser-engine, runtime, and networking components that need control without a required GC.
+- WebAssembly modules where performance-sensitive or reusable code should cross a host boundary.
+- Services or agents where memory footprint, predictable resource ownership, or reliability are more important than the fastest onboarding path.
+
+## Poor-Fit Or Risky Use Cases
+
+Rust can be a poor fit when:
+
+- The project is mainly a simple web application or CRUD service and the team already has strong momentum in a managed-runtime ecosystem.
+- Compile time, generic complexity, or strict borrowing feedback would slow delivery more than the safety benefits help.
+- The domain depends on libraries that are much more mature in Python, JavaScript, Java, C#, R, or another ecosystem.
+- The team expects Rust to remove the need for design review, runtime validation, fuzzing, dependency review, or production observability.
+- Unsafe FFI or low-level internals dominate the codebase and there is no plan to isolate and audit them.
+
+## Governance, Editions, And Compatibility
+
+Rust is developed by the Rust Project through teams, RFCs, release channels, and public repositories. The Rust Forge documents the Leadership Council, top-level teams, and project governance. The Rust Foundation supports Rust, but the project governance is not simply a corporate product-management structure.
+
+Rust's stable channel follows a train release model. The Rust Book describes stable, beta, and nightly channels, with stable releases on a six-week cadence and only the most recent stable release supported by the project. Most production users should stay on stable unless a nightly-only feature is a deliberate project requirement.
+
+Editions let Rust make limited language changes without splitting the ecosystem. A crate chooses its edition in `Cargo.toml`; crates from different editions can depend on each other. Rust 2015, 2018, 2021, and 2024 are the current edition families documented by the Rust Book and Edition Guide.
+
+For libraries, compatibility also includes the minimum supported Rust version. Cargo's `rust-version` field lets packages declare the oldest Rust toolchain they support. That policy should be explicit for public crates because raising it can block downstream users.
+
+## Comparison Notes
+
+C is the comparison when the main question is lowest-level portability, ABI boundaries, existing code, and manual control. Rust asks for more type and ownership modeling in exchange for stronger compile-time checks.
+
+C++ is the comparison when the project needs native performance with a large existing ecosystem, object/value/generic programming, and deep platform or game-engine integration. Rust usually offers a cleaner safety boundary for new components, while C++ has broader legacy reach and more mature libraries in some domains.
+
+Go is the comparison for infrastructure services, CLIs, and network software. Go usually wins on onboarding speed and simple service concurrency. Rust usually wins when no-GC memory control, stronger type modeling, or low-level correctness constraints are central.
+
+Zig is the comparison for developers who want explicit low-level control, simple language mechanics, cross-compilation, and C interop without Rust's borrow checker. Rust has a more mature stable ecosystem and stronger compile-time ownership model; Zig exposes more responsibility directly to the programmer.

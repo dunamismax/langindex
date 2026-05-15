@@ -178,14 +178,14 @@ justify the extra network time.
 
 ### Phase 3 - Rust Completion
 
-- [ ] Expand the Rust page to the completion standard.
-- [ ] Cover ownership and borrowing, lifetimes, traits, `unsafe`, editions,
+- [x] Expand the Rust page to the completion standard.
+- [x] Cover ownership and borrowing, lifetimes, traits, `unsafe`, editions,
       Cargo, crates.io, rustup, embedded/WebAssembly targets, governance,
       and compatibility policy.
-- [ ] Expand Rust vs Go and prepare Rust vs C, Rust vs C++, and Rust vs Zig.
-- [ ] Expand the ownership concept page so it supports Rust and future
+- [x] Expand Rust vs Go and prepare Rust vs C, Rust vs C++, and Rust vs Zig.
+- [x] Expand the ownership concept page so it supports Rust and future
       systems-language pages.
-- [ ] Add systems-language guide material for Rust adoption constraints.
+- [x] Add systems-language guide material for Rust adoption constraints.
 
 ### Phase 4 - Python
 

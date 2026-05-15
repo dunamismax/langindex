@@ -6,10 +6,28 @@ audience: Developers choosing a language for infrastructure, native tooling, emb
 candidates:
   - rust
   - go
+  - c
+  - cpp
+  - zig
 sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+  - title: The rustup book
+    url: https://rust-lang.github.io/rustup/
+    publisher: Rust Project
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+  - title: The Embedded Rust Book - no_std
+    url: https://doc.rust-lang.org/stable/embedded-book/intro/no-std.html
+    publisher: Rust Project
   - title: The Go Programming Language
     url: https://go.dev/
     publisher: Go Project
@@ -44,6 +62,12 @@ Choose a no-GC language when:
 - The code must run in an environment with severe memory or runtime restrictions.
 - Compile-time ownership or manual memory control is worth the added complexity.
 
+Choose Rust when the project needs no required garbage collector and the team wants the compiler to enforce ownership, borrowing, and many thread-sharing rules. This is a strong fit for new systems components, parsers, libraries, agents, embedded modules, WebAssembly, and code where lifetime errors would be expensive.
+
+Choose C or C++ when existing code, ABI requirements, vendor SDKs, platform conventions, or mature domain libraries dominate the decision. In those languages, ownership can be very disciplined, but the discipline usually lives in guidelines, APIs, tools, and review rather than in a Rust-style borrow checker.
+
+Choose Zig when explicit allocation, simple language mechanics, and C-oriented control are attractive, and the team accepts a younger ecosystem and more manual responsibility.
+
 Choose a garbage-collected systems-adjacent language such as Go when:
 
 - Service delivery, operational simplicity, and team readability matter more than maximum control.
@@ -51,11 +75,27 @@ Choose a garbage-collected systems-adjacent language such as Go when:
 - The team can measure allocation behavior and tune hot paths when needed.
 - The deployment target accepts a runtime inside the binary.
 
+## Rust Adoption Constraints
+
+Rust is most valuable when its constraints line up with the problem. Before choosing it, answer these questions directly:
+
+- Does the team have time to learn ownership, borrowing, lifetimes, traits, and Cargo workflows?
+- Will compile times and generic-heavy dependencies be acceptable for the feedback loop?
+- Is async needed, and if so, which runtime will the project standardize on?
+- Does the target platform have the right rustc support tier, standard-library support, and CI coverage?
+- Will FFI boundaries document ownership, allocation, panic, threading, and layout rules?
+- Can unsafe code be kept small, reviewed, and fuzzed or tested at the boundary?
+- Does the crate ecosystem cover the domain well enough, or will the team build foundational libraries first?
+
+If the answer to several of these is unclear, Rust may still be viable, but the first milestone should be a prototype that tests the hard target, dependency, and ownership questions rather than a broad rewrite.
+
 ## Concurrency And Services
 
 For services, the concurrency model often matters more than benchmark-oriented language comparisons. Go's goroutines and channels make it straightforward to structure concurrent I/O, background work, cancellation, and request fan-out. The standard library also includes practical building blocks for HTTP, TLS, contexts, synchronization, profiling, and testing.
 
 Those tools do not remove design responsibility. A Go service still needs bounded goroutine creation, cancellation paths, timeouts, backpressure, error handling, and data-race avoidance. If a design needs compile-time guarantees around ownership and sharing, Rust may be a better fit. If it needs simple concurrent service code that most backend engineers can read quickly, Go is often easier to sustain.
+
+Rust services can be excellent when resource use, protocol correctness, or native dependencies are central. They also require choices around async runtime, dependency surface, build times, and trait-heavy abstractions. For ordinary request/response services, treat Rust as a deliberate choice, not a default upgrade from Go.
 
 ## Tooling And Deployment
 
@@ -66,26 +106,31 @@ Deployment shape should be decided early:
 - Can the project ship a single native executable?
 - Does it need static or mostly static linking?
 - Does it need cross-compilation?
+- Does it need `no_std`, freestanding, or embedded target support?
 - Are container images the production artifact?
 - Does the operations team already have mature runtime support for another ecosystem?
+- How will toolchain versions and minimum supported versions be pinned?
 
 For Go, the single-binary path is often a practical advantage for internal tools and services. For Rust, the lack of a required garbage collector and the control over dependencies can be decisive for lower-level components.
 
 ## Team Skill And Maintenance
 
-The best technical fit can still fail if the team cannot maintain the code. Rust asks more from developers up front, especially around ownership, borrowing, lifetimes, trait design, async runtime choices, and compile-time errors. That cost can pay for itself in libraries and systems where correctness and memory behavior are central.
+The best technical fit can still fail if the team cannot maintain the code. Rust asks more from developers up front, especially around ownership, borrowing, lifetimes, trait design, async runtime choices, compile-time errors, and dependency review. That cost can pay for itself in libraries and systems where correctness and memory behavior are central.
 
 Go usually asks less from the reader. The language is smaller, formatting is uniform, package structure is conventional, and many service patterns are easy to recognize. The tradeoff is that some invariants remain social, test-driven, or operational rather than statically enforced.
+
+C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify.
 
 ## Questions To Ask
 
 - Does the project need predictable memory behavior without a garbage collector?
-- Is the target a service, CLI, agent, library, embedded component, or runtime?
+- Is the target a service, CLI, agent, library, embedded component, WebAssembly module, or runtime?
 - Are latency, memory layout, binary size, or allocation patterns hard requirements?
 - Is the team ready to pay a learning curve for stronger compile-time guarantees?
 - Would a smaller language and standard toolchain make reviews and onboarding faster?
 - Does the ecosystem already have the libraries, platform support, and deployment examples the project needs?
 - How will the team test, profile, observe, and update the chosen language in production?
+- What are the ownership rules at every API and FFI boundary?
 
 ## Practical Starting Points
 
@@ -93,4 +138,10 @@ Start with Go when the project is a network service, HTTP API, control plane, in
 
 Start with Rust when the project is a low-level component, performance-sensitive library, embedded target, WebAssembly module, parser, security-sensitive component, or service part where memory control and stronger compile-time guarantees justify a steeper learning curve.
 
-Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration and Rust for narrow components where memory control, safety, or performance predictability matters most.
+Start with C when the work is a narrow ABI layer, platform interface, firmware target, or existing C estate where toolchain reach and integration outweigh stronger language checks.
+
+Start with C++ when the domain already depends on C++ engines, frameworks, libraries, or performance tooling, and the organization has a real plan for modern C++ safety practices.
+
+Start with Zig when explicit control, cross-compilation, and C replacement work are the draw, and the project can absorb a younger language and ecosystem.
+
+Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, and C or C++ at legacy or ABI edges.

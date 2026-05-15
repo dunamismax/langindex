@@ -1,0 +1,69 @@
+---
+title: Rust vs C++
+slug: rust-vs-cpp
+summary: Rust and C++ both serve high-performance native software, but Rust centers ownership-checked safety for new code while C++ offers a larger existing ecosystem, ISO standardization, and deep legacy/platform reach.
+languages:
+  - rust
+  - cpp
+useCases:
+  - systems programming
+  - game engines
+  - performance-sensitive libraries
+  - native applications
+sources:
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Traits
+    url: https://doc.rust-lang.org/book/ch10-02-traits.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Committee - Standard C++
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This is a prepared comparison for Rust and C++ while the standalone C++ page is still pending. It focuses on new native components, existing C++ estates, games, infrastructure libraries, performance-sensitive systems, and migration boundaries.
+
+## Practical Difference
+
+C++ has enormous reach: operating systems, browsers, game engines, trading systems, graphics stacks, databases, embedded software, and long-lived application frameworks. It has ISO standardization through WG21 and a large collection of compilers, libraries, build systems, and platform-specific practices.
+
+Rust is usually evaluated when a team wants native performance and control but wants new code to make memory ownership, borrowing, fallibility, and thread sharing more explicit. Rust's type system and borrow checker prevent many classes of mistakes that modern C++ guidelines try to reduce through RAII, smart pointers, static analysis, code review, and local rules.
+
+## Choose Rust When
+
+- The project is mostly new code and memory safety is a central requirement.
+- API design can benefit from ownership, borrowing, `Result`, `Option`, enums, traits, and pattern matching.
+- You can isolate C or C++ integration behind narrow FFI boundaries.
+- The team wants Cargo-centered dependency and build workflows instead of choosing among several C++ build systems.
+- Unsafe internals are small enough to review and wrap behind safe interfaces.
+
+## Choose C++ When
+
+- The team already depends on a large C++ codebase, engine, SDK, compiler extension, or platform library.
+- Existing libraries in the domain are much deeper in C++ than in Rust.
+- ABI, templates, object models, build systems, or toolchains are already embedded in production workflows.
+- The organization has mature C++ review, sanitizers, static analysis, fuzzing, and coding standards.
+- Incremental modernization inside C++ is lower risk than adding a second native language.
+
+## Watch Points
+
+Rust adoption in a C++ environment is not just a language decision. It changes build integration, dependency review, debugging, symbol boundaries, panic and exception policy, allocator policy, and ownership contracts across FFI.
+
+C++ can be written with strong resource discipline, but the language permits many styles. A team comparing C++ and Rust should evaluate the actual codebase rules, not an idealized version of either language. Modern C++ with RAII, guidelines, sanitizers, and analysis is very different from unconstrained pointer-heavy C++.
+
+## Prepared Follow-Up
+
+When the C++ page lands, this comparison should add examples for RAII versus Rust `Drop`, templates versus traits/generics, exception policy versus `Result`, C++ package/build options, ABI stability, and a migration section for mixed Rust/C++ repositories.

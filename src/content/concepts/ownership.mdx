@@ -1,16 +1,78 @@
 ---
 title: Ownership
 slug: ownership
-summary: Ownership is a memory-management model where rules about who controls a value are enforced by the language, often at compile time.
+summary: Ownership is a memory-management and resource-management model where rules about who controls a value, who may borrow it, and when it is cleaned up are enforced by the language or by project discipline.
 relatedLanguages:
   - rust
+  - c
+  - cpp
+  - zig
 sources:
   - title: The Rust Programming Language - Ownership
     url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
     publisher: Rust Project
+  - title: The Rust Programming Language - Lifetimes
+    url: https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Embedded Rust Book - no_std
+    url: https://doc.rust-lang.org/stable/embedded-book/intro/no-std.html
+    publisher: Rust Project
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
 lastVerified: 2026-05-15
 ---
 
-Ownership is central to Rust's memory model. Instead of relying only on a garbage collector or manual allocation discipline, Rust checks ownership and borrowing rules during compilation.
+## What Ownership Means
 
-The practical effect is that some classes of lifetime and aliasing mistakes become compile-time errors, at the cost of a steeper learning curve.
+Ownership is about responsibility for a value or resource. For memory, it answers who is allowed to use a value, who may mutate it, and when the storage is released. For general resources, it also covers files, sockets, locks, device handles, buffers, and foreign pointers.
+
+In Rust, ownership is part of the language. Values have owners, ownership can move, references borrow values without owning them, and values are dropped when their owner goes out of scope. The compiler checks these rules for safe Rust.
+
+In C and C++, ownership often exists as a convention, guideline, API contract, or library pattern. A pointer, reference, handle, or iterator might imply ownership, borrowing, or temporary access, but the language may not enforce the whole contract. Modern C++ uses RAII, smart pointers, containers, and guidelines to make ownership clearer; C often relies on documented allocation and cleanup rules.
+
+## Borrowing
+
+Borrowing is temporary access without taking ownership. Rust distinguishes shared references from mutable references and rejects code that would allow incompatible access at the same time. That rule prevents many aliasing and lifetime mistakes, but it can require different data-structure designs than a C or C++ programmer might first reach for.
+
+Borrowing matters because many APIs should not transfer ownership. A parser can inspect input without owning it. A function can read a configuration value without copying it. A method can mutate a buffer while making it clear that no other reference may use that same buffer during the mutation.
+
+## Lifetimes
+
+Lifetimes describe how long references remain valid. In Rust, most lifetimes are inferred, but explicit lifetime parameters appear when an API returns references tied to inputs or stores references inside data structures.
+
+Lifetimes are not runtime timers or garbage-collection roots. They are compile-time relationships. They let the compiler reject references that could outlive the data they point to.
+
+## Resource Cleanup
+
+Ownership is broader than memory. The same model can manage cleanup for:
+
+- Files and sockets.
+- Locks and guards.
+- Temporary directories.
+- Allocated buffers.
+- Foreign handles from operating-system or C APIs.
+- Embedded peripherals.
+
+Rust uses `Drop` for deterministic cleanup when an owner goes out of scope. C++ uses destructors and RAII for a similar resource-management pattern. C typically uses paired functions and documented conventions such as "call close" or "call free" when ownership ends.
+
+## Why It Matters
+
+Ownership bugs are common because they cross local code boundaries. The allocation site, handoff site, mutation site, and cleanup site may be far apart. A strong ownership model helps answer:
+
+- Is this value still valid?
+- Who is responsible for freeing or closing it?
+- Can this code mutate the value while another part of the program reads it?
+- Can this reference outlive the data it points to?
+- What happens if an error path exits early?
+
+Rust tries to answer many of those questions at compile time. C and C++ can answer them through disciplined APIs and tools, but the guarantees depend more on project conventions and review.
+
+## Watch Points
+
+Ownership is not the same as "no bugs." Rust code can still leak memory, deadlock, panic, mishandle errors, validate input poorly, or use `unsafe` incorrectly. C++ RAII can still be undermined by raw pointers, lifetime mistakes, data races, or unclear ownership conventions. C APIs can be robust, but only when allocation, cleanup, and aliasing rules are documented and followed.
+
+For systems-language comparisons, ownership should be evaluated as a practical constraint: how much responsibility should the compiler enforce, how much should be left to the programmer, and how much can the team verify with tests, static analysis, sanitizers, fuzzing, and code review?

@@ -14,9 +14,18 @@ sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
-  - title: Rust Documentation
-    url: https://www.rust-lang.org/learn
-    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+  - title: The rustup book
+    url: https://rust-lang.github.io/rustup/
+    publisher: Rust Project
   - title: The Go Programming Language
     url: https://go.dev/
     publisher: Go Project
@@ -26,6 +35,9 @@ sources:
   - title: Effective Go
     url: https://go.dev/doc/effective_go
     publisher: Go Project
+  - title: The Go Memory Model
+    url: https://go.dev/ref/mem
+    publisher: Go Project
   - title: Go 1 and the Future of Go Programs
     url: https://go.dev/doc/go1compat
     publisher: Go Project
@@ -34,35 +46,36 @@ lastVerified: 2026-05-15
 
 ## Scope
 
-This comparison is about practical infrastructure choices: services, command-line tools, distributed systems, systems programming, and performance-sensitive backend work. It is not a universal ranking. Rust and Go can both produce reliable production software, but they ask teams to manage different kinds of complexity.
+This comparison is about practical infrastructure choices: services, command-line tools, distributed systems, systems programming, agents, and performance-sensitive backend work. It is not a universal ranking. Rust and Go can both produce reliable production software, but they ask teams to manage different kinds of complexity.
 
 ## Shared Territory
 
-Both languages are common candidates when a team wants native executables, static typing, open source tooling, and enough performance for infrastructure work. Both have package ecosystems, test tooling, formatter expectations, and cross-platform build support. Both can be used for command-line tools, network services, developer tooling, and parts of distributed systems.
+Both languages are common candidates when a team wants native executables, static typing, open source tooling, package ecosystems, test workflows, formatter expectations, and cross-platform build support. Both can be used for command-line tools, network services, developer tooling, infrastructure agents, and parts of distributed systems.
 
-The overlap is strongest for infrastructure software where deployment as a binary is attractive. The decision usually turns on memory constraints, team experience, concurrency model, ecosystem needs, and how much correctness the team wants the compiler to enforce before code runs.
+The overlap is strongest when deployment as a binary is attractive. The decision usually turns on memory constraints, team experience, concurrency model, ecosystem needs, and how much correctness the team wants the compiler to enforce before code runs.
 
 ## Key Differences
 
-| Dimension               | Rust                                                                                  | Go                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Primary design pressure | Memory safety and control without a garbage collector                                 | Simplicity, fast builds, readable service code, and built-in concurrency                   |
-| Memory model            | Ownership, borrowing, lifetimes, and RAII with no required GC                         | Garbage-collected runtime with explicit pointers and value semantics                       |
-| Concurrency             | Threads, async runtimes, channels, ownership-based sharing, and library-level models  | Goroutines, channels, `context`, and runtime scheduling built into the standard workflow   |
-| Type system             | Strong static typing with traits, generics, enums, pattern matching, and lifetimes    | Strong static typing with structural interfaces and simpler generics                       |
-| Error handling          | `Result` and `Option` encourage typed handling of fallible and absent values          | Explicit `error` returns are conventional and visible, but less type-specific              |
-| Build and tooling       | Cargo is central for builds, packages, tests, docs, and publishing                    | The `go` command is central for modules, builds, tests, formatting, docs, and installation |
-| Runtime footprint       | Small runtime by default; no required garbage collector                               | Native executables include the Go runtime, scheduler, and garbage collector                |
-| Learning curve          | Higher, especially around ownership, lifetimes, async, and trait design               | Lower for many teams, especially for service and tooling code                              |
-| Ecosystem center        | Systems, embedded, WebAssembly, CLIs, libraries, and performance-sensitive components | Network services, cloud infrastructure, CLIs, distributed systems, and operational tooling |
+| Dimension               | Rust                                                                                 | Go                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Primary design pressure | Memory safety and low-level control without a required garbage collector             | Simplicity, fast builds, readable service code, and built-in concurrency                   |
+| Memory model            | Ownership, borrowing, lifetimes, RAII, and explicit allocation choices               | Garbage-collected runtime with explicit pointers and value semantics                       |
+| Concurrency             | Threads, async runtimes, channels, ownership-based sharing, and library-level models | Goroutines, channels, `context`, and runtime scheduling built into the standard workflow   |
+| Type system             | Strong static typing with traits, generics, enums, pattern matching, and lifetimes   | Strong static typing with structural interfaces and simpler generics                       |
+| Error handling          | `Result` and `Option` encourage typed handling of fallible and absent values         | Explicit `error` returns are conventional and visible, but less type-specific              |
+| Build and tooling       | Cargo plus rustup for packages, builds, tests, docs, targets, and toolchains         | The `go` command for modules, builds, tests, formatting, docs, and installation            |
+| Runtime footprint       | Small standard runtime by default; no required garbage collector                     | Native executables include the Go runtime, scheduler, and garbage collector                |
+| Learning curve          | Higher, especially around ownership, lifetimes, async, traits, and API design        | Lower for many teams, especially for service and tooling code                              |
+| Ecosystem center        | Systems, embedded, WebAssembly, CLIs, libraries, and performance-sensitive parts     | Network services, cloud infrastructure, CLIs, distributed systems, and operational tooling |
 
 ## Choose Rust When
 
-- Memory safety without a garbage collector is central to the project.
+- Memory safety without a required garbage collector is central to the project.
 - Allocation patterns, layout, latency, or resource ownership need tight control.
-- The code is close to operating systems, embedded devices, browsers, runtimes, game engines, cryptography, parsers, or performance-sensitive libraries.
+- The code is close to operating systems, embedded devices, browsers, runtimes, game engines, cryptography-adjacent libraries, parsers, codecs, or performance-sensitive components.
 - You want the compiler to enforce more invariants before runtime, and the team can absorb the ownership and lifetime learning curve.
-- Long-lived library APIs need strong type modeling with enums, traits, generics, and explicit error types.
+- Long-lived library APIs need strong type modeling with enums, traits, generics, explicit error types, and precise borrowing rules.
+- WebAssembly, `no_std`, FFI, or custom target support is part of the plan and the team will test those targets directly.
 
 ## Choose Go When
 
@@ -71,13 +84,24 @@ The overlap is strongest for infrastructure software where deployment as a binar
 - The workload is mostly I/O-bound and benefits from goroutines, channels, contexts, HTTP packages, and standard library networking.
 - A garbage-collected runtime is acceptable, and the team can measure allocation and latency behavior where it matters.
 - Onboarding contributors quickly matters more than exposing maximum type-system or memory-control power.
+- The project needs a conventional backend-service stack more than low-level ownership modeling.
 
 ## Watch Points
 
-Rust's strength can become cost when a project does not need low-level control. Ownership, lifetimes, async runtimes, trait bounds, and compile times can slow teams that mostly need straightforward service code.
+Rust's strength can become cost when a project does not need low-level control. Ownership, lifetimes, async runtime choices, trait bounds, compile times, and dependency review can slow teams that mostly need straightforward service code.
 
 Go's simplicity can become cost when a project needs guarantees the language does not provide. Garbage collection, `nil`, less expressive type modeling, and runtime data races require operational discipline and tests rather than relying on the compiler to rule out whole classes of mistakes.
 
+For services, Rust is not automatically "better" because it has no required GC, and Go is not automatically "safer" because it is simpler. A Go service with good cancellation, backpressure, profiling, and data-race discipline can be the better production choice. A Rust service can be the better choice when the service's core risk is resource ownership, protocol correctness, or latency-sensitive native code.
+
+## Tooling And Release Practice
+
+Rust projects usually center on Cargo and rustup. Cargo gives a consistent package/build/test/doc workflow, while rustup manages toolchains and targets. For public crates, teams should decide their minimum supported Rust version and encode it with Cargo's `rust-version` field when support expectations matter.
+
+Go projects usually center on the `go` command. Modules, formatting, testing, documentation, installation, and many metadata tasks are part of one standard workflow. Go's compatibility promise is especially valuable for service teams that want routine toolchain upgrades without heavy language churn.
+
 ## Migration Or Interoperability Notes
 
-Rust and Go are often complementary rather than mutually exclusive. A service-oriented organization might write control planes, APIs, and CLIs in Go while using Rust for latency-sensitive libraries, agents, parsers, or components where memory control is central. Interoperability is possible through process boundaries, network APIs, C ABI layers, or WebAssembly in some contexts, but the cleanest boundary is usually a protocol rather than direct in-process mixing.
+Rust and Go are often complementary rather than mutually exclusive. A service-oriented organization might write control planes, APIs, and CLIs in Go while using Rust for latency-sensitive libraries, agents, parsers, WebAssembly modules, or components where memory control is central.
+
+Interoperability is possible through process boundaries, network APIs, C ABI layers, or WebAssembly in some contexts. The cleanest boundary is usually a protocol or file format rather than direct in-process mixing, because direct FFI makes build, ownership, panic, threading, and deployment rules more complicated.

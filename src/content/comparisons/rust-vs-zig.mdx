@@ -1,0 +1,71 @@
+---
+title: Rust vs Zig
+slug: rust-vs-zig
+summary: Rust and Zig both target low-level software without a required garbage collector, but Rust emphasizes ownership-checked safety and a mature crate ecosystem while Zig emphasizes explicit control, simple language mechanics, and C-oriented tooling.
+languages:
+  - rust
+  - zig
+useCases:
+  - systems programming
+  - embedded
+  - cross-compilation
+  - native libraries
+sources:
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+  - title: Overview - Zig Programming Language
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference
+    url: https://ziglang.org/documentation/master/
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This is a prepared comparison for Rust and Zig while the standalone Zig page is still pending. It focuses on low-level native software, embedded work, C interop, cross-compilation, and projects deciding how much safety should be enforced by the language.
+
+## Practical Difference
+
+Rust and Zig both appeal to developers who want native code, explicit resource control, and no required garbage collector. The difference is how much the language should enforce.
+
+Rust pushes many ownership, lifetime, and thread-sharing rules into the type system. That gives stronger compile-time checks for safe Rust, but it also means developers must learn the borrow checker, traits, lifetimes, and sometimes complex async or generic diagnostics.
+
+Zig aims for a smaller, more explicit language surface. Its official overview emphasizes no hidden control flow, no hidden allocations, no preprocessor, and no macros. Memory management is programmer-controlled, with allocator choices passed explicitly by convention. That can feel more direct than Rust, but it leaves more correctness responsibility on the programmer and project practices.
+
+## Choose Rust When
+
+- The project benefits from compile-time ownership and borrowing checks.
+- The team wants the maturity of Cargo, crates.io, stable Rust, and a large existing Rust package ecosystem.
+- Safe library APIs are a major part of the project value.
+- Concurrency safety and shared-state rules should be represented in the type system.
+- WebAssembly, embedded, CLIs, or infrastructure libraries need a stable production language today.
+
+## Choose Zig When
+
+- The team wants explicit allocation and control flow with fewer language-level abstractions.
+- C interop, cross-compilation, and low-level build control are central to the project.
+- The project can tolerate a younger language and ecosystem.
+- Developers prefer manual reasoning over a borrow-checker-centered workflow.
+- The code is close to C replacement work where a simpler language surface is a priority.
+
+## Watch Points
+
+Rust is more mature, but that maturity comes with more concepts. Zig is simpler in surface area, but simplicity does not remove the need to reason about lifetime, allocation, aliasing, initialization, and concurrency.
+
+For production choices, compare actual target support, dependency availability, debugger behavior, build reproducibility, release stability, and team experience. Both languages can be excellent for narrow low-level components; neither should be chosen on slogan alone.
+
+## Prepared Follow-Up
+
+When the Zig page lands, this comparison should add Zig release status, package-management details, allocator examples, build-system examples, and a more direct comparison of Rust `unsafe` boundaries with Zig safety-checked build modes.
