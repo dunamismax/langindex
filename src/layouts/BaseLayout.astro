@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import ThemeToggle from "../components/layout/ThemeToggle.astro";
 
 interface Props {
   title: string;
@@ -12,13 +13,17 @@ const {
 } = Astro.props;
 const pageTitle = title === "LangIndex" ? title : `${title} | LangIndex`;
 const navItems = [
-  { href: "/", label: "Home" },
   { href: "/languages", label: "Languages" },
   { href: "/comparisons", label: "Comparisons" },
   { href: "/guides", label: "Guides" },
   { href: "/concepts", label: "Concepts" },
   { href: "/about", label: "About" },
 ];
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
 ---
 
 <!doctype html>
@@ -30,54 +35,171 @@ const navItems = [
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0d0c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8f9f7" media="(prefers-color-scheme: light)" />
+    <link rel="alternate" type="application/rss+xml" title="LangIndex updates" href="/rss.xml" />
     <title>{pageTitle}</title>
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("langindex-theme");
+          var theme = stored === "light" || stored === "dark" ? stored : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
   </head>
-  <body>
-    <header class="border-b border-stone-200 bg-white/88" data-pagefind-ignore>
+  <body class="text-[color:var(--color-fg)]">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <header
+      class="sticky top-0 z-20 border-b border-[color:var(--color-border)] backdrop-blur-md bg-[color:var(--color-bg-elevated)]"
+      data-pagefind-ignore
+    >
       <div
-        class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
+        class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6"
       >
-        <a href="/" class="text-xl font-semibold tracking-normal text-stone-950"
-          >LangIndex</a
+        <a
+          href="/"
+          class="group flex items-center gap-2 text-[color:var(--color-fg-strong)]"
+          aria-label="LangIndex home"
         >
+          <span
+            aria-hidden="true"
+            class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[color:var(--color-border-strong)] bg-[color:var(--color-surface)] font-mono text-[0.78rem] font-semibold text-[color:var(--color-accent)] shadow-sm transition-colors group-hover:border-[color:var(--color-accent)]"
+            >&lt;/&gt;</span
+          >
+          <span class="text-base font-semibold tracking-tight">LangIndex</span>
+        </a>
         <nav
-          aria-label="Primary navigation"
-          class="flex flex-wrap gap-2 text-sm text-stone-700"
+          aria-label="Primary"
+          class="hidden items-center gap-0.5 text-sm text-[color:var(--color-fg-muted)] md:flex"
         >
           {
             navItems.map((item) => (
               <a
                 href={item.href}
-                class="rounded-md px-3 py-2 hover:bg-stone-100 hover:text-stone-950"
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "rounded-md px-3 py-1.5 transition-colors hover:bg-[color:var(--color-surface-muted)] hover:text-[color:var(--color-fg-strong)]",
+                  isActive(item.href)
+                    ? "text-[color:var(--color-fg-strong)] bg-[color:var(--color-surface-muted)]"
+                    : "",
+                ]}
               >
                 {item.label}
               </a>
             ))
           }
         </nav>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://github.com/dunamismax/langindex"
+            class="hidden rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-2.5 py-1.5 text-xs font-medium text-[color:var(--color-fg-muted)] transition-colors hover:border-[color:var(--color-border-strong)] hover:text-[color:var(--color-fg-strong)] sm:inline-flex"
+            aria-label="View on GitHub"
+            rel="noopener"
+          >
+            GitHub
+          </a>
+          <ThemeToggle />
+          <button
+            type="button"
+            data-mobile-nav-toggle
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)] md:hidden"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
+      <nav
+        id="mobile-nav"
+        aria-label="Mobile"
+        data-mobile-nav
+        hidden
+        class="border-t border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] md:hidden"
+      >
+        <ul class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 text-sm sm:px-6">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class:list={[
+                    "block rounded-md px-3 py-2 text-[color:var(--color-fg-muted)] hover:bg-[color:var(--color-surface-muted)] hover:text-[color:var(--color-fg-strong)]",
+                    isActive(item.href)
+                      ? "text-[color:var(--color-fg-strong)] bg-[color:var(--color-surface-muted)]"
+                      : "",
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </header>
-    <main data-pagefind-body>
+    <main id="main" data-pagefind-body>
       <slot />
     </main>
-    <footer class="border-t border-stone-200 bg-white" data-pagefind-ignore>
+    <footer
+      class="mt-16 border-t border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]"
+      data-pagefind-ignore
+    >
       <div
-        class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-stone-600 sm:px-6 md:flex-row md:items-center md:justify-between"
+        class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-start md:justify-between"
       >
-        <p>
-          Open source programming language reference. Content: CC-BY-SA-4.0.
-        </p>
-        <p>
-          <a class="underline-offset-4 hover:underline" href="/contribute"
-            >Contribute</a
-          >
-          <span aria-hidden="true"> / </span>
-          <a
-            class="underline-offset-4 hover:underline"
-            href="https://github.com/dunamismax/langindex">GitHub</a
-          >
-        </p>
+        <div class="max-w-md">
+          <div class="flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              class="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[color:var(--color-border-strong)] bg-[color:var(--color-surface)] font-mono text-[0.7rem] font-semibold text-[color:var(--color-accent)]"
+              >&lt;/&gt;</span
+            >
+            <span class="font-semibold text-[color:var(--color-fg-strong)]"
+              >LangIndex</span
+            >
+          </div>
+          <p class="mt-3 text-sm leading-6 text-[color:var(--color-fg-muted)]">
+            A self-hosted, source-backed reference for programming languages.
+            Content is community-maintained and licensed CC-BY-SA-4.0.
+          </p>
+        </div>
+        <nav aria-label="Footer" class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm">
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/languages">Languages</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/comparisons">Comparisons</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/guides">Guides</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/concepts">Concepts</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/about">About</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/contribute">Contribute</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="https://github.com/dunamismax/langindex" rel="noopener">GitHub</a>
+          <a class="text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg-strong)]" href="/rss.xml">RSS</a>
+        </nav>
+      </div>
+      <div
+        class="border-t border-[color:var(--color-border)] py-4 text-center text-xs text-[color:var(--color-fg-subtle)]"
+      >
+        Code GPL-3.0 / Content CC-BY-SA-4.0
       </div>
     </footer>
+    <script>
+      const toggle = document.querySelector("[data-mobile-nav-toggle]");
+      const panel = document.querySelector("[data-mobile-nav]");
+      if (toggle && panel) {
+        toggle.addEventListener("click", () => {
+          const expanded = toggle.getAttribute("aria-expanded") === "true";
+          toggle.setAttribute("aria-expanded", String(!expanded));
+          (panel as HTMLElement).hidden = expanded;
+        });
+      }
+    </script>
   </body>
 </html>

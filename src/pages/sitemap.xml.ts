@@ -14,6 +14,7 @@ const staticPaths = [
   "/about/",
   "/contribute/",
   "/languages.json",
+  "/rss.xml",
 ];
 
 function formatDate(date: Date) {

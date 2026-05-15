@@ -389,10 +389,10 @@ Suggested seed languages:
       comparison page.
 - [x] Add internal link checking.
 - [x] Add external link checking with rate limits.
-- [ ] Add accessibility checks.
+- [x] Add accessibility checks.
 - [x] Add sitemap.
 - [x] Add robots.txt.
-- [ ] Add RSS or changelog feed if useful.
+- [x] Add RSS or changelog feed if useful.
 - [x] Add backup/restore note for repo and deployment artifacts.
 
 ---
@@ -476,3 +476,7 @@ have changed.
 - 2026-05-15 - Deployed the LangIndex container on the Ubuntu VM behind the
   shared host Caddy service and confirmed `https://langindex.dev` serves the
   static site.
+- 2026-05-15 - Introduced dark-first themed UI with light/dark toggle,
+  redesigned hero, language cards, language profile facts grid, breadcrumbs,
+  improved typography and spacing, sticky themed header, accessible mobile
+  navigation, axe-core Playwright accessibility checks, and an RSS feed.

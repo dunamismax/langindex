@@ -1,0 +1,68 @@
+---
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-fg-muted)] transition-colors hover:border-[color:var(--color-border-strong)] hover:text-[color:var(--color-fg-strong)]"
+  aria-label="Toggle color theme"
+  title="Toggle color theme"
+>
+  <span class="sr-only" data-theme-label>Switch to light theme</span>
+  <svg
+    class="theme-icon-light"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle>
+    <path
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    ></path>
+  </svg>
+  <svg
+    class="theme-icon-dark"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linejoin="round"
+    ></path>
+  </svg>
+</button>
+
+<script is:inline>
+  (function () {
+    var btn = document.querySelector("[data-theme-toggle]");
+    if (!btn) return;
+    var label = btn.querySelector("[data-theme-label]");
+    function sync() {
+      var theme = document.documentElement.getAttribute("data-theme");
+      if (label) {
+        label.textContent =
+          theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+      }
+    }
+    sync();
+    btn.addEventListener("click", function () {
+      var current = document.documentElement.getAttribute("data-theme");
+      var next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("langindex-theme", next);
+      } catch (e) {}
+      sync();
+    });
+  })();
+</script>

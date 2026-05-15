@@ -14,23 +14,31 @@ const { sources, lastVerified } = Astro.props;
 const verified = lastVerified.toISOString().slice(0, 10);
 ---
 
-<section class="mt-10 border-t border-stone-200 pt-6">
-  <h2 class="text-lg font-semibold text-stone-950">Sources</h2>
-  <p class="mt-2 text-sm text-stone-600">
-    Last verified: <time datetime={verified}>{verified}</time>
-  </p>
-  <ul class="mt-4 space-y-2 text-sm text-stone-700">
+<section class="mt-12 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-5">
+  <div class="flex items-center justify-between gap-3">
+    <h2 class="text-base font-semibold text-[color:var(--color-fg-strong)]">
+      Sources
+    </h2>
+    <p class="text-xs text-[color:var(--color-fg-muted)]">
+      <span>Last verified</span>
+      <time datetime={verified} class="ml-1 font-mono text-[color:var(--color-fg)]">{verified}</time>
+    </p>
+  </div>
+  <ul class="mt-4 space-y-2 text-sm">
     {
       sources.map((source) => (
-        <li>
+        <li class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-2">
           <a
-            class="font-medium underline-offset-4 hover:underline"
+            class="font-medium text-[color:var(--color-accent)] underline decoration-[color:color-mix(in_srgb,var(--color-accent)_40%,transparent)] underline-offset-4 hover:decoration-[color:var(--color-accent)]"
             href={source.url}
+            rel="noopener"
           >
             {source.title}
           </a>
           {source.publisher ? (
-            <span class="text-stone-500"> - {source.publisher}</span>
+            <span class="text-xs text-[color:var(--color-fg-subtle)]">
+              {source.publisher}
+            </span>
           ) : null}
         </li>
       ))
