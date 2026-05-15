@@ -1,0 +1,241 @@
+---
+title: Java
+slug: java
+status: active
+summary: Java is a statically typed, class-based language for the JVM, widely used for backend services, enterprise systems, Android-era application code, and long-lived software that benefits from managed runtime tooling and strong compatibility expectations.
+firstReleased: 1995
+creators:
+  - James Gosling
+  - Sun Microsystems
+paradigms:
+  - object-oriented
+  - imperative
+  - concurrent
+  - functional
+typing:
+  discipline: static
+  strength: strong with nominal types and type-erased generics
+memory:
+  model: garbage collected heap with managed object references
+runtime:
+  model: JVM bytecode on Java Virtual Machine implementations
+officialSite: https://www.java.com/
+repository: https://github.com/openjdk/jdk
+packageManagers:
+  - Maven
+  - Gradle
+  - Maven Central
+comparedWith:
+  - csharp
+  - go
+  - kotlin
+  - scala
+  - python
+bestFor:
+  - Backend services, enterprise applications, integration-heavy systems, and long-lived server software.
+  - Teams that need a mature managed runtime, broad libraries, strong observability tooling, and conservative compatibility expectations.
+  - JVM ecosystems built around Spring, Jakarta EE, Maven, Gradle, application servers, message brokers, databases, and cloud services.
+  - Organizations that already operate Java services and value incremental modernization over platform rewrites.
+poorFit:
+  - Small scripts, short-lived command-line utilities, and exploratory notebooks where startup, ceremony, or build setup would dominate the work.
+  - Low-level systems software, firmware, kernels, hard real-time components, and allocation-sensitive code that cannot tolerate a garbage-collected runtime.
+  - New Android applications that want the most idiomatic current Android tooling, where Kotlin is now the Kotlin-first default.
+  - Teams that expect the JVM ecosystem to remove the need for dependency governance, runtime tuning, and framework discipline.
+sources:
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Java SE 26 API Documentation
+    url: https://docs.oracle.com/en/java/javase/26/docs/api/index.html
+    publisher: Oracle
+  - title: Preface to the First Edition
+    url: https://docs.oracle.com/javase/specs/jls/se7/html/jls-0-preface1.html
+    publisher: Oracle
+  - title: What is Java and why do I need it?
+    url: https://www.java.com/en/download/faq/whatis_java.xml
+    publisher: Oracle
+  - title: Java's 30th Birthday
+    url: https://dev.java/community/java-30-anniversary/
+    publisher: Oracle
+  - title: Learn Java
+    url: https://dev.java/learn/
+    publisher: Oracle
+  - title: The javac Command
+    url: https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html
+    publisher: Oracle
+  - title: The java Command
+    url: https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html
+    publisher: Oracle
+  - title: JDK 26 Documentation
+    url: https://docs.oracle.com/en/java/javase/26/
+    publisher: Oracle
+  - title: Significant Changes in JDK 26 Release
+    url: https://docs.oracle.com/en/java/javase/26/migrate/significant-changes-jdk-26-release.html
+    publisher: Oracle
+  - title: Java Community Process Procedures
+    url: https://jcp.org/en/procedures/overview
+    publisher: Java Community Process
+  - title: Support roadmap for the Microsoft Build of OpenJDK
+    url: https://learn.microsoft.com/en-us/java/openjdk/support
+    publisher: Microsoft Learn
+  - title: What is Maven?
+    url: https://maven.apache.org/what-is-maven.html
+    publisher: Apache Maven Project
+  - title: Introduction to the Build Lifecycle
+    url: https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+    publisher: Apache Maven Project
+  - title: The Java Plugin
+    url: https://docs.gradle.org/current/userguide/java_plugin.html
+    publisher: Gradle
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+lastVerified: 2026-05-15
+---
+
+## Origin And Design Goals
+
+Java was created at Sun Microsystems, with James Gosling as the central language designer. It began as Oak, a language for embedded consumer electronics, then was retargeted for networked and Internet-era software before becoming Java. The early design center was a general-purpose, object-oriented, concurrent language with fewer implementation dependencies than C and C++ programs commonly had.
+
+The durable idea was not just syntax. Java paired a language, class libraries, bytecode, and a virtual machine so compiled programs could target a stable abstract platform instead of a specific processor and operating system. That portability goal is still part of Java's identity, but modern Java is mostly chosen for long-lived server software, enterprise ecosystems, JVM operations, mature libraries, and compatibility rather than browser applets or early web distribution.
+
+## Runtime, JDK, And Bytecode
+
+Java source files are normally compiled by `javac` into `.class` files containing Java Virtual Machine bytecode. The `java` launcher starts a JVM, loads classes, verifies bytecode, links and initializes classes, and executes application code through an implementation such as HotSpot. The Java Language Specification defines the language; the Java Virtual Machine Specification defines the class file format, runtime data areas, instruction set, loading, linking, initialization, and execution model.
+
+The JDK is the developer kit around this platform. It includes the compiler, launcher, standard tools, libraries, and documentation needed to build and run Java applications. In production, teams usually standardize on a specific JDK vendor and version, then choose whether to run with a full JDK, a runtime image produced by `jlink`, a container image, or a platform-provided runtime.
+
+This runtime model is a strength when observability, profiling, JIT optimization, portability, and ecosystem integration matter. It is a cost when startup latency, image size, memory ceilings, or operational simplicity matter more than the JVM's services.
+
+## Type System And Language Model
+
+Java is statically typed and primarily nominal: classes and interfaces define named types, and API contracts are expressed through declared inheritance, implemented interfaces, access modifiers, method signatures, exceptions, and packages. Modern Java also includes records, sealed classes and interfaces, pattern matching features, lambdas, streams, local variable type inference, modules, and other changes that make current Java more concise than pre-Java-8 code.
+
+Generics are central to Java collections and APIs, but they are implemented mostly through type erasure. That keeps compatibility with older bytecode and libraries, while limiting what generic type information is available at runtime. Developers still need to understand raw types, unchecked warnings, wildcard variance, boxing, null references, and the difference between compile-time types and runtime class information.
+
+Java does not have Kotlin-style null safety or Rust-style ownership. Nullability is handled through conventions, annotations, static analysis, runtime validation, and disciplined API design rather than through the core type system.
+
+## Memory Model And Garbage Collection
+
+Java uses automatic memory management. Objects are allocated on a managed heap, and garbage collectors reclaim objects that are no longer reachable. Developers still influence memory behavior through object lifetime, allocation rate, data-structure choices, caching, pooling, references, off-heap APIs, and JVM flags, but ordinary Java code does not manually free heap objects.
+
+The practical tradeoff is familiar across managed runtimes. Java removes a large class of manual memory-management errors and gives production teams mature GC choices and observability, but it does not make allocation free. Latency-sensitive services need measurement, heap sizing, GC selection, profiling, and load testing. Systems with strict real-time or tiny memory requirements should not assume Java is a fit without proving the runtime behavior.
+
+## Concurrency
+
+Java has had built-in threads and synchronization since its early design. The platform includes `Thread`, monitors, `synchronized`, `volatile`, concurrent collections, executors, futures, atomics, locks, parallel streams, and newer virtual-thread support in modern JDKs. This gives Java several levels of concurrency abstraction, from explicit shared-memory synchronization to higher-level task execution.
+
+The JVM and class library make Java a strong fit for high-throughput server workloads, worker pools, message processing, database-backed services, and request/response systems. The risk is that a large concurrency toolbox can produce accidental complexity. Blocking calls, thread pools, transaction boundaries, database pools, backpressure, cancellation, timeouts, and memory visibility still need explicit design.
+
+Virtual threads improve the economics of thread-per-task server code for many blocking I/O workloads, but they do not remove the need to bound resources or understand where native calls, monitors, synchronized bottlenecks, and external systems constrain concurrency.
+
+## Packages, Modules, And Builds
+
+Java code is organized into packages. Since Java 9, the module system also lets projects define explicit module boundaries through `module-info.java`, but many application codebases still rely primarily on package structure, build-tool dependency graphs, and framework conventions rather than fully modularized application modules.
+
+The two dominant build tools are Maven and Gradle. Maven centers projects around `pom.xml`, a lifecycle, plugins, conventions, and dependency coordinates. Gradle uses a task graph and build scripts, commonly with Kotlin or Groovy DSLs, and is especially common in Android and large multi-project builds. Both tools commonly resolve artifacts from Maven Central or internal repositories.
+
+Java's build story is mature, but dependency governance is not automatic. Production teams need version alignment, transitive dependency review, lock or bill-of-materials strategy, vulnerability handling, repository policy, reproducible builds, and an upgrade path for the JDK and framework stack.
+
+## Syntax Example
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.Executors;
+
+public class StatusCheck {
+    record Target(String name, URI uri) {}
+
+    static String check(HttpClient client, Target target) {
+        try {
+            var request = HttpRequest.newBuilder(target.uri())
+                    .timeout(Duration.ofSeconds(3))
+                    .method("HEAD", HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            var response = client.send(request, HttpResponse.BodyHandlers.discarding());
+            return "%s: %d".formatted(target.name(), response.statusCode());
+        } catch (Exception error) {
+            return "%s: %s".formatted(target.name(), error.getMessage());
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        var targets = List.of(
+                new Target("Java", URI.create("https://www.java.com/")),
+                new Target("OpenJDK", URI.create("https://github.com/openjdk/jdk")));
+
+        var client = HttpClient.newHttpClient();
+
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            var tasks = targets.stream()
+                    .map(target -> executor.submit(() -> check(client, target)))
+                    .toList();
+
+            for (var task : tasks) {
+                System.out.println(task.resultNow());
+            }
+        }
+    }
+}
+```
+
+This example uses only the JDK: records for small data carriers, `HttpClient` for HTTP, virtual threads for simple concurrent blocking calls, and formatted strings for output. It assumes a recent JDK with virtual threads available.
+
+## Backend And Enterprise Ecosystem
+
+Java's strongest modern fit is server-side software. Its ecosystem includes Spring, Jakarta EE, Micronaut, Quarkus, Helidon, Netty, Vert.x, gRPC, JDBC, JPA, messaging clients, observability agents, testing tools, build plugins, and decades of integration with enterprise databases, identity systems, queues, and application platforms.
+
+That depth is useful when a system is long-lived, integration-heavy, audited, staffed by many teams, or dependent on stable vendor support. It can also make Java stacks heavy. Framework defaults, dependency injection, reflection, annotation processing, generated code, application servers, and transitive dependencies should be chosen deliberately rather than inherited as ritual.
+
+Java is often a good modernization language for organizations that already run JVM systems. Existing operational knowledge, libraries, monitoring, build pipelines, and hiring pools can be more important than language fashion. For greenfield services, compare Java directly with Go, C#, Kotlin, TypeScript, Python, and Rust according to deployment model, team skill, startup and memory requirements, framework needs, and expected system lifetime.
+
+## Android History
+
+Java was historically central to Android application development. Android exposed Java-language APIs and Java-like development workflows even though Android runtime details differed from a standard desktop or server JVM. That history still matters for legacy Android codebases, libraries, and Java developers moving into Android.
+
+For new Android development, the center has shifted. Android's own guidance is Kotlin-first: tools, documentation, samples, Jetpack libraries, and modern UI development are designed with Kotlin users in mind while Java support remains available. Java can still be used on Android, but teams starting new Android apps should evaluate Kotlin first unless an existing Java codebase or team constraint changes the decision.
+
+## Best-Fit Use Cases
+
+Java is a strong fit for:
+
+- Backend APIs, worker services, batch jobs, message consumers, and integration systems.
+- Enterprise applications where stability, support windows, libraries, and operational tooling matter.
+- Large teams that need conservative language evolution, mature IDE support, strong refactoring tools, and established code review norms.
+- JVM-based platforms where Java interoperability, Maven/Gradle dependency graphs, and existing libraries are assets.
+- Long-lived systems that can justify build discipline, dependency governance, performance testing, and runtime operations.
+
+## Poor-Fit Or Risky Use Cases
+
+Java can be a poor fit when:
+
+- The task is a small script, one-off automation job, notebook, or shell-adjacent tool where setup cost dominates.
+- The runtime target has strict memory, startup, hard real-time, embedded, or native-distribution constraints.
+- The team wants Kotlin-style null safety, concise Android-first APIs, or multiplatform mobile sharing as the primary language feature.
+- The codebase would become framework-heavy without a clear reason for enterprise middleware.
+- The organization cannot keep JDK versions, framework dependencies, build plugins, and container images maintained.
+
+## Governance, Releases, And Compatibility
+
+Java SE specifications are standardized through the Java Community Process. OpenJDK is the open source community and codebase where the reference implementation for current Java SE releases is developed. The OpenJDK bylaws define community roles, groups, projects, and governance mechanics, while JEPs track many proposed and delivered JDK changes.
+
+The JDK now follows a time-based feature-release cadence. Oracle's JDK 26 documentation covers the current Java SE 26 platform, while vendor support roadmaps such as Microsoft Build of OpenJDK identify OpenJDK 25 as an LTS line. Most production teams should distinguish between the latest feature release, the LTS release they standardize on, and the support policy of their chosen JDK vendor.
+
+Compatibility is one of Java's most important promises, but it is not magic. Source, binary, runtime, library, and framework compatibility can fail in different ways. Teams should test upgrades, avoid depending on internal JDK APIs, track deprecations, and keep CI running against the JDK versions they claim to support.
+
+## Comparison Notes
+
+C# is the closest managed-runtime comparison for enterprise teams choosing between JVM and .NET ecosystems. Java is usually strongest where the JVM, Maven Central, Spring/Jakarta history, and cross-vendor JDK deployments are already central. C# is usually strongest where .NET, ASP.NET Core, Azure, Windows integration, Unity, or modern C# language features are central.
+
+Go is a common backend alternative when teams want smaller services, native binaries, simple deployment, and a smaller language surface. Java usually offers deeper enterprise frameworks and JVM observability; Go usually offers lower operational ceremony for network services and infrastructure tools.
+
+Kotlin is the closest in-platform alternative because it runs well on the JVM and interoperates with Java. Kotlin gives a more concise syntax and null-safety model, while Java remains the baseline JVM language with the most conservative compatibility story and the broadest existing codebase.

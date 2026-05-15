@@ -1,0 +1,104 @@
+---
+title: Java vs Go
+slug: java-vs-go
+summary: "Java and Go both work well for backend services, but Java favors mature JVM frameworks and enterprise ecosystems while Go favors small language surface area, native binaries, and direct service operations."
+languages:
+  - java
+  - go
+useCases:
+  - backend services
+  - enterprise applications
+  - infrastructure
+  - command-line tools
+  - distributed systems
+sources:
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Support roadmap for the Microsoft Build of OpenJDK
+    url: https://learn.microsoft.com/en-us/java/openjdk/support
+    publisher: Microsoft Learn
+  - title: Significant Changes in JDK 26 Release
+    url: https://docs.oracle.com/en/java/javase/26/migrate/significant-changes-jdk-26-release.html
+    publisher: Oracle
+  - title: What is Maven?
+    url: https://maven.apache.org/what-is-maven.html
+    publisher: Apache Maven Project
+  - title: The Go Programming Language Specification
+    url: https://go.dev/ref/spec
+    publisher: Go Project
+  - title: Effective Go
+    url: https://go.dev/doc/effective_go
+    publisher: Go Project
+  - title: How to Write Go Code
+    url: https://go.dev/doc/code
+    publisher: Go Project
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+  - title: Go 1 and the Future of Go Programs
+    url: https://go.dev/doc/go1compat
+    publisher: Go Project
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams choosing between Java and Go for backend services, infrastructure software, distributed systems, APIs, workers, platform tools, and long-running operational code. Both can be good production choices. The useful question is which runtime, ecosystem, deployment model, and team workflow better matches the system.
+
+## Shared Territory
+
+Java and Go are both statically typed, garbage-collected languages used heavily for network services and infrastructure. Both have standard libraries with HTTP support, mature test workflows, broad editor support, open development, and strong production stories.
+
+The overlap is strongest for services that need concurrency, database access, HTTP APIs, structured deployments, and maintained dependencies. The differences show up in language size, framework expectations, runtime shape, and operations.
+
+## Key Differences
+
+| Dimension        | Java                                                   | Go                                                |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------------- |
+| Runtime model    | JVM bytecode on a managed virtual machine              | Native binaries with the Go runtime included      |
+| Type system      | Static nominal typing with inheritance and interfaces  | Static typing with structural interfaces          |
+| Generics         | Type-erased generics                                   | Type parameters in the compiled language          |
+| Concurrency      | Threads, executors, virtual threads, JVM primitives    | Goroutines, channels, `context`, standard tooling |
+| Build ecosystem  | Maven, Gradle, Maven Central, framework plugins        | Go modules and the `go` command                   |
+| Deployment       | JDK/runtime image/container, JVM tuning and flags      | Often a single target-specific executable         |
+| Ecosystem center | Enterprise frameworks, integration, application stacks | Network services, CLIs, infrastructure tools      |
+
+## Choose Java When
+
+- The system sits in an enterprise ecosystem with Spring, Jakarta EE, JVM agents, application servers, or Java libraries.
+- Long-lived API compatibility, vendor support, and LTS JDK planning are central.
+- The team benefits from mature JVM profiling, observability, GC options, and runtime diagnostics.
+- The application has complex domain modeling, integration layers, or framework needs that the Java ecosystem already handles.
+- Existing JVM code, build pipelines, and staff expertise make incremental change cheaper than adopting another platform.
+
+## Choose Go When
+
+- The primary target is a network service, CLI, control plane, sidecar, agent, or infrastructure tool.
+- Static binaries, fast builds, standard formatting, and smaller deployment artifacts are high-value constraints.
+- The team wants a smaller language surface and fewer framework decisions.
+- The workload is mostly I/O-bound and maps naturally to goroutines, channels, contexts, and standard library networking.
+- Operational simplicity matters more than deep enterprise framework features.
+
+## Watch Points
+
+Java can carry runtime and framework weight into places that only need a focused service. Startup time, memory use, container sizing, dependency graphs, and framework reflection should be measured rather than assumed acceptable.
+
+Go can look simpler than it is when production concurrency is underspecified. Goroutine lifetimes, cancellation, backpressure, connection pools, timeouts, and data races still need explicit design.
+
+Both languages use garbage collection. If the real requirement is deterministic memory behavior, embedded deployment, or manual layout control, compare Rust, C, or C++ instead.
+
+## Backend Services
+
+For business services close to existing enterprise systems, Java is often the safer default. It has deep libraries for databases, security, messaging, configuration, validation, observability, and long-running service frameworks.
+
+For service infrastructure, proxies, agents, control planes, and APIs with modest domain complexity, Go often has the cleaner operational story. Its build and deployment model keeps many teams closer to source, binary, and container without a large application framework.
+
+## Migration Or Interoperability Notes
+
+Java and Go often work well together across service boundaries. A common split is Java for core business applications and integration-heavy services, with Go for platform tools, network daemons, Kubernetes-facing components, and operational utilities.
+
+Keep the boundary explicit through HTTP, gRPC, queues, or events. Avoid language migration as a rewrite goal by itself; move the workloads whose deployment or maintenance constraints actually improve.

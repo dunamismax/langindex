@@ -1,0 +1,92 @@
+---
+title: Java vs C#
+slug: java-vs-csharp
+summary: "Java and C# are mature, statically typed managed-runtime languages for backend and enterprise systems, but Java centers on the JVM and cross-vendor ecosystem while C# centers on .NET, Microsoft tooling, and modern language ergonomics."
+languages:
+  - java
+  - csharp
+useCases:
+  - backend services
+  - enterprise applications
+  - managed runtimes
+  - cloud services
+  - desktop applications
+sources:
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Support roadmap for the Microsoft Build of OpenJDK
+    url: https://learn.microsoft.com/en-us/java/openjdk/support
+    publisher: Microsoft Learn
+  - title: What is Maven?
+    url: https://maven.apache.org/what-is-maven.html
+    publisher: Apache Maven Project
+  - title: The Java Plugin
+    url: https://docs.gradle.org/current/userguide/java_plugin.html
+    publisher: Gradle
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: What is managed code?
+    url: https://learn.microsoft.com/en-us/dotnet/standard/managed-code
+    publisher: Microsoft Learn
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams choosing a primary language and runtime for backend services, enterprise applications, internal platforms, cloud systems, and long-lived business software. It is not a ranking of language quality. Both ecosystems are mature enough for serious production systems; the practical decision is usually about platform fit, existing code, operations, hiring, and framework gravity.
+
+## Shared Territory
+
+Java and C# are both statically typed, garbage-collected, object-oriented languages with generics, exceptions, rich standard libraries, mature IDEs, build systems, package ecosystems, testing tools, and production observability stories. Both are used for web APIs, worker services, desktop applications, enterprise integrations, cloud deployments, and large codebases maintained by many teams.
+
+The overlap is strongest in organizations that value managed runtimes, strong refactoring tools, stable APIs, and predictable maintenance over minimal runtime footprint.
+
+## Key Differences
+
+| Dimension        | Java                                              | C#                                                       |
+| ---------------- | ------------------------------------------------- | -------------------------------------------------------- |
+| Runtime center   | JVM and Java SE implementations                   | .NET runtime and CLR                                     |
+| Ecosystem center | Spring, Jakarta EE, Maven Central, Maven, Gradle  | ASP.NET Core, NuGet, MSBuild, .NET SDK                   |
+| Type model       | Nominal static typing with type-erased generics   | Nominal static typing with reified generics              |
+| Memory           | Garbage-collected JVM heap                        | Garbage-collected .NET runtime                           |
+| Concurrency      | Threads, executors, virtual threads, JVM tooling  | `async`/`await`, tasks, threads, .NET tooling            |
+| Platform gravity | Cross-vendor JDKs, JVM languages, enterprise Java | Microsoft ecosystem, Azure, Windows, Unity               |
+| Compatibility    | Very strong backward-compatibility expectations   | Strong .NET compatibility with faster language evolution |
+
+## Choose Java When
+
+- The organization already operates JVM services, build pipelines, libraries, and observability tools.
+- Spring, Jakarta EE, Maven, Gradle, JVM agents, or existing Java libraries are central to delivery.
+- Cross-vendor JDK availability and long LTS support windows are important procurement or operations constraints.
+- The team wants a conservative baseline language that many JVM developers can read and maintain.
+- Migration risk is lower when existing Java code can be modernized incrementally instead of rewritten.
+
+## Choose C# When
+
+- The organization is centered on .NET, ASP.NET Core, Azure, Microsoft identity, Windows desktop, or Unity.
+- Modern C# language features such as properties, nullable reference types, LINQ, records, pattern matching, and `async`/`await` ergonomics are high-value.
+- The .NET SDK, NuGet, and Microsoft tooling provide the cleanest route from development to deployment.
+- Cross-platform .NET is acceptable and Microsoft stewardship is an asset rather than a concern.
+- The same language may need to span services, desktop tooling, and game development.
+
+## Watch Points
+
+Java can become unnecessarily heavy when a small service inherits enterprise framework patterns it does not need. Dependency injection, reflection, annotation processing, application servers, and large transitive graphs should earn their place.
+
+C# can be the wrong default when the runtime and hosting environment are JVM-first, when Java libraries are the durable asset, or when an organization wants to avoid coupling platform strategy to the .NET ecosystem.
+
+For both languages, production quality depends less on syntax than on dependency policy, runtime upgrades, observability, testing, build reproducibility, and clear framework boundaries.
+
+## Migration Or Interoperability Notes
+
+Direct in-process Java and C# interoperability is unusual and usually not worth making the default architecture. Treat migration as a platform migration, not just a language translation. Keep boundaries through HTTP, gRPC, queues, events, files, or database contracts, and move one bounded context at a time.
+
+When the team is already split across JVM and .NET, compare the cost of two well-operated platforms against the cost of forcing all work into one stack. The answer may differ for product services, internal tools, desktop apps, and integration layers.

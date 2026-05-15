@@ -26,11 +26,16 @@ Observed on 2026-05-15:
   - Go
   - TypeScript
   - Python
+  - Java
 - Current supporting content:
   - Rust vs Go comparison
   - Python vs Go comparison
+  - Java vs C# comparison
+  - Java vs Go comparison
+  - Java vs Kotlin comparison
   - Choosing a systems language guide
   - Choosing Python for scripting, backend, data, and AI work guide
+  - Choosing Java for backend, enterprise, and JVM work guide
   - Ownership concept page
 - Current local baseline:
 
@@ -212,12 +217,12 @@ justify the extra network time.
 
 ### Phase 6 - Java
 
-- [ ] Add a complete Java page.
-- [ ] Cover JVM, JDK, JEPs, bytecode, garbage collection, generics,
+- [x] Add a complete Java page.
+- [x] Cover JVM, JDK, JEPs, bytecode, garbage collection, generics,
       concurrency, Maven/Gradle, long-term support releases, enterprise
       ecosystem, Android history, and governance through the JCP/OpenJDK.
-- [ ] Add Java vs C#, Java vs Go, and Java vs Kotlin comparisons.
-- [ ] Add Java to backend, enterprise, and JVM ecosystem guides.
+- [x] Add Java vs C#, Java vs Go, and Java vs Kotlin comparisons.
+- [x] Add Java to backend, enterprise, and JVM ecosystem guides.
 
 ### Phase 7 - C#
 

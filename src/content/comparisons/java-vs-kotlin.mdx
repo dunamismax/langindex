@@ -1,0 +1,104 @@
+---
+title: Java vs Kotlin
+slug: java-vs-kotlin
+summary: "Java and Kotlin share the JVM ecosystem, but Java is the conservative baseline language while Kotlin adds concise syntax, null-safety features, coroutines, and Android-first momentum."
+languages:
+  - java
+  - kotlin
+useCases:
+  - JVM applications
+  - backend services
+  - Android
+  - enterprise applications
+  - incremental modernization
+sources:
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Support roadmap for the Microsoft Build of OpenJDK
+    url: https://learn.microsoft.com/en-us/java/openjdk/support
+    publisher: Microsoft Learn
+  - title: Kotlin Documentation
+    url: https://kotlinlang.org/docs/home.html
+    publisher: JetBrains
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+  - title: Null safety
+    url: https://kotlinlang.org/docs/kotlin-tour-null-safety.html
+    publisher: JetBrains
+  - title: Backend development with Kotlin
+    url: https://kotlinlang.org/docs/server-overview.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Kotlin Foundation
+    url: https://kotlinfoundation.org/
+    publisher: Kotlin Foundation
+lastVerified: 2026-05-15
+---
+
+## Scope
+
+This comparison is for teams choosing between Java and Kotlin on the JVM, especially for backend services, Android applications, enterprise systems, and incremental modernization of existing Java code. It is not about whether the JVM is appropriate; it assumes the JVM ecosystem is already a serious candidate.
+
+## Shared Territory
+
+Java and Kotlin can use the JVM, Java libraries, Maven Central, Gradle, IDE tooling, debuggers, profilers, and common frameworks. Kotlin is designed for Java interoperability, so teams can often introduce Kotlin into a Java codebase gradually instead of rewriting everything.
+
+The overlap is strongest when a team wants JVM deployment but is deciding whether the primary source language should stay Java or move toward Kotlin.
+
+## Key Differences
+
+| Dimension        | Java                                               | Kotlin                                                     |
+| ---------------- | -------------------------------------------------- | ---------------------------------------------------------- |
+| Ecosystem role   | Baseline JVM language and specification center     | JVM language designed for concision and interoperability   |
+| Nullability      | Conventions, annotations, analysis, runtime checks | Nullable and non-nullable types in the language            |
+| Syntax           | More explicit and conservative                     | More concise with properties, data classes, and extensions |
+| Concurrency      | Threads, executors, virtual threads, JVM APIs      | Coroutines plus JVM concurrency APIs                       |
+| Android position | Supported, important for legacy code               | Kotlin-first for modern Android guidance                   |
+| Compatibility    | Conservative Java SE and JDK release process       | JetBrains/Kotlin Foundation evolution plus JVM interop     |
+| Build tooling    | Maven or Gradle                                    | Commonly Gradle, especially for Android and Kotlin DSL     |
+
+## Choose Java When
+
+- The codebase is already Java and the main need is modernization within familiar constraints.
+- Conservative language evolution and broad readability across JVM developers matter more than concision.
+- The team wants the fewest additional compiler, plugin, and language-version moving parts.
+- Existing frameworks, annotation processors, build plugins, or tools are Java-first and Kotlin support would need validation.
+- The project is a library intended for the broadest possible JVM consumer base.
+
+## Choose Kotlin When
+
+- The team wants null-safety features, concise data modeling, extension functions, properties, and less boilerplate.
+- New Android development is a central use case.
+- Gradual adoption inside a Java codebase is realistic and the team can set style, interop, and build conventions.
+- Coroutines fit the application model and the team is ready to learn their cancellation and structured-concurrency rules.
+- Kotlin-specific framework support, such as Spring Kotlin APIs or Ktor, is part of the desired stack.
+
+## Watch Points
+
+Java's explicitness can be a maintenance advantage in large mixed-skill teams, but it can also produce boilerplate and null-safety conventions that depend on tools and discipline rather than the core type system.
+
+Kotlin's concision can improve everyday code, but mixed Java/Kotlin projects need rules. Watch platform types from Java interop, annotation processing or compiler-plugin behavior, Gradle configuration, binary compatibility for libraries, and coroutine usage across blocking Java APIs.
+
+Neither language removes JVM operations. Heap sizing, GC behavior, classpath or module boundaries, dependency governance, and runtime observability still matter.
+
+## Backend And Android
+
+For backend services, Java remains the least surprising JVM default. It works with every major Java framework and has the largest existing base of production code. Kotlin is attractive when the team wants a more expressive source language while keeping JVM libraries and deployment, especially when the chosen framework has first-class Kotlin support.
+
+For Android, Kotlin is usually the default for new code because Android's current guidance, samples, Jetpack APIs, and Compose ecosystem are Kotlin-first. Java remains relevant for older Android codebases and shared Java libraries.
+
+## Migration Or Interoperability Notes
+
+The most practical Java-to-Kotlin migration is incremental. Start with tests, new modules, or isolated application layers. Define conventions for nullability annotations, collection mutability, exception behavior, generated code, package layout, and public APIs.
+
+For libraries, be conservative. Kotlin features can expose metadata and calling conventions that are pleasant for Kotlin callers but less natural for Java callers. If Java consumers matter, design and test the API from Java as well as Kotlin.
