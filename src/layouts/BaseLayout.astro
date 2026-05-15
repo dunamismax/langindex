@@ -1,0 +1,81 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "LangIndex is a self-hosted reference for programming languages.",
+} = Astro.props;
+const pageTitle = title === "LangIndex" ? title : `${title} | LangIndex`;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/languages", label: "Languages" },
+  { href: "/comparisons", label: "Comparisons" },
+  { href: "/guides", label: "Guides" },
+  { href: "/concepts", label: "Concepts" },
+  { href: "/about", label: "About" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="border-b border-stone-200 bg-white/88">
+      <div
+        class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 md:flex-row md:items-center md:justify-between"
+      >
+        <a href="/" class="text-xl font-semibold tracking-normal text-stone-950"
+          >LangIndex</a
+        >
+        <nav
+          aria-label="Primary navigation"
+          class="flex flex-wrap gap-2 text-sm text-stone-700"
+        >
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class="rounded-md px-3 py-2 hover:bg-stone-100 hover:text-stone-950"
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="border-t border-stone-200 bg-white">
+      <div
+        class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-stone-600 sm:px-6 md:flex-row md:items-center md:justify-between"
+      >
+        <p>Open source programming language reference.</p>
+        <p>
+          <a class="underline-offset-4 hover:underline" href="/contribute"
+            >Contribute</a
+          >
+          <span aria-hidden="true"> / </span>
+          <a
+            class="underline-offset-4 hover:underline"
+            href="https://github.com/dunamismax/langindex">GitHub</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

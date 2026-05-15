@@ -16,10 +16,12 @@ Treat unchecked boxes as plan. Move stable material into `docs/`,
 - Public production domain is [https://langindex.dev](https://langindex.dev).
 - Initial `README.md` and `CONTRIBUTING.md` describe the product and
   contribution standard.
-- License choice is not finalized. The project likely needs an explicit
-  split between code licensing and content/data licensing.
+- Project code is licensed under GPL-3.0. The content/data license is
+  not finalized.
 - Repo-local `AGENTS.md` and this `BUILD.md` define the initial build
   direction.
+- Astro 6 static skeleton exists with Tailwind CSS 4, MDX, typed content
+  collections, seed content, and CI.
 
 Current local baseline observed on 2026-05-15:
 
@@ -290,33 +292,33 @@ state where documented verification passes on a clean checkout.
 - [x] Write `CONTRIBUTING.md`.
 - [x] Write repo-local `AGENTS.md`.
 - [x] Write this `BUILD.md`.
-- [ ] Decide code license.
+- [x] Decide code license.
 - [ ] Decide content/data license.
-- [ ] Add `.gitignore`.
-- [ ] Add `.editorconfig`.
+- [x] Add `.gitignore`.
+- [x] Add `.editorconfig`.
 
 ### Phase 1 - Astro Skeleton
 
-- [ ] Initialize Astro with TypeScript.
-- [ ] Add Tailwind CSS.
-- [ ] Add MDX integration.
-- [ ] Add Astro Content Collections.
-- [ ] Add initial Zod schemas for `languages`, `comparisons`, `guides`,
+- [x] Initialize Astro with TypeScript.
+- [x] Add Tailwind CSS.
+- [x] Add MDX integration.
+- [x] Add Astro Content Collections.
+- [x] Add initial Zod schemas for `languages`, `comparisons`, `guides`,
       and `concepts`.
-- [ ] Add `justfile` with `fmt`, `check`, `test`, `build`, and `dev`.
-- [ ] Add basic layout, typography, and navigation.
-- [ ] Add homepage, language index, language detail route, and about page.
-- [ ] Add CI for install, type-check, and build.
+- [x] Add `justfile` with `fmt`, `check`, `test`, `build`, and `dev`.
+- [x] Add basic layout, typography, and navigation.
+- [x] Add homepage, language index, language detail route, and about page.
+- [x] Add CI for install, type-check, and build.
 
 ### Phase 2 - Content Model And Seed Pages
 
-- [ ] Document the content model in `docs/content-model.md`.
-- [ ] Document the editorial standard in `docs/editorial-standard.md`.
-- [ ] Add first language pages with verified sources.
-- [ ] Add first comparison pages.
-- [ ] Add first guide page.
-- [ ] Validate all content through collection schemas.
-- [ ] Add visible source and `lastVerified` sections to page templates.
+- [x] Document the content model in `docs/content-model.md`.
+- [x] Document the editorial standard in `docs/editorial-standard.md`.
+- [x] Add first language pages with verified sources.
+- [x] Add first comparison pages.
+- [x] Add first guide page.
+- [x] Validate all content through collection schemas.
+- [x] Add visible source and `lastVerified` sections to page templates.
 
 Suggested seed languages:
 
@@ -453,3 +455,7 @@ have changed.
   GitHub/Codeberg push configuration, and defined the Astro / TypeScript /
   MDX / Content Collections / Pagefind / Tailwind / Docker Compose /
   Caddy stack for LangIndex.
+- 2026-05-15 - Built the initial Astro static-site skeleton with
+  Tailwind CSS 4, MDX, strict content collections, seed Rust/Go/TypeScript
+  pages, Rust-vs-Go comparison, systems-language guide, ownership concept,
+  justfile, CI, and passing local checks.

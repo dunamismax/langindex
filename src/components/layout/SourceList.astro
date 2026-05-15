@@ -1,0 +1,39 @@
+---
+interface Source {
+  title: string;
+  url: string;
+  publisher?: string;
+}
+
+interface Props {
+  sources: Source[];
+  lastVerified: Date;
+}
+
+const { sources, lastVerified } = Astro.props;
+const verified = lastVerified.toISOString().slice(0, 10);
+---
+
+<section class="mt-10 border-t border-stone-200 pt-6">
+  <h2 class="text-lg font-semibold text-stone-950">Sources</h2>
+  <p class="mt-2 text-sm text-stone-600">
+    Last verified: <time datetime={verified}>{verified}</time>
+  </p>
+  <ul class="mt-4 space-y-2 text-sm text-stone-700">
+    {
+      sources.map((source) => (
+        <li>
+          <a
+            class="font-medium underline-offset-4 hover:underline"
+            href={source.url}
+          >
+            {source.title}
+          </a>
+          {source.publisher ? (
+            <span class="text-stone-500"> - {source.publisher}</span>
+          ) : null}
+        </li>
+      ))
+    }
+  </ul>
+</section>

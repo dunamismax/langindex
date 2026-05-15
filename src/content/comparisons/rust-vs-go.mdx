@@ -1,0 +1,38 @@
+---
+title: Rust vs Go
+slug: rust-vs-go
+summary: "Rust and Go both serve infrastructure work, but they optimize for different constraints: Rust favors low-level control and compile-time safety, while Go favors simple service development and operational clarity."
+languages:
+  - rust
+  - go
+useCases:
+  - infrastructure
+  - network services
+  - command-line tools
+sources:
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+lastVerified: 2026-05-15
+---
+
+## Shared Territory
+
+Both languages are common candidates for infrastructure, command-line tools, and services where deployment as a native binary is attractive.
+
+## Key Difference
+
+Rust moves more safety reasoning into the type system and ownership model. Go keeps the language smaller and leans on garbage collection plus goroutines for service-oriented concurrency.
+
+## Choose Rust When
+
+- Memory safety without a garbage collector is central to the project.
+- Low-level control and performance predictability matter more than onboarding speed.
+
+## Choose Go When
+
+- The team is building network services and wants a smaller language surface.
+- Fast builds, simple deployment, and readable operational code are primary constraints.

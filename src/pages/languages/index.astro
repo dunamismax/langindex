@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import LanguageCard from "../../components/language/LanguageCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const languages = (await getCollection("languages")).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout
+  title="Languages"
+  description="Browse programming language profiles on LangIndex."
+>
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <h1 class="text-3xl font-semibold text-stone-950">Languages</h1>
+    <p class="mt-3 max-w-2xl text-stone-700">
+      Browse language profiles by practical fit, runtime, memory model, typing,
+      tooling, and verified sources.
+    </p>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {languages.map((language) => <LanguageCard language={language} />)}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+title: Choosing a Systems Language
+slug: choosing-a-systems-language
+summary: A starter guide for evaluating systems languages by runtime constraints, memory model, team skill, ecosystem, and deployment target.
+audience: Developers choosing a language for infrastructure, native tooling, embedded work, or performance-sensitive services.
+candidates:
+  - rust
+  - go
+sources:
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+lastVerified: 2026-05-15
+---
+
+## Evaluation Criteria
+
+Start with runtime constraints. If a garbage collector is unacceptable, that removes several otherwise good options. If service delivery speed matters more than low-level control, a garbage-collected language may be the better trade.
+
+## Questions To Ask
+
+- Does the project need predictable memory behavior without a garbage collector?
+- Is the team ready to pay a learning curve for stronger compile-time guarantees?
+- Are package ecosystem, build speed, and hiring constraints more important than maximum control?

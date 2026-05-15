@@ -1,0 +1,68 @@
+---
+import { getCollection } from "astro:content";
+import LanguageCard from "../components/language/LanguageCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const languages = (await getCollection("languages")).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout title="LangIndex">
+  <section class="border-b border-stone-200 bg-white">
+    <div
+      class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
+    >
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-teal-800">
+          Programming language field guide
+        </p>
+        <h1
+          class="mt-4 max-w-3xl text-4xl font-semibold tracking-normal text-stone-950 sm:text-5xl"
+        >
+          Searchable, source-backed language reference.
+        </h1>
+        <p class="mt-5 max-w-2xl text-lg leading-8 text-stone-700">
+          LangIndex focuses on practical fit, design tradeoffs, tooling,
+          governance, and examples for developers choosing or maintaining
+          programming languages.
+        </p>
+      </div>
+      <div class="rounded-lg border border-stone-200 bg-stone-50 p-5">
+        <label class="text-sm font-medium text-stone-950" for="language-search"
+          >Search languages</label
+        >
+        <input
+          id="language-search"
+          class="mt-2 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-base text-stone-950"
+          type="search"
+          placeholder="Rust, Go, TypeScript..."
+        />
+        <p class="mt-3 text-sm text-stone-600">
+          Static Pagefind search will replace this starter control in Phase 3.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div>
+        <h2 class="text-2xl font-semibold text-stone-950">Seed Languages</h2>
+        <p class="mt-2 text-stone-700">
+          A small verified set to prove the content model before expanding
+          coverage.
+        </p>
+      </div>
+      <a
+        class="text-sm font-medium text-teal-800 underline-offset-4 hover:underline"
+        href="/languages">View all languages</a
+      >
+    </div>
+    <div class="mt-6 grid gap-4 md:grid-cols-2">
+      {languages.map((language) => <LanguageCard language={language} />)}
+    </div>
+  </section>
+</BaseLayout>

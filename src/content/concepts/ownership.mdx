@@ -1,0 +1,16 @@
+---
+title: Ownership
+slug: ownership
+summary: Ownership is a memory-management model where rules about who controls a value are enforced by the language, often at compile time.
+relatedLanguages:
+  - rust
+sources:
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+lastVerified: 2026-05-15
+---
+
+Ownership is central to Rust's memory model. Instead of relying only on a garbage collector or manual allocation discipline, Rust checks ownership and borrowing rules during compilation.
+
+The practical effect is that some classes of lifetime and aliasing mistakes become compile-time errors, at the cost of a steeper learning curve.

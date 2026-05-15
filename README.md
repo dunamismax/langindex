@@ -50,7 +50,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 ## Project Status
 
-LangIndex is at the initial repository setup stage. The domain is configured and the intended public URL is:
+LangIndex has an initial Astro static-site skeleton with typed content collections, seed language pages, a comparison, a guide, and concept content. The intended public URL is:
 
 [https://langindex.dev](https://langindex.dev)
 
@@ -58,4 +58,4 @@ The first milestone is to define the content model and publish a small, high-qua
 
 ## License
 
-License choice is not finalized yet. This project will likely need an explicit split between code licensing and content/data licensing before accepting broad external contributions.
+Project code is licensed under GPL-3.0. The content/data license is not finalized yet and should be decided before accepting broad external content contributions.

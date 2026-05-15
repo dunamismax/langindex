@@ -1,0 +1,69 @@
+---
+title: TypeScript
+slug: typescript
+status: active
+summary: TypeScript is a typed superset of JavaScript that adds static analysis and type annotations while compiling to JavaScript for existing runtimes.
+firstReleased: 2012
+creators:
+  - Microsoft
+paradigms:
+  - multi-paradigm
+  - object-oriented
+  - functional
+typing:
+  discipline: static
+  strength: gradual
+memory:
+  model: host runtime managed
+runtime:
+  model: JavaScript runtime
+officialSite: https://www.typescriptlang.org/
+repository: https://github.com/microsoft/TypeScript
+packageManagers:
+  - npm
+  - pnpm
+  - Yarn
+comparedWith:
+  - javascript
+  - dart
+  - kotlin
+bestFor:
+  - Large JavaScript applications that need type checking and editor feedback.
+  - Web, Node.js, and cross-platform codebases that already depend on JavaScript ecosystems.
+poorFit:
+  - Projects that need runtime type guarantees without separate validation.
+  - Very small scripts where a compile step adds more process than value.
+sources:
+  - title: TypeScript Documentation
+    url: https://www.typescriptlang.org/docs/
+    publisher: Microsoft
+  - title: TypeScript for JavaScript Programmers
+    url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+    publisher: Microsoft
+  - title: TypeScript GitHub Repository
+    url: https://github.com/microsoft/TypeScript
+    publisher: Microsoft
+lastVerified: 2026-05-15
+---
+
+## Practical Fit
+
+TypeScript is strongest when JavaScript reach is required but a team needs earlier feedback for API shape, refactors, and cross-file contracts. The type system is erased during compilation, so external input still needs runtime validation.
+
+## Tooling
+
+The TypeScript compiler checks types and emits JavaScript. Most projects use it through npm-compatible package managers and bundlers.
+
+```ts
+type Language = {
+  name: string;
+  runtime: string;
+};
+
+const language: Language = {
+  name: "TypeScript",
+  runtime: "JavaScript",
+};
+
+console.log(`${language.name} targets ${language.runtime}`);
+```

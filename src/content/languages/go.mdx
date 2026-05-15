@@ -1,0 +1,67 @@
+---
+title: Go
+slug: go
+status: active
+summary: Go is a statically typed language designed for simple, readable systems and network software with built-in concurrency support and a garbage-collected runtime.
+firstReleased: 2012
+creators:
+  - Robert Griesemer
+  - Rob Pike
+  - Ken Thompson
+paradigms:
+  - procedural
+  - concurrent
+typing:
+  discipline: static
+  strength: strong
+memory:
+  model: garbage collected
+runtime:
+  model: native with runtime
+officialSite: https://go.dev/
+repository: https://github.com/golang/go
+packageManagers:
+  - Go modules
+comparedWith:
+  - rust
+  - java
+  - c
+bestFor:
+  - Network services, command-line tools, distributed systems, and infrastructure software.
+  - Teams that value fast builds, explicit code, and a small language surface.
+poorFit:
+  - Low-level software that cannot tolerate a garbage-collected runtime.
+  - Domains that depend on advanced type-system modeling.
+sources:
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+  - title: Effective Go
+    url: https://go.dev/doc/effective_go
+    publisher: Go Project
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+lastVerified: 2026-05-15
+---
+
+## Practical Fit
+
+Go is often chosen for services and tooling where operational clarity matters. Its standard library covers a wide slice of network programming, and the language keeps syntax and abstraction count deliberately small.
+
+## Tooling
+
+Go modules are the standard dependency system. The `go` command handles formatting, testing, builds, dependency management, and documentation workflows.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	languages := []string{"Go", "Rust", "TypeScript"}
+	for _, language := range languages {
+		fmt.Println(language)
+	}
+}
+```
