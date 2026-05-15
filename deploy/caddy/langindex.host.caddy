@@ -1,0 +1,17 @@
+www.langindex.dev {
+	redir https://langindex.dev{uri} permanent
+}
+
+langindex.dev {
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:8090
+
+	header {
+		X-Content-Type-Options "nosniff"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-XSS-Protection "0"
+		Permissions-Policy "interest-cohort=()"
+		-Server
+	}
+}

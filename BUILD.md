@@ -379,21 +379,21 @@ Suggested seed languages:
 - [x] Build production image locally.
 - [x] Verify container serves static build.
 - [x] Validate Caddy config.
-- [ ] Deploy to Ubuntu VM after Stephen approves.
-- [ ] Confirm [https://langindex.dev](https://langindex.dev) serves the
+- [x] Deploy to Ubuntu VM after Stephen approves.
+- [x] Confirm [https://langindex.dev](https://langindex.dev) serves the
       static site.
 
 ### Phase 6 - Hardening
 
-- [ ] Add Playwright smoke tests for homepage, search, language page, and
+- [x] Add Playwright smoke tests for homepage, search, language page, and
       comparison page.
-- [ ] Add internal link checking.
-- [ ] Add external link checking with rate limits.
+- [x] Add internal link checking.
+- [x] Add external link checking with rate limits.
 - [ ] Add accessibility checks.
-- [ ] Add sitemap.
-- [ ] Add robots.txt.
+- [x] Add sitemap.
+- [x] Add robots.txt.
 - [ ] Add RSS or changelog feed if useful.
-- [ ] Add backup/restore note for repo and deployment artifacts.
+- [x] Add backup/restore note for repo and deployment artifacts.
 
 ---
 
@@ -468,3 +468,11 @@ have changed.
 - 2026-05-15 - Built the local production image, validated the Caddy config
   with the Caddy container, and verified the static site from the local
   LangIndex container.
+- 2026-05-15 - Added sitemap and robots routes, internal and rate-limited
+  external link checking scripts, Playwright smoke tests, and loopback Compose
+  defaults for shared-host Caddy deployment.
+- 2026-05-15 - Added backup and restore notes for repository-backed static
+  deployment artifacts.
+- 2026-05-15 - Deployed the LangIndex container on the Ubuntu VM behind the
+  shared host Caddy service and confirmed `https://langindex.dev` serves the
+  static site.

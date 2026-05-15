@@ -12,6 +12,9 @@
     "check": "astro check",
     "test": "astro check && node scripts/validate-sources.mjs",
     "validate:sources": "node scripts/validate-sources.mjs",
+    "check:links:internal": "node scripts/check-internal-links.mjs",
+    "check:links:external": "node scripts/check-external-links.mjs",
+    "test:smoke": "playwright test",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@playwright/test": "^1.60.0",
     "pagefind": "^1.5.2",
     "prettier": "^3.7.1",
     "prettier-plugin-astro": "^0.14.1",

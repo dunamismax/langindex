@@ -4,6 +4,10 @@ dist/
 # static search output
 public/search/
 
+# test output
+test-results/
+playwright-report/
+
 # generated types
 .astro/
 
