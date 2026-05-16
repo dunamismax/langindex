@@ -12,7 +12,7 @@ The legal code is available at:
 
 https://creativecommons.org/licenses/by-sa/4.0/legalcode
 
-Project source code remains licensed under GPL-3.0 as described in
+Project source code is licensed under the MIT License as described in
 `LICENSE`.
 
 ## Attribution
