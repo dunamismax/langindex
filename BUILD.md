@@ -35,6 +35,7 @@ Observed on 2026-05-16:
   - Swift
   - Ruby
   - R
+  - Bash / Shell
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -51,6 +52,7 @@ Observed on 2026-05-16:
   - Swift vs Objective-C comparison
   - Python vs Ruby comparison
   - R vs Python for Data Analysis comparison
+  - Shell vs Python for Scripts comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -61,6 +63,7 @@ Observed on 2026-05-16:
   - Choosing Kotlin for Android, JVM, and multiplatform work guide
   - Choosing Swift for Apple-platform and mobile work guide
   - Choosing R for data analysis, statistics, and research guide
+  - Choosing Shell for operations and automation guide
   - Ownership concept page
 - Current local baseline:
 
@@ -330,11 +333,11 @@ justify the extra network time.
 
 ### Phase 16 - Bash / Shell
 
-- [ ] Add a complete Bash or shell scripting page with clear scope.
-- [ ] Cover POSIX shell boundaries, Bash-specific features, portability,
+- [x] Add a complete Bash or shell scripting page with clear scope.
+- [x] Cover POSIX shell boundaries, Bash-specific features, portability,
       pipelines, process model, error handling risks, and automation fit.
-- [ ] Add Shell vs Python comparison for scripts.
-- [ ] Add shell scripting to operations and automation guides.
+- [x] Add Shell vs Python comparison for scripts.
+- [x] Add shell scripting to operations and automation guides.
 
 ### Phase 17 - Dart
 

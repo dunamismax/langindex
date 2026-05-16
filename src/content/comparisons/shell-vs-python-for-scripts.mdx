@@ -1,0 +1,125 @@
+---
+title: Shell vs Python For Scripts
+slug: shell-vs-python-for-scripts
+summary: Shell and Python both automate systems, but shell is strongest as command-and-pipeline glue while Python is stronger when scripts need structured data, tests, reusable logic, or portable behavior.
+languages:
+  - bash
+  - python
+useCases:
+  - scripting
+  - automation
+  - operations
+  - command-line tools
+  - deployment
+sources:
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/bash.html
+    publisher: GNU Project
+  - title: Bash and POSIX
+    url: https://www.gnu.org/software/bash/manual/html_node/Bash-POSIX-Mode.html
+    publisher: GNU Project
+  - title: Pipelines - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Pipelines.html
+    publisher: GNU Project
+  - title: The Set Builtin - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+    publisher: GNU Project
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: subprocess - Subprocess Management
+    url: https://docs.python.org/3/library/subprocess.html
+    publisher: Python Software Foundation
+  - title: pathlib - Object-Oriented Filesystem Paths
+    url: https://docs.python.org/3/library/pathlib.html
+    publisher: Python Software Foundation
+  - title: venv - Creation of Virtual Environments
+    url: https://docs.python.org/3/library/venv.html
+    publisher: Python Software Foundation
+  - title: ShellCheck
+    url: https://www.shellcheck.net/
+    publisher: ShellCheck
+lastVerified: 2026-05-16
+---
+
+## Scope
+
+This comparison is about scripts and small automation: developer workflows, CI steps, release hooks, backups, deployment helpers, file-processing jobs, and operations tasks. It is not about interactive shell preference or Python as a full application platform.
+
+The practical rule is simple: use shell when the script is mostly the command line made repeatable. Use Python when the script is becoming software.
+
+## Shared Territory
+
+Both shell and Python can run commands, read and write files, inspect environment variables, process text, call APIs, exit with statuses, and automate local or remote systems. Both are common in CI, build tooling, deployment flows, internal operations, and developer machines.
+
+Both also need discipline. A shell script without quoting and explicit error checks is fragile. A Python script without dependency isolation, argument parsing, tests, or deployment rules can become its own maintenance problem.
+
+## Key Differences
+
+| Dimension            | Shell / Bash                                                     | Python                                                                    |
+| -------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Center of gravity    | Commands, pipelines, files, environment variables, exit statuses | Data structures, libraries, readable application logic, testable code     |
+| Best script shape    | Short orchestration around existing tools                        | Scripts that parse, transform, validate, call APIs, or grow over time     |
+| Data model           | Strings, byte streams, words, arrays in Bash, process output     | Dicts, lists, classes, dataclasses, exceptions, modules, standard parsers |
+| Error model          | Exit statuses, `if`, `&&`, `\|\|`, `trap`, shell options         | Exceptions, return values, documented APIs, test frameworks               |
+| Portability boundary | POSIX shell plus installed utilities, or declared Bash version   | Python version plus packages, virtual environment, platform libraries     |
+| Tool dependencies    | Often hidden in `$PATH`                                          | Usually imported and package-managed, though subprocesses can still hide  |
+| Testing path         | Possible with shell test frameworks, often ad hoc                | Standard-library `unittest`, pytest ecosystem, easier unit boundaries     |
+
+## Choose Shell When
+
+- The script is a short wrapper around commands an operator already understands.
+- The main work is a pipeline over files or streams.
+- Startup needs to happen before Python or another runtime is installed.
+- The script belongs in a CI step, Docker entrypoint, package hook, or deployment wrapper where commands are the real interface.
+- The script is intentionally local to one Unix-like environment and the target shell is declared.
+
+Shell is often the right outer layer even in Python-heavy systems. A short shell wrapper can set environment variables, check required commands, locate the repo root, and then hand off to Python for the work that needs structured logic.
+
+## Choose Python When
+
+- The script needs JSON, YAML, CSV, XML, dates, paths, HTTP, SQLite, or other structured data handling.
+- The script has enough branches, functions, retries, or state that shell quoting and exit-status logic are becoming hard to audit.
+- Several teams will maintain it and readability matters more than terse command composition.
+- The script needs tests around functions rather than only end-to-end command runs.
+- The work may grow into a package, service, command-line application, or shared library.
+- Cross-platform behavior matters beyond one POSIX-like environment.
+
+Python is especially strong when automation crosses filesystems, APIs, subprocesses, and data formats in one script.
+
+## Watch Points
+
+Shell's risks are usually implicit behavior: word splitting, pathname expansion, unquoted variables, hidden `$PATH` dependencies, platform-specific utilities, pipeline status, and surprising interactions between `set -e`, conditionals, subshells, and command substitutions.
+
+Python's risks are usually environment and packaging drift: interpreter versions, virtual environments, wheels, native dependencies, user-site packages, `PATH` differences, and scripts that call subprocesses without checking return codes or sanitizing arguments.
+
+For security-sensitive automation, avoid string-built commands in both languages. In shell, quote expansions and keep untrusted data out of command names and redirections. In Python, prefer `subprocess.run([...], check=True)` with an argument list over `shell=True` unless a shell is specifically required and reviewed.
+
+## Migration Heuristics
+
+A shell script is ready to move to Python when it has any of these signs:
+
+- It parses command output with several `awk`, `sed`, or `cut` stages and then branches on the result.
+- It has multiple global variables that represent domain state rather than command options.
+- It handles JSON, YAML, CSV, dates, URLs, or paths in ways that need edge-case tests.
+- It has cleanup, rollback, retries, or partial failure states.
+- It is copied between repositories because there is no clean module or package boundary.
+
+Do not rewrite every shell script. Many reliable scripts should stay shell because their entire job is to run a few commands in a known environment. Move only the logic that has outgrown shell's strengths.
+
+## Practical Default
+
+Start with shell for tiny operational glue and command pipelines. Add ShellCheck, clear shebangs, quoting, explicit argument checks, and documented command dependencies early.
+
+Start with Python when the script has structured inputs, durable ownership, tests, or cross-platform expectations. Use virtual environments or containers when third-party packages enter the picture.
+
+For mixed automation, keep shell as the launcher and Python as the logic layer. That split keeps the command-line ergonomics without forcing shell to act like a general-purpose application language.

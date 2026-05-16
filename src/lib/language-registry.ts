@@ -4,7 +4,7 @@ type LanguageRegistryEntry = {
 };
 
 export const languageRegistry = {
-  bash: { title: "Bash / Shell", state: "planned" },
+  bash: { title: "Bash / Shell", state: "published" },
   c: { title: "C", state: "published" },
   clojure: { title: "Clojure", state: "planned" },
   cpp: { title: "C++", state: "published" },

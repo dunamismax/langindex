@@ -1,0 +1,210 @@
+---
+title: Bash / Shell
+slug: bash
+status: active
+summary: Bash is GNU's Bourne-style shell and command language, used both interactively and as a scripting layer around Unix processes, files, pipelines, environment variables, and standard utilities.
+firstReleased: 1989
+creators:
+  - Brian Fox
+paradigms:
+  - command language
+  - imperative
+  - scripting
+typing:
+  discipline: dynamic
+  strength: string-oriented with arithmetic and array features in Bash
+memory:
+  model: managed by the shell process and external commands; scripts normally coordinate processes rather than allocate memory directly
+runtime:
+  model: interpreted by a shell process that expands commands, applies redirections, manages jobs, and launches builtins, functions, or external programs
+officialSite: https://www.gnu.org/software/bash/
+repository: https://git.savannah.gnu.org/cgit/bash.git
+packageManagers: []
+comparedWith:
+  - python
+  - ruby
+  - javascript
+  - go
+bestFor:
+  - Short Unix automation scripts, deployment hooks, CI steps, provisioning glue, and operational tasks that mostly compose existing commands.
+  - Interactive command-line work where the same shell can run one-off commands and small reusable scripts.
+  - Pipelines over files, streams, exit statuses, environment variables, and process boundaries.
+poorFit:
+  - Large programs with complex data models, nested error handling, reusable libraries, or cross-platform behavior beyond POSIX-like systems.
+  - Structured data processing where JSON, CSV, dates, Unicode, or database records need robust parsing and tests.
+  - Security-sensitive input handling where quoting, word splitting, globbing, and command injection risks would dominate review.
+  - Portable automation that must behave the same on Windows, Unix-like systems, minimal containers, and embedded shells without careful compatibility work.
+sources:
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/bash.html
+    publisher: GNU Project
+  - title: Bash and POSIX
+    url: https://www.gnu.org/software/bash/manual/html_node/Bash-POSIX-Mode.html
+    publisher: GNU Project
+  - title: Pipelines - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Pipelines.html
+    publisher: GNU Project
+  - title: The Set Builtin - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+    publisher: GNU Project
+  - title: Shell Expansions - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html
+    publisher: GNU Project
+  - title: Arrays - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Arrays.html
+    publisher: GNU Project
+  - title: Command Execution Environment - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Command-Execution-Environment.html
+    publisher: GNU Project
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
+  - title: POSIX.1-2024 sh Utility
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/sh.html
+    publisher: IEEE and The Open Group
+  - title: ShellCheck
+    url: https://www.shellcheck.net/
+    publisher: ShellCheck
+lastVerified: 2026-05-16
+---
+
+## Scope
+
+This page treats Bash as the main published language profile because Bash is the GNU Project shell, has a current manual, and is widely used for interactive Unix work and scripts. The scope is broader than Bash syntax alone: practical shell scripting also depends on POSIX shell rules, standard utilities, process execution, redirection, pipelines, exit statuses, environment variables, filesystems, and quoting.
+
+That scope matters. A file beginning with `#!/bin/sh` should avoid Bash-only features unless the system's `sh` is known to be Bash and that dependency is intentional. A file beginning with `#!/usr/bin/env bash` can use Bash features, but it becomes a Bash script rather than a portable POSIX shell script.
+
+## Origin And Design Goals
+
+Bash is the GNU Project's Bourne Again SHell. The GNU Bash page describes it as an `sh`-compatible shell that incorporates useful features from Korn shell and C shell and is intended to conform to the IEEE POSIX Shell and Tools standard. The Bash manual describes Bash as both an interactive command interpreter and a programming language for shell scripts.
+
+That dual identity explains the language's strengths and hazards. Shell is designed to start programs, connect their input and output, expand filenames and variables, set environments, and let humans work quickly at a terminal. It can also express conditionals, loops, functions, arrays, arithmetic, and reusable scripts. It is not designed like a general-purpose application language with structured data types, imports, package metadata, type checking, or a uniform standard library.
+
+## POSIX Shell Boundaries
+
+POSIX standardizes a shell command language and a set of utilities for portable Unix-like environments. The POSIX shell chapter covers token recognition, parsing, expansions, redirection, command search and execution, compound commands, functions, parameters, and exit statuses. That gives shell scripts a portability target, but it is a narrower target than "whatever works in my terminal."
+
+Bash can run in a POSIX mode that changes behavior to conform more closely to the standard. POSIX mode is useful for checking assumptions, but it does not make every Bash script portable. Bash arrays, `[[ ... ]]`, process substitution, brace expansion details, associative arrays, `source`, `mapfile`, `coproc`, many `shopt` options, and some parameter expansions are Bash-specific. Portable scripts should be tested with the actual `/bin/sh` implementations they claim to support, such as `dash`, BusyBox `ash`, or platform `sh`.
+
+## Runtime And Process Model
+
+A shell script is executed by a shell process. The shell reads input, performs expansions, applies redirections, runs builtins and functions directly, and launches external commands through the operating system process model. Each external command has its own arguments, environment, file descriptors, current working directory inherited at launch, and exit status.
+
+This is why shell is so good at operational glue. It already speaks the native interface of Unix tools: process arguments, standard input, standard output, standard error, files, directories, signals, and exit codes. It is also why non-trivial scripts become fragile. A value may be shell syntax, a string, a filename pattern, an argument list, a byte stream, a line stream, or a command's private output format depending on where it is used.
+
+Shell variables are not general typed values. Ordinary variables hold strings. Bash adds indexed arrays, associative arrays, arithmetic evaluation, and richer parameter expansion, but most external commands still receive strings as arguments and byte streams as input.
+
+## Pipelines, Redirection, And Exit Status
+
+Pipelines are shell's central composition mechanism. A pipeline connects one command's output to another command's input. Bash documents that commands in a multi-command pipeline are normally executed in separate subshells, with the pipeline's status usually coming from the last command unless `pipefail` is enabled.
+
+That default is useful at the terminal but risky in maintained automation. In `generate | upload`, the upload command's success does not necessarily prove that generation succeeded unless the script checks the right status. Bash's `set -o pipefail` changes pipeline status behavior, but it should be used with knowledge of commands such as `grep` where a non-zero exit status can represent "no match" rather than an infrastructure failure.
+
+Redirection is similarly powerful and sharp. A script can redirect input, output, errors, here-documents, and file descriptors in compact syntax. The cost is that small ordering mistakes change behavior. `2>&1 >file` and `>file 2>&1` are not equivalent because redirections are processed in order.
+
+## Error Handling Risks
+
+Shell error handling is exit-status based. Commands report success or failure numerically, and scripts combine those statuses with `if`, `case`, `&&`, `||`, `!`, loops, traps, and explicit checks. Bash also has `set -e`, `set -u`, `set -o pipefail`, and `trap ERR`, but these are not a substitute for understanding the command contexts where Bash suppresses or changes behavior.
+
+Use strict options deliberately:
+
+- `set -u` can catch unset variable mistakes, but it can also break optional environment variables unless defaults are explicit.
+- `set -e` exits in many failure cases, but it has exceptions for conditionals, parts of `&&` and `||` lists, most non-final pipeline commands, and contexts where failure is being tested.
+- `set -o pipefail` surfaces more pipeline failures, but some pipelines intentionally contain commands whose non-zero status is data.
+
+For production scripts, prefer explicit checks around important side effects: writes, deletes, deploys, migrations, network calls, package installs, and credential-sensitive commands.
+
+## Syntax Example
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  printf 'usage: %s DIRECTORY\n' "$0" >&2
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
+  exit 2
+fi
+
+root=$1
+
+if [[ ! -d $root ]]; then
+  printf 'not a directory: %s\n' "$root" >&2
+  exit 1
+fi
+
+find "$root" -type f -name '*.mdx' -print0 |
+  while IFS= read -r -d '' file; do
+    printf '%s\t%s\n' "$(wc -l < "$file")" "$file"
+  done |
+  sort -n
+```
+
+This is intentionally small. It uses a Bash shebang, quotes expansions, checks arguments, avoids parsing `find` output by line, and composes existing utilities. If the script needed structured frontmatter parsing, retries, configuration files, or reusable tests, Python or another general-purpose language would become more attractive.
+
+## Bash-Specific Features
+
+Bash is often chosen over plain POSIX `sh` because it has pragmatic scripting conveniences:
+
+- `[[ ... ]]` tests with less surprising word-splitting behavior than `[ ... ]`.
+- Indexed and associative arrays for argument lists and lookup tables.
+- `(( ... ))` arithmetic evaluation and C-like arithmetic loops.
+- Rich parameter expansion for defaults, substring operations, pattern removal, and replacement.
+- Process substitution, command substitution, here-strings, brace expansion, and programmable completion.
+- `shopt` and shell options that tune behavior for scripts and interactive use.
+
+Those features are real productivity gains when Bash is guaranteed. They are portability liabilities when a script is installed as `/bin/sh`, copied into minimal containers, run on BSD/macOS systems with older Bash versions, or embedded in products that cannot control the target shell.
+
+## Tooling And Ecosystem
+
+Shell's ecosystem is the operating system. The most important "libraries" are commands: `find`, `xargs`, `grep`, `sed`, `awk`, `sort`, `cut`, `tar`, `ssh`, package managers, cloud CLIs, `systemctl`, `docker`, `kubectl`, and project-specific tools. That makes shell extremely capable in operations, but it also means a script's real dependency list may be hidden in `$PATH`.
+
+Good shell projects document:
+
+- The interpreter: POSIX `sh`, Bash, Zsh, BusyBox `ash`, or another shell.
+- Required command versions and platform assumptions.
+- Environment variables, working directory expectations, and filesystem side effects.
+- Whether filenames may contain spaces, newlines, leading dashes, or non-ASCII bytes.
+- How scripts are linted, formatted, tested, and run in CI.
+
+ShellCheck is a widely used static analysis tool for shell scripts. It cannot prove script correctness, but it catches many quoting, portability, globbing, and command-substitution mistakes before they ship.
+
+## Best-Fit Use Cases
+
+Bash and shell scripting are strong fits for:
+
+- Short scripts that orchestrate existing Unix commands.
+- CI, release, deployment, backup, provisioning, and local developer workflow glue.
+- File and stream pipelines where line-oriented tools are the natural interface.
+- Scripts that need to preserve the same command shape an operator would run manually.
+- Bootstrap code that must run before a richer language runtime or dependency set exists.
+
+## Poor-Fit Or Risky Use Cases
+
+Shell becomes a poor fit when:
+
+- The script grows into a program with nested state, structured data, complex branching, reusable modules, or meaningful tests.
+- It parses JSON, YAML, CSV, dates, paths, or protocol output without a purpose-built parser.
+- It handles untrusted input that can affect command names, arguments, redirections, filenames, or environment variables.
+- Portability must cross Linux distributions, macOS, BSD, minimal containers, Windows, and embedded environments without controlled tooling.
+- Error handling needs exceptions, typed results, transactions, rollback, or rich domain errors.
+
+In those cases, keep shell at the boundary and move the application logic into Python, Go, Rust, JavaScript, Ruby, or another language that gives better data structures and tests.
+
+## Governance, Releases, And Compatibility
+
+Bash is GNU software maintained through the GNU project, with Chet Ramey identified by the GNU Bash page as the current maintainer. The reference manual is the primary documentation for Bash behavior, while POSIX defines the standard shell language and utilities target that Bash partly implements and can approximate more closely through POSIX mode.
+
+Compatibility depends on the chosen scope. POSIX shell code can be portable when it avoids extensions and is tested on real target shells. Bash code can be stable when it declares Bash explicitly and controls the runtime version. Problems usually come from mixing the two without saying so.
+
+## Comparison Notes
+
+Python is the closest comparison for scripts that are becoming programs. Python gives clearer data structures, standard-library parsers, test frameworks, packaging choices, and cross-platform APIs. Shell stays better when the job is mostly a short sequence of commands, a pipeline, or operational glue around tools already installed on the machine.
+
+Ruby and JavaScript can be good scripting choices when the automation lives beside a Ruby/Rails or Node.js project. Go and Rust are better when an internal tool needs a compiled binary, stronger compile-time checks, or reliable distribution without depending on a target machine's shell environment.

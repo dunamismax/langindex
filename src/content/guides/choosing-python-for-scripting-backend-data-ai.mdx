@@ -5,6 +5,7 @@ summary: A decision guide for teams evaluating Python across automation, backend
 audience: Developers and teams deciding whether Python should be the main language, a workflow language, or a boundary language for scripts, services, data, and AI-adjacent work.
 candidates:
   - python
+  - bash
   - sql
   - go
   - javascript
@@ -34,6 +35,12 @@ sources:
   - title: asyncio - Asynchronous I/O
     url: https://docs.python.org/3/library/asyncio.html
     publisher: Python Software Foundation
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
   - title: NumPy Documentation
     url: https://numpy.org/doc/
     publisher: NumPy
@@ -108,7 +115,7 @@ Prefer Python over shell when:
 - Several teams will maintain the script and readability matters more than terseness.
 - The script may grow into a packaged tool or service.
 
-Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
+Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands, and prefer Bash only when the target environment can guarantee Bash-specific behavior. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
 
 ## Choose Python For Backend Services When
 

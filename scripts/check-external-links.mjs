@@ -1,7 +1,10 @@
 import { lstat, readdir, readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
 import path from "node:path";
+import { promisify } from "node:util";
 
 const repoRoot = process.cwd();
+const execFileAsync = promisify(execFile);
 const roots = ["src", "docs", "README.md", "CONTRIBUTING.md"].map((entry) =>
   path.join(repoRoot, entry),
 );
@@ -88,6 +91,21 @@ async function fetchWithTimeout(url, method) {
   }
 }
 
+async function curlHeadWithTimeout(url) {
+  await execFileAsync(
+    "curl",
+    [
+      "-fsSIL",
+      "--max-time",
+      String(Math.max(1, Math.ceil(timeoutMs / 1000))),
+      "-A",
+      "LangIndex link checker (+https://langindex.dev)",
+      url,
+    ],
+    { timeout: timeoutMs + 1000 },
+  );
+}
+
 async function checkUrl(url, sources) {
   await sleep(delayMs);
 
@@ -100,7 +118,11 @@ async function checkUrl(url, sources) {
       errors.push(`${url} returned ${response.status} (${sources.join(", ")})`);
     }
   } catch (error) {
-    errors.push(`${url} failed: ${error.message} (${sources.join(", ")})`);
+    try {
+      await curlHeadWithTimeout(url);
+    } catch {
+      errors.push(`${url} failed: ${error.message} (${sources.join(", ")})`);
+    }
   }
 }
 
