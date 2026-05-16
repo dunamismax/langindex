@@ -9,6 +9,7 @@ candidates:
   - go
   - javascript
   - typescript
+  - ruby
   - r
   - rust
 sources:
@@ -57,7 +58,22 @@ sources:
   - title: About Packages and Modules
     url: https://docs.npmjs.com/about-packages-and-modules/
     publisher: npm Docs
-lastVerified: 2026-05-15
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Ruby Documentation
+    url: https://www.ruby-lang.org/en/documentation/
+    publisher: Ruby
+  - title: Getting Started - RubyGems Guides
+    url: https://guides.rubygems.org/getting_started/
+    publisher: RubyGems
+  - title: How to manage application dependencies with Bundler
+    url: https://guides.rubygems.org/using_bundler_in_applications/
+    publisher: RubyGems
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+lastVerified: 2026-05-16
 ---
 
 ## Start With The Workload
@@ -77,7 +93,7 @@ Prefer Python over shell when:
 - Several teams will maintain the script and readability matters more than terseness.
 - The script may grow into a packaged tool or service.
 
-Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer shell when the job is mostly a short pipeline around existing Unix commands. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
+Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
 
 ## Choose Python For Backend Services When
 
@@ -94,6 +110,8 @@ Make the deployment model explicit:
 Use Go instead when the service is mostly network plumbing, a control plane, an infrastructure daemon, or a CLI-adjacent service where static binaries and built-in concurrency are central. Use TypeScript when full-stack JavaScript integration and shared frontend/backend package infrastructure are the main constraints.
 
 Use JavaScript instead of TypeScript for backend services only when the service is small, intentionally dynamic, or already covered well enough by runtime tests that a type-checking step would not repay its configuration cost. For long-lived Node.js services with shared API contracts, TypeScript is usually the more maintainable JavaScript-family choice.
+
+Use Ruby instead when Ruby on Rails is the product platform the team wants. Python and Ruby overlap for web services and internal tools, but the practical backend choice is often Django, FastAPI, or Flask versus Rails conventions, RubyGems, Bundler, and the team's existing application code.
 
 ## Choose Python For Data And Scientific Work When
 
@@ -140,6 +158,8 @@ Start with Python for scripts that are more than shell glue, data workflows, not
 Start with Go for network services, CLIs, platform tools, and infrastructure components where deployment as a static binary and simple concurrency matter more than data ecosystem reach.
 
 Start with TypeScript or JavaScript when browser compatibility, full-stack JavaScript, npm packages, or framework integration are the main constraints.
+
+Start with Ruby when Rails conventions, expressive Ruby APIs, or an existing Ruby/Rails codebase are the main productivity advantages.
 
 Start with R when the team and workflow are centered on statistical analysis, reporting, and R-specific packages. Start with Rust or C++ when the core requirement is native performance, memory control, or low-level integration rather than orchestration.
 

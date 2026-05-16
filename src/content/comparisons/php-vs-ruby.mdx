@@ -39,16 +39,28 @@ sources:
   - title: Ruby Documentation
     url: https://www.ruby-lang.org/en/documentation/
     publisher: Ruby
+  - title: Ruby 4.0 Documentation
+    url: https://docs.ruby-lang.org/en/4.0/
+    publisher: Ruby
+  - title: Ractor Documentation
+    url: https://docs.ruby-lang.org/en/4.0/Ractor.html
+    publisher: Ruby
   - title: Getting Started - RubyGems Guides
     url: https://guides.rubygems.org/getting_started/
+    publisher: RubyGems
+  - title: How to use Bundler with Ruby
+    url: https://guides.rubygems.org/bundler_setup/
     publisher: RubyGems
   - title: How to manage application dependencies with Bundler
     url: https://guides.rubygems.org/using_bundler_in_applications/
     publisher: RubyGems
+  - title: Bundler bundle install
+    url: https://bundler.io/man/bundle-install.1.html
+    publisher: Bundler
   - title: Ruby on Rails Guides
     url: https://guides.rubyonrails.org/index.html
     publisher: Ruby on Rails
-lastVerified: 2026-05-15
+lastVerified: 2026-05-16
 ---
 
 ## Scope
@@ -76,6 +88,7 @@ runtime validation, and deployment discipline.
 | Hosting         | Very broad PHP hosting, CMS hosting, VPS, containers, platform services  | Strong Rails-aware platforms and containers, less shared-hosting pull |
 | CMS strength    | Major advantage through WordPress, Drupal, and PHP plugin ecosystems     | Usually not the default choice for mainstream CMS-heavy projects      |
 | Package tooling | Composer lockfiles, PSR autoloading, PHP extensions                      | Gemfile/Gemfile.lock, RubyGems, Bundler                               |
+| Concurrency     | Process-level web concurrency through FPM workers is the common default  | Processes, threads, jobs, fibers, and Ractors depending on the app    |
 | Legacy surface  | Large amount of old PHP, plugins, and host-specific configuration        | Large Rails-era codebases and framework-version upgrade constraints   |
 
 ## Choose PHP When
@@ -116,6 +129,13 @@ accepts its conventions, but those conventions shape database access, code
 organization, background jobs, asset handling, tests, upgrades, and hiring.
 Ruby without Rails can be elegant, but Rails is usually why Ruby is in the
 web-backend conversation.
+
+Concurrency should be evaluated in platform terms. PHP web concurrency is often
+process-pool concurrency through PHP-FPM, while Ruby/Rails applications commonly
+combine app server processes or threads with background job systems. CRuby also
+has VM-lock constraints inside ractors and Ractors for more isolated parallel
+execution, so CPU-bound parallelism deserves explicit architecture rather than
+assumption.
 
 ## Migration Or Interoperability Notes
 

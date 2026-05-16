@@ -13,7 +13,7 @@ into `docs/`; keep this file focused on current content expansion.
 
 ## Current Baseline
 
-Observed on 2026-05-15:
+Observed on 2026-05-16:
 
 - Public site is live at [https://langindex.dev](https://langindex.dev).
 - Astro 6 static site, TypeScript, MDX, Astro Content Collections, Zod,
@@ -33,6 +33,7 @@ Observed on 2026-05-15:
   - PHP
   - Kotlin
   - Swift
+  - Ruby
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -47,6 +48,7 @@ Observed on 2026-05-15:
   - PHP vs Ruby comparison
   - Kotlin vs Swift comparison
   - Swift vs Objective-C comparison
+  - Python vs Ruby comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -307,12 +309,12 @@ justify the extra network time.
 
 ### Phase 14 - Ruby
 
-- [ ] Add a complete Ruby page.
-- [ ] Cover MRI, RubyGems, Bundler, Rails influence, dynamic typing,
+- [x] Add a complete Ruby page.
+- [x] Cover MRI, RubyGems, Bundler, Rails influence, dynamic typing,
       metaprogramming, concurrency constraints, release policy, and
       productivity tradeoffs.
-- [ ] Add Ruby vs Python and Ruby vs PHP comparisons.
-- [ ] Add Ruby to web backend and scripting guides.
+- [x] Add Ruby vs Python and Ruby vs PHP comparisons.
+- [x] Add Ruby to web backend and scripting guides.
 
 ### Phase 15 - R
 

@@ -1,0 +1,227 @@
+---
+title: Ruby
+slug: ruby
+status: active
+summary: Ruby is a dynamically typed, garbage-collected language centered on expressive object-oriented programming, productive scripting, RubyGems and Bundler package workflows, and web application development shaped heavily by Ruby on Rails.
+firstReleased: 1995
+creators:
+  - Yukihiro Matsumoto
+paradigms:
+  - object-oriented
+  - imperative
+  - functional
+  - scripting
+  - reflective
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with optional external type-signature tooling
+memory:
+  model: automatic garbage collection
+runtime:
+  model: interpreted bytecode on CRuby/MRI and other Ruby implementations
+officialSite: https://www.ruby-lang.org/
+repository: https://github.com/ruby/ruby
+packageManagers:
+  - RubyGems
+  - Bundler
+comparedWith:
+  - python
+  - php
+  - javascript
+  - crystal
+  - elixir
+bestFor:
+  - Ruby on Rails applications, server-rendered products, internal tools, SaaS backends, and database-backed web systems.
+  - Scripts, command-line utilities, release tooling, text processing, and operational glue where readability and expressive APIs matter.
+  - Teams that value convention-heavy frameworks, metaprogramming, DSLs, tests, and developer-facing library design.
+  - Existing Ruby or Rails systems where RubyGems, Bundler, Rails conventions, and established application code are already strategic assets.
+poorFit:
+  - CPU-bound services that expect ordinary CRuby threads to scale across cores without Ractors, native extensions, subprocesses, or service boundaries.
+  - Low-level systems software, embedded firmware, hard real-time systems, or components needing manual memory layout and small native artifacts.
+  - Projects that require compile-time static type guarantees as the main correctness boundary.
+  - Teams that do not want to manage Ruby versions, native gem dependencies, Bundler locks, Rails upgrades, and long-running app/server processes.
+sources:
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Official Ruby FAQ
+    url: https://www.ruby-lang.org/en/documentation/faq/1/
+    publisher: Ruby
+  - title: Ruby Documentation
+    url: https://www.ruby-lang.org/en/documentation/
+    publisher: Ruby
+  - title: Ruby 4.0 Documentation
+    url: https://docs.ruby-lang.org/en/4.0/
+    publisher: Ruby
+  - title: Ruby Syntax Documentation
+    url: https://docs.ruby-lang.org/en/4.0/syntax_rdoc.html
+    publisher: Ruby
+  - title: Ractor Documentation
+    url: https://docs.ruby-lang.org/en/4.0/Ractor.html
+    publisher: Ruby
+  - title: Ruby Releases
+    url: https://www.ruby-lang.org/en/downloads/releases/
+    publisher: Ruby
+  - title: Ruby Maintenance Branches
+    url: https://www.ruby-lang.org/en/downloads/branches/
+    publisher: Ruby
+  - title: Ruby 4.0.0 Released
+    url: https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/
+    publisher: Ruby
+  - title: ruby/ruby Repository
+    url: https://github.com/ruby/ruby
+    publisher: Ruby
+  - title: What is a gem?
+    url: https://guides.rubygems.org/what-is-a-gem/
+    publisher: RubyGems
+  - title: Getting Started - RubyGems Guides
+    url: https://guides.rubygems.org/getting_started/
+    publisher: RubyGems
+  - title: How to use Bundler with Ruby
+    url: https://guides.rubygems.org/bundler_setup/
+    publisher: RubyGems
+  - title: How to manage application dependencies with Bundler
+    url: https://guides.rubygems.org/using_bundler_in_applications/
+    publisher: RubyGems
+  - title: Bundler bundle install
+    url: https://bundler.io/man/bundle-install.1.html
+    publisher: Bundler
+  - title: RubyGems.org
+    url: https://rubygems.org/
+    publisher: RubyGems
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+  - title: Ruby on Rails
+    url: https://rubyonrails.org/
+    publisher: Ruby on Rails
+lastVerified: 2026-05-16
+---
+
+## Origin And Design Goals
+
+Ruby was designed and developed by Yukihiro Matsumoto, commonly known as Matz, and was first posted publicly in December 1995. The official FAQ describes Ruby's early design as a blend of features Matsumoto wanted in a scripting language, including iterators, exception handling, garbage collection, and a class-library organization influenced partly by Perl.
+
+Ruby's center of gravity is expressive object-oriented programming. Everything ordinary Ruby programmers manipulate is an object, classes and modules are open to extension, blocks make iteration and callbacks compact, and metaprogramming is a normal part of the ecosystem. The language is often chosen because it lets libraries and frameworks expose APIs that read close to the problem domain.
+
+That design is productive but not neutral. Ruby favors runtime flexibility, convention, reflection, and expressive internal DSLs over compile-time restriction. It works best when the team values tests, runtime validation, framework conventions, and disciplined dependency management enough to keep that flexibility maintainable.
+
+## Runtime, Implementations, And Deployment
+
+The default Ruby implementation is CRuby, historically called MRI. It parses Ruby code, compiles it to bytecode, and executes it on the Ruby virtual machine with automatic memory management. The `ruby/ruby` repository describes Ruby as an interpreted object-oriented programming language with scripting features for text, serialized files, and system tasks.
+
+Ruby is not limited to one implementation, but CRuby compatibility is the practical baseline for most RubyGems, Rails applications, documentation, and deployment guides. Production Ruby systems usually choose a Ruby version, install gems through Bundler, run tests and framework commands, then deploy behind an application server, process manager, container, platform service, or traditional Unix service setup.
+
+The common web shape is a long-running Ruby process or process pool serving an application through Rack-compatible servers and framework infrastructure. Background jobs, scheduled tasks, migrations, asset builds, and command-line tasks are usually part of the same application environment. That is different from PHP's default request-scoped PHP-FPM model and from Go's common single-binary service model.
+
+## Type System And Language Model
+
+Ruby is dynamically typed. Values have runtime types, names can be rebound, methods are resolved dynamically, and an object's behavior is often more important than its declared class. This supports duck typing, flexible APIs, mocking, test doubles, plugin systems, and domain-specific interfaces.
+
+Ruby is also strongly typed in ordinary runtime use: unsupported operations raise errors instead of silently pretending unrelated values are interchangeable. A method call can still fail at runtime if the receiver does not implement the expected method, if a value has a surprising shape, or if metaprogramming changes behavior in a way a reader did not expect.
+
+Modern Ruby has optional type-signature tooling around the language rather than inline static typing as the default programming model. RBS provides a type-signature language, and tools can use signatures for checking, documentation, and editor support. That can help at API boundaries, gem interfaces, and large application seams, but it does not make Ruby a statically typed language at runtime.
+
+## Object Model, Metaprogramming, And DSLs
+
+Ruby's object model is one of its defining traits. Classes are objects, modules mix behavior into classes, method lookup is dynamic, blocks and procs are first-class values, and classes can be reopened. Frameworks use those features to build compact APIs for routing, database models, tests, build tasks, validations, configuration, migrations, and command-line interfaces.
+
+Metaprogramming is useful when it removes repetitive structure and gives a team a clear domain vocabulary. It is risky when it hides control flow, creates invisible methods, makes stack traces hard to interpret, or lets framework magic replace explicit design. Mature Ruby codebases usually balance expressive DSLs with small objects, tests, linting, clear boundaries, and documentation around the places where behavior is generated.
+
+## Memory Model And Concurrency
+
+Ruby uses automatic garbage collection, so ordinary Ruby code does not manually free memory. That makes scripting and application work straightforward, but it does not remove memory design. Large object graphs, ORM hydration, caches, JSON processing, file uploads, image work, and long-lived workers still need memory budgets and observability.
+
+Concurrency in CRuby needs careful framing. Threads are useful for I/O, waiting, background coordination, and libraries that release the VM lock in native code. They are not a simple path to CPU-bound parallel Ruby execution inside one ractor. Ruby's Ractor documentation describes Ractors as an actor-like abstraction intended to provide parallel execution by limiting object sharing between ractors.
+
+Common production choices are:
+
+- Multiple processes or containers for web and worker concurrency.
+- Threads for I/O-heavy workloads and framework servers that can use them safely.
+- Background job systems for work that should not block requests.
+- Native extensions, subprocesses, or separate services for CPU-heavy work.
+- Ractors only after verifying library compatibility and the operational model.
+
+Ruby 4.0 included Ractor improvements and stated that Ractors were still on a path toward removing experimental status in a later release. Treat Ractors as a language-level concurrency tool to evaluate deliberately, not as a drop-in replacement for process-level scaling in a conventional Rails application.
+
+## RubyGems, Bundler, And Builds
+
+RubyGems is Ruby's package format, installer, and public package-hosting ecosystem. RubyGems.org is the default public gem host, while private gem servers and source-based dependencies are also common in production systems.
+
+Bundler is the standard dependency manager for applications. A project declares dependencies in a `Gemfile`, resolves exact versions into `Gemfile.lock`, and uses `bundle install`, `bundle exec`, and related commands to run against the selected gem set. Bundler's deployment guidance emphasizes lockfiles and repeatable installs; that matters because native gems, platform-specific builds, transitive dependencies, and framework upgrades can otherwise drift between developer machines, CI, and production.
+
+Operational watch points include Ruby version managers, native extension toolchains, OpenSSL and database client libraries, platform-specific gems, lockfile updates, dependency security review, container image rebuilds, and application server configuration. Ruby's development speed depends on keeping this environment reproducible.
+
+## Syntax Example
+
+```ruby
+Language = Data.define(:name, :domains) do
+  def fits?(domain)
+    domains.include?(domain)
+  end
+end
+
+languages = [
+  Language.new("Ruby", ["web", "scripts", "rails"]),
+  Language.new("Python", ["scripts", "data", "web"]),
+  Language.new("PHP", ["web", "cms", "backend"])
+]
+
+grouped = languages.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |language, index|
+  language.domains.each { |domain| index[domain] << language.name }
+end
+
+grouped.sort.each do |domain, names|
+  puts "#{domain}: #{names.sort.join(", ")}"
+end
+```
+
+This example uses Ruby's `Data` class for a small immutable value object, a predicate method ending in `?`, blocks for iteration, and a hash with a default block to group values.
+
+## Rails And The Web Ecosystem
+
+Ruby on Rails is the main reason Ruby remains central in web-application decisions. Rails gives teams an integrated framework for routing, controllers, views, models, database migrations, jobs, mailers, caching, tests, asset handling, and application conventions. It is strongest when a product fits database-backed web workflows and benefits from a coherent framework rather than a collection of unrelated libraries.
+
+Rails' influence also shapes Ruby beyond Rails. Many Ruby libraries value small APIs, convention, readable tests, generators, configuration through Ruby code, and DSL-style interfaces. That culture can help a product team move quickly, especially for internal tools, admin systems, SaaS applications, and server-rendered products.
+
+The tradeoff is framework gravity. Rails conventions affect persistence, naming, project layout, request lifecycle, background jobs, tests, deployment, and upgrade work. A Rails application should be evaluated as a Rails platform choice, not merely as "Ruby for the backend."
+
+## Scripting, Automation, And CLI Work
+
+Ruby is also a practical scripting language. It has standard libraries for files, text, JSON, YAML, HTTP, processes, option parsing, testing, and common Unix-style automation. Its block syntax and object model make it comfortable for release tools, data cleanup, static-site generators, build scripts, internal CLIs, and project-specific automation.
+
+Python is usually the broader ecosystem default for cross-team scripting, data analysis, scientific work, and AI-adjacent workflows. Ruby is strongest when the organization already has Ruby/Rails knowledge, when the script benefits from Ruby's expressive DSL style, or when automation sits close to a Ruby application.
+
+## Best-Fit Use Cases
+
+Ruby is a strong fit for:
+
+- Ruby on Rails applications, server-rendered products, internal tools, SaaS backends, admin systems, and database-backed applications.
+- Teams that want framework conventions, expressive APIs, generators, tests, and strong productivity around product iteration.
+- Scripts, CLIs, release tooling, and operational automation in Ruby-heavy organizations.
+- Libraries and tools where a readable Ruby DSL is a genuine usability advantage.
+- Existing Ruby and Rails systems where continuing the platform is lower-risk than a rewrite.
+
+## Poor-Fit Or Risky Use Cases
+
+Ruby can be a poor fit when:
+
+- The main requirement is CPU-bound parallel execution inside one process using ordinary Ruby code.
+- The deployment target needs a small native binary, hard real-time behavior, manual memory layout, or minimal runtime dependencies.
+- Compile-time type guarantees are the primary safety mechanism.
+- The team is unwilling to maintain Ruby versions, Bundler locks, native gem dependencies, Rails upgrades, background workers, and process supervision.
+- The product is primarily browser code, data science, machine learning, low-level infrastructure, or a CMS/plugin ecosystem where another language has a stronger default fit.
+
+## Governance, Releases, And Compatibility
+
+Ruby is developed in the open through the Ruby project, the `ruby/ruby` source repository, issue tracker, mailing lists, and release process. The official releases page lists Ruby 4.0.4 as a release on 2026-05-11, and the maintenance-branches page lists Ruby 4.0 and Ruby 3.4 in normal maintenance as of this page's verification date.
+
+Ruby version management matters in production. Frameworks and gems set their own supported Ruby ranges, native extensions can lag new releases, and major Ruby changes may require application and dependency updates. Teams should track both Ruby branch maintenance and framework support windows rather than assuming a system package version is an adequate long-term plan.
+
+## Comparison Notes
+
+Python is Ruby's closest general-purpose scripting comparison. Python usually has stronger reach in data, scientific computing, notebooks, ML tooling, and cross-role automation. Ruby usually appeals when expressive object-oriented APIs, Rails, RubyGems/Bundler workflows, or Ruby-heavy team knowledge are central.
+
+PHP is the closest web-framework comparison. PHP has broader CMS and conventional hosting gravity through WordPress, Drupal, Laravel, Symfony, Composer, and PHP-FPM. Ruby is strongest when Rails conventions and Ruby's object model are the desired application platform.
+
+JavaScript and TypeScript matter when browser alignment, npm, frontend frameworks, or full-stack JavaScript are the dominant constraints. Crystal is nearby for Ruby-like syntax with static typing and native compilation, while Elixir is nearby for teams that like Ruby-influenced syntax but need BEAM concurrency and fault-tolerance characteristics.

@@ -30,7 +30,7 @@ export const languageRegistry = {
   php: { title: "PHP", state: "published" },
   python: { title: "Python", state: "published" },
   r: { title: "R", state: "planned" },
-  ruby: { title: "Ruby", state: "planned" },
+  ruby: { title: "Ruby", state: "published" },
   rust: { title: "Rust", state: "published" },
   scala: { title: "Scala", state: "planned" },
   solidity: { title: "Solidity", state: "planned" },
