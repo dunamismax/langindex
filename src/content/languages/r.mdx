@@ -1,0 +1,219 @@
+---
+title: R
+slug: r
+status: active
+summary: R is a dynamically typed language and environment for statistical computing, graphics, data analysis, statistical modeling, and research workflows, with CRAN, data frames, packages, and reporting tools at the center of everyday use.
+firstReleased: 1993
+creators:
+  - Ross Ihaka
+  - Robert Gentleman
+paradigms:
+  - statistical computing
+  - array-oriented
+  - functional
+  - object-oriented
+  - interactive
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with coercion rules
+memory:
+  model: automatic garbage collection with R-managed objects and copy-on-modify user semantics
+runtime:
+  model: interpreted statistical computing environment with native extension interfaces
+officialSite: https://www.r-project.org/
+repository: https://svn.r-project.org/R/
+packageManagers:
+  - CRAN
+  - install.packages
+  - renv
+  - Bioconductor
+comparedWith:
+  - python
+  - sql
+  - julia
+  - fortran
+bestFor:
+  - Statistical analysis, exploratory data analysis, modeling, graphics, reproducible reports, and research workflows.
+  - Teams whose primary users are statisticians, analysts, scientists, social scientists, epidemiologists, bioinformaticians, or academic researchers.
+  - Data-frame-centered workflows built around base R, tidyverse, data.table, Bioconductor, Shiny, R Markdown, or Quarto.
+  - Publishing analyses where code, prose, figures, tables, and statistical methods need to live close together.
+poorFit:
+  - General-purpose application platforms where web services, CLIs, backend systems, or deployment artifacts dominate the work more than statistical analysis.
+  - Large production systems that need static typing, small self-contained binaries, or conventional service-oriented deployment as the default shape.
+  - CPU-bound custom loops over large data where vectorized R, database pushdown, native extensions, or specialized packages cannot carry the hot path.
+  - Teams unwilling to manage R versions, package libraries, compiled package toolchains, reproducible environments, and package availability across platforms.
+sources:
+  - title: The R Project for Statistical Computing
+    url: https://www.r-project.org/
+    publisher: The R Foundation
+  - title: What is R?
+    url: https://www.r-project.org/about.html
+    publisher: The R Foundation
+  - title: R Contributors
+    url: https://www.r-project.org/contributors.html
+    publisher: The R Foundation
+  - title: The R Foundation
+    url: https://www.r-project.org/foundation/
+    publisher: The R Foundation
+  - title: S, R, and Data Science
+    url: https://journal.r-project.org/archive/2020/RJ-2020-028/index.html
+    publisher: The R Journal
+  - title: R FAQ
+    url: https://cran.r-project.org/doc/FAQ/R-FAQ.html
+    publisher: The R Foundation
+  - title: The R Language Definition
+    url: https://cran.r-project.org/doc/manuals/r-release/R-lang.html
+    publisher: R Core Team
+  - title: R Installation and Administration
+    url: https://cran.r-project.org/doc/manuals/r-release/R-admin.html
+    publisher: R Core Team
+  - title: Writing R Extensions
+    url: https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+    publisher: R Core Team
+  - title: CRAN Repository Policy
+    url: https://cran.r-project.org/web/packages/policies.html
+    publisher: The R Foundation
+  - title: Data Frames
+    url: https://search.r-project.org/R/refmans/base/html/data.frame.html
+    publisher: R Core Team
+  - title: Memory Available for Data Storage
+    url: https://search.r-project.org/R/refmans/base/html/Memory.html
+    publisher: R Core Team
+  - title: Support for Parallel Computation
+    url: https://search.r-project.org/R/refmans/parallel/html/parallel-package.html
+    publisher: R Core Team
+  - title: Open source resources
+    url: https://docs.posit.co/resources/open-source.html
+    publisher: Posit
+  - title: Tidyverse packages
+    url: https://tidyverse.org/packages/
+    publisher: tidyverse
+  - title: Bioconductor About
+    url: https://bioconductor.org/about/index.html
+    publisher: Bioconductor
+  - title: Project Environments
+    url: https://rstudio.github.io/renv/
+    publisher: renv
+lastVerified: 2026-05-16
+---
+
+## Origin And Design Goals
+
+R was initially written by Robert Gentleman and Ross Ihaka at the University of Auckland. It grew from the S language tradition and became a GNU project focused on statistical computing, graphics, and extensibility. The R Project describes R as both a language and an environment: the core language matters, but so do the interactive runtime, graphics system, package mechanism, documentation format, and interfaces to compiled code.
+
+That origin still explains R's fit. R is strongest when the work is statistical: modeling, exploratory analysis, data frames, graphics, statistical methods, reproducible research, and packages that encode domain methodology. It is not merely a general scripting language with statistics libraries added later. The language, base distribution, package culture, help system, and reporting tools are all shaped by statisticians and data analysts doing analysis interactively and then publishing or sharing the result.
+
+## Runtime, Implementations, And Deployment
+
+The practical default implementation is GNU R from the R Project. R runs as an interactive environment, as scripts launched with `Rscript`, inside IDEs such as RStudio, and inside reporting systems such as R Markdown or Quarto. R source is evaluated by the R runtime, with core facilities and many packages implemented partly in R and partly in C, C++, or Fortran.
+
+R deployments are usually analysis environments, scheduled batch jobs, Shiny applications, reports, package libraries, notebooks, containers, or server-hosted workbenches rather than single native executables. Production use should make the R version, package repository, package library path, lockfile or snapshot strategy, operating-system dependencies, and compiled package toolchain explicit.
+
+The R Project homepage listed R 4.6.0 as released on 2026-04-24 when this page was verified. R users should still check the exact R version and package binary availability for their platform, because package installation behavior differs across Unix-like systems, macOS, and Windows.
+
+## Type System And Language Model
+
+R is dynamically typed. Values are R objects, names are bound at runtime, and many operations use dispatch, attributes, classes, and coercion rules. The R Language Definition documents R's atomic vector types, lists, function closures, environments, promises, attributes, data frames, indexing, lexical scoping, and object-oriented systems.
+
+The basic mental model is vector-first. A number such as `1` is a vector of length one, and many functions operate naturally over vectors, matrices, arrays, lists, and data frames. This makes statistical code compact, but it can surprise programmers coming from scalar-first languages. Recycling rules, missing values, factors, partial matching, and implicit coercion can all be useful in analysis while still needing tests and careful review in production code.
+
+R functions are closures with environments, and function arguments use lazy evaluation through promise objects. That supports expressive modeling formulas, non-standard evaluation, and domain-specific data APIs, but it also means metaprogramming-heavy code can be hard to reason about unless the team documents evaluation boundaries clearly.
+
+## Data Frames, Packages, And Analysis Workflows
+
+The data frame is R's central tabular data structure. Base R documents a data frame as a list of variables with the same number of rows and a matrix-like interface whose columns may have different types. That makes it a natural fit for statistical models, rectangular data, exploratory summaries, and plot-building workflows.
+
+R has two major everyday data-frame cultures:
+
+- Base R, where `data.frame`, formula syntax, model functions, plotting functions, and packages from the standard distribution are enough for many statistical workflows.
+- Package-centered workflows such as tidyverse, data.table, Bioconductor, tidymodels, and domain-specific packages, where consistent package APIs shape the style of analysis.
+
+The tidyverse is an opinionated collection of packages for data science. Its core includes packages such as ggplot2 for declarative graphics, dplyr for data manipulation verbs, tidyr for reshaping data, readr for rectangular file import, purrr for functional iteration, tibble for modern data frames, and related packages for strings, factors, and dates. Bioconductor is a separate open-source ecosystem built around R packages for computational biology and bioinformatics, with package vignettes, workflows, and release infrastructure.
+
+## Memory Model, Performance, And Parallelism
+
+R manages memory automatically. The base memory documentation describes R's variable-sized workspace, garbage collection, vector heap, cons cells, and `gc()` reporting. Ordinary R programmers do not manually allocate and free memory, but they still need to care about object size, copies, temporary data frames, joins, model matrices, and long-running session growth.
+
+Performance is workload-dependent. Vectorized operations, compiled package code, database pushdown, data.table, DuckDB-backed workflows, Arrow-backed workflows, and C/C++/Fortran extensions can make R practical for large analyses. Slow R usually appears when a program does too much row-by-row or element-by-element work in ordinary R code, repeatedly copies large objects, or pulls data into memory before reducing it near storage.
+
+R's standard `parallel` package supports parallel computation by launching worker processes and includes functionality derived from earlier multicore and socket-cluster packages. That is useful for batch analysis, simulations, resampling, and embarrassingly parallel tasks, but it is not the same deployment story as Go's goroutines, Java's thread pools, or Python's async service frameworks.
+
+## Interoperability And Native Extensions
+
+R is designed to connect to other systems. The R Project describes interfaces to C, C++, and Fortran code for computationally intensive tasks, and the Writing R Extensions manual documents package creation and extension interfaces. This matters because much R performance comes from a high-level analysis language orchestrating optimized native implementations.
+
+Interoperability also appears at the data boundary. R packages commonly connect to databases, spreadsheets, CSV, Parquet, web APIs, Python, Spark, and domain-specific scientific formats. Posit-supported tools such as Quarto, RStudio, Shiny, Plumber, and the tidyverse are not part of base R, but they strongly shape modern R usage for reproducible reporting, analysis apps, APIs, and data science workflows.
+
+## Syntax Example
+
+```r
+languages <- data.frame(
+  name = c("R", "Python", "SQL", "Julia"),
+  domain = c("statistics", "data", "databases", "scientific"),
+  score = c(9, 8, 7, 8)
+)
+
+high_fit <- subset(languages, score >= 8)
+ranked <- high_fit[order(high_fit$score, decreasing = TRUE), ]
+
+for (row in seq_len(nrow(ranked))) {
+  message(ranked$name[row], ": ", ranked$domain[row])
+}
+```
+
+This example uses a base R data frame, vector construction with `c()`, row filtering with `subset()`, ordering, and a small loop for output. Real analysis code often replaces the loop with vectorized functions, modeling functions, plotting functions, or package APIs.
+
+## Statistical Computing, Graphics, And Reporting
+
+R is a strong fit when statistical method and communication are part of the same workflow. Analysts can fit models, inspect residuals, produce plots, generate tables, write prose, and publish reports without leaving the R ecosystem. Base R includes statistical and graphics facilities, while CRAN and Bioconductor extend that center into specialized methods, visualization systems, epidemiology, economics, surveys, genomics, Bayesian modeling, time series, machine learning, and more.
+
+The reporting ecosystem is a major reason teams choose R. R Markdown and Quarto let analysts combine code, results, figures, tables, and explanation in reproducible documents. Shiny lets teams turn R analyses into interactive applications. Those tools are productive when the application is close to analysis, but they do not make R a universal web platform.
+
+## Packages, CRAN, And Reproducibility
+
+CRAN is the central public archive for R source packages and binaries. The R Installation and Administration manual documents `install.packages`, source and binary installation differences, and repository selection. Writing R Extensions defines packages as directories or archives that extend R and describes `R CMD INSTALL`, package structure, documentation, tests, and compiled code. CRAN Repository Policy adds submission requirements around maintainers, licensing, source availability, checks, and repository behavior.
+
+Reproducibility depends on more than installing packages once. A durable R project should record:
+
+- R version and operating system.
+- Package versions and repository source.
+- Native system libraries and compilers needed by compiled packages.
+- Data snapshots or database query boundaries.
+- Random-number seeds where simulation or modeling requires repeatability.
+- Rendering commands for reports, notebooks, dashboards, or Shiny apps.
+
+Tools such as `renv`, containers, Posit Package Manager, and package repository snapshots are common answers, but the important decision is to make the environment reproducible instead of treating an interactive library directory as the production build.
+
+## Best-Fit Use Cases
+
+R is a strong fit for:
+
+- Statistical modeling, inference, simulation, survey analysis, epidemiology, bioinformatics, econometrics, and research methods.
+- Exploratory data analysis and visual communication where data frames, plots, tables, and prose move together.
+- Reproducible reports, papers, dashboards, and analysis notebooks.
+- Teams whose subject-matter experts already work in R, CRAN packages, Bioconductor, RStudio, Shiny, R Markdown, or Quarto.
+- Package development for statistical methods that need documentation, vignettes, tests, examples, and CRAN or Bioconductor distribution.
+
+## Poor-Fit Or Risky Use Cases
+
+R can be a poor fit when:
+
+- The primary product is a general backend service, CLI, mobile app, browser app, or infrastructure component rather than analysis.
+- The team needs compile-time type guarantees as the main correctness boundary.
+- The deployment environment cannot control R versions, package binaries, native libraries, compilers, or system dependencies.
+- The hot path is custom scalar code that cannot be vectorized, pushed into a database, parallelized across processes, or moved into compiled extensions.
+- Several non-statistical engineering teams need to maintain the code but do not share R fluency or the statistical package context.
+
+## Governance, Releases, And Compatibility
+
+R is maintained by the R Core Team, with the R Foundation providing organizational support for the R project and innovations in statistical computing. The R Project contributors page lists the current R Core Team and explains that a core group has had write access to the R source since mid-1997. The R Foundation page describes the foundation as a not-for-profit organization working in the public interest and notes that R is an official GNU project.
+
+Compatibility is practical rather than invisible. R itself evolves through releases, and package ecosystems evolve alongside it. Major R upgrades can require package reinstallations or binary rebuilds, and package availability can depend on the R version and operating system. For production analysis, treat R upgrades like dependency upgrades: test the analysis, rebuild packages, verify rendered outputs, and keep enough environment metadata to reproduce old results when necessary.
+
+## Comparison Notes
+
+Python is R's closest data-analysis comparison. R is usually the better starting point when statistical methodology, data frames, graphics, reports, and analyst-facing workflows are central. Python is usually the better starting point when the same codebase must also own general application logic, ML infrastructure, APIs, packaging for services, or integration with non-statistical software teams.
+
+SQL is the right home for relational filtering, joining, aggregation, constraints, and database-side work. R can query databases and analyze results, but large relational reductions should often stay near storage before entering an R session.
+
+Julia is nearby for numerical and scientific computing when multiple dispatch, native-performance-oriented code, and scientific programming are central. Fortran remains relevant when long-lived numerical libraries or high-performance scientific kernels are already written in it.

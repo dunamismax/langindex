@@ -1,0 +1,114 @@
+---
+title: R vs Python For Data Analysis
+slug: r-vs-python-for-data-analysis
+summary: "R and Python both serve data work, but they optimize for different centers: R is strongest for statistical analysis, data frames, graphics, and reports, while Python is strongest when data work sits inside broader software systems, automation, services, and ML infrastructure."
+languages:
+  - r
+  - python
+useCases:
+  - data analysis
+  - statistics
+  - data science
+  - reporting
+  - research workflows
+  - machine learning
+sources:
+  - title: What is R?
+    url: https://www.r-project.org/about.html
+    publisher: The R Foundation
+  - title: The R Language Definition
+    url: https://cran.r-project.org/doc/manuals/r-release/R-lang.html
+    publisher: R Core Team
+  - title: Data Frames
+    url: https://search.r-project.org/R/refmans/base/html/data.frame.html
+    publisher: R Core Team
+  - title: Tidyverse packages
+    url: https://tidyverse.org/packages/
+    publisher: tidyverse
+  - title: Bioconductor About
+    url: https://bioconductor.org/about/index.html
+    publisher: Bioconductor
+  - title: Open source resources
+    url: https://docs.posit.co/resources/open-source.html
+    publisher: Posit
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+lastVerified: 2026-05-16
+---
+
+## Scope
+
+This comparison is about data analysis, statistics, reporting, notebooks, scientific workflows, and data-adjacent production systems. R and Python overlap heavily, but they are not interchangeable defaults.
+
+R is a language and environment designed around statistical computing and graphics. Python is a general-purpose language with a large data ecosystem. The practical decision is usually whether the work is primarily statistical analysis and communication, or whether data work is one part of a broader software system.
+
+## Key Differences
+
+| Dimension              | R                                                                                 | Python                                                                                     |
+| ---------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Center of gravity      | Statistics, data frames, graphics, reports, research workflows                    | General-purpose programming, automation, services, notebooks, ML tooling                   |
+| Data model             | Vectors, lists, data frames, formula syntax, package-specific classes             | Objects, lists, dicts, arrays, pandas data frames, typed library objects                   |
+| Everyday data workflow | Base R, tidyverse, data.table, Bioconductor, RStudio, Quarto, Shiny               | pandas, NumPy, notebooks, PyData, scikit-learn, PyTorch, web/API libraries                 |
+| Deployment shape       | Analysis sessions, reports, dashboards, Shiny apps, batch jobs, package libraries | Scripts, packages, services, notebooks, batch jobs, ML pipelines, CLIs                     |
+| Strongest users        | Statisticians, analysts, researchers, bioinformaticians, method authors           | Software developers, data engineers, ML engineers, analysts, researchers                   |
+| Main risk              | Environment/package reproducibility and performance in scalar R code              | Packaging/native dependencies and mixing analysis code with production software boundaries |
+
+## Choose R When
+
+- Statistical modeling, inference, graphics, or method-specific packages are the core of the work.
+- The output is a report, paper, dashboard, Shiny app, or reproducible analysis document.
+- The team is analyst- or research-led and already uses RStudio, Quarto, R Markdown, CRAN, Bioconductor, tidyverse, or data.table.
+- The workflow is data-frame-centered and benefits from R's formula syntax, modeling APIs, package vignettes, and plotting ecosystem.
+- Domain packages in R are the strongest source of the needed statistical method.
+
+R is especially strong when code, prose, figures, tables, model diagnostics, and statistical explanation need to be reviewed together.
+
+## Choose Python When
+
+- Data work sits inside a larger application, service, CLI, automation workflow, or ML infrastructure.
+- The same project needs APIs, background jobs, filesystem automation, cloud SDKs, web frameworks, or general software libraries.
+- The team is software-engineering-led and already uses Python packaging, testing, type hints, deployment tooling, and service patterns.
+- Machine-learning frameworks, model-serving infrastructure, or AI-adjacent product code are central.
+- The output is a maintained package, service, pipeline, or integration layer rather than mainly an analysis report.
+
+Python is often the better default when data analysis must be carried into product code, orchestration, or platform tooling by the same team.
+
+## Use Them Together When
+
+Many organizations should not force a single-language answer:
+
+- Use SQL for database-side filtering, joins, aggregation, constraints, and transactional work.
+- Use R for statistical analysis, reports, plots, method packages, and analyst-facing dashboards.
+- Use Python for orchestration, services, ML infrastructure, APIs, file workflows, and general software integration.
+- Exchange data through stable formats, database tables, Parquet/Arrow, CSV when appropriate, or service boundaries.
+
+The boundary matters more than language preference. Decide where each artifact is owned, how data is serialized, how results are reproduced, and which environment renders the final report or runs the production job.
+
+## Watch Points
+
+R projects become fragile when they depend on an unrecorded interactive package library, a manually configured RStudio session, or package binaries that cannot be rebuilt on the deployment platform. Use lockfiles, containers, package snapshots, repository controls, or another reproducibility mechanism before analysis becomes production.
+
+Python projects become fragile when notebooks or exploratory scripts silently become production pipelines without tests, dependency locking, data contracts, and runtime validation. Python's general-purpose strength does not remove the need to separate analysis, orchestration, and service boundaries.
+
+Both languages can run slow code if the hot path is row-by-row interpreted work. Prefer vectorized operations, native libraries, database pushdown, columnar formats, compiled extensions, or process-level parallelism when data volume grows.
+
+## Practical Default
+
+Start with R when the question is statistical and the deliverable is analysis: models, plots, tables, reports, dashboards, or research code that domain experts will inspect directly.
+
+Start with Python when the question is software-shaped and data is one subsystem: services, CLIs, infrastructure, ML pipelines, APIs, automation, or application logic.
+
+Use both when the organization already has clear analyst and engineering roles. Keep the interface explicit enough that results can be reproduced without guessing which local session, package library, notebook state, or service version produced them.

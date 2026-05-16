@@ -34,6 +34,7 @@ Observed on 2026-05-16:
   - Kotlin
   - Swift
   - Ruby
+  - R
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -49,6 +50,7 @@ Observed on 2026-05-16:
   - Kotlin vs Swift comparison
   - Swift vs Objective-C comparison
   - Python vs Ruby comparison
+  - R vs Python for Data Analysis comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -58,6 +60,7 @@ Observed on 2026-05-16:
   - Choosing PHP for web backends and CMS work guide
   - Choosing Kotlin for Android, JVM, and multiplatform work guide
   - Choosing Swift for Apple-platform and mobile work guide
+  - Choosing R for data analysis, statistics, and research guide
   - Ownership concept page
 - Current local baseline:
 
@@ -318,12 +321,12 @@ justify the extra network time.
 
 ### Phase 15 - R
 
-- [ ] Add a complete R page.
-- [ ] Cover statistical computing focus, CRAN, package ecosystem, data frame
+- [x] Add a complete R page.
+- [x] Cover statistical computing focus, CRAN, package ecosystem, data frame
       workflows, RStudio/Posit ecosystem, interoperability, performance
       constraints, and academic/research fit.
-- [ ] Add R vs Python comparison for data analysis.
-- [ ] Add R to data science and statistics guides.
+- [x] Add R vs Python comparison for data analysis.
+- [x] Add R to data science and statistics guides.
 
 ### Phase 16 - Bash / Shell
 
