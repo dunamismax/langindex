@@ -26,19 +26,48 @@ Use official sources when possible: language sites, specifications, official doc
 
 Language pages keep stable metadata in frontmatter and explanatory material in MDX body content. Keep prose out of frontmatter unless it is a short summary or list item used for browsing.
 
-Required language fields include:
+Required language fields:
 
 - `title`
-- `slug`
-- `status`
+- `slug` (must exist in `src/lib/language-registry.ts`)
+- `status` — one of `active`, `stable`, `experimental`, `legacy`, `inactive`
 - `summary`
-- `typing`
-- `memory`
-- `runtime`
+- `typing` — object with `discipline` (required) and `strength` (optional)
+- `memory` — object with `model`
+- `runtime` — object with `model`
 - `officialSite`
-- `sources`
-- `lastVerified`
+- `sources` — at least one entry
+- `lastVerified` — ISO date
+
+Optional language fields:
+
+- `firstReleased` — integer year
+- `creators`
+- `paradigms`
+- `repository`
+- `packageManagers`
+- `comparedWith` — language slugs (validated against the registry)
+- `bestFor`
+- `poorFit`
+
+## Comparisons, Guides, And Concepts
+
+Comparison frontmatter requires `title`, `slug`, `summary`, `languages` (at
+least two registry-valid slugs), `sources`, and `lastVerified`. `useCases`
+is optional.
+
+Guide frontmatter requires `title`, `slug`, `summary`, `sources`, and
+`lastVerified`. `audience` and `candidates` (language slugs) are optional.
+
+Concept frontmatter requires `title`, `slug`, `summary`, `sources`, and
+`lastVerified`. `relatedLanguages` (language slugs) is optional.
+
+Starter frontmatter for language and comparison pages lives in
+`docs/templates/`.
 
 ## Validation
 
-The canonical schemas live in `src/content.config.ts`. Update this document when schema changes affect contributors.
+The canonical schemas live in `src/content.config.ts` and the language slug
+registry lives in `src/lib/language-registry.ts`. Frontmatter is validated
+at build time by Astro Content Collections. Update this document when schema
+changes affect contributors.

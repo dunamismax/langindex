@@ -259,26 +259,26 @@ Docs-only work:
 git diff --check
 ```
 
-Once the Astro skeleton exists:
+Normal content or UI change:
 
 ```sh
 just fmt
 just check
 just test
+just build
 ```
 
-Expected checks as the site matures:
+Broader checks the project supports:
 
-- TypeScript type checking.
-- Astro build.
-- Content collection schema validation.
-- MDX linting.
-- Link checking for internal links and important external references.
-- Pagefind index generation.
-- Playwright smoke checks for homepage, search, language pages, and
-  comparison pages.
-- Docker image build.
-- Caddy config validation for deployment changes.
+- TypeScript type checking and Astro Content Collection schema validation
+  via `just check`.
+- Frontmatter source validation via `just validate-sources`.
+- Pagefind index generation as part of `just build`.
+- Internal link auditing via `just check-links-internal`.
+- External link auditing via `just check-links-external`.
+- Playwright smoke and accessibility checks via `just test-smoke` (requires
+  a fresh `just build`).
+- Docker image build and Caddy config validation for deployment changes.
 
 Broaden checks as risk grows. If a command cannot run, say why and what
 was verified instead.

@@ -52,11 +52,23 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 ## Project Status
 
-LangIndex has an initial Astro static-site skeleton with typed content collections, seed language pages, a comparison, a guide, and concept content. The intended public URL is:
+LangIndex is live at [https://langindex.dev](https://langindex.dev).
 
-[https://langindex.dev](https://langindex.dev)
+The site is built with Astro, MDX, and typed content collections, and ships
+four content groups:
 
-The first milestone is to define the content model and publish a small, high-quality set of language pages before expanding coverage.
+- `languages` — individual programming language profiles.
+- `comparisons` — dimensional, tradeoff-first comparisons between related
+  languages.
+- `guides` — cross-language decision guides framed by the problem the
+  developer is solving.
+- `concepts` — shared programming-language ideas referenced by multiple
+  language pages.
+
+Static search is provided by Pagefind. The initial milestone — defining the
+content model and publishing a small, high-quality seed set — is complete.
+See [BUILD.md](BUILD.md) for current coverage and the active per-language
+expansion plan.
 
 ## License
 
