@@ -485,6 +485,189 @@ justify the extra network time.
       scope is precise.
 - [ ] Add Solidity to domain-specific language and blockchain guides.
 
+### Phase 35 - Type System Concepts
+
+The Concepts hub at <https://langindex.dev/concepts/> currently ships a single
+entry (`ownership`). The hub describes itself as "Cross-language ideas: type
+systems, runtimes, memory models, and tooling." Phases 35 through 41 grow it
+into a complete cross-language reference that language and comparison pages
+can link into instead of re-explaining the same ideas inline.
+
+Each concept page should follow the existing `ownership.mdx` shape: a
+`title`, `slug`, `summary`, `relatedLanguages`, sourced `sources`, and a
+current `lastVerified` date in frontmatter, with body sections that explain
+the idea neutrally, contrast common variants, and call out watch points.
+Prefer official language specifications, standards bodies, and authoritative
+references over secondary commentary.
+
+- [ ] Add a `static-vs-dynamic-typing` concept covering when types are
+      checked, gradual systems that straddle the line, and the practical
+      tradeoffs for refactoring, tooling, and runtime errors.
+- [ ] Add a `strong-vs-weak-typing` concept that distinguishes implicit
+      conversion behavior from static/dynamic checking and clears up the
+      common conflation between the two axes.
+- [ ] Add a `type-inference` concept covering local vs whole-program
+      inference, Hindley-Milner lineage, and the readability/error-message
+      tradeoffs each language accepts.
+- [ ] Add a `structural-vs-nominal-typing` concept contrasting TypeScript,
+      Go interfaces, and OCaml objects against nominal systems in Java, C#,
+      and Rust.
+- [ ] Add a `generics-and-parametric-polymorphism` concept covering
+      monomorphization vs erasure, variance, bounded type parameters, and
+      higher-kinded types where languages support them.
+- [ ] Add an `algebraic-data-types-and-pattern-matching` concept covering
+      sum types, product types, exhaustiveness, and how non-ADT languages
+      approximate the pattern.
+- [ ] Add a `null-safety` concept covering option types, nullable
+      annotations, non-nullable defaults, and the runtime cost of retrofits.
+- [ ] Cross-link these concepts from the relevant language pages and
+      comparison pages (TypeScript, Java, Kotlin, Swift, Rust, Go, C#,
+      Haskell, OCaml, F#, Python, Ruby) instead of restating the ideas
+      inline.
+
+### Phase 36 - Memory Management Concepts
+
+- [ ] Expand the existing `ownership` page if any current language phase
+      exposed a gap, and refresh its `lastVerified` date only if sources are
+      re-checked.
+- [ ] Add a `garbage-collection` concept covering tracing vs reference
+      counting, generational collectors, pause-time tradeoffs, and how the
+      JVM, CLR, Go, V8, BEAM, and CPython differ in practice.
+- [ ] Add a `reference-counting` concept covering deterministic destruction,
+      cycle handling, ARC in Swift and Objective-C, and `Rc`/`Arc` in Rust.
+- [ ] Add a `manual-memory-management` concept covering `malloc`/`free`,
+      arenas, custom allocators, and the failure modes that motivate
+      ownership and GC.
+- [ ] Add a `raii-and-deterministic-cleanup` concept covering C++
+      destructors, Rust `Drop`, Python context managers, and equivalents
+      across languages.
+- [ ] Add a `stack-vs-heap-allocation` concept covering escape analysis,
+      value vs reference semantics, and the cost model developers should
+      carry in their heads.
+- [ ] Add a `memory-safety` concept covering use-after-free, buffer
+      overflows, data races as a safety issue, and the spectrum from "safe
+      by default" to "safe by discipline."
+- [ ] Link these concepts from systems-language pages (C, C++, Rust, Zig,
+      Go) and from the Choosing a systems language guide.
+
+### Phase 37 - Runtime And Execution Concepts
+
+- [ ] Add an `interpreters-jit-and-aot` concept covering pure interpreters,
+      tracing/method JITs, AOT compilation, and tiered execution models
+      across CPython, V8, the JVM, CLR, GraalVM, and Dart.
+- [ ] Add a `virtual-machines-and-bytecode` concept covering the JVM, CLR,
+      BEAM, EVM, and CPython bytecode, with notes on what bytecode actually
+      guarantees about portability.
+- [ ] Add a `compilation-targets` concept covering native code, bytecode,
+      WebAssembly, transpilation to JavaScript, and cross-compilation.
+- [ ] Add a `foreign-function-interface` concept covering the C ABI as a
+      lingua franca, marshalling cost, and the tradeoffs of safe wrappers
+      vs raw bindings.
+- [ ] Add an `abi-stability` concept covering C ABI guarantees, C++ ABI
+      friction, Rust's deliberate lack of a stable ABI, and what this means
+      for libraries and dynamic linking.
+- [ ] Add a `standard-library-philosophy` concept contrasting batteries-
+      included (Python, Go, .NET) with small-core ecosystems (JavaScript,
+      Rust, C) and the maintenance consequences of each choice.
+- [ ] Link these concepts from runtime-heavy pages (Java, C#, JavaScript,
+      Python, Kotlin, Swift, Erlang, Elixir) and from the relevant guides.
+
+### Phase 38 - Concurrency Concepts
+
+- [ ] Add a `threads-and-shared-memory` concept covering OS threads, the
+      memory-visibility problem, and why most language concurrency models
+      exist to wrap or replace it.
+- [ ] Add an `async-await-and-event-loops` concept covering single-threaded
+      cooperative concurrency, the function-color split, and how JavaScript,
+      Python, Rust, C#, and Swift each implement it.
+- [ ] Add a `goroutines-and-green-threads` concept covering M:N scheduling,
+      stack growth, and the tradeoffs vs OS threads and explicit async.
+- [ ] Add an `actor-model-and-message-passing` concept covering Erlang/BEAM
+      processes, OTP supervision, and channels in Go and Rust as a related
+      message-passing pattern.
+- [ ] Add a `data-races-and-memory-models` concept covering happens-before
+      relationships, the Java and C++ memory models, and how Rust's ownership
+      rules statically forbid the cases the others must reason about.
+- [ ] Add a `structured-concurrency` concept covering Kotlin coroutines,
+      Swift task groups, Trio/Anyio, and why scoped lifetimes change error
+      handling and cancellation behavior.
+- [ ] Link these concepts from concurrency-heavy pages (Go, Rust, Java, C#,
+      Kotlin, Swift, JavaScript, Python, Erlang, Elixir) and from the
+      Choosing a systems language guide.
+
+### Phase 39 - Paradigm And Language Design Concepts
+
+- [ ] Add an `object-oriented-programming` concept covering classes vs
+      prototypes, inheritance vs composition, and how Smalltalk, Java, C#,
+      Python, Ruby, and JavaScript each interpret "OO."
+- [ ] Add a `functional-programming` concept covering first-class functions,
+      purity, immutability, and the spectrum from "FP-friendly" (Python,
+      JavaScript, Kotlin) to "FP-first" (Haskell, OCaml, F#, Elixir).
+- [ ] Add an `immutability-and-persistent-data-structures` concept covering
+      value semantics, copy-on-write, structural sharing, and the
+      ergonomics/perf tradeoff each language picks.
+- [ ] Add a `closures-and-first-class-functions` concept covering capture
+      semantics, escaping vs non-escaping closures, and how this interacts
+      with ownership in Rust and reference cycles in Swift.
+- [ ] Add an `errors-as-values-vs-exceptions` concept contrasting Go's
+      `error` return, Rust's `Result`, Swift's `throws`, checked exceptions
+      in Java, and unchecked exceptions elsewhere.
+- [ ] Add a `metaprogramming-and-macros` concept covering Lisp macros, Rust
+      declarative and procedural macros, C++ templates, Python decorators,
+      and the readability/build-time costs each carries.
+- [ ] Add a `modules-and-namespacing` concept covering module systems
+      (ES modules, Python packages, Java packages, Go modules, Rust crates,
+      OCaml functors) and the visibility rules they enforce.
+- [ ] Link these concepts from the language pages whose design they most
+      directly explain and from comparison pages where the paradigm choice
+      is the central tradeoff.
+
+### Phase 40 - Tooling And Ecosystem Concepts
+
+- [ ] Add a `package-managers` concept covering registry-backed managers
+      (npm, PyPI, crates.io, Maven Central, NuGet, RubyGems, Hex), lockfile
+      semantics, vendoring, and the security surface each model exposes.
+- [ ] Add a `build-systems` concept covering language-native builders
+      (Cargo, Go, dotnet, Maven, Gradle, sbt, Mix, swiftpm) and generic
+      builders (Make, CMake, Bazel, Buck, Pants).
+- [ ] Add a `formatters-and-linters` concept covering opinionated
+      auto-formatters (gofmt, rustfmt, Prettier, Black) and lint families
+      (Clippy, ESLint, RuboCop, pylint/ruff), with notes on when each is
+      tablestakes vs optional.
+- [ ] Add a `language-servers-and-editor-tooling` concept covering LSP, the
+      tradeoff between language-specific IDEs and editor-agnostic tooling,
+      and what a "first-class LSP" actually means.
+- [ ] Add a `repl-and-interactive-development` concept covering Lisp/Clojure
+      REPL workflows, the Python and Ruby shells, dotnet-script, and the
+      Rust evcxr/IRust ecosystem.
+- [ ] Add a `testing-cultures` concept covering xUnit, property-based
+      testing, doctests, snapshot tests, fuzzing, and which language
+      ecosystems push which approach as default.
+- [ ] Add a `documentation-cultures` concept covering rustdoc, godoc,
+      Javadoc, JSDoc/TSDoc, Doxygen, Sphinx, and how source-derived docs
+      shape API design.
+- [ ] Link these tooling concepts from every language page's tooling
+      section instead of restating ecosystem norms inline.
+
+### Phase 41 - Concepts Hub Polish
+
+- [ ] Re-read every concept page after the prior phases and tighten cross-
+      links so each one references neighbors via `[[slug]]`-style anchors or
+      explicit relative links.
+- [ ] Add a topical grouping to `/concepts/` (type systems, memory, runtime,
+      concurrency, paradigms, tooling) instead of the current flat grid,
+      while preserving the existing card layout and alphabetical fallback.
+- [ ] Ensure each language page's frontmatter and body link out to the
+      concepts it depends on (typing, memory model, runtime model,
+      concurrency model, tooling) rather than re-explaining them.
+- [ ] Ensure every comparison page that turns on a single concept (for
+      example, Rust vs Go on memory model) links to that concept page above
+      the fold.
+- [ ] Refresh `lastVerified` dates only when sources were actually
+      re-checked and run `just check-links-external` after the final batch.
+- [ ] Update `README.md` if the Concepts surface has materially changed from
+      what the current description implies.
+
 ---
 
 ## Cross-Cutting Content Backlog
