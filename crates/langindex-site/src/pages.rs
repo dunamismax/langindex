@@ -34,19 +34,47 @@ struct PageMeta {
 pub async fn home(State(state): State<AppState>) -> Response {
     let content = &state.content;
     let mut body = String::new();
-    body.push_str(r#"<section class="hero"><div class="container hero-grid"><div>"#);
+    body.push_str(
+        r#"<section class="hero"><div class="container hero-grid"><div class="hero-copy">"#,
+    );
     body.push_str(r#"<p class="eyebrow">Open source · Self-hosted · Source-backed</p>"#);
-    body.push_str(r#"<h1>A field guide to programming languages.</h1>"#);
-    body.push_str(r#"<p class="lede">LangIndex is a quiet, source-backed reference focused on practical fit, design tradeoffs, tooling, governance, and examples for developers choosing or maintaining languages.</p>"#);
-    body.push_str(r#"<p class="actions"><a class="button primary" href="/languages/">Browse languages</a><a class="button" href="/comparisons/">View comparisons</a></p>"#);
-    body.push_str(r#"</div><div class="search-panel"><div class="brand-panel">LangIndex</div><form class="site-search" action="/languages/" role="search"><label for="q">Search the reference</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><p class="muted small">Server-rendered, self-hosted search over Git-authored content.</p></div></div></section>"#);
+    body.push_str(
+        r#"<h1>Understand programming languages by fit, tradeoff, and maintenance reality.</h1>"#,
+    );
+    body.push_str(r#"<p class="lede">LangIndex is a practical reference for developers choosing, learning, or maintaining languages. It keeps factual claims source-backed and turns comparisons into constraints instead of winner lists.</p>"#);
+    body.push_str(r#"<p class="actions"><a class="button primary" href="/languages/">Browse languages</a><a class="button" href="/guides/">Choose by problem</a><a class="button quiet" href="/contribute">Improve a page</a></p>"#);
+    body.push_str(r#"</div>"#);
+    body.push_str(&home_search_panel());
+    body.push_str(r#"</div></section>"#);
     body.push_str(&stats(content));
-    body.push_str(r#"<section class="section"><div class="container section-head"><div><h2>Seed languages</h2><p>Verified language profiles proving the content model before broader expansion.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
+
+    body.push_str(r#"<section class="section section-tight"><div class="container section-head"><div><p class="eyebrow">Start with the question</p><h2>Browse by practical need</h2><p>Move from a production constraint to languages, guides, and comparisons that explain the tradeoffs.</p></div></div><div class="container need-grid">"#);
+    body.push_str(&need_card(
+        "Systems and embedded",
+        "Memory control, native deployment, interop, and long-term maintenance.",
+        "/languages/?use_case=systems%20software",
+        ["Rust", "C", "C++", "Go"],
+    ));
+    body.push_str(&need_card(
+        "Web and application backends",
+        "Runtime fit, package ecosystems, deployment surfaces, and team familiarity.",
+        "/languages/?use_case=web%20applications",
+        ["JavaScript", "TypeScript", "Python", "PHP"],
+    ));
+    body.push_str(&need_card(
+        "Data and automation",
+        "Scripting speed, query semantics, statistical tooling, and operational glue.",
+        "/languages/?use_case=data",
+        ["Python", "SQL", "R", "Bash"],
+    ));
+    body.push_str("</div></section>");
+
+    body.push_str(r#"<section class="section"><div class="container section-head"><div><p class="eyebrow">Language shelf</p><h2>Verified profiles</h2><p>Each page surfaces the high-value facts first: fit, runtime, typing, memory model, tooling, sources, and last verification date.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
     for language in &content.languages {
         body.push_str(&language_card(language));
     }
     body.push_str(r#"</div></section>"#);
-    body.push_str(r#"<section class="section"><div class="container browse-grid">"#);
+    body.push_str(r#"<section class="section"><div class="container section-head"><div><p class="eyebrow">Reference paths</p><h2>Compare, decide, and define terms</h2><p>Use the supporting collections when the language choice depends on adjacent ecosystems or shared concepts.</p></div></div><div class="container browse-grid">"#);
     body.push_str(&hub_card(
         "Comparisons",
         "/comparisons/",
@@ -219,16 +247,32 @@ pub async fn language_detail(State(state): State<AppState>, Path(slug): Path<Str
     };
     let mut body = breadcrumb("Languages", "/languages/", &page.data.title);
     body.push_str(r#"<article class="container detail">"#);
-    body.push_str(r#"<p class="eyebrow">Language profile</p>"#);
     body.push_str(&format!(
-        r#"<header class="detail-header"><div><h1>{}</h1><p class="lede">{}</p></div><p class="actions"><a class="button" href="{}">Official site</a>{}</p></header>"#,
+        r#"<header class="detail-hero"><div><p class="eyebrow">Language profile</p><h1>{}</h1><p class="lede">{}</p></div><aside class="trust-card" aria-label="Verification summary"><p class="trust-label">Last verified</p><p class="trust-date"><time datetime="{}">{}</time></p><p>{} source{} checked for this profile.</p><p class="trust-actions"><a class="button compact" href="{}">Official site</a>{}</p></aside></header>"#,
         escape(&page.data.title),
         escape(&page.data.summary),
+        page.data.last_verified,
+        page.data.last_verified,
+        page.data.sources.len(),
+        if page.data.sources.len() == 1 { "" } else { "s" },
         escape_attr(&page.data.official_site),
-        page.data.repository.as_ref().map(|url| format!(r#"<a class="button" href="{}">Repository</a>"#, escape_attr(url))).unwrap_or_default()
+        page.data
+            .repository
+            .as_ref()
+            .map(|url| format!(
+                r#"<a class="button compact" href="{}">Repository</a>"#,
+                escape_attr(url)
+            ))
+            .unwrap_or_default()
     ));
     body.push_str(r#"<dl class="fact-grid">"#);
     push_fact(&mut body, "Status", &page.data.status);
+    if !page.data.creators.is_empty() {
+        push_fact(&mut body, "Creator", &page.data.creators.join(", "));
+    }
+    if !page.data.paradigms.is_empty() {
+        push_fact(&mut body, "Paradigms", &page.data.paradigms.join(", "));
+    }
     push_fact(
         &mut body,
         "Typing",
@@ -585,10 +629,14 @@ fn render_standard_detail(detail: StandardDetail<'_>) -> Response {
     );
     body.push_str(r#"<article class="container detail">"#);
     body.push_str(&format!(
-        r#"<p class="eyebrow">{}</p><h1>{}</h1><p class="lede">{}</p>"#,
+        r#"<header class="detail-hero"><div><p class="eyebrow">{}</p><h1>{}</h1><p class="lede">{}</p></div><aside class="trust-card" aria-label="Verification summary"><p class="trust-label">Last verified</p><p class="trust-date"><time datetime="{}">{}</time></p><p>{} source{} checked for this page.</p></aside></header>"#,
         escape(detail.collection_label.trim_end_matches('s')),
         escape(detail.title),
-        escape(detail.summary)
+        escape(detail.summary),
+        detail.last_verified,
+        detail.last_verified,
+        detail.sources.len(),
+        if detail.sources.len() == 1 { "" } else { "s" }
     ));
     body.push_str(&link_list("Related languages", detail.links));
     body.push_str(r#"<div class="content-body">"#);
@@ -617,10 +665,11 @@ fn render_collection_index(
     body.push_str(r#"<section class="section"><div class="container list-grid">"#);
     for (item_title, item_summary, href) in items {
         body.push_str(&format!(
-            r#"<article class="card"><h2><a href="{}">{}</a></h2><p>{}</p></article>"#,
+            r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h2><a href="{}">{}</a></h2><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
             escape_attr(&href),
             escape(item_title),
-            escape(item_summary)
+            escape(item_summary),
+            escape_attr(&href)
         ));
     }
     body.push_str("</div></section>");
@@ -739,6 +788,78 @@ fn Layout(
                                 setTheme(current === "dark" ? "light" : "dark");
                             });
                         }
+
+                        var searchRoot = document.querySelector("[data-live-search]");
+                        if (searchRoot) {
+                            var searchInput = searchRoot.querySelector("[data-live-search-input]");
+                            var searchResults = searchRoot.querySelector("[data-live-search-results]");
+                            var searchStatus = searchRoot.querySelector("[data-live-search-status]");
+                            var searchItems = null;
+
+                            function clearSearch(message) {
+                                if (searchResults) searchResults.replaceChildren();
+                                if (searchStatus) searchStatus.textContent = message || "";
+                            }
+
+                            function renderSearch(items) {
+                                if (!searchResults || !searchStatus) return;
+                                searchResults.replaceChildren();
+                                if (!items.length) {
+                                    searchStatus.textContent = "No matches yet.";
+                                    return;
+                                }
+                                searchStatus.textContent = items.length + (items.length === 1 ? " match" : " matches");
+                                items.slice(0, 6).forEach(function (item) {
+                                    var link = document.createElement("a");
+                                    link.className = "search-result";
+                                    link.href = item.url;
+                                    var kind = document.createElement("span");
+                                    kind.className = "search-kind";
+                                    kind.textContent = item.kind;
+                                    var title = document.createElement("strong");
+                                    title.textContent = item.title;
+                                    var summary = document.createElement("span");
+                                    summary.textContent = item.summary;
+                                    link.append(kind, title, summary);
+                                    searchResults.append(link);
+                                });
+                            }
+
+                            function runSearch() {
+                                var query = (searchInput && searchInput.value || "").trim().toLowerCase();
+                                if (query.length < 2) {
+                                    clearSearch("Type at least two characters.");
+                                    return;
+                                }
+                                var terms = query.split(/\s+/).filter(Boolean);
+                                var source = searchItems || [];
+                                renderSearch(source.filter(function (item) {
+                                    var haystack = [item.kind, item.title, item.summary, item.text].join(" ").toLowerCase();
+                                    return terms.every(function (term) { return haystack.indexOf(term) !== -1; });
+                                }));
+                            }
+
+                            function ensureSearchLoaded() {
+                                if (searchItems) {
+                                    runSearch();
+                                    return;
+                                }
+                                fetch("/search.json", { headers: { "Accept": "application/json" } })
+                                    .then(function (response) { return response.ok ? response.json() : []; })
+                                    .then(function (items) {
+                                        searchItems = Array.isArray(items) ? items : [];
+                                        runSearch();
+                                    })
+                                    .catch(function () {
+                                        clearSearch("Search index is unavailable. The language filters still work.");
+                                    });
+                            }
+
+                            if (searchInput) {
+                                searchInput.addEventListener("input", ensureSearchLoaded);
+                                searchInput.addEventListener("focus", ensureSearchLoaded);
+                            }
+                        }
                     })();
                 "#}</script>
             </body>
@@ -813,19 +934,53 @@ fn SiteFooter() -> impl IntoView {
     }
 }
 
+fn home_search_panel() -> String {
+    [
+        r#"<aside class="search-panel" data-live-search>"#,
+        r#"<div class="search-panel-head"><p class="eyebrow">Find the right page</p><h2>Search the reference</h2><p>Search profiles, comparisons, guides, concepts, sources, and examples.</p></div>"#,
+        r#"<form class="site-search" action="/languages/" role="search"><label for="q">Search languages and topics</label><div class="search-row"><input id="q" name="q" type="search" placeholder="Rust, garbage collection, web..." autocomplete="off" data-live-search-input /><button type="submit">Search</button></div></form>"#,
+        r#"<p class="search-status small" aria-live="polite" data-live-search-status>Type at least two characters.</p>"#,
+        r#"<div class="search-results" data-live-search-results></div>"#,
+        r#"<div class="quick-links" aria-label="Popular starting points"><a href="/languages/rust/">Rust</a><a href="/languages/python/">Python</a><a href="/comparisons/rust-vs-go/">Rust vs Go</a><a href="/guides/choosing-a-systems-language/">Systems guide</a></div>"#,
+        r#"</aside>"#,
+    ]
+    .join("")
+}
+
 fn stats(content: &SiteContent) -> String {
     let stats = [
-        ("Languages", content.languages.len(), "/languages/"),
-        ("Comparisons", content.comparisons.len(), "/comparisons/"),
-        ("Guides", content.guides.len(), "/guides/"),
-        ("Concepts", content.concepts.len(), "/concepts/"),
+        (
+            "Languages",
+            content.languages.len(),
+            "Profiles with fit, runtime, typing, tooling, sources, and examples.",
+            "/languages/",
+        ),
+        (
+            "Comparisons",
+            content.comparisons.len(),
+            "Tradeoff maps for adjacent language choices.",
+            "/comparisons/",
+        ),
+        (
+            "Guides",
+            content.guides.len(),
+            "Decision paths framed by real development constraints.",
+            "/guides/",
+        ),
+        (
+            "Concepts",
+            content.concepts.len(),
+            "Shared vocabulary for memory, runtime, typing, and tooling.",
+            "/concepts/",
+        ),
     ];
     let mut body = r#"<section class="stats"><div class="container stat-grid">"#.to_string();
-    for (label, value, href) in stats {
+    for (label, value, description, href) in stats {
         body.push_str(&format!(
-            r#"<a class="stat" href="{href}"><span>{}</span><strong>{}</strong></a>"#,
+            r#"<a class="stat" href="{href}"><span>{}</span><strong>{}</strong><em>{}</em></a>"#,
             escape(label),
-            value
+            value,
+            escape(description)
         ));
     }
     body.push_str("</div></section>");
@@ -833,16 +988,64 @@ fn stats(content: &SiteContent) -> String {
 }
 
 fn language_card(language: &LanguagePage) -> String {
+    let mut tags = Vec::new();
+    tags.push(language.data.status.clone());
+    tags.push(language.data.typing.discipline.clone());
+    tags.extend(language.data.paradigms.iter().take(2).cloned());
+
     format!(
-        r#"<article class="card language-card"><h2><a href="/languages/{}/">{}</a></h2><p>{}</p><dl><dt>Runtime</dt><dd>{}</dd><dt>Memory</dt><dd>{}</dd></dl><p><a class="card-action" href="/languages/{}/">Open {}</a></p></article>"#,
+        r#"<article class="card language-card"><header class="card-header"><h2><a href="/languages/{}/">{}</a></h2><span class="verified-mini"><time datetime="{}">{}</time></span></header><p>{}</p>{}<dl><div><dt>Runtime</dt><dd>{}</dd></div><div><dt>Memory</dt><dd>{}</dd></div><div><dt>Tooling</dt><dd>{}</dd></div></dl><p class="card-footer"><a class="card-action" href="/languages/{}/">Open {}</a></p></article>"#,
         escape_attr(&language.data.slug),
         escape(&language.data.title),
+        language.data.last_verified,
+        language.data.last_verified,
         escape(&language.data.summary),
+        tag_list(&tags),
         escape(&language.data.runtime.model),
         escape(&language.data.memory.model),
+        escape(&compact_tooling(&language.data.package_managers)),
         escape_attr(&language.data.slug),
         escape(&language.data.title)
     )
+}
+
+fn compact_tooling(package_managers: &[String]) -> String {
+    if package_managers.is_empty() {
+        "Varies by ecosystem".to_string()
+    } else {
+        package_managers
+            .iter()
+            .take(3)
+            .cloned()
+            .collect::<Vec<_>>()
+            .join(", ")
+    }
+}
+
+fn tag_list(tags: &[String]) -> String {
+    if tags.is_empty() {
+        return String::new();
+    }
+    let mut body = r#"<ul class="tag-list" aria-label="Language traits">"#.to_string();
+    for tag in tags.iter().filter(|tag| !tag.trim().is_empty()).take(4) {
+        body.push_str(&format!("<li>{}</li>", escape(tag)));
+    }
+    body.push_str("</ul>");
+    body
+}
+
+fn need_card(title: &str, summary: &str, href: &str, languages: [&str; 4]) -> String {
+    let mut body = format!(
+        r#"<article class="need-card"><h3><a href="{}">{}</a></h3><p>{}</p><ul>"#,
+        escape_attr(href),
+        escape(title),
+        escape(summary)
+    );
+    for language in languages {
+        body.push_str(&format!("<li>{}</li>", escape(language)));
+    }
+    body.push_str("</ul></article>");
+    body
 }
 
 #[derive(Debug, Default, Deserialize)]
@@ -996,7 +1199,7 @@ fn normalize_filter(value: &str) -> String {
 
 fn hub_card(title: &str, href: &str, description: &str, items: Vec<(&String, String)>) -> String {
     let mut body = format!(
-        r#"<article class="card"><h2><a href="{}">{}</a></h2><p>{}</p><ul>"#,
+        r#"<article class="card hub-card"><h3><a href="{}">{}</a></h3><p>{}</p><ul>"#,
         escape_attr(href),
         escape(title),
         escape(description)

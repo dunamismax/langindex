@@ -4,15 +4,25 @@ test("homepage exposes search and language discovery", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    /field guide/i,
+    /understand programming languages/i,
   );
   await expect(
-    page.getByRole("heading", { name: "Seed languages" }),
+    page.getByRole("heading", { name: "Verified profiles" }),
   ).toBeVisible();
-  await expect(page.getByLabel("Search the reference")).toBeVisible();
+  await expect(page.getByLabel("Search languages and topics")).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Open Rust" }).first(),
   ).toBeVisible();
+});
+
+test("homepage live search finds supporting reference pages", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.getByLabel("Search languages and topics").fill("ownership");
+  await expect(page.getByRole("link", { name: /ownership/i })).toBeVisible();
+  await expect(page.getByText(/matches/)).toBeVisible();
 });
 
 test("mobile navigation opens and exposes primary links", async ({ page }) => {
