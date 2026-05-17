@@ -1,13 +1,15 @@
 # BUILD.md
 
-Active content build plan for LangIndex. `README.md` introduces the
-product. `AGENTS.md` defines durable operating rules. This file now tracks
-the next stage: turning the live skeleton into a deep, source-backed
-programming language reference.
+Active build plan for LangIndex. `README.md` introduces the product.
+`AGENTS.md` defines durable operating rules. This file now tracks the next
+stage: first rewriting the implementation from Astro/TypeScript to
+Rust/Leptos/Axum, then continuing the source-backed programming language
+reference expansion.
 
 The previous foundation phases are complete. Do not re-add old scaffold
 work here unless it becomes active again. Move stable technical material
-into `docs/`; keep this file focused on current content expansion.
+into `docs/`; keep this file focused on the active rewrite and content
+expansion sequence.
 
 ---
 
@@ -19,6 +21,12 @@ Observed on 2026-05-16:
 - Astro 6 static site, TypeScript, MDX, Astro Content Collections, Zod,
   Tailwind CSS 4, Pagefind, Playwright, Docker, Compose, and Caddy wiring
   exist.
+- Stephen wants the site rewritten to his Rust web stack before the next
+  language phase.
+- FileFerry at `/Users/sawyer/github/fileferry` is the local reference
+  implementation for the target shape: Cargo workspace, Rust 2024,
+  Axum 0.8, Leptos 0.8 SSR, Tokio, `tower-http`, route-level tests, embedded
+  assets, `just` workflows, and a single site binary behind Caddy.
 - `origin` fetches from GitHub and pushes to GitHub plus Codeberg.
 - Current language pages:
   - C
@@ -70,6 +78,8 @@ Observed on 2026-05-16:
 ```text
 Node.js: v26.0.0
 pnpm: 10.32.1
+rustc: 1.95.0
+cargo: 1.95.0
 ```
 
 ---
@@ -80,6 +90,10 @@ LangIndex should expand one language at a time, with each language page
 treated as a durable reference rather than a stub. Accuracy beats coverage,
 but expansion order should still favor languages developers are most likely
 to search for, compare, or use in production.
+
+Phase 16.5 pauses new language expansion until the Rust rewrite preserves the
+current public reference experience and verification surface. Do not begin
+Phase 17 until Phase 16.5 is complete.
 
 Each language phase should leave the site better in four ways:
 
@@ -167,7 +181,10 @@ claim that LangIndex has measured exact global language usage.
 For each language phase:
 
 - Research official sources first.
-- Update or create `src/content/languages/{slug}.mdx`.
+- Update or create the language content file in the active content source
+  tree. Before Phase 16.5 completes this is
+  `src/content/languages/{slug}.mdx`; after the rewrite, use the Rust-backed
+  content location documented by that phase.
 - Add or update at least one comparison when the language has an obvious
   adjacent choice.
 - Add or update concepts when a recurring idea needs explanation.
@@ -338,6 +355,110 @@ justify the extra network time.
       pipelines, process model, error handling risks, and automation fit.
 - [x] Add Shell vs Python comparison for scripts.
 - [x] Add shell scripting to operations and automation guides.
+
+### Phase 16.5 - Rust / Leptos / Axum Rewrite
+
+Rewrite LangIndex from Astro/TypeScript to Stephen's Rust web stack before
+adding the next language. Use `/Users/sawyer/github/fileferry` as the
+implementation reference, especially `Cargo.toml`, `crates/ferry-site`,
+`justfile`, route tests, embedded assets, and the Caddy/systemd deployment
+runbook. The goal is not a visual redesign. Preserve the current reference
+experience, URLs, source-backed content model, search/browse flows, and
+deployment ergonomics while replacing the implementation.
+
+Completion standard for the rewrite:
+
+- The public route set remains link-compatible:
+  `/`, `/about`, `/contribute`, `/languages/`, `/languages/{slug}`,
+  `/comparisons/`, `/comparisons/{slug}`, `/guides/`, `/guides/{slug}`,
+  `/concepts/`, `/concepts/{slug}`, `/languages.json`, `/rss.xml`,
+  `/sitemap.xml`, and `/robots.txt`.
+- Existing language, comparison, guide, and concept content renders with the
+  same factual claims, source links, `lastVerified` dates, and metadata.
+- Rust-side validation rejects malformed content, missing required metadata,
+  duplicate slugs, broken internal references, missing source fields, and
+  invalid dates before a build or release is considered good.
+- The homepage, browse pages, detail pages, source lists, examples,
+  comparison tables, and contributor surfaces remain usable without accounts
+  or client-side application state.
+- Search remains self-hosted and privacy-preserving. Prefer a Rust-native
+  static/search-index approach if practical; otherwise keep a clearly
+  documented local build step until a Rust replacement is finished. Do not
+  introduce a hosted search service.
+- CSS remains quiet, readable, responsive, and content-forward. Port the
+  existing visual system rather than creating a marketing redesign.
+- Production ships as a Rust site service behind Caddy unless a later commit
+  deliberately keeps static export for a documented reason.
+- `just fmt`, `just check`, `just test`, and `just build` work from a clean
+  checkout and cover Rust formatting, clippy, tests, content validation, and
+  release build output.
+- Playwright smoke/accessibility coverage or equivalent browser checks cover
+  the homepage, browse pages, representative detail pages, search, RSS,
+  sitemap, 404, and responsive layouts.
+- Deployment docs explain local development, release build, health checks,
+  Docker Compose or systemd operation, Caddy reverse proxying, rollback, and
+  verification from a clean checkout.
+
+Suggested session plan:
+
+- [ ] Inventory current Astro behavior before deleting anything: route map,
+      generated URLs, RSS/sitemap/robots output, Pagefind/search behavior,
+      content schemas, source validation, internal/external link checks,
+      Docker/Caddy wiring, and Playwright coverage.
+- [ ] Scaffold the Rust workspace in the LangIndex repo, using FileFerry's
+      shape as the starting point: root `Cargo.toml`, `rust-toolchain.toml`,
+      a dedicated site crate, optional content/core crate if it keeps parsing
+      clean, `xtask` only if it earns its keep, and a Rust-first `justfile`.
+- [ ] Build the Axum shell: listener env var, tracing, `/healthz`, fallback
+      404, static/embedded assets, security headers where appropriate, and
+      route tests for status codes and key body markers.
+- [ ] Port the layout and design system into Leptos SSR components: document
+      head metadata, skip link, header, footer, responsive navigation,
+      source-list component, language cards, summary/detail blocks,
+      comparison tables, code examples, and accessible forms or controls.
+- [ ] Design and implement Rust content loading: preserve Git-authored source
+      files where practical, parse frontmatter and body content with typed
+      structs, validate required fields, normalize slugs, expose collections
+      to route handlers, and keep prose out of large JSON/YAML blobs.
+- [ ] Migrate all current content groups: languages, comparisons, guides, and
+      concepts. Preserve current URLs, titles, summaries, examples, sources,
+      and `lastVerified` values unless a source is re-checked in the same
+      session.
+- [ ] Rebuild derived outputs in Rust or a controlled build task:
+      `/languages.json`, RSS, sitemap, robots, internal-link manifest,
+      source validation, and search index data.
+- [ ] Replace the Node/Astro toolchain with Cargo-based verification:
+      formatting, clippy with warnings denied, unit tests for parsing and
+      routes, fixture tests for generated feeds/maps, and content validation.
+      Keep temporary Node tooling only when the replacement is not done yet
+      and document the remaining dependency in this phase.
+- [ ] Port browser verification: update Playwright or equivalent smoke tests
+      to run against the Axum site, covering desktop and mobile widths,
+      keyboard navigation, search, representative pages, and accessibility.
+- [ ] Update deployment: Dockerfile, Compose, Caddy snippets, deployment docs,
+      health checks, release binary instructions, local run commands, and
+      rollback notes. Do not deploy or change production host config without
+      Stephen's explicit approval.
+- [ ] Remove obsolete Astro/TypeScript files only after equivalent Rust
+      behavior is verified: `astro.config.mjs`, `src/**/*.astro`,
+      TypeScript-only scripts, `package.json`, `pnpm-lock.yaml`,
+      `tsconfig.json`, and Node-only config. Keep public brand assets unless
+      the Rust site embeds or serves them from a new documented location.
+- [ ] Run final rewrite verification:
+
+```sh
+git diff --check
+just fmt
+just check
+just test
+just build
+just test-smoke
+just check-links-internal
+```
+
+Use `just check-links-external` before committing if source URLs, rendered
+source lists, or link-checking code changed. After this phase is checked off,
+continue with Phase 17.
 
 ### Phase 17 - Dart
 

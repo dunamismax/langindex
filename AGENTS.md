@@ -68,18 +68,37 @@ overstate authority, or bury the lede.
 
 ## Stack Rules
 
-- Astro for the framework.
-- TypeScript for application and validation code.
-- MDX plus Astro Content Collections for language, comparison, and guide
-  content.
-- Zod schemas through Astro collections for frontmatter and structured
-  metadata validation.
-- Pagefind for static search.
-- Tailwind CSS for styling.
-- pnpm for package management.
+- Rust workspace for the application.
+- Axum for the HTTP server.
+- Leptos SSR components for HTML rendering.
+- Tokio for async runtime.
+- `tower` and `tower-http` for middleware, compression, tracing, static
+  assets, and headers where useful.
+- Keep the implementation aligned with Stephen's FileFerry site architecture
+  at `/Users/sawyer/github/fileferry`: a dedicated site crate, shared layout
+  components, embedded or explicitly served assets, route-level tests, and a
+  simple localhost listener behind Caddy.
+- Markdown/MDX-equivalent source content may remain the authoring format only
+  if the Rust build validates and renders it deterministically. Prefer
+  structured Rust-side parsing and validation over unchecked string handling.
+- Rust schemas and tests replace Astro Content Collection and Zod validation.
+- Static or server-side search must remain privacy-preserving and
+  self-hostable. Do not add a hosted search service.
+- CSS should be plain, content-focused, and served by the Rust site crate
+  unless a Rust-native asset pipeline is deliberately added.
+- Cargo and `just` are the default developer entry points after the rewrite.
 - Docker Compose for deployment on Stephen's Ubuntu VM.
-- Caddy serves the production site at `langindex.dev`.
-- Static build output is the default production artifact.
+- Caddy terminates TLS and reverse-proxies `langindex.dev` to the local Axum
+  service.
+- A single release binary is the preferred production artifact unless a later
+  phase proves a static export is better for LangIndex.
+
+Transitional rule:
+
+- The current checked-in site may still be Astro/TypeScript while Phase 16.5
+  is active. Do not expand the old stack except to preserve behavior during
+  migration. New architecture work should move LangIndex toward
+  Rust/Leptos/Axum.
 
 Default against:
 
@@ -182,11 +201,14 @@ Accessibility expectations:
 
 ## Deployment Rules
 
-- Production target is a self-hosted static site on Stephen's Ubuntu VM.
-- Caddy terminates TLS and serves `langindex.dev`.
-- Docker Compose owns build and deployment wiring.
-- The production container should serve immutable static build output.
-- No production secrets should be required for the static site.
+- Production target is a self-hosted Rust site service on Stephen's Ubuntu VM.
+- Caddy terminates TLS for `langindex.dev` and reverse-proxies to the local
+  Axum listener.
+- Docker Compose or systemd may own the site process; keep the runbook clear
+  and reproducible from a clean checkout.
+- The preferred production artifact is a release-built Rust binary with
+  deterministic bundled or explicitly served assets.
+- No production secrets should be required for the public site.
 - Do not deploy, change DNS, or modify production Caddy config unless
   Stephen explicitly asks.
 - Keep deployment docs reproducible from a clean checkout.
@@ -224,10 +246,12 @@ Red lines:
 
 - Prefer correct, complete implementations over minimal ones.
 - Fix root causes, not symptoms.
-- Use Astro and content collection patterns before inventing abstractions.
-- Keep schemas strict enough to prevent content drift.
+- Use Rust, Axum, Leptos, and the local FileFerry patterns before inventing
+  new abstractions.
+- Keep schemas strict enough to prevent content drift, and make validation
+  part of normal `cargo`/`just` checks.
 - Keep components small, typed, and content-focused.
-- Validate data at build time whenever possible.
+- Validate data before serving or shipping a build whenever possible.
 - Avoid broad utility modules that become dumping grounds.
 - Do not fix unrelated bugs unless Stephen expands scope.
 
@@ -270,10 +294,10 @@ just build
 
 Broader checks the project supports:
 
-- TypeScript type checking and Astro Content Collection schema validation
-  via `just check`.
+- Rust formatting, clippy, tests, and content validation via `just check`
+  after Phase 16.5 replaces the Astro stack.
 - Frontmatter source validation via `just validate-sources`.
-- Pagefind index generation as part of `just build`.
+- Search index generation or search fixture validation as part of `just build`.
 - Internal link auditing via `just check-links-internal`.
 - External link auditing via `just check-links-external`.
 - Playwright smoke and accessibility checks via `just test-smoke` (requires

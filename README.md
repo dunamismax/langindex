@@ -54,8 +54,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 LangIndex is live at [https://langindex.dev](https://langindex.dev).
 
-The site is built with Astro, MDX, and typed content collections, and ships
-four content groups:
+The current live implementation is an Astro, MDX, and typed content
+collections site. The active engineering plan is to replace that stack with
+Stephen's Rust web stack: a Cargo workspace with Axum serving Leptos
+server-rendered pages, modeled after the FileFerry site architecture.
+
+LangIndex ships four content groups:
 
 - `languages` — individual programming language profiles.
 - `comparisons` — dimensional, tradeoff-first comparisons between related
@@ -65,10 +69,9 @@ four content groups:
 - `concepts` — shared programming-language ideas referenced by multiple
   language pages.
 
-Static search is provided by Pagefind. The initial milestone — defining the
-content model and publishing a small, high-quality seed set — is complete.
-See [BUILD.md](BUILD.md) for current coverage and the active per-language
-expansion plan.
+The initial milestone — defining the content model and publishing a
+source-backed seed set — is complete. See [BUILD.md](BUILD.md) for current
+coverage, the Rust rewrite phase, and the later per-language expansion plan.
 
 ## License
 
