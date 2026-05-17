@@ -4,7 +4,13 @@ services:
       context: .
     image: langindex:local
     environment:
-      SITE_ADDRESS: ":80"
+      LANGINDEX_SITE_ADDR: "0.0.0.0:3000"
+      LANGINDEX_CONTENT_DIR: "/app/src/content"
     ports:
-      - "127.0.0.1:${LANGINDEX_HOST_PORT:-8090}:80"
+      - "127.0.0.1:${LANGINDEX_HOST_PORT:-8090}:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
     restart: unless-stopped

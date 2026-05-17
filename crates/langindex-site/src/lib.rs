@@ -38,7 +38,9 @@ pub fn build_router(content: SiteContent) -> Router {
     Router::new()
         .route("/", get(pages::home))
         .route("/about", get(pages::about))
+        .route("/about/", get(pages::about))
         .route("/contribute", get(pages::contribute))
+        .route("/contribute/", get(pages::contribute))
         .route("/languages", get(pages::languages_index))
         .route("/languages/", get(pages::languages_index))
         .route("/languages/{slug}", get(pages::language_detail))
@@ -56,6 +58,7 @@ pub fn build_router(content: SiteContent) -> Router {
         .route("/concepts/{slug}", get(pages::concept_detail))
         .route("/concepts/{slug}/", get(pages::concept_detail))
         .route("/languages.json", get(pages::languages_json))
+        .route("/search.json", get(pages::search_json))
         .route("/rss.xml", get(pages::rss))
         .route("/sitemap.xml", get(pages::sitemap))
         .route("/robots.txt", get(pages::robots))
@@ -189,6 +192,11 @@ mod tests {
         assert_eq!(status, StatusCode::OK);
         assert!(body.contains("\"slug\":\"rust\""));
 
+        let (status, body) = get("/search.json").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("\"kind\":\"language\""));
+        assert!(body.contains("/languages/rust/"));
+
         let (status, body) = get("/rss.xml").await;
         assert_eq!(status, StatusCode::OK);
         assert!(body.contains("<rss"));
@@ -212,6 +220,15 @@ mod tests {
         let (status, body) = get("/missing").await;
         assert_eq!(status, StatusCode::NOT_FOUND);
         assert!(body.contains("Page not found"));
+    }
+
+    #[tokio::test]
+    async fn language_search_filters_server_side() {
+        let (status, body) = get("/languages/?q=rustup").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Showing 1 language of"));
+        assert!(body.contains("Open Rust"));
+        assert!(!body.contains("Open Go"));
     }
 
     #[tokio::test]

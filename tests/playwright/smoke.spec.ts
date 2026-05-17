@@ -9,7 +9,7 @@ test("homepage exposes search and language discovery", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Seed languages" }),
   ).toBeVisible();
-  await expect(page.locator("pagefind-searchbox")).toBeVisible();
+  await expect(page.getByLabel("Search the reference")).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Open Rust" }).first(),
   ).toBeVisible();
@@ -42,11 +42,12 @@ test("language filters narrow results and stay visible", async ({ page }) => {
 
   const search = page.getByLabel("Search", { exact: true });
   await expect(search).toBeVisible();
-  await search.fill("borrowing");
+  await search.fill("rustup");
+  await page.getByRole("button", { name: "Apply filters" }).click();
 
   await expect(page.getByRole("link", { name: "Open Rust" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open Go" })).toHaveCount(0);
-  await expect(page.getByText("Showing 1 language")).toBeVisible();
+  await expect(page.getByText("Showing 1 language of")).toBeVisible();
 });
 
 test("language profile shows sources and comparison links", async ({
@@ -89,4 +90,27 @@ test("comparison page renders sourced comparison content", async ({ page }) => {
     page.getByRole("heading", { name: "Rust vs Go", level: 1 }),
   ).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sources" })).toBeVisible();
+});
+
+test("generated routes are available from the Rust service", async ({
+  page,
+}) => {
+  const languages = await page.request.get("/languages.json");
+  expect(languages.ok()).toBe(true);
+  expect(JSON.stringify(await languages.json())).toContain('"slug":"rust"');
+
+  const search = await page.request.get("/search.json");
+  expect(search.ok()).toBe(true);
+  expect(await search.text()).toContain("/languages/rust/");
+
+  const rss = await page.request.get("/rss.xml");
+  expect(rss.ok()).toBe(true);
+  expect(await rss.text()).toContain("<rss");
+
+  const sitemap = await page.request.get("/sitemap.xml");
+  expect(sitemap.ok()).toBe(true);
+  expect(await sitemap.text()).toContain("/languages/rust");
+
+  const missing = await page.request.get("/missing");
+  expect(missing.status()).toBe(404);
 });

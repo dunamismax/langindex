@@ -13,6 +13,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Rust
+        run: rustup toolchain install 1.95.0 --profile minimal
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -30,17 +33,25 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Type-check
-        run: pnpm check
+      - name: Format check
+        run: cargo fmt --all --check
+
+      - name: Check
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+      - name: Validate content
+        run: cargo run -p langindex-site -- validate-content
 
       - name: Test
-        run: pnpm test
+        run: cargo test --workspace --all-features
 
       - name: Build
-        run: pnpm build
+        run: cargo build -p langindex-site --release
 
       - name: Check internal links
-        run: pnpm check:links:internal
+        run: |
+          cargo test -p langindex-site content::tests::route_manifest_covers_public_content
+          cargo run -p langindex-site -- validate-content
 
       - name: Smoke test
         run: pnpm test:smoke

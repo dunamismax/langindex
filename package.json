@@ -7,33 +7,12 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "fmt": "prettier --write .",
-    "check": "astro check",
-    "test": "astro check && node scripts/validate-sources.mjs",
-    "validate:sources": "node scripts/validate-sources.mjs",
-    "check:links:internal": "node scripts/check-internal-links.mjs",
     "check:links:external": "node scripts/check-external-links.mjs",
-    "test:smoke": "playwright test",
-    "build": "astro build && pagefind --site dist",
-    "preview": "astro preview",
-    "astro": "astro"
+    "test:smoke": "playwright test"
   },
-  "dependencies": {
-    "@astrojs/mdx": "^5.0.6",
-    "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.3.3",
-    "tailwindcss": "^4.3.0",
-    "zod": "^4.4.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
     "@axe-core/playwright": "^4.10.0",
-    "@playwright/test": "^1.60.0",
-    "pagefind": "^1.5.2",
-    "prettier": "^3.7.1",
-    "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^6.0.3",
-    "yaml": "^2.9.0"
+    "@playwright/test": "^1.60.0"
   }
 }

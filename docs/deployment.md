@@ -1,6 +1,6 @@
 # Deployment
 
-LangIndex deploys as a static site served by Caddy. The production target is
+LangIndex deploys as a Rust site service behind Caddy. The production target is
 Stephen's Ubuntu VM at `langindex.dev`.
 
 Do not deploy, change DNS, or modify production host configuration without
@@ -8,11 +8,26 @@ Stephen's explicit approval.
 
 ## Production Shape
 
-- Astro builds static files into `dist/`.
-- Pagefind indexes the built site.
-- The Docker image copies `dist/` into a Caddy runtime image.
-- Caddy serves the static files for the configured site address.
-- No production secrets are required for v1.
+- Cargo builds one release binary: `langindex-site`.
+- The binary serves Axum routes, Leptos SSR HTML, embedded CSS/favicon assets,
+  generated JSON/RSS/sitemap/robots outputs, and `/healthz`.
+- Git-authored content is copied into the image at `/app/src/content` and
+  validated on service startup.
+- Docker Compose runs the service on loopback port `8090` by default.
+- Host Caddy terminates TLS and reverse-proxies `langindex.dev` to
+  `127.0.0.1:8090`.
+- No production secrets are required.
+
+## Release Build
+
+```sh
+just fmt
+just check
+just test
+just build
+```
+
+The release binary is written to `target/release/langindex-site`.
 
 ## Local Image Build
 
@@ -23,28 +38,38 @@ docker build -t langindex:local .
 ## Local Container Verification
 
 ```sh
-docker run --rm -p 8080:80 -e SITE_ADDRESS=:80 langindex:local
+docker run --rm -p 8080:3000 langindex:local
 ```
 
 Then check:
 
 ```sh
-curl -I http://localhost:8080/
-curl -I http://localhost:8080/languages/
+curl -fsS http://127.0.0.1:8080/healthz
+curl -I http://127.0.0.1:8080/
+curl -I http://127.0.0.1:8080/languages/
+curl -I http://127.0.0.1:8080/rss.xml
 ```
 
 ## Compose
 
-The default Compose file is local-safe and serves the site on loopback port
+The default Compose file is local-safe and binds the service to loopback port
 `8090`:
 
 ```sh
-docker compose up --build
+docker compose up --build -d
+docker compose ps
+curl -fsS http://127.0.0.1:8090/healthz
 ```
 
-For production on Stephen's shared Caddy VM, keep the container bound to
-loopback and let the host Caddyfile terminate TLS. The reusable host snippet
-lives at `deploy/caddy/langindex.host.caddy`:
+Use a different host port only if `8090` is already occupied:
+
+```sh
+LANGINDEX_HOST_PORT=8091 docker compose up --build -d
+```
+
+## Host Caddy
+
+The reusable host snippet lives at `deploy/caddy/langindex.host.caddy`:
 
 ```caddy
 www.langindex.dev {
@@ -66,13 +91,23 @@ langindex.dev {
 }
 ```
 
-Use a different `LANGINDEX_HOST_PORT` only if `8090` is already occupied.
+Validate before reloading Caddy on any host:
+
+```sh
+caddy validate --config /etc/caddy/Caddyfile
+```
+
+## Rollback
+
+The Git repository is the source of truth. To roll back:
+
+1. Check out the previous known-good commit.
+2. Run `docker compose up --build -d`.
+3. Confirm `docker compose ps` reports a healthy service.
+4. Confirm `curl -fsS http://127.0.0.1:8090/healthz` returns `ok`.
+5. Leave the host Caddy config unchanged unless the upstream port changed.
 
 ## Backup And Restore Notes
-
-The Git repository is the source of truth for site source, content, and
-deployment wiring. The production container is rebuildable from a clean
-checkout and does not require runtime secrets.
 
 Host-level state worth backing up:
 
@@ -86,12 +121,13 @@ Restore from a clean VM by cloning the repository, checking out the intended
 commit, running `docker compose up --build -d`, restoring the shared Caddyfile
 site block, validating Caddy, and reloading the Caddy service.
 
-## Caddy Validation
+## Local Caddy Validation
 
 If Caddy is installed locally:
 
 ```sh
-SITE_ADDRESS=:80 caddy validate --config deploy/caddy/Caddyfile
+SITE_ADDRESS=localhost:8080 LANGINDEX_UPSTREAM=127.0.0.1:8090 \
+  caddy validate --config deploy/caddy/Caddyfile
 ```
 
 Without a local Caddy binary, validate with Docker:
@@ -99,7 +135,8 @@ Without a local Caddy binary, validate with Docker:
 ```sh
 docker run --rm \
   -v "$PWD/deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro" \
-  -e SITE_ADDRESS=:80 \
+  -e SITE_ADDRESS=localhost:8080 \
+  -e LANGINDEX_UPSTREAM=127.0.0.1:8090 \
   caddy:2-alpine \
   caddy validate --config /etc/caddy/Caddyfile
 ```

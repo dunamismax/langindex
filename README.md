@@ -54,10 +54,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 LangIndex is live at [https://langindex.dev](https://langindex.dev).
 
-The current live implementation is an Astro, MDX, and typed content
-collections site. The active engineering plan is to replace that stack with
-Stephen's Rust web stack: a Cargo workspace with Axum serving Leptos
-server-rendered pages, modeled after the FileFerry site architecture.
+The repository implementation is a Rust web stack: a Cargo workspace with
+Axum serving Leptos server-rendered pages, modeled after Stephen's FileFerry
+site architecture. The live self-hosted site may still be running the previous
+static deployment until the Rust service is synced to the Ubuntu host and
+redeployed.
 
 LangIndex ships four content groups:
 

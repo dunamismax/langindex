@@ -412,7 +412,7 @@ Suggested session plan:
 - [x] Build the Axum shell: listener env var, tracing, `/healthz`, fallback
       404, static/embedded assets, security headers where appropriate, and
       route tests for status codes and key body markers.
-- [ ] Port the layout and design system into Leptos SSR components: document
+- [x] Port the layout and design system into Leptos SSR components: document
       head metadata, skip link, header, footer, responsive navigation,
       source-list component, language cards, summary/detail blocks,
       comparison tables, code examples, and accessible forms or controls.
@@ -424,27 +424,27 @@ Suggested session plan:
       concepts. Preserve current URLs, titles, summaries, examples, sources,
       and `lastVerified` values unless a source is re-checked in the same
       session.
-- [ ] Rebuild derived outputs in Rust or a controlled build task:
+- [x] Rebuild derived outputs in Rust or a controlled build task:
       `/languages.json`, RSS, sitemap, robots, internal-link manifest,
       source validation, and search index data.
-- [ ] Replace the Node/Astro toolchain with Cargo-based verification:
+- [x] Replace the Node/Astro toolchain with Cargo-based verification:
       formatting, clippy with warnings denied, unit tests for parsing and
       routes, fixture tests for generated feeds/maps, and content validation.
       Keep temporary Node tooling only when the replacement is not done yet
       and document the remaining dependency in this phase.
-- [ ] Port browser verification: update Playwright or equivalent smoke tests
+- [x] Port browser verification: update Playwright or equivalent smoke tests
       to run against the Axum site, covering desktop and mobile widths,
       keyboard navigation, search, representative pages, and accessibility.
-- [ ] Update deployment: Dockerfile, Compose, Caddy snippets, deployment docs,
+- [x] Update deployment: Dockerfile, Compose, Caddy snippets, deployment docs,
       health checks, release binary instructions, local run commands, and
       rollback notes. Do not deploy or change production host config without
       Stephen's explicit approval.
-- [ ] Remove obsolete Astro/TypeScript files only after equivalent Rust
+- [x] Remove obsolete Astro/TypeScript files only after equivalent Rust
       behavior is verified: `astro.config.mjs`, `src/**/*.astro`,
       TypeScript-only scripts, `package.json`, `pnpm-lock.yaml`,
       `tsconfig.json`, and Node-only config. Keep public brand assets unless
       the Rust site embeds or serves them from a new documented location.
-- [ ] Run final rewrite verification:
+- [x] Run final rewrite verification:
 
 ```sh
 git diff --check

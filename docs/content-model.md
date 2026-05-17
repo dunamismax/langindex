@@ -1,6 +1,8 @@
 # Content Model
 
-LangIndex uses Astro Content Collections for typed content validation at build time.
+LangIndex keeps Git-authored Markdown/MDX content in `src/content/**` and uses
+Rust-side typed parsing and validation before the site starts, tests run, or a
+release is considered good.
 
 ## Collections
 
@@ -29,7 +31,7 @@ Language pages keep stable metadata in frontmatter and explanatory material in M
 Required language fields:
 
 - `title`
-- `slug` (must exist in `src/lib/language-registry.ts`)
+- `slug` (must be a known LangIndex language slug)
 - `status` — one of `active`, `stable`, `experimental`, `legacy`, `inactive`
 - `summary`
 - `typing` — object with `discipline` (required) and `strength` (optional)
@@ -46,7 +48,7 @@ Optional language fields:
 - `paradigms`
 - `repository`
 - `packageManagers`
-- `comparedWith` — language slugs (validated against the registry)
+- `comparedWith` — language slugs (validated against known LangIndex slugs)
 - `bestFor`
 - `poorFit`
 
@@ -67,7 +69,8 @@ Starter frontmatter for language and comparison pages lives in
 
 ## Validation
 
-The canonical schemas live in `src/content.config.ts` and the language slug
-registry lives in `src/lib/language-registry.ts`. Frontmatter is validated
-at build time by Astro Content Collections. Update this document when schema
-changes affect contributors.
+The canonical schemas, slug checks, source checks, date checks, and
+internal-link checks live in `crates/langindex-site/src/content.rs`.
+Frontmatter is validated by
+`cargo run -p langindex-site -- validate-content`, `just check`, and the Rust
+test suite. Update this document when schema changes affect contributors.

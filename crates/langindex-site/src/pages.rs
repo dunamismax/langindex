@@ -1,12 +1,12 @@
 use axum::Json;
-use axum::extract::{Path, State};
+use axum::extract::{Path, Query, State};
 use axum::http::{HeaderValue, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use chrono::NaiveDate;
 use leptos::IntoView;
 use leptos::prelude::*;
 use leptos::tachys::view::RenderHtml;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::AppState;
 use crate::content::{ComparisonPage, ConceptPage, GuidePage, LanguagePage, SiteContent, Source};
@@ -39,7 +39,7 @@ pub async fn home(State(state): State<AppState>) -> Response {
     body.push_str(r#"<h1>A field guide to programming languages.</h1>"#);
     body.push_str(r#"<p class="lede">LangIndex is a quiet, source-backed reference focused on practical fit, design tradeoffs, tooling, governance, and examples for developers choosing or maintaining languages.</p>"#);
     body.push_str(r#"<p class="actions"><a class="button primary" href="/languages/">Browse languages</a><a class="button" href="/comparisons/">View comparisons</a></p>"#);
-    body.push_str(r#"</div><div class="search-panel"><div class="brand-panel">LangIndex</div><form class="site-search" action="/languages/" role="search"><label for="q">Search the reference</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><p class="muted small">Static, self-hosted content. The temporary Astro site still builds the Pagefind index during migration.</p></div></div></section>"#);
+    body.push_str(r#"</div><div class="search-panel"><div class="brand-panel">LangIndex</div><form class="site-search" action="/languages/" role="search"><label for="q">Search the reference</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><p class="muted small">Server-rendered, self-hosted search over Git-authored content.</p></div></div></section>"#);
     body.push_str(&stats(content));
     body.push_str(r#"<section class="section"><div class="container section-head"><div><h2>Seed languages</h2><p>Verified language profiles proving the content model before broader expansion.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
     for language in &content.languages {
@@ -122,14 +122,84 @@ pub async fn contribute() -> Response {
     )
 }
 
-pub async fn languages_index(State(state): State<AppState>) -> Response {
+pub async fn languages_index(
+    State(state): State<AppState>,
+    Query(filters): Query<LanguageFilters>,
+) -> Response {
+    let languages = filter_languages(&state.content.languages, &filters);
+    let total = state.content.languages.len();
+    let showing = languages.len();
+    let query = filters.q.as_deref().unwrap_or_default();
+    let paradigms =
+        unique_language_values(&state.content.languages, |page| page.data.paradigms.clone());
+    let typings = unique_language_values(&state.content.languages, |page| {
+        let mut values = vec![page.data.typing.discipline.clone()];
+        values.extend(page.data.typing.strength.clone());
+        values
+    });
+    let runtimes = unique_language_values(&state.content.languages, |page| {
+        vec![page.data.runtime.model.clone()]
+    });
+    let ecosystems = unique_language_values(&state.content.languages, |page| {
+        page.data.package_managers.clone()
+    });
+    let use_cases = unique_language_values(&state.content.languages, |page| {
+        use_case_tags(&page.data.best_for)
+    });
+
     let mut body = index_intro(
         "Languages",
         "Browse language profiles by practical fit, runtime, memory model, typing, tooling, and verified sources.",
     );
-    body.push_str(r#"<section class="section"><div class="container"><form class="filter-form" action="/languages/" role="search"><label for="q">Search</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><div class="card-grid">"#);
-    for language in &state.content.languages {
+    body.push_str(r#"<section class="section"><div class="container"><form class="filter-form" action="/languages/" role="search">"#);
+    body.push_str(r#"<div class="filter-grid">"#);
+    body.push_str(&format!(
+        r#"<label>Search<input name="q" type="search" value="{}" placeholder="Rust, garbage collected, web..." /></label>"#,
+        escape_attr(query)
+    ));
+    body.push_str(&select_filter(
+        "Paradigm",
+        "paradigm",
+        &filters.paradigm,
+        &paradigms,
+    ));
+    body.push_str(&select_filter(
+        "Typing",
+        "typing",
+        &filters.typing,
+        &typings,
+    ));
+    body.push_str(&select_filter(
+        "Runtime target",
+        "runtime",
+        &filters.runtime,
+        &runtimes,
+    ));
+    body.push_str(&select_filter(
+        "Ecosystem",
+        "ecosystem",
+        &filters.ecosystem,
+        &ecosystems,
+    ));
+    body.push_str(&select_filter(
+        "Use case",
+        "use_case",
+        &filters.use_case,
+        &use_cases,
+    ));
+    body.push_str("</div>");
+    body.push_str(&format!(
+        r#"<div class="filter-actions"><p aria-live="polite">Showing {} {} of {}.</p><button type="submit">Apply filters</button><a class="button" href="/languages/">Reset filters</a></div>"#,
+        showing,
+        if showing == 1 { "language" } else { "languages" },
+        total
+    ));
+    body.push_str(r#"</form><div class="card-grid">"#);
+    for language in languages {
         body.push_str(&language_card(language));
+    }
+    if showing == 0 {
+        body.push_str(r#"<p class="empty-state">No languages match those filters yet. Try resetting or relaxing a constraint.</p>"#);
     }
     body.push_str("</div></div></section>");
     render_page(
@@ -151,7 +221,7 @@ pub async fn language_detail(State(state): State<AppState>, Path(slug): Path<Str
     body.push_str(r#"<article class="container detail">"#);
     body.push_str(r#"<p class="eyebrow">Language profile</p>"#);
     body.push_str(&format!(
-        r#"<header class="detail-header"><div><h1>{}</h1><p class="lede" data-pagefind-meta="summary">{}</p></div><p class="actions"><a class="button" href="{}">Official site</a>{}</p></header>"#,
+        r#"<header class="detail-header"><div><h1>{}</h1><p class="lede">{}</p></div><p class="actions"><a class="button" href="{}">Official site</a>{}</p></header>"#,
         escape(&page.data.title),
         escape(&page.data.summary),
         escape_attr(&page.data.official_site),
@@ -376,6 +446,58 @@ pub async fn languages_json(State(state): State<AppState>) -> impl IntoResponse 
     Json(payload)
 }
 
+pub async fn search_json(State(state): State<AppState>) -> impl IntoResponse {
+    #[derive(Serialize)]
+    struct SearchItem {
+        kind: &'static str,
+        title: String,
+        summary: String,
+        url: String,
+        text: String,
+    }
+
+    let mut payload = Vec::new();
+    payload.extend(state.content.languages.iter().map(|page| SearchItem {
+        kind: "language",
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        url: format!("/languages/{}/", page.data.slug),
+        text: language_search_text(page),
+    }));
+    payload.extend(state.content.comparisons.iter().map(|page| SearchItem {
+        kind: "comparison",
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        url: format!("/comparisons/{}/", page.data.slug),
+        text: format!(
+            "{} {} {}",
+            page.data.title, page.data.summary, page.body_markdown
+        ),
+    }));
+    payload.extend(state.content.guides.iter().map(|page| SearchItem {
+        kind: "guide",
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        url: format!("/guides/{}/", page.data.slug),
+        text: format!(
+            "{} {} {}",
+            page.data.title, page.data.summary, page.body_markdown
+        ),
+    }));
+    payload.extend(state.content.concepts.iter().map(|page| SearchItem {
+        kind: "concept",
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        url: format!("/concepts/{}/", page.data.slug),
+        text: format!(
+            "{} {} {}",
+            page.data.title, page.data.summary, page.body_markdown
+        ),
+    }));
+
+    Json(payload)
+}
+
 pub async fn rss(State(state): State<AppState>) -> Response {
     let mut body = String::from(r#"<?xml version="1.0" encoding="utf-8"?>"#);
     body.push_str(r#"<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>"#);
@@ -403,7 +525,10 @@ pub async fn sitemap(State(state): State<AppState>) -> Response {
     let mut body = String::from(r#"<?xml version="1.0" encoding="utf-8"?>"#);
     body.push_str(r#"<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">"#);
     for route in state.content.all_routes() {
-        if route == "/robots.txt" || route == "/languages.json" || route == "/rss.xml" {
+        if matches!(
+            route.as_str(),
+            "/robots.txt" | "/languages.json" | "/search.json" | "/rss.xml"
+        ) {
             continue;
         }
         body.push_str("<url><loc>");
@@ -460,7 +585,7 @@ fn render_standard_detail(detail: StandardDetail<'_>) -> Response {
     );
     body.push_str(r#"<article class="container detail">"#);
     body.push_str(&format!(
-        r#"<p class="eyebrow">{}</p><h1>{}</h1><p class="lede" data-pagefind-meta="summary">{}</p>"#,
+        r#"<p class="eyebrow">{}</p><h1>{}</h1><p class="lede">{}</p>"#,
         escape(detail.collection_label.trim_end_matches('s')),
         escape(detail.title),
         escape(detail.summary)
@@ -531,7 +656,11 @@ fn markdown_body(markdown: &str) -> String {
     let parser = Parser::new_ext(body, options);
     let mut output = String::new();
     html::push_html(&mut output, parser);
-    ammonia::clean(&output)
+    let output = output.replace("<pre>", r#"<pre tabindex="0">"#);
+    ammonia::Builder::default()
+        .add_generic_attributes(["class", "tabindex"])
+        .clean(&output)
+        .to_string()
 }
 
 fn render_page(meta: PageMeta, body_html: String, status: StatusCode) -> Response {
@@ -575,8 +704,43 @@ fn Layout(
             <body>
                 <a class="skip" href="#main">"Skip to content"</a>
                 <SiteHeader section=section />
-                <main id="main" data-pagefind-body inner_html=body_html></main>
+                <main id="main" inner_html=body_html></main>
                 <SiteFooter />
+                <script>{r#"
+                    (function () {
+                        var toggle = document.querySelector("[data-mobile-nav-toggle]");
+                        var nav = document.querySelector("[data-mobile-nav]");
+                        if (toggle && nav) {
+                            toggle.addEventListener("click", function () {
+                                var expanded = toggle.getAttribute("aria-expanded") === "true";
+                                toggle.setAttribute("aria-expanded", String(!expanded));
+                                nav.hidden = expanded;
+                            });
+                        }
+
+                        var themeButton = document.querySelector("[data-theme-toggle]");
+                        var themeLabel = document.querySelector("[data-theme-label]");
+                        function setTheme(theme) {
+                            document.documentElement.setAttribute("data-theme", theme);
+                            if (themeLabel) {
+                                themeLabel.textContent = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+                            }
+                            try { localStorage.setItem("langindex-theme", theme); } catch (error) {}
+                        }
+                        try {
+                            var stored = localStorage.getItem("langindex-theme");
+                            setTheme(stored === "light" ? "light" : "dark");
+                        } catch (error) {
+                            setTheme("dark");
+                        }
+                        if (themeButton) {
+                            themeButton.addEventListener("click", function () {
+                                var current = document.documentElement.getAttribute("data-theme") || "dark";
+                                setTheme(current === "dark" ? "light" : "dark");
+                            });
+                        }
+                    })();
+                "#}</script>
             </body>
         </html>
     }
@@ -591,7 +755,7 @@ fn SiteHeader(section: NavSection) -> impl IntoView {
                     <span class="brand-mark" aria-hidden="true">"LI"</span>
                     <span class="brand-name">"LangIndex"</span>
                 </a>
-                <nav aria-label="Primary">
+                <nav class="primary-nav" aria-label="Primary">
                     <NavLink href="/" active=section == NavSection::Home>"Home"</NavLink>
                     <NavLink href="/languages/" active=section == NavSection::Languages>"Languages"</NavLink>
                     <NavLink href="/comparisons/" active=section == NavSection::Comparisons>"Comparisons"</NavLink>
@@ -600,7 +764,25 @@ fn SiteHeader(section: NavSection) -> impl IntoView {
                     <NavLink href="/about" active=section == NavSection::About>"About"</NavLink>
                     <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
                 </nav>
+                <div class="header-actions">
+                    <button type="button" class="icon-button" data-theme-toggle aria-label="Toggle color theme" title="Toggle color theme">
+                        <span data-theme-label class="sr-only">"Switch to light theme"</span>
+                        <span aria-hidden="true">"T"</span>
+                    </button>
+                    <button type="button" class="icon-button mobile-nav-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle navigation">
+                        <span aria-hidden="true">"="</span>
+                    </button>
+                </div>
             </div>
+            <nav id="mobile-nav" class="mobile-nav container" aria-label="Mobile" data-mobile-nav hidden>
+                <NavLink href="/" active=section == NavSection::Home>"Home"</NavLink>
+                <NavLink href="/languages/" active=section == NavSection::Languages>"Languages"</NavLink>
+                <NavLink href="/comparisons/" active=section == NavSection::Comparisons>"Comparisons"</NavLink>
+                <NavLink href="/guides/" active=section == NavSection::Guides>"Guides"</NavLink>
+                <NavLink href="/concepts/" active=section == NavSection::Concepts>"Concepts"</NavLink>
+                <NavLink href="/about" active=section == NavSection::About>"About"</NavLink>
+                <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
+            </nav>
         </header>
     }
 }
@@ -661,6 +843,155 @@ fn language_card(language: &LanguagePage) -> String {
         escape_attr(&language.data.slug),
         escape(&language.data.title)
     )
+}
+
+#[derive(Debug, Default, Deserialize)]
+pub struct LanguageFilters {
+    q: Option<String>,
+    paradigm: Option<String>,
+    typing: Option<String>,
+    runtime: Option<String>,
+    ecosystem: Option<String>,
+    use_case: Option<String>,
+}
+
+fn filter_languages<'a>(
+    languages: &'a [LanguagePage],
+    filters: &LanguageFilters,
+) -> Vec<&'a LanguagePage> {
+    languages
+        .iter()
+        .filter(|page| {
+            matches_text(page, filters.q.as_deref())
+                && matches_any(&page.data.paradigms, filters.paradigm.as_deref())
+                && matches_any(
+                    &[
+                        page.data.typing.discipline.as_str(),
+                        page.data.typing.strength.as_deref().unwrap_or_default(),
+                    ],
+                    filters.typing.as_deref(),
+                )
+                && matches_value(&page.data.runtime.model, filters.runtime.as_deref())
+                && matches_any(&page.data.package_managers, filters.ecosystem.as_deref())
+                && matches_any(
+                    &use_case_tags(&page.data.best_for),
+                    filters.use_case.as_deref(),
+                )
+        })
+        .collect()
+}
+
+fn matches_text(page: &LanguagePage, query: Option<&str>) -> bool {
+    let Some(query) = query
+        .map(normalize_filter)
+        .filter(|value| !value.is_empty())
+    else {
+        return true;
+    };
+    normalize_filter(&language_search_text(page)).contains(&query)
+}
+
+fn matches_value(value: &str, selected: Option<&str>) -> bool {
+    let Some(selected) = selected
+        .map(normalize_filter)
+        .filter(|value| !value.is_empty())
+    else {
+        return true;
+    };
+    normalize_filter(value) == selected
+}
+
+fn matches_any<T: AsRef<str>>(values: &[T], selected: Option<&str>) -> bool {
+    let Some(selected) = selected
+        .map(normalize_filter)
+        .filter(|value| !value.is_empty())
+    else {
+        return true;
+    };
+    values
+        .iter()
+        .any(|value| normalize_filter(value.as_ref()) == selected)
+}
+
+fn language_search_text(page: &LanguagePage) -> String {
+    [
+        page.data.title.as_str(),
+        page.data.summary.as_str(),
+        &page.data.paradigms.join(" "),
+        page.data.typing.discipline.as_str(),
+        page.data.typing.strength.as_deref().unwrap_or_default(),
+        page.data.runtime.model.as_str(),
+        page.data.memory.model.as_str(),
+        &page.data.package_managers.join(" "),
+        &page.data.best_for.join(" "),
+        &page.data.poor_fit.join(" "),
+        page.body_markdown.as_str(),
+    ]
+    .join(" ")
+}
+
+fn use_case_tags(items: &[String]) -> Vec<String> {
+    let text = normalize_filter(&items.join(" "));
+    let rules = [
+        ("cli tools", ["command-line", "scripts"]),
+        ("data", ["data", "analytics"]),
+        ("infrastructure", ["infrastructure", "distributed"]),
+        ("network services", ["network services", "services"]),
+        ("systems software", ["systems software", "embedded"]),
+        ("web applications", ["web", "node.js"]),
+    ];
+
+    rules
+        .iter()
+        .filter(|(_, terms)| terms.iter().any(|term| text.contains(term)))
+        .map(|(label, _)| (*label).to_string())
+        .collect()
+}
+
+fn unique_language_values(
+    languages: &[LanguagePage],
+    values: impl Fn(&LanguagePage) -> Vec<String>,
+) -> Vec<String> {
+    let mut normalized = std::collections::BTreeMap::new();
+    for language in languages {
+        for value in values(language) {
+            if value.trim().is_empty() {
+                continue;
+            }
+            normalized
+                .entry(normalize_filter(&value))
+                .or_insert_with(|| value.trim().to_string());
+        }
+    }
+    normalized.into_values().collect()
+}
+
+fn select_filter(label: &str, name: &str, selected: &Option<String>, options: &[String]) -> String {
+    let mut body = format!(
+        r#"<label>{}<select name="{}"><option value="">Any</option>"#,
+        escape(label),
+        escape_attr(name)
+    );
+    let selected = selected
+        .as_deref()
+        .map(normalize_filter)
+        .unwrap_or_default();
+    for option in options {
+        let value = normalize_filter(option);
+        let is_selected = if value == selected { " selected" } else { "" };
+        body.push_str(&format!(
+            r#"<option value="{}"{}>{}</option>"#,
+            escape_attr(&value),
+            is_selected,
+            escape(option)
+        ));
+    }
+    body.push_str("</select></label>");
+    body
+}
+
+fn normalize_filter(value: &str) -> String {
+    value.trim().to_lowercase()
 }
 
 fn hub_card(title: &str, href: &str, description: &str, items: Vec<(&String, String)>) -> String {

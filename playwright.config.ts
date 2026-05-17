@@ -3,7 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "tests/playwright",
   webServer: {
-    command: "pnpm preview --host 127.0.0.1 --port 4321",
+    command:
+      "LANGINDEX_SITE_ADDR=127.0.0.1:4321 LANGINDEX_SITE_LOG=warn cargo run -p langindex-site",
     url: "http://127.0.0.1:4321",
     reuseExistingServer: false,
   },

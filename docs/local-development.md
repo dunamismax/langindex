@@ -1,51 +1,68 @@
 # Local Development
 
-LangIndex uses Astro, TypeScript, MDX content collections, Tailwind CSS, pnpm,
-and Pagefind.
+LangIndex now runs as a Rust workspace with an Axum site service and Leptos
+server-rendered HTML. Git-authored Markdown/MDX content remains in
+`src/content/**` and is parsed and validated by Rust before the service starts.
 
 ## Requirements
 
-- Node.js 22.12 or newer (CI builds with Node 26).
-- pnpm 10 or newer (the repo pins `pnpm@10.32.1`).
-- Docker 29 or newer for production-image checks.
+- Rust 1.95.0, pinned by `rust-toolchain.toml`.
+- Cargo, provided by the pinned Rust toolchain.
+- Node.js 22.12 or newer and pnpm 10.32.1 only for Playwright smoke tests and
+  the external link checker.
+- Docker 29 or newer for image and Compose checks.
 
 ## Setup
 
 ```sh
+cargo fetch
 pnpm install
 ```
+
+`pnpm install` is only needed when running `just test-smoke` or
+`just check-links-external`.
 
 ## Common Commands
 
 ```sh
-just fmt                    # prettier --write .
-just check                  # astro check (TypeScript + content schemas)
-just test                   # astro check + scripts/validate-sources.mjs
-just build                  # astro build + pagefind index into dist/
-just dev                    # astro dev (default http://localhost:4321)
-just test-smoke             # playwright smoke + accessibility tests
-just validate-sources       # frontmatter source URL sanity checks
-just check-links-internal   # internal link audit against the built site
-just check-links-external   # external link audit (network, slower)
+just fmt                    # cargo fmt --all
+just check                  # Rust fmt check, clippy, content validation
+just test                   # Rust unit and route tests
+just build                  # release build for langindex-site
+just dev                    # local Axum server at http://127.0.0.1:3000
+just site-validate          # parse and validate all content
+just test-smoke             # Playwright smoke/accessibility against Axum
+just check-links-internal   # route manifest plus Rust internal link checks
+just check-links-external   # slower network check for external URLs
 ```
-
-`just test` runs Astro validation plus LangIndex source metadata checks.
-`just build` generates the static Astro site and the Pagefind search index
-into `dist/`. The Playwright suite expects a built site; run `just build`
-before `just test-smoke` if you have not already.
-
-Use `just check-links-external` when source changes are broad enough to
-justify the network time — official documentation URLs are the most common
-source of late-stage breakage.
 
 ## Content Workflow
 
 1. Copy a template from `docs/templates/`.
 2. Put language pages in `src/content/languages/`.
 3. Put comparisons in `src/content/comparisons/`.
-4. Verify all frontmatter fields against `docs/content-model.md`.
+4. Verify frontmatter fields against `docs/content-model.md`.
 5. Check factual claims against `docs/sources.md`.
-6. Run `just test` and `just build`.
+6. Run `just check`, `just test`, and `just build`.
+
+## Local Server
+
+```sh
+just dev
+```
+
+The service listens on `127.0.0.1:3000` by default. Override it when needed:
+
+```sh
+LANGINDEX_SITE_ADDR=127.0.0.1:4321 cargo run -p langindex-site
+```
+
+The content directory defaults to `src/content` from the repository checkout.
+Override it for packaged or deployment layouts:
+
+```sh
+LANGINDEX_CONTENT_DIR=/path/to/content cargo run -p langindex-site
+```
 
 ## Docker Check
 
@@ -53,7 +70,12 @@ Build and run the production image locally:
 
 ```sh
 docker build -t langindex:local .
-docker run --rm -p 8080:80 -e SITE_ADDRESS=:80 langindex:local
+docker run --rm -p 8080:3000 langindex:local
 ```
 
-Open `http://localhost:8080` to inspect the static site.
+Then verify:
+
+```sh
+curl -fsS http://127.0.0.1:8080/healthz
+curl -I http://127.0.0.1:8080/languages/
+```

@@ -15,7 +15,7 @@ const errors = [];
 async function listTextFiles(filePath) {
   const stat = await lstat(filePath);
   if (stat.isFile()) {
-    return /\.(astro|md|mdx|mjs|ts|js|json|yml|yaml)$/.test(filePath)
+    return /\.(md|mdx|mjs|ts|js|json|yml|yaml)$/.test(filePath)
       ? [filePath]
       : [];
   }

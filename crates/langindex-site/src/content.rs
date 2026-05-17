@@ -114,7 +114,9 @@ impl SiteContent {
         let mut routes = BTreeSet::from([
             "/".to_string(),
             "/about".to_string(),
+            "/about/".to_string(),
             "/contribute".to_string(),
+            "/contribute/".to_string(),
             "/languages".to_string(),
             "/languages/".to_string(),
             "/comparisons".to_string(),
@@ -124,6 +126,7 @@ impl SiteContent {
             "/concepts".to_string(),
             "/concepts/".to_string(),
             "/languages.json".to_string(),
+            "/search.json".to_string(),
             "/rss.xml".to_string(),
             "/sitemap.xml".to_string(),
             "/robots.txt".to_string(),
@@ -584,9 +587,10 @@ fn markdown_to_html(markdown: &str) -> String {
     let parser = Parser::new_ext(markdown, options);
     let mut output = String::new();
     html::push_html(&mut output, parser);
+    let output = output.replace("<pre>", r#"<pre tabindex="0">"#);
     ammonia::Builder::default()
         .add_tags(["table", "thead", "tbody", "tr", "th", "td"])
-        .add_generic_attributes(["class"])
+        .add_generic_attributes(["class", "tabindex"])
         .clean(&output)
         .to_string()
 }
@@ -715,5 +719,6 @@ mod tests {
         assert!(routes.contains("/guides/choosing-a-systems-language"));
         assert!(routes.contains("/concepts/ownership"));
         assert!(routes.contains("/languages.json"));
+        assert!(routes.contains("/search.json"));
     }
 }
