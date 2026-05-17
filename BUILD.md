@@ -401,26 +401,26 @@ Completion standard for the rewrite:
 
 Suggested session plan:
 
-- [ ] Inventory current Astro behavior before deleting anything: route map,
+- [x] Inventory current Astro behavior before deleting anything: route map,
       generated URLs, RSS/sitemap/robots output, Pagefind/search behavior,
       content schemas, source validation, internal/external link checks,
       Docker/Caddy wiring, and Playwright coverage.
-- [ ] Scaffold the Rust workspace in the LangIndex repo, using FileFerry's
+- [x] Scaffold the Rust workspace in the LangIndex repo, using FileFerry's
       shape as the starting point: root `Cargo.toml`, `rust-toolchain.toml`,
       a dedicated site crate, optional content/core crate if it keeps parsing
       clean, `xtask` only if it earns its keep, and a Rust-first `justfile`.
-- [ ] Build the Axum shell: listener env var, tracing, `/healthz`, fallback
+- [x] Build the Axum shell: listener env var, tracing, `/healthz`, fallback
       404, static/embedded assets, security headers where appropriate, and
       route tests for status codes and key body markers.
 - [ ] Port the layout and design system into Leptos SSR components: document
       head metadata, skip link, header, footer, responsive navigation,
       source-list component, language cards, summary/detail blocks,
       comparison tables, code examples, and accessible forms or controls.
-- [ ] Design and implement Rust content loading: preserve Git-authored source
+- [x] Design and implement Rust content loading: preserve Git-authored source
       files where practical, parse frontmatter and body content with typed
       structs, validate required fields, normalize slugs, expose collections
       to route handlers, and keep prose out of large JSON/YAML blobs.
-- [ ] Migrate all current content groups: languages, comparisons, guides, and
+- [x] Migrate all current content groups: languages, comparisons, guides, and
       concepts. Preserve current URLs, titles, summaries, examples, sources,
       and `lastVerified` values unless a source is re-checked in the same
       session.

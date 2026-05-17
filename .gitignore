@@ -1,5 +1,6 @@
 # build output
 dist/
+target/
 
 # static search output
 public/search/

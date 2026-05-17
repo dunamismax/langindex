@@ -1,0 +1,837 @@
+use axum::Json;
+use axum::extract::{Path, State};
+use axum::http::{HeaderValue, StatusCode, header};
+use axum::response::{IntoResponse, Response};
+use chrono::NaiveDate;
+use leptos::IntoView;
+use leptos::prelude::*;
+use leptos::tachys::view::RenderHtml;
+use serde::Serialize;
+
+use crate::AppState;
+use crate::content::{ComparisonPage, ConceptPage, GuidePage, LanguagePage, SiteContent, Source};
+
+const SITE_URL: &str = "https://langindex.dev";
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum NavSection {
+    Home,
+    Languages,
+    Comparisons,
+    Guides,
+    Concepts,
+    About,
+    Contribute,
+    None,
+}
+
+struct PageMeta {
+    title: String,
+    description: String,
+    section: NavSection,
+}
+
+pub async fn home(State(state): State<AppState>) -> Response {
+    let content = &state.content;
+    let mut body = String::new();
+    body.push_str(r#"<section class="hero"><div class="container hero-grid"><div>"#);
+    body.push_str(r#"<p class="eyebrow">Open source · Self-hosted · Source-backed</p>"#);
+    body.push_str(r#"<h1>A field guide to programming languages.</h1>"#);
+    body.push_str(r#"<p class="lede">LangIndex is a quiet, source-backed reference focused on practical fit, design tradeoffs, tooling, governance, and examples for developers choosing or maintaining languages.</p>"#);
+    body.push_str(r#"<p class="actions"><a class="button primary" href="/languages/">Browse languages</a><a class="button" href="/comparisons/">View comparisons</a></p>"#);
+    body.push_str(r#"</div><div class="search-panel"><div class="brand-panel">LangIndex</div><form class="site-search" action="/languages/" role="search"><label for="q">Search the reference</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><p class="muted small">Static, self-hosted content. The temporary Astro site still builds the Pagefind index during migration.</p></div></div></section>"#);
+    body.push_str(&stats(content));
+    body.push_str(r#"<section class="section"><div class="container section-head"><div><h2>Seed languages</h2><p>Verified language profiles proving the content model before broader expansion.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
+    for language in &content.languages {
+        body.push_str(&language_card(language));
+    }
+    body.push_str(r#"</div></section>"#);
+    body.push_str(r#"<section class="section"><div class="container browse-grid">"#);
+    body.push_str(&hub_card(
+        "Comparisons",
+        "/comparisons/",
+        "Dimensional, tradeoff-first comparisons between related languages.",
+        content
+            .comparisons
+            .iter()
+            .take(4)
+            .map(|page| {
+                (
+                    &page.data.title,
+                    format!("/comparisons/{}/", page.data.slug),
+                )
+            })
+            .collect(),
+    ));
+    body.push_str(&hub_card(
+        "Guides",
+        "/guides/",
+        "Decision guides that frame languages by the problem you are solving.",
+        content
+            .guides
+            .iter()
+            .take(4)
+            .map(|page| (&page.data.title, format!("/guides/{}/", page.data.slug)))
+            .collect(),
+    ));
+    body.push_str(&hub_card(
+        "Concepts",
+        "/concepts/",
+        "Cross-language ideas: type systems, runtimes, memory, and tooling.",
+        content
+            .concepts
+            .iter()
+            .take(4)
+            .map(|page| (&page.data.title, format!("/concepts/{}/", page.data.slug)))
+            .collect(),
+    ));
+    body.push_str(r#"</div></section>"#);
+    render_page(
+        PageMeta {
+            title: "LangIndex".to_string(),
+            description: "Open source, self-hosted reference for programming languages."
+                .to_string(),
+            section: NavSection::Home,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+pub async fn about() -> Response {
+    render_markdown_page(
+        PageMeta {
+            title: "About".to_string(),
+            description: "What LangIndex is and why it exists.".to_string(),
+            section: NavSection::About,
+        },
+        "About",
+        include_str!("../../../README.md"),
+    )
+}
+
+pub async fn contribute() -> Response {
+    render_markdown_page(
+        PageMeta {
+            title: "Contribute".to_string(),
+            description: "How to improve LangIndex content.".to_string(),
+            section: NavSection::Contribute,
+        },
+        "Contribute",
+        include_str!("../../../CONTRIBUTING.md"),
+    )
+}
+
+pub async fn languages_index(State(state): State<AppState>) -> Response {
+    let mut body = index_intro(
+        "Languages",
+        "Browse language profiles by practical fit, runtime, memory model, typing, tooling, and verified sources.",
+    );
+    body.push_str(r#"<section class="section"><div class="container"><form class="filter-form" action="/languages/" role="search"><label for="q">Search</label><input id="q" name="q" type="search" placeholder="Rust, garbage collected, web..." /><button type="submit">Search</button></form><div class="card-grid">"#);
+    for language in &state.content.languages {
+        body.push_str(&language_card(language));
+    }
+    body.push_str("</div></div></section>");
+    render_page(
+        PageMeta {
+            title: "Languages".to_string(),
+            description: "Browse programming language profiles on LangIndex.".to_string(),
+            section: NavSection::Languages,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+pub async fn language_detail(State(state): State<AppState>, Path(slug): Path<String>) -> Response {
+    let Some(page) = state.content.language(&slug) else {
+        return not_found().await;
+    };
+    let mut body = breadcrumb("Languages", "/languages/", &page.data.title);
+    body.push_str(r#"<article class="container detail">"#);
+    body.push_str(r#"<p class="eyebrow">Language profile</p>"#);
+    body.push_str(&format!(
+        r#"<header class="detail-header"><div><h1>{}</h1><p class="lede" data-pagefind-meta="summary">{}</p></div><p class="actions"><a class="button" href="{}">Official site</a>{}</p></header>"#,
+        escape(&page.data.title),
+        escape(&page.data.summary),
+        escape_attr(&page.data.official_site),
+        page.data.repository.as_ref().map(|url| format!(r#"<a class="button" href="{}">Repository</a>"#, escape_attr(url))).unwrap_or_default()
+    ));
+    body.push_str(r#"<dl class="fact-grid">"#);
+    push_fact(&mut body, "Status", &page.data.status);
+    push_fact(
+        &mut body,
+        "Typing",
+        &format!(
+            "{}{}",
+            page.data.typing.discipline,
+            page.data
+                .typing
+                .strength
+                .as_ref()
+                .map(|value| format!(", {value}"))
+                .unwrap_or_default()
+        ),
+    );
+    push_fact(&mut body, "Runtime", &page.data.runtime.model);
+    push_fact(&mut body, "Memory", &page.data.memory.model);
+    if let Some(first_released) = page.data.first_released {
+        push_fact(&mut body, "First released", &first_released.to_string());
+    }
+    if !page.data.package_managers.is_empty() {
+        push_fact(
+            &mut body,
+            "Package managers",
+            &page.data.package_managers.join(", "),
+        );
+    }
+    body.push_str("</dl>");
+    body.push_str(r#"<section class="fit-grid">"#);
+    body.push_str(&list_panel("Best fit", &page.data.best_for));
+    body.push_str(&list_panel("Poor fit", &page.data.poor_fit));
+    body.push_str("</section>");
+    body.push_str(r#"<div class="content-body">"#);
+    body.push_str(&page.body_html);
+    body.push_str("</div>");
+    let related = state
+        .content
+        .comparisons
+        .iter()
+        .filter(|comparison| {
+            comparison
+                .data
+                .languages
+                .iter()
+                .any(|item| item == &page.data.slug)
+        })
+        .map(|comparison| {
+            (
+                comparison.data.title.as_str(),
+                format!("/comparisons/{}/", comparison.data.slug),
+            )
+        })
+        .collect();
+    body.push_str(&link_list("Related comparisons", related));
+    body.push_str(&source_list(&page.data.sources, page.data.last_verified));
+    body.push_str("</article>");
+    render_page(
+        PageMeta {
+            title: page.data.title.clone(),
+            description: page.data.summary.clone(),
+            section: NavSection::Languages,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+pub async fn comparisons_index(State(state): State<AppState>) -> Response {
+    render_collection_index(
+        "Comparisons",
+        "Dimensional, tradeoff-first comparisons between related languages.",
+        NavSection::Comparisons,
+        state
+            .content
+            .comparisons
+            .iter()
+            .map(|page| {
+                (
+                    &page.data.title,
+                    &page.data.summary,
+                    format!("/comparisons/{}/", page.data.slug),
+                )
+            })
+            .collect(),
+    )
+}
+
+pub async fn comparison_detail(
+    State(state): State<AppState>,
+    Path(slug): Path<String>,
+) -> Response {
+    let Some(page) = state.content.comparison(&slug) else {
+        return not_found().await;
+    };
+    render_standard_detail(StandardDetail {
+        collection_label: "Comparisons",
+        collection_path: "/comparisons/",
+        title: &page.data.title,
+        summary: &page.data.summary,
+        body_html: &page.body_html,
+        sources: &page.data.sources,
+        last_verified: page.data.last_verified,
+        section: NavSection::Comparisons,
+        links: language_links(&state.content, &page.data.languages),
+    })
+}
+
+pub async fn guides_index(State(state): State<AppState>) -> Response {
+    render_collection_index(
+        "Guides",
+        "Decision guides framed by the problem a developer is solving.",
+        NavSection::Guides,
+        state
+            .content
+            .guides
+            .iter()
+            .map(|page| {
+                (
+                    &page.data.title,
+                    &page.data.summary,
+                    format!("/guides/{}/", page.data.slug),
+                )
+            })
+            .collect(),
+    )
+}
+
+pub async fn guide_detail(State(state): State<AppState>, Path(slug): Path<String>) -> Response {
+    let Some(page) = state.content.guide(&slug) else {
+        return not_found().await;
+    };
+    render_standard_detail(StandardDetail {
+        collection_label: "Guides",
+        collection_path: "/guides/",
+        title: &page.data.title,
+        summary: &page.data.summary,
+        body_html: &page.body_html,
+        sources: &page.data.sources,
+        last_verified: page.data.last_verified,
+        section: NavSection::Guides,
+        links: language_links(&state.content, &page.data.candidates),
+    })
+}
+
+pub async fn concepts_index(State(state): State<AppState>) -> Response {
+    render_collection_index(
+        "Concepts",
+        "Cross-language ideas: type systems, runtimes, memory models, and tooling.",
+        NavSection::Concepts,
+        state
+            .content
+            .concepts
+            .iter()
+            .map(|page| {
+                (
+                    &page.data.title,
+                    &page.data.summary,
+                    format!("/concepts/{}/", page.data.slug),
+                )
+            })
+            .collect(),
+    )
+}
+
+pub async fn concept_detail(State(state): State<AppState>, Path(slug): Path<String>) -> Response {
+    let Some(page) = state.content.concept(&slug) else {
+        return not_found().await;
+    };
+    render_standard_detail(StandardDetail {
+        collection_label: "Concepts",
+        collection_path: "/concepts/",
+        title: &page.data.title,
+        summary: &page.data.summary,
+        body_html: &page.body_html,
+        sources: &page.data.sources,
+        last_verified: page.data.last_verified,
+        section: NavSection::Concepts,
+        links: language_links(&state.content, &page.data.related_languages),
+    })
+}
+
+pub async fn languages_json(State(state): State<AppState>) -> impl IntoResponse {
+    #[derive(Serialize)]
+    struct LanguageJson {
+        title: String,
+        slug: String,
+        status: String,
+        summary: String,
+        paradigms: Vec<String>,
+        typing: String,
+        runtime: String,
+        memory: String,
+        package_managers: Vec<String>,
+        last_verified: String,
+        url: String,
+    }
+
+    let payload: Vec<_> = state
+        .content
+        .languages
+        .iter()
+        .map(|page| LanguageJson {
+            title: page.data.title.clone(),
+            slug: page.data.slug.clone(),
+            status: page.data.status.clone(),
+            summary: page.data.summary.clone(),
+            paradigms: page.data.paradigms.clone(),
+            typing: page.data.typing.discipline.clone(),
+            runtime: page.data.runtime.model.clone(),
+            memory: page.data.memory.model.clone(),
+            package_managers: page.data.package_managers.clone(),
+            last_verified: page.data.last_verified.to_string(),
+            url: format!("/languages/{}/", page.data.slug),
+        })
+        .collect();
+    Json(payload)
+}
+
+pub async fn rss(State(state): State<AppState>) -> Response {
+    let mut body = String::from(r#"<?xml version="1.0" encoding="utf-8"?>"#);
+    body.push_str(r#"<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>"#);
+    body.push_str("<title>LangIndex</title><link>https://langindex.dev/</link><description>Source-backed programming language reference updates.</description>");
+    body.push_str(r#"<atom:link href="https://langindex.dev/rss.xml" rel="self" type="application/rss+xml" />"#);
+    for item in feed_items(&state.content) {
+        body.push_str("<item>");
+        body.push_str(&format!(
+            "<title>{}</title><link>{}{}</link><guid>{}{}</guid><description>{}</description><pubDate>{}</pubDate>",
+            escape(&item.title),
+            SITE_URL,
+            item.path,
+            SITE_URL,
+            item.path,
+            escape(&item.summary),
+            item.last_verified.format("%a, %d %b %Y 00:00:00 GMT")
+        ));
+        body.push_str("</item>");
+    }
+    body.push_str("</channel></rss>");
+    xml_response(body, "application/rss+xml; charset=utf-8")
+}
+
+pub async fn sitemap(State(state): State<AppState>) -> Response {
+    let mut body = String::from(r#"<?xml version="1.0" encoding="utf-8"?>"#);
+    body.push_str(r#"<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">"#);
+    for route in state.content.all_routes() {
+        if route == "/robots.txt" || route == "/languages.json" || route == "/rss.xml" {
+            continue;
+        }
+        body.push_str("<url><loc>");
+        body.push_str(SITE_URL);
+        body.push_str(&escape(&route));
+        body.push_str("</loc></url>");
+    }
+    body.push_str("</urlset>");
+    xml_response(body, "application/xml; charset=utf-8")
+}
+
+pub async fn robots() -> Response {
+    (
+        StatusCode::OK,
+        [(header::CONTENT_TYPE, "text/plain; charset=utf-8")],
+        "User-agent: *\nAllow: /\n\nSitemap: https://langindex.dev/sitemap.xml\n",
+    )
+        .into_response()
+}
+
+pub async fn healthz() -> &'static str {
+    "ok"
+}
+
+pub async fn not_found() -> Response {
+    render_page(
+        PageMeta {
+            title: "Page not found".to_string(),
+            description: "The requested LangIndex page was not found.".to_string(),
+            section: NavSection::None,
+        },
+        r#"<section class="section"><div class="container"><h1>Page not found</h1><p>The page you requested does not exist in the LangIndex route set.</p><p><a href="/languages/">Browse languages</a></p></div></section>"#.to_string(),
+        StatusCode::NOT_FOUND,
+    )
+}
+
+struct StandardDetail<'a> {
+    collection_label: &'a str,
+    collection_path: &'a str,
+    title: &'a str,
+    summary: &'a str,
+    body_html: &'a str,
+    sources: &'a [Source],
+    last_verified: NaiveDate,
+    section: NavSection,
+    links: Vec<(&'a str, String)>,
+}
+
+fn render_standard_detail(detail: StandardDetail<'_>) -> Response {
+    let mut body = breadcrumb(
+        detail.collection_label,
+        detail.collection_path,
+        detail.title,
+    );
+    body.push_str(r#"<article class="container detail">"#);
+    body.push_str(&format!(
+        r#"<p class="eyebrow">{}</p><h1>{}</h1><p class="lede" data-pagefind-meta="summary">{}</p>"#,
+        escape(detail.collection_label.trim_end_matches('s')),
+        escape(detail.title),
+        escape(detail.summary)
+    ));
+    body.push_str(&link_list("Related languages", detail.links));
+    body.push_str(r#"<div class="content-body">"#);
+    body.push_str(detail.body_html);
+    body.push_str("</div>");
+    body.push_str(&source_list(detail.sources, detail.last_verified));
+    body.push_str("</article>");
+    render_page(
+        PageMeta {
+            title: detail.title.to_string(),
+            description: detail.summary.to_string(),
+            section: detail.section,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+fn render_collection_index(
+    title: &str,
+    summary: &str,
+    section: NavSection,
+    items: Vec<(&String, &String, String)>,
+) -> Response {
+    let mut body = index_intro(title, summary);
+    body.push_str(r#"<section class="section"><div class="container list-grid">"#);
+    for (item_title, item_summary, href) in items {
+        body.push_str(&format!(
+            r#"<article class="card"><h2><a href="{}">{}</a></h2><p>{}</p></article>"#,
+            escape_attr(&href),
+            escape(item_title),
+            escape(item_summary)
+        ));
+    }
+    body.push_str("</div></section>");
+    render_page(
+        PageMeta {
+            title: title.to_string(),
+            description: summary.to_string(),
+            section,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+fn render_markdown_page(meta: PageMeta, heading: &str, markdown: &str) -> Response {
+    let mut body = index_intro(heading, &meta.description);
+    body.push_str(r#"<section class="section"><div class="container content-body">"#);
+    body.push_str(&markdown_body(markdown));
+    body.push_str("</div></section>");
+    render_page(meta, body, StatusCode::OK)
+}
+
+fn markdown_body(markdown: &str) -> String {
+    use pulldown_cmark::{Options, Parser, html};
+
+    let body = markdown
+        .strip_prefix("---")
+        .and_then(|rest| rest.split_once("---").map(|(_, body)| body))
+        .unwrap_or(markdown);
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    let parser = Parser::new_ext(body, options);
+    let mut output = String::new();
+    html::push_html(&mut output, parser);
+    ammonia::clean(&output)
+}
+
+fn render_page(meta: PageMeta, body_html: String, status: StatusCode) -> Response {
+    let view = view! {
+        <Layout title=meta.title.clone() description=meta.description.clone() section=meta.section body_html=body_html />
+    };
+    let document = format!("<!DOCTYPE html>{}", view.to_html());
+    (
+        status,
+        [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
+        document,
+    )
+        .into_response()
+}
+
+#[component]
+fn Layout(
+    title: String,
+    description: String,
+    section: NavSection,
+    body_html: String,
+) -> impl IntoView {
+    let full_title = if section == NavSection::Home {
+        "LangIndex — source-backed programming language reference".to_string()
+    } else {
+        format!("{title} · LangIndex")
+    };
+
+    view! {
+        <html lang="en" data-theme="dark">
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="color-scheme" content="dark light" />
+                <meta name="description" content=description />
+                <link rel="icon" type="image/png" href="/favicon.png" />
+                <link rel="alternate" type="application/rss+xml" title="LangIndex RSS" href="/rss.xml" />
+                <link rel="stylesheet" href="/assets/style.css" />
+                <title>{full_title}</title>
+            </head>
+            <body>
+                <a class="skip" href="#main">"Skip to content"</a>
+                <SiteHeader section=section />
+                <main id="main" data-pagefind-body inner_html=body_html></main>
+                <SiteFooter />
+            </body>
+        </html>
+    }
+}
+
+#[component]
+fn SiteHeader(section: NavSection) -> impl IntoView {
+    view! {
+        <header class="site-header">
+            <div class="container header-inner">
+                <a class="brand" href="/">
+                    <span class="brand-mark" aria-hidden="true">"LI"</span>
+                    <span class="brand-name">"LangIndex"</span>
+                </a>
+                <nav aria-label="Primary">
+                    <NavLink href="/" active=section == NavSection::Home>"Home"</NavLink>
+                    <NavLink href="/languages/" active=section == NavSection::Languages>"Languages"</NavLink>
+                    <NavLink href="/comparisons/" active=section == NavSection::Comparisons>"Comparisons"</NavLink>
+                    <NavLink href="/guides/" active=section == NavSection::Guides>"Guides"</NavLink>
+                    <NavLink href="/concepts/" active=section == NavSection::Concepts>"Concepts"</NavLink>
+                    <NavLink href="/about" active=section == NavSection::About>"About"</NavLink>
+                    <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
+                </nav>
+            </div>
+        </header>
+    }
+}
+
+#[component]
+fn NavLink(href: &'static str, active: bool, children: Children) -> impl IntoView {
+    let class = if active {
+        "nav-link active"
+    } else {
+        "nav-link"
+    };
+    view! { <a class=class href=href>{children()}</a> }
+}
+
+#[component]
+fn SiteFooter() -> impl IntoView {
+    view! {
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <p>"LangIndex — open source, self-hosted, source-backed."</p>
+                <nav aria-label="Footer">
+                    <a href="/rss.xml">"RSS"</a>
+                    <a href="/sitemap.xml">"Sitemap"</a>
+                    <a href="https://github.com/dunamismax/langindex">"Source"</a>
+                </nav>
+            </div>
+        </footer>
+    }
+}
+
+fn stats(content: &SiteContent) -> String {
+    let stats = [
+        ("Languages", content.languages.len(), "/languages/"),
+        ("Comparisons", content.comparisons.len(), "/comparisons/"),
+        ("Guides", content.guides.len(), "/guides/"),
+        ("Concepts", content.concepts.len(), "/concepts/"),
+    ];
+    let mut body = r#"<section class="stats"><div class="container stat-grid">"#.to_string();
+    for (label, value, href) in stats {
+        body.push_str(&format!(
+            r#"<a class="stat" href="{href}"><span>{}</span><strong>{}</strong></a>"#,
+            escape(label),
+            value
+        ));
+    }
+    body.push_str("</div></section>");
+    body
+}
+
+fn language_card(language: &LanguagePage) -> String {
+    format!(
+        r#"<article class="card language-card"><h2><a href="/languages/{}/">{}</a></h2><p>{}</p><dl><dt>Runtime</dt><dd>{}</dd><dt>Memory</dt><dd>{}</dd></dl><p><a class="card-action" href="/languages/{}/">Open {}</a></p></article>"#,
+        escape_attr(&language.data.slug),
+        escape(&language.data.title),
+        escape(&language.data.summary),
+        escape(&language.data.runtime.model),
+        escape(&language.data.memory.model),
+        escape_attr(&language.data.slug),
+        escape(&language.data.title)
+    )
+}
+
+fn hub_card(title: &str, href: &str, description: &str, items: Vec<(&String, String)>) -> String {
+    let mut body = format!(
+        r#"<article class="card"><h2><a href="{}">{}</a></h2><p>{}</p><ul>"#,
+        escape_attr(href),
+        escape(title),
+        escape(description)
+    );
+    for (item_title, item_href) in items {
+        body.push_str(&format!(
+            r#"<li><a href="{}">{}</a></li>"#,
+            escape_attr(&item_href),
+            escape(item_title)
+        ));
+    }
+    body.push_str("</ul></article>");
+    body
+}
+
+fn index_intro(title: &str, summary: &str) -> String {
+    format!(
+        r#"<section class="section intro"><div class="container"><p class="eyebrow">Index</p><h1>{}</h1><p class="lede">{}</p></div></section>"#,
+        escape(title),
+        escape(summary)
+    )
+}
+
+fn breadcrumb(collection: &str, href: &str, title: &str) -> String {
+    format!(
+        r#"<nav class="container breadcrumb" aria-label="Breadcrumb"><a href="{}">{}</a><span aria-hidden="true">/</span><span>{}</span></nav>"#,
+        escape_attr(href),
+        escape(collection),
+        escape(title)
+    )
+}
+
+fn push_fact(body: &mut String, label: &str, value: &str) {
+    body.push_str(&format!(
+        r#"<div><dt>{}</dt><dd>{}</dd></div>"#,
+        escape(label),
+        escape(value)
+    ));
+}
+
+fn list_panel(title: &str, items: &[String]) -> String {
+    let mut body = format!(r#"<section class="panel"><h2>{}</h2><ul>"#, escape(title));
+    for item in items {
+        body.push_str(&format!("<li>{}</li>", escape(item)));
+    }
+    body.push_str("</ul></section>");
+    body
+}
+
+fn link_list(title: &str, items: Vec<(&str, String)>) -> String {
+    if items.is_empty() {
+        return String::new();
+    }
+    let mut body = format!(
+        r#"<section class="link-list"><h2>{}</h2><ul>"#,
+        escape(title)
+    );
+    for (label, href) in items {
+        body.push_str(&format!(
+            r#"<li><a href="{}">{}</a></li>"#,
+            escape_attr(&href),
+            escape(label)
+        ));
+    }
+    body.push_str("</ul></section>");
+    body
+}
+
+fn source_list(sources: &[Source], last_verified: NaiveDate) -> String {
+    let mut body = format!(
+        r#"<section class="sources"><h2>Sources</h2><p class="verified">Last verified: <time datetime="{}">{}</time></p><ol>"#,
+        last_verified, last_verified
+    );
+    for source in sources {
+        body.push_str(&format!(
+            r#"<li><a href="{}">{}</a>{}</li>"#,
+            escape_attr(&source.url),
+            escape(&source.title),
+            source
+                .publisher
+                .as_ref()
+                .map(|publisher| format!(" <span>{}</span>", escape(publisher)))
+                .unwrap_or_default()
+        ));
+    }
+    body.push_str("</ol></section>");
+    body
+}
+
+fn language_links<'a>(content: &'a SiteContent, slugs: &'a [String]) -> Vec<(&'a str, String)> {
+    slugs
+        .iter()
+        .map(|slug| {
+            let title = content
+                .language(slug)
+                .map(|page| page.data.title.as_str())
+                .unwrap_or(slug.as_str());
+            (title, format!("/languages/{slug}/"))
+        })
+        .collect()
+}
+
+struct FeedItem {
+    title: String,
+    summary: String,
+    path: String,
+    last_verified: NaiveDate,
+}
+
+fn feed_items(content: &SiteContent) -> Vec<FeedItem> {
+    let mut items = Vec::new();
+    items.extend(content.languages.iter().map(|page| FeedItem {
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        path: format!("/languages/{}/", page.data.slug),
+        last_verified: page.data.last_verified,
+    }));
+    items.extend(
+        content
+            .comparisons
+            .iter()
+            .map(|page: &ComparisonPage| FeedItem {
+                title: page.data.title.clone(),
+                summary: page.data.summary.clone(),
+                path: format!("/comparisons/{}/", page.data.slug),
+                last_verified: page.data.last_verified,
+            }),
+    );
+    items.extend(content.guides.iter().map(|page: &GuidePage| FeedItem {
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        path: format!("/guides/{}/", page.data.slug),
+        last_verified: page.data.last_verified,
+    }));
+    items.extend(content.concepts.iter().map(|page: &ConceptPage| FeedItem {
+        title: page.data.title.clone(),
+        summary: page.data.summary.clone(),
+        path: format!("/concepts/{}/", page.data.slug),
+        last_verified: page.data.last_verified,
+    }));
+    items.sort_by(|a, b| {
+        b.last_verified
+            .cmp(&a.last_verified)
+            .then(a.title.cmp(&b.title))
+    });
+    items.truncate(30);
+    items
+}
+
+fn xml_response(body: String, content_type: &'static str) -> Response {
+    (
+        StatusCode::OK,
+        [(header::CONTENT_TYPE, HeaderValue::from_static(content_type))],
+        body,
+    )
+        .into_response()
+}
+
+fn escape(value: &str) -> String {
+    value
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+}
+
+fn escape_attr(value: &str) -> String {
+    escape(value).replace('\'', "&#39;")
+}
