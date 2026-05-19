@@ -4,12 +4,19 @@ slug: choosing-kotlin-for-android-jvm-and-multiplatform
 summary: A decision guide for teams evaluating Kotlin for Android apps, JVM services, Java modernization, or Kotlin Multiplatform shared-code projects.
 audience: Developers and teams deciding whether Kotlin should be their primary language for Android, JVM backend services, Java-adjacent modernization, or shared multiplatform application code.
 candidates:
+  - dart
   - kotlin
   - java
   - swift
   - typescript
   - csharp
 sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
   - title: Kotlin FAQ
     url: https://kotlinlang.org/docs/faq.html
     publisher: JetBrains
@@ -43,7 +50,7 @@ sources:
   - title: Swift About
     url: https://www.swift.org/about/
     publisher: Swift.org
-lastVerified: 2026-05-15
+lastVerified: 2026-05-19
 ---
 
 ## Start With The Platform
@@ -103,6 +110,12 @@ Before adopting KMP, answer:
 - Who owns Gradle, Kotlin plugin, Android Gradle Plugin, Xcode, and CI compatibility?
 - What is the rollback plan if the shared layer becomes harder to maintain than duplicated platform code?
 
+## Compare Flutter And Dart Separately
+
+Dart enters this decision through Flutter. Choose Flutter/Dart when the team wants one shared UI framework and one Dart application codebase across mobile, desktop, web, or embedded targets, and when Flutter's rendering, plugin, and platform-channel model is acceptable.
+
+That is different from choosing Kotlin. Kotlin is usually the direct Android and JVM choice. Kotlin Multiplatform is usually a shared-business-logic choice where Android UI remains Kotlin and iOS UI often remains Swift. Flutter can share more UI, but the team must evaluate platform fidelity, native plugins, app size, accessibility, release tooling, and whether platform-specific work will erode the benefit of a shared UI layer.
+
 ## Use Kotlin With Java Deliberately
 
 Kotlin's Java interoperability is a major adoption advantage, but mixed projects still need conventions. Define how nullability annotations are used, whether public APIs must be friendly to Java callers, how generated code is handled, and where coroutines cross Java blocking APIs.
@@ -132,5 +145,7 @@ Start with Kotlin for JVM services when Java ecosystem access matters and the te
 Start with Java when the JVM is required but the team values conservative language evolution and broad Java readability more than Kotlin features.
 
 Start with Swift for Apple-platform UI and platform-specific app code.
+
+Start with Flutter/Dart when shared UI across platforms is the product requirement and the team is ready to own Flutter's framework boundary.
 
 Start with Kotlin Multiplatform only when there is a clear shared domain layer and the team is ready to own platform boundaries instead of pretending they disappear.

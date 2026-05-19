@@ -1,0 +1,235 @@
+---
+title: Dart
+slug: dart
+status: active
+summary: Dart is a Google-developed, soundly typed application language built around the Dart VM, ahead-of-time native compilation, JavaScript and WebAssembly web compilation, and Flutter's multi-platform UI framework.
+firstReleased: 2011
+creators:
+  - Google
+paradigms:
+  - object-oriented
+  - imperative
+  - functional
+  - concurrent
+typing:
+  discipline: static
+  strength: sound with optional type annotations and sound null safety
+memory:
+  model: managed by the Dart runtime garbage collector
+runtime:
+  model: Dart VM with JIT for development, AOT native compilation for production, JavaScript or WebAssembly for web targets
+officialSite: https://dart.dev/
+repository: https://github.com/dart-lang/sdk
+packageManagers:
+  - pub
+  - pub.dev
+  - Flutter SDK
+comparedWith:
+  - typescript
+  - kotlin
+  - swift
+  - javascript
+  - csharp
+bestFor:
+  - Flutter applications that need one Dart codebase for mobile, desktop, web, or embedded UI surfaces.
+  - Client-heavy apps where hot reload during development and AOT-compiled production builds are both valuable.
+  - Dart command-line, server, or tooling code that benefits from the Dart SDK, pub packages, and a consistent language across app and support code.
+  - Teams that want a sound static type system, sound null safety, async/await, isolates, and managed memory without leaving Flutter's ecosystem.
+poorFit:
+  - Browser or Node.js projects whose main dependency surface is ordinary npm packages and JavaScript framework conventions.
+  - Native Android apps that need the most direct Jetpack, Compose, Kotlin, Java, and Android Studio path.
+  - Apple-platform apps that need the most direct Swift, SwiftUI, UIKit, AppKit, Xcode, and Apple SDK integration.
+  - Backend services where hiring, libraries, observability, or operations are already centered on Go, Java, Kotlin, C#, TypeScript, Python, or Rust.
+  - Low-level systems software, kernels, firmware, or hard real-time code where manual layout, native ABI control, or no managed runtime is required.
+sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: Introduction to Dart
+    url: https://dart.dev/language
+    publisher: Dart
+  - title: The Dart type system
+    url: https://dart.dev/language/type-system
+    publisher: Dart
+  - title: Understanding null safety
+    url: https://dart.dev/null-safety/understanding-null-safety
+    publisher: Dart
+  - title: Concurrency in Dart
+    url: https://dart.dev/language/concurrency
+    publisher: Dart
+  - title: Libraries and imports
+    url: https://dart.dev/language/libraries
+    publisher: Dart
+  - title: Dart SDK overview
+    url: https://dart.dev/tools/sdk
+    publisher: Dart
+  - title: dart compile
+    url: https://dart.dev/tools/dart-compile
+    publisher: Dart
+  - title: How to use packages
+    url: https://dart.dev/tools/pub/packages
+    publisher: Dart
+  - title: The pubspec file
+    url: https://dart.dev/tools/pub/pubspec
+    publisher: Dart
+  - title: Dart language specification
+    url: https://dart.dev/resources/language/spec
+    publisher: Dart
+  - title: Dart language evolution
+    url: https://dart.dev/resources/language/evolution
+    publisher: Dart
+  - title: Dart SDK repository
+    url: https://github.com/dart-lang/sdk
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
+  - title: Flutter supported deployment platforms
+    url: https://docs.flutter.dev/reference/supported-platforms
+    publisher: Flutter
+lastVerified: 2026-05-19
+---
+
+## Origin And Design Goals
+
+Dart was created at Google and publicly introduced in 2011. Its current design center is application development across native and web targets, with Flutter as the largest ecosystem driver. Dart is not only a syntax layer over another language: the Dart platform includes a language, core libraries, command-line tools, a virtual machine, compilers, analyzer tooling, package management through pub, and integration with Flutter.
+
+The language is optimized for a specific workflow: fast development feedback through the Dart VM, hot reload in Flutter, static analysis before code runs, sound null safety, and deployable builds that can be compiled ahead of time for native targets or compiled to JavaScript or WebAssembly for the web. That makes Dart most compelling when the product decision is really a Flutter decision or when a team wants Dart across app, command-line, and support code.
+
+## Runtime, VM, And Compilation
+
+Dart's runtime story depends on the target. During development on native platforms, Dart commonly runs on the Dart VM with just-in-time compilation, incremental recompilation, debugging support, DevTools integration, and the developer loop that powers Flutter hot reload. For production native builds, Dart can be ahead-of-time compiled to machine code and run inside a small Dart runtime that handles type-system enforcement and garbage collection.
+
+For web targets, Dart compiles to JavaScript for ordinary browser execution and can also compile to WebAssembly for compatible workloads. Web compilation is useful for Flutter web and Dart web apps, but it does not make Dart the same kind of direct browser language that JavaScript is. Browser APIs, bundle size, debugging behavior, package compatibility, and JavaScript interop still shape the decision.
+
+The `dart compile` tool exposes several outputs, including native executables, AOT snapshots, JIT snapshots, kernel modules, JavaScript, and WebAssembly. For many Flutter projects, the Flutter tooling wraps those lower-level details, but production teams still need to know which compiler path their app uses.
+
+## Type System And Null Safety
+
+Dart is statically typed and type safe, with optional type annotations because local inference can determine many types. The analyzer catches type errors before runtime, while runtime checks remain part of the model for cases involving dynamic values, casts, generics, and interop boundaries.
+
+Modern Dart has sound null safety. Non-nullable types cannot hold `null` unless the type explicitly permits it with `?`. This pushes many null-related mistakes into static analysis and makes nullable boundaries visible in ordinary code. The practical escape hatches are still worth respecting: `dynamic`, casts, late initialization, generated code, platform channels, JSON, and external inputs need validation and review.
+
+Dart's object model includes classes, interfaces through class declarations, mixins, extension methods, generics, enums, records, patterns, and sealed or final class modifiers. It is familiar to developers coming from Java, C#, TypeScript, Kotlin, or Swift, but its ecosystem conventions are shaped by Flutter widgets, pub packages, async APIs, and Dart analyzer rules.
+
+## Concurrency And Async
+
+Dart uses an event-loop model for asynchronous work. `Future`, `Stream`, and `async`/`await` are the normal tools for I/O, UI events, timers, and request-style workflows. This is a good fit for responsive client applications and many command-line or server tasks, but it still requires attention to cancellation, error handling, backpressure, and blocking work.
+
+Parallel execution uses isolates. Each isolate has its own memory and event loop, and isolates communicate by messages rather than shared mutable memory. That design reduces shared-memory data race risks, but it also means developers must plan data transfer, serialization, isolate startup cost, worker lifetimes, and platform differences, especially on the web.
+
+## Syntax Example
+
+```dart
+class CheckResult {
+  const CheckResult(this.name, this.status);
+
+  final String name;
+  final int status;
+}
+
+sealed class Health {
+  const Health();
+}
+
+final class Ok extends Health {
+  const Ok(this.result);
+
+  final CheckResult result;
+}
+
+final class Failed extends Health {
+  const Failed(this.name, this.reason);
+
+  final String name;
+  final String reason;
+}
+
+Health parseStatus(String name, String? rawStatus) {
+  final status = int.tryParse(rawStatus ?? '');
+
+  if (status == null) {
+    return Failed(name, 'missing or invalid status');
+  }
+
+  if (status >= 200 && status < 400) {
+    return Ok(CheckResult(name, status));
+  }
+
+  return Failed(name, 'unexpected HTTP status $status');
+}
+
+void main() {
+  final reports = [
+    parseStatus('Dart', '200'),
+    parseStatus('Example', null),
+    parseStatus('Archive', '503'),
+  ];
+
+  for (final report in reports) {
+    if (report is Ok) {
+      print('${report.result.name}: ok');
+    } else if (report is Failed) {
+      print('${report.name}: ${report.reason}');
+    }
+  }
+}
+```
+
+This example shows ordinary Dart features: classes, `final` fields, null-aware fallback, nullable input, sealed result types, type promotion after `is` checks, string interpolation, and a top-level `main()`.
+
+## Tooling, Packages, And Builds
+
+The Dart SDK includes the `dart` command, core libraries, analyzer, formatter, test and documentation workflows, package commands, and compilation tools. Flutter developers normally install the Flutter SDK, which includes the Dart SDK and adds Flutter-specific project, build, device, and hot-reload tooling.
+
+Dart packages are described by `pubspec.yaml` and managed with pub. Public packages are commonly published on pub.dev, while dependencies can also come from local paths, hosted package repositories, or Git. Pub resolves package versions against the SDK constraint, writes lockfiles for applications, and supports common commands such as `dart pub get`, `dart pub upgrade`, and `dart pub publish`.
+
+The ecosystem is strongest where Dart and Flutter are strongest: Flutter UI, mobile apps, UI-adjacent client code, code generation, state management, routing, platform plugins, testing, and app tooling. General Dart server and command-line development exists, but teams should evaluate library depth, operations practice, hiring, and long-term maintenance against alternatives with larger backend ecosystems.
+
+## Flutter And Cross-Platform UI
+
+Flutter is the main reason many teams choose Dart. It is an open-source UI framework for building multi-platform applications from a single codebase, with deployment targets that include mobile, web, desktop, and embedded devices. Flutter's appeal is not only shared language code; it is a shared rendering and widget model that can reduce duplicated UI work across platforms.
+
+That comes with a product tradeoff. Flutter can give a team one UI framework and one Dart codebase, but the application still has platform-specific responsibilities: app signing, store release rules, native plugins, platform permissions, accessibility behavior, OS lifecycle, performance profiling, and platform design expectations. A serious Flutter decision should evaluate the framework, package ecosystem, plugin health, and platform fidelity, not just Dart syntax.
+
+## Web, Server, And Command-Line Dart
+
+Dart can be used for non-Flutter web apps, command-line tools, and server programs. The SDK documentation covers web, command-line, and server development, and pub.dev has packages for HTTP, testing, serialization, database access, and tooling. Dart's language consistency can be attractive when Flutter app code and support tools share models or validation logic.
+
+For browser-first and Node-first products, TypeScript is usually the default comparison. TypeScript has direct access to the JavaScript runtime, npm package conventions, and mainstream frontend framework examples. Dart can compile to web targets, but if Flutter is not part of the reason, the team should prove that Dart's language and tooling benefits outweigh the distance from the JavaScript ecosystem.
+
+For backend services, Dart should be chosen deliberately. It can work, especially for teams already fluent in Dart, but it is not the lowest-risk generic backend default when the organization's libraries, observability, hiring, deployment patterns, and incident response are already centered on Go, Java, Kotlin, C#, TypeScript, Python, or Rust.
+
+## Governance, Releases, And Implementation
+
+Dart is developed by Google in the open, with the SDK repository containing the VM, JavaScript and WebAssembly compilers, analyzer, core libraries, tools, and tests. The formal Dart 3 specification is still being incorporated into the current specification materials, while newer language features are commonly described through informal language feature specifications in the Dart language repository.
+
+The Dart SDK support policy is intentionally narrow: the Dart team supports only the latest stable version, with stable releases shipping on an average cadence of about three months and patch releases as needed for the currently supported version. As of this verification, Dart documentation states that examples assume Dart SDK 3.12.0 unless otherwise noted.
+
+## Best-Fit Use Cases
+
+Dart is a strong fit for:
+
+- Flutter mobile, desktop, web, or embedded applications where shared UI and a single app language are important.
+- Teams that want hot reload during development and AOT native compilation for production releases.
+- Client-heavy products where Dart models, validation, app logic, and tooling can be shared cleanly.
+- Flutter-adjacent command-line tools, code generation, tests, and support services.
+- Developers who value a sound static type system, sound null safety, managed memory, async/await, and isolate-based parallelism.
+
+## Poor-Fit Or Risky Use Cases
+
+Dart can be a poor fit when:
+
+- The project is fundamentally a JavaScript, TypeScript, npm, browser-framework, or Node.js ecosystem project.
+- The product needs the most native Android or Apple-platform integration and the team does not want Flutter's abstraction layer.
+- Backend ecosystem depth, hiring pool, production operations, or organization-wide platform standards matter more than sharing Dart with app code.
+- Required packages or plugins are immature, abandoned, unavailable on the target platform, or difficult to debug.
+- The app depends heavily on platform-specific UI, native SDK behavior, custom rendering, or plugin code that erodes the benefit of shared Flutter UI.
+
+## Comparison Notes
+
+TypeScript is the closest comparison when the target is browser, Node.js, or JavaScript ecosystem work. Dart provides its own runtime and stronger production story through Flutter, AOT compilation, and pub tooling. TypeScript stays closer to JavaScript runtime behavior, npm packages, and mainstream web framework conventions.
+
+Kotlin is the closest comparison for Android and shared mobile logic. Kotlin is the default modern Android language and connects directly to the JVM, Java libraries, Jetpack, Compose, and Kotlin Multiplatform. Dart is usually chosen when Flutter's shared UI framework is the real requirement.
+
+Swift is the closest comparison for Apple-platform apps. Swift is the direct route to SwiftUI, UIKit, AppKit, Xcode, and Apple SDKs. Dart enters the Apple-platform decision through Flutter, where shared UI and cross-platform delivery are worth the extra framework boundary.

@@ -44,6 +44,7 @@ Observed on 2026-05-16:
   - Ruby
   - R
   - Bash / Shell
+  - Dart
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -61,6 +62,8 @@ Observed on 2026-05-16:
   - Python vs Ruby comparison
   - R vs Python for Data Analysis comparison
   - Shell vs Python for Scripts comparison
+  - Dart vs TypeScript comparison
+  - Dart vs Kotlin comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -462,11 +465,11 @@ continue with Phase 17.
 
 ### Phase 17 - Dart
 
-- [ ] Add a complete Dart page.
-- [ ] Cover Dart VM, AOT/JIT compilation, Flutter, package tooling, null
+- [x] Add a complete Dart page.
+- [x] Cover Dart VM, AOT/JIT compilation, Flutter, package tooling, null
       safety, web compilation, and ecosystem constraints outside Flutter.
-- [ ] Add Dart vs TypeScript and Dart vs Kotlin comparisons.
-- [ ] Add Dart to mobile and cross-platform guides.
+- [x] Add Dart vs TypeScript and Dart vs Kotlin comparisons.
+- [x] Add Dart to mobile and cross-platform guides.
 
 ### Phase 18 - Lua
 

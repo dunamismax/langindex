@@ -26,6 +26,7 @@ packageManagers:
   - Maven Central
   - npm
 comparedWith:
+  - dart
   - java
   - swift
   - typescript
@@ -41,6 +42,12 @@ poorFit:
   - Cross-platform UI or native-platform projects that require the lowest possible platform abstraction risk and cannot tolerate evolving Kotlin Multiplatform, Compose Multiplatform, or native interop constraints.
   - Low-level systems software, kernels, hard real-time code, or embedded firmware where Kotlin's managed or compiler-runtime model is not the deployment contract.
 sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
   - title: Kotlin FAQ
     url: https://kotlinlang.org/docs/faq.html
     publisher: JetBrains
@@ -86,7 +93,7 @@ sources:
   - title: Kotlin Foundation Structure
     url: https://kotlinfoundation.org/structure/
     publisher: Kotlin Foundation
-lastVerified: 2026-05-15
+lastVerified: 2026-05-19
 ---
 
 ## Origin And Design Goals
@@ -240,3 +247,5 @@ Java is the closest JVM comparison. Kotlin offers null-safety features, less boi
 Swift is the closest mobile-platform comparison. Kotlin is strongest for Android, JVM, and shared multiplatform logic. Swift is strongest for Apple-platform applications and first-party Apple frameworks. Kotlin Multiplatform can connect Android and iOS codebases, but it does not replace Swift for native Apple UI and platform integration.
 
 TypeScript is a comparison when the target is web, Node.js, or shared frontend/backend JavaScript. Kotlin/JS exists, but TypeScript is usually the direct default for JavaScript ecosystems unless Kotlin's multiplatform or JVM connection is the real reason for the choice.
+
+Dart is a comparison when the real question is Flutter versus native Android, JVM, or Kotlin Multiplatform. Dart is usually strongest when Flutter's shared UI model is the project requirement. Kotlin is usually stronger when Android, JVM, Java interoperability, native platform UI, or shared business logic through KMP is the center of the decision.

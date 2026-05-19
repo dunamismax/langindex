@@ -1,0 +1,101 @@
+---
+title: Dart vs TypeScript
+slug: dart-vs-typescript
+summary: Dart and TypeScript both give teams static checks for application code, but Dart is a language and runtime platform shaped by Flutter while TypeScript is an erasable type layer over JavaScript runtimes and npm ecosystems.
+languages:
+  - dart
+  - typescript
+useCases:
+  - web applications
+  - cross-platform applications
+  - Flutter
+  - JavaScript ecosystem
+  - client applications
+sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: The Dart type system
+    url: https://dart.dev/language/type-system
+    publisher: Dart
+  - title: Dart SDK overview
+    url: https://dart.dev/tools/sdk
+    publisher: Dart
+  - title: dart compile
+    url: https://dart.dev/tools/dart-compile
+    publisher: Dart
+  - title: How to use packages
+    url: https://dart.dev/tools/pub/packages
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
+  - title: TypeScript Documentation
+    url: https://www.typescriptlang.org/docs/
+    publisher: Microsoft
+  - title: TypeScript for JavaScript Programmers
+    url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+    publisher: Microsoft
+  - title: TypeScript Design Goals
+    url: https://github.com/microsoft/TypeScript/wiki/TypeScript-Design-Goals
+    publisher: Microsoft
+  - title: TSConfig Reference
+    url: https://www.typescriptlang.org/tsconfig/
+    publisher: Microsoft
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing a source language for web, app, client, or shared-code work. It is not a generic static typing comparison. Dart is usually evaluated because of Flutter or the Dart platform. TypeScript is usually evaluated because the runtime and package ecosystem are JavaScript.
+
+## Shared Territory
+
+Dart and TypeScript both improve large application codebases by making program structure more explicit. Both support type inference, generics, classes, async/await, modern tooling, editor feedback, and incremental project workflows. Both can be used for browser-facing code, and both are common in client-heavy applications.
+
+The overlap ends at the runtime boundary. Dart brings its own SDK, runtime, compiler pipeline, package manager, and Flutter ecosystem. TypeScript compiles to JavaScript and intentionally preserves JavaScript runtime behavior. A TypeScript program runs where JavaScript runs; a Dart program runs through Dart's native, web, or Flutter toolchain.
+
+## Key Differences
+
+| Dimension        | Dart                                                   | TypeScript                                                   |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| Runtime model    | Dart VM, AOT native code, JavaScript, or WebAssembly   | JavaScript runtime after type erasure                        |
+| Type system      | Sound static type system with sound null safety        | Gradual structural type system for JavaScript                |
+| Main ecosystem   | Flutter, Dart SDK, pub.dev                             | Browsers, Node.js, npm, JavaScript frameworks                |
+| Web fit          | Flutter web or Dart web compilation                    | Direct fit for mainstream web and Node.js projects           |
+| Mobile fit       | Flutter apps across mobile and other targets           | Usually via React Native, Ionic, NativeScript, or web layers |
+| Package manager  | pub and `pubspec.yaml`                                 | npm-compatible package managers and `package.json`           |
+| Runtime checks   | Dart runtime and static analysis, plus normal input validation | Type annotations erased; runtime validation is separate |
+| Interop boundary | JavaScript interop, platform channels, Flutter plugins | Native JavaScript APIs and packages                          |
+
+## Choose Dart When
+
+- Flutter is the primary application framework.
+- Shared UI across mobile, desktop, web, or embedded targets is more valuable than direct platform UI code.
+- The team wants the Dart VM development cycle, Flutter hot reload, AOT native compilation, and pub packages.
+- A sound static type system and sound null safety are important language-level constraints.
+- Dart app code, models, tests, command-line tools, or generators can share one language cleanly.
+
+## Choose TypeScript When
+
+- The project is primarily a browser, Node.js, edge, or JavaScript framework application.
+- npm packages, JavaScript runtime behavior, and mainstream web examples are the daily ecosystem.
+- The team needs gradual adoption from existing JavaScript.
+- Type declarations and editor feedback are valuable, but production runtime compatibility must remain ordinary JavaScript.
+- Frameworks such as React, Angular, Vue, Next.js, Svelte, Remix, or Express define the project shape.
+
+## Web And Mobile Defaults
+
+For web applications that do not require Flutter, TypeScript is usually the pragmatic default. It keeps the project close to browser APIs, JavaScript debugging, npm packages, framework documentation, and deployment practices. Dart can target the web, but that choice needs a reason beyond wanting static types.
+
+For cross-platform mobile UI, Dart becomes a serious candidate through Flutter. TypeScript can reach mobile through frameworks such as React Native or web-wrapper approaches, but that is a framework decision rather than a TypeScript language feature. Compare the UI framework, native integration model, plugin health, performance profile, and team experience before comparing syntax.
+
+## Migration Or Interoperability Notes
+
+Dart and TypeScript can coexist at platform boundaries. A Flutter app can call web APIs in Flutter web, communicate with backend TypeScript services over HTTP or generated clients, or embed native platform plugins. A TypeScript app can consume APIs produced by Dart services or tools.
+
+Direct source migration is rarely mechanical. Dart has a different package manager, runtime, class and library model, null-safety model, Flutter widget conventions, and deployment pipeline. TypeScript has JavaScript's module system, runtime object behavior, npm dependency graph, and type erasure. Treat migration as a product and framework rewrite unless the shared surface is limited to generated data models or protocol clients.
+
+## Practical Default
+
+Use TypeScript for ordinary web and Node.js applications. Use Dart when Flutter or the Dart platform is the central reason for the project. If both are plausible, decide from the framework and runtime boundary first, then evaluate the language ergonomics.

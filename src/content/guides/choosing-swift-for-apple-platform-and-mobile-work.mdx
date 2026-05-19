@@ -11,6 +11,15 @@ candidates:
   - csharp
   - typescript
 sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
+  - title: Flutter supported deployment platforms
+    url: https://docs.flutter.dev/reference/supported-platforms
+    publisher: Flutter
   - title: Swift Programming Language
     url: https://www.swift.org/
     publisher: Swift.org
@@ -41,7 +50,7 @@ sources:
   - title: Android's Kotlin-first approach
     url: https://developer.android.com/kotlin/first
     publisher: Android Developers
-lastVerified: 2026-05-15
+lastVerified: 2026-05-19
 ---
 
 ## Start With The Platform
@@ -114,6 +123,12 @@ Compare options by boundary:
 - Flutter/Dart or .NET MAUI/C# can share more UI, but the product then depends on that framework's platform fidelity and release model.
 - TypeScript is often a better shared language for web and API-adjacent code than native mobile UI.
 
+## Evaluate Flutter And Dart When UI Sharing Is The Goal
+
+Dart is most relevant to Swift teams through Flutter. Choose Flutter/Dart when the product benefits from a shared UI framework across iOS, Android, desktop, web, or embedded targets, and when the team accepts Flutter's widget model, rendering layer, plugin ecosystem, and platform-channel boundary.
+
+Keep Swift as the default when Apple-platform UI quality, SwiftUI, UIKit, AppKit, Xcode debugging, first-party SDK access, or native platform conventions are the main risk. A Flutter app may still need Swift or Objective-C code for plugins, platform-specific integrations, signing, release workflows, and OS-level behavior.
+
 ## Server-Side Swift
 
 Server-side Swift is worth evaluating when Swift knowledge, shared Swift packages, or native performance characteristics are real advantages. Swift.org has a server workgroup, server guides, Linux tooling, and packages for networking, logging, metrics, tracing, OpenAPI, and frameworks.
@@ -150,4 +165,4 @@ Start with Kotlin for Android app code.
 
 Keep Objective-C for legacy Apple code that is stable, runtime-heavy, or expensive to migrate.
 
-Evaluate Kotlin Multiplatform, Flutter/Dart, .NET MAUI/C#, or TypeScript-based approaches only after identifying exactly which code should be shared and which platform-specific work remains.
+Evaluate Flutter/Dart, Kotlin Multiplatform, .NET MAUI/C#, or TypeScript-based approaches only after identifying exactly which code should be shared and which platform-specific work remains.

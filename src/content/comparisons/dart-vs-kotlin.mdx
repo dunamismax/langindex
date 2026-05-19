@@ -1,0 +1,117 @@
+---
+title: Dart vs Kotlin
+slug: dart-vs-kotlin
+summary: Dart and Kotlin are both modern, statically typed application languages with strong mobile stories, but Dart centers Flutter and the Dart runtime while Kotlin centers Android, JVM, Java interop, and Kotlin Multiplatform shared code.
+languages:
+  - dart
+  - kotlin
+useCases:
+  - mobile applications
+  - Android
+  - cross-platform mobile
+  - shared business logic
+  - JVM services
+  - Flutter
+sources:
+  - title: Dart overview
+    url: https://dart.dev/overview
+    publisher: Dart
+  - title: The Dart type system
+    url: https://dart.dev/language/type-system
+    publisher: Dart
+  - title: Concurrency in Dart
+    url: https://dart.dev/language/concurrency
+    publisher: Dart
+  - title: Dart SDK overview
+    url: https://dart.dev/tools/sdk
+    publisher: Dart
+  - title: Flutter
+    url: https://flutter.dev/
+    publisher: Flutter
+  - title: Flutter supported deployment platforms
+    url: https://docs.flutter.dev/reference/supported-platforms
+    publisher: Flutter
+  - title: Kotlin FAQ
+    url: https://kotlinlang.org/docs/faq.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Kotlin/Native
+    url: https://kotlinlang.org/docs/native-overview.html
+    publisher: JetBrains
+  - title: Kotlin/JavaScript
+    url: https://kotlinlang.org/docs/js-overview.html
+    publisher: JetBrains
+  - title: Coroutines
+    url: https://kotlinlang.org/docs/coroutines-overview.html
+    publisher: JetBrains
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing between Flutter/Dart and Kotlin-centered development for mobile, cross-platform, Android, shared-code, or JVM-adjacent work. It is not a claim that one language is universally better. The real choice is usually Flutter shared UI versus Kotlin's Android, JVM, Java interop, and multiplatform shared-logic model.
+
+## Shared Territory
+
+Dart and Kotlin are both statically typed, garbage-collected application languages with null-safety features, type inference, classes, generics, async programming support, package ecosystems, IDE-centered workflows, and strong mobile identities. Both can target more than one platform, and both can be used to reduce duplicated application logic.
+
+The practical distinction is the center of gravity. Dart's center is Flutter and the Dart runtime. Kotlin's center is Android, JVM, Java interoperability, Gradle, Maven Central, and Kotlin Multiplatform. A team choosing between them should compare framework boundaries, platform ownership, build complexity, and ecosystem fit before comparing syntax.
+
+## Key Differences
+
+| Dimension           | Dart                                                          | Kotlin                                                        |
+| ------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| Main mobile path    | Flutter shared UI written in Dart                             | Native Android with Kotlin; shared logic through KMP          |
+| Runtime targets     | Dart VM, AOT native code, JavaScript, WebAssembly             | JVM, Android, JavaScript, Wasm, Native                        |
+| Type system         | Sound static typing with sound null safety                    | Static typing with nullable and non-nullable types            |
+| Concurrency         | Event loop, async/await, futures, streams, isolates           | Coroutines, flows, structured concurrency libraries, JVM APIs |
+| Package ecosystem   | pub.dev, Flutter packages, Dart SDK packages                  | Gradle, Maven Central, Java libraries, Kotlin libraries       |
+| Platform interop    | Flutter platform channels, plugins, JS interop, native FFI    | Java interop, Android APIs, Kotlin/Native interop             |
+| Best-known use      | Multi-platform UI apps through Flutter                        | Android apps, JVM services, Java modernization, KMP           |
+| Main risk           | Flutter abstraction and package/plugin fit                    | Gradle/KMP complexity and platform-boundary management        |
+
+## Choose Dart When
+
+- Flutter is the intended UI framework.
+- Sharing UI and application code across iOS, Android, desktop, web, or embedded targets is the main goal.
+- The team accepts Flutter's rendering, plugin, platform-channel, and release model.
+- Hot reload, one widget system, and one Dart codebase are more valuable than fully native UI stacks.
+- Existing app architecture can keep platform-specific integrations small and deliberate.
+
+## Choose Kotlin When
+
+- Android is the primary platform and native Android APIs, Jetpack, Compose, Android Studio, and Gradle are central.
+- JVM libraries, Java interoperability, Maven Central, Spring, Ktor, or existing Java infrastructure matter.
+- The team wants to share business logic across platforms with Kotlin Multiplatform while keeping platform-native UI.
+- Java code can be modernized incrementally without changing the whole app framework.
+- Coroutine-based async code fits the app or backend architecture.
+
+## Flutter Versus Kotlin Multiplatform
+
+Flutter and Kotlin Multiplatform solve different sharing problems. Flutter usually shares the UI framework and much of the app code. Kotlin Multiplatform usually shares domain logic, models, networking, validation, persistence abstractions, or other platform-neutral code while native UI remains in Kotlin on Android and Swift on iOS.
+
+Flutter can reduce duplicated UI work, but it introduces a framework layer between the product and each platform. KMP keeps platform UI direct, but it may leave more duplicated UI work and requires teams to own Gradle, target-specific dependencies, native interop, and source-set boundaries. The better fit depends on what should actually be shared.
+
+## Backend And Tooling Notes
+
+For backend services, Kotlin has the more established default story because it inherits JVM deployment, Java libraries, mature observability tools, Gradle or Maven builds, and frameworks such as Spring and Ktor. Dart can be used for server and command-line programs, especially by Dart-fluent teams, but it should be evaluated against library depth, operations practice, and hiring needs.
+
+For build ownership, neither option is free. Flutter projects still involve Flutter SDK versions, platform SDKs, plugins, native build systems, signing, store releases, and platform testing. Kotlin projects may involve Gradle, Android Gradle Plugin, compiler plugin versions, Compose, KSP or kapt, Maven dependencies, and KMP target configuration.
+
+## Migration Or Interoperability Notes
+
+A product can use both languages. A common split is Flutter/Dart for a cross-platform app with Kotlin plugin code on Android, or native Kotlin Android plus Swift iOS with a Kotlin Multiplatform shared module. Backend services can expose APIs consumed by either Dart or Kotlin clients.
+
+Migration from native Kotlin Android to Flutter is an app-framework migration, not a language-only rewrite. Migration from Flutter to native Kotlin/Swift similarly changes UI architecture, navigation, accessibility, testing, platform integration, and release workflows. Keep migration plans scoped around screens, modules, and platform boundaries rather than assuming syntax similarity will carry the work.
+
+## Practical Default
+
+Use Kotlin for native Android and JVM-centered work. Use Dart when Flutter's shared UI model is the project requirement. Use Kotlin Multiplatform when shared business logic is valuable but platform-native UI and platform ownership should remain direct.
