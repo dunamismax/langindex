@@ -46,6 +46,7 @@ Observed on 2026-05-16:
   - Bash / Shell
   - Dart
   - Lua
+  - Scala
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -67,6 +68,8 @@ Observed on 2026-05-16:
   - Dart vs Kotlin comparison
   - Lua vs JavaScript comparison
   - Lua vs Python comparison
+  - Scala vs Java comparison
+  - Scala vs Kotlin comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -485,12 +488,12 @@ continue with Phase 17.
 
 ### Phase 19 - Scala
 
-- [ ] Add a complete Scala page.
-- [ ] Cover JVM target, functional/object-oriented blend, type system,
+- [x] Add a complete Scala page.
+- [x] Cover JVM target, functional/object-oriented blend, type system,
       implicits/givens, sbt, ecosystem, Akka/Pekko, Spark, and Scala 2 to 3
       migration considerations.
-- [ ] Add Scala vs Java and Scala vs Kotlin comparisons.
-- [ ] Add Scala to JVM and data/backend guides.
+- [x] Add Scala vs Java and Scala vs Kotlin comparisons.
+- [x] Add Scala to JVM and data/backend guides.
 
 ### Phase 20 - Perl
 

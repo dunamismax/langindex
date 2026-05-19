@@ -1,0 +1,113 @@
+---
+title: Scala vs Java
+slug: scala-vs-java
+summary: "Scala and Java share the JVM, but Java is the conservative baseline while Scala adds functional programming, richer type-system features, concise domain modeling, and more build and onboarding complexity."
+languages:
+  - scala
+  - java
+useCases:
+  - JVM applications
+  - backend services
+  - enterprise applications
+  - distributed systems
+  - data engineering
+sources:
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Given Instances
+    url: https://docs.scala-lang.org/scala3/reference/contextual/givens.html
+    publisher: Scala Documentation
+  - title: JDK Compatibility
+    url: https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+    publisher: Scala Documentation
+  - title: Scala 3 Migration Guide - Compatibility Reference
+    url: https://docs.scala-lang.org/scala3/guides/migration/compatibility-intro.html
+    publisher: Scala Documentation
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: sbt
+    url: https://www.scala-sbt.org/
+    publisher: sbt
+  - title: Apache Spark Overview
+    url: https://spark.apache.org/docs/latest/index.html
+    publisher: Apache Spark
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing between Java and Scala on the JVM. It assumes the JVM is already a plausible runtime for the product. If the real question is whether to use a managed VM, native binary, browser runtime, or scripting language, compare Java and Scala together against Go, C#, Kotlin, Python, TypeScript, Rust, or another target.
+
+## Shared Territory
+
+Java and Scala both run on the JVM, use managed memory, interoperate with Java libraries, consume Maven artifacts, and fit backend, enterprise, data, and distributed-system workloads. Both can use JVM profilers, observability agents, containers, JDK tooling, databases, queues, HTTP libraries, and cloud SDKs.
+
+The decision is therefore not about whether one can do server-side work. It is about language surface, type-system ambition, compatibility expectations, team skill, build complexity, and ecosystem style.
+
+## Key Differences
+
+| Dimension        | Java                                                   | Scala                                                       |
+| ---------------- | ------------------------------------------------------ | ----------------------------------------------------------- |
+| JVM role         | Baseline language and specification center             | JVM language with Java interop and additional abstractions   |
+| Type system      | Static nominal typing with type-erased generics        | Static typing with inference, variance, path-dependent types, contextual abstractions, and Scala 3 union/intersection types |
+| Style            | Object-oriented, imperative, and increasingly functional | Object-oriented and functional from the core design         |
+| Data modeling    | Classes, records, sealed types, pattern matching       | Case classes, enums, sealed traits, pattern matching, ADT-style modeling |
+| Concurrency      | Threads, executors, virtual threads, JVM primitives    | JVM concurrency plus Futures, actor libraries, effect systems, and streaming libraries |
+| Build tooling    | Maven or Gradle                                        | sbt, Mill, Scala CLI, Maven or Gradle, with Scala-version cross-building concerns |
+| Learning curve   | Broadest JVM familiarity                               | Higher ceiling and higher onboarding cost                   |
+| Compatibility    | Conservative Java SE/JDK process                       | Scala release lines, Scala 2 to 3 migration, and Scala binary-version constraints |
+
+## Choose Java When
+
+- The team wants the conservative JVM default with the broadest hiring pool.
+- Existing frameworks, annotation processors, libraries, build plugins, or platform conventions are Java-first.
+- Long-term maintenance by mixed-experience teams is more important than concise syntax or advanced modeling.
+- Public JVM libraries need the most natural Java API surface possible.
+- The project wants fewer language-level and build-tool moving parts.
+
+## Choose Scala When
+
+- Functional programming, immutable modeling, pattern matching, type classes, or effect systems are central to the design.
+- The team is already committed to Spark, Akka, Pekko, Cats Effect, ZIO, FS2, http4s, or another Scala-centered stack.
+- The domain benefits from precise types and algebraic data modeling enough to justify the learning curve.
+- Java interoperability and JVM deployment are still required, but Java source code feels too limiting for the chosen abstractions.
+- The team can enforce a Scala style guide and keep advanced features proportionate.
+
+## Watch Points
+
+Java's main risk is not language weakness; it is framework and ceremony sprawl. A Java codebase can become heavy through dependency injection, generated code, reflection, framework defaults, and enterprise conventions that no longer serve the product.
+
+Scala's main risk is uncontrolled abstraction. Contextual values, type classes, custom operators, macros, and advanced types can clarify a well-designed library, but they can also hide control flow and make ordinary product changes difficult. Scala adoption should include code review norms about when abstraction earns its keep.
+
+Both languages still require JVM operations: JDK selection, heap sizing, GC observation, dependency governance, container sizing, runtime flags, and upgrade testing.
+
+## Backend And Enterprise Work
+
+For ordinary enterprise applications, Java is usually the safer starting point. It is readable to the broadest JVM audience and works directly with the widest range of Java-first tooling.
+
+Scala becomes compelling when the backend architecture intentionally uses functional effects, typed streaming, actor systems, domain-specific data models, or Spark-oriented data workflows. In those contexts, Scala's language features are not decoration; they are part of how the system expresses correctness and composition.
+
+## Data And Spark
+
+Scala has a special role in Spark-centered JVM data engineering. Spark exposes Scala APIs and examples, and Scala can be useful when teams need typed Datasets, JVM integration, or source-level familiarity with Spark internals.
+
+Java can also use Spark and JVM data libraries, but Java is usually not chosen for Spark expressiveness. If the data workflow is analyst-led or ML-framework-heavy, compare Scala with Python as well as Java.
+
+## Migration Or Interoperability Notes
+
+Java and Scala can coexist in one JVM system, but the boundary needs care. Scala APIs with default parameters, contextual abstractions, Scala collections, symbolic names, higher-kinded abstractions, or Scala-specific binary artifacts may be awkward from Java. If Java callers matter, test the public API from Java.
+
+Migrating Java to Scala should be incremental. Start with isolated modules, data transformations, tests, or Spark jobs where Scala's strengths are visible. Do not rewrite Java code only to change syntax.
+
+For existing Scala 2 projects, Scala 3 migration deserves its own plan. Check macros, compiler plugins, dependencies, binary versions, source syntax, and cross-building before treating the migration as a routine compiler bump.

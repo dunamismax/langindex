@@ -1,0 +1,121 @@
+---
+title: Scala vs Kotlin
+slug: scala-vs-kotlin
+summary: Scala and Kotlin are both modern JVM languages, but Kotlin optimizes for pragmatic Java interoperability and Android/JVM application work while Scala optimizes for functional programming, expressive types, and Spark or advanced JVM ecosystems.
+languages:
+  - scala
+  - kotlin
+useCases:
+  - JVM applications
+  - backend services
+  - Android
+  - data engineering
+  - functional programming
+  - Java modernization
+sources:
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Given Instances
+    url: https://docs.scala-lang.org/scala3/reference/contextual/givens.html
+    publisher: Scala Documentation
+  - title: Scala 3 Migration Guide - Compatibility Reference
+    url: https://docs.scala-lang.org/scala3/guides/migration/compatibility-intro.html
+    publisher: Scala Documentation
+  - title: Kotlin FAQ
+    url: https://kotlinlang.org/docs/faq.html
+    publisher: JetBrains
+  - title: Kotlin language specification
+    url: https://kotlinlang.org/spec/introduction.html
+    publisher: JetBrains
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+  - title: Null safety
+    url: https://kotlinlang.org/docs/null-safety.html
+    publisher: JetBrains
+  - title: Coroutines
+    url: https://kotlinlang.org/docs/coroutines-overview.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Android's Kotlin-first approach
+    url: https://developer.android.com/kotlin/first
+    publisher: Android Developers
+  - title: Apache Spark Overview
+    url: https://spark.apache.org/docs/latest/index.html
+    publisher: Apache Spark
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing between Scala and Kotlin on the JVM, Android-adjacent systems, backend services, Java modernization projects, or Spark/data workloads. It is not a general JVM comparison; Java remains the baseline alternative to both.
+
+## Shared Territory
+
+Scala and Kotlin both target the JVM, interoperate with Java, use managed memory, support classes and functional idioms, provide type inference, and can consume Java libraries from Maven Central. Both can be used for backend services and both can coexist with Java inside a larger JVM system.
+
+The practical difference is intent. Kotlin is usually chosen to make JVM and Android application code more concise and null-aware while staying close to Java teams. Scala is usually chosen when functional programming, expressive types, Spark, or a Scala-centered library ecosystem is the point.
+
+## Key Differences
+
+| Dimension          | Scala                                                     | Kotlin                                                     |
+| ------------------ | --------------------------------------------------------- | ---------------------------------------------------------- |
+| Design center      | Object-functional language with rich type-system features | Pragmatic JVM/Android language with Java interoperability  |
+| Android position   | Possible but not the platform default                     | Kotlin-first for modern Android guidance                   |
+| Nullability        | Uses `Option`, union types, annotations, and conventions; null still exists | Nullable and non-nullable types are central language features |
+| Context mechanisms | Givens, using clauses, type classes, contextual abstractions | Receivers, extension functions, annotations, compiler plugins, limited contextual features |
+| Concurrency style  | Futures, actors, effect systems, streaming libraries, JVM APIs | Coroutines, flows, structured concurrency libraries, JVM APIs |
+| Build ecosystem    | sbt, Mill, Scala CLI, Maven/Gradle, cross-building by Scala version | Gradle and Maven, especially Gradle for Android and multiplatform |
+| Data engineering   | Strong Spark association and JVM data-platform use        | JVM data work possible, but not Spark's center of gravity  |
+| Learning curve     | Higher ceiling and higher abstraction risk                | Lower adoption friction for Java and Android teams         |
+
+## Choose Scala When
+
+- The team intentionally wants functional programming, type classes, effect systems, or algebraic domain modeling.
+- Spark-centered data engineering, JVM distributed systems, or Scala libraries are central.
+- The codebase benefits from precise types and compile-time modeling enough to justify a steeper learning curve.
+- Akka, Pekko, Cats Effect, ZIO, FS2, http4s, or similar Scala ecosystems are part of the intended architecture.
+- The organization can own Scala versioning, cross-building, migration, and style discipline.
+
+## Choose Kotlin When
+
+- Android is a primary target or modern Android tooling is central.
+- The team wants Java interoperability with less ceremony, null-safety features, data classes, extension functions, and coroutines.
+- Incremental modernization of a Java codebase is the main goal.
+- Public APIs need to stay approachable to Java developers and broad JVM teams.
+- Gradle, Maven Central, Spring, Ktor, JetBrains tooling, or Kotlin Multiplatform fit the project better than Scala-specific ecosystems.
+
+## Watch Points
+
+Scala can be excellent when the team shares the same abstraction budget. Without that discipline, code review can become a debate over type-level cleverness instead of product behavior.
+
+Kotlin can look simpler than it is when Gradle, compiler plugins, annotation processing, coroutine cancellation, Java platform types, and multiplatform boundaries accumulate. Kotlin's lower language barrier does not remove JVM and build ownership.
+
+Both languages are less conservative than Java as a long-term default. For shared libraries or large mixed-experience organizations, Java may remain the best baseline unless Scala or Kotlin features directly serve the problem.
+
+## Backend And Data Work
+
+For backend services, Kotlin is often the smoother Java-adjacent choice. It works well with Spring, Ktor, Gradle, Maven, Java libraries, and teams that want less boilerplate without fully adopting a functional programming stack.
+
+Scala is stronger when the backend stack is explicitly functional, streaming-heavy, actor-based, or type-class-driven. It is also the more natural JVM language to evaluate for Spark-centered production jobs and data platforms where Scala APIs and Spark's Scala version constraints already matter.
+
+## Android And Multiplatform
+
+Kotlin is the practical default for new Android work because Android's current guidance and samples are Kotlin-first. Kotlin Multiplatform can share business logic across Android, iOS, JVM, JavaScript, Wasm, and Native targets.
+
+Scala can target more than the JVM through Scala.js and Scala Native, but it is not the mainstream Android or mobile-sharing choice. Choose Scala for mobile only when a specific Scala ecosystem or existing codebase justifies the extra platform friction.
+
+## Migration Or Interoperability Notes
+
+Scala and Kotlin can coexist through Java bytecode and Java-facing APIs, but mixing them in one codebase should be deliberate. Each language has its own compiler, metadata, collections expectations, build plugins, style, and interop edge cases.
+
+For Java modernization, Kotlin usually has the easier incremental path. For an existing Scala 2 system, Scala 3 migration is usually more realistic than replacing the language with Kotlin, unless the organization is intentionally exiting the Scala ecosystem.

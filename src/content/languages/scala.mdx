@@ -1,0 +1,231 @@
+---
+title: Scala
+slug: scala
+status: active
+summary: Scala is a statically typed, multi-paradigm language whose main production home is the JVM, combining object-oriented and functional programming with a rich type system, Java interoperability, and ecosystems for backend services, distributed systems, and Spark data work.
+firstReleased: 2004
+creators:
+  - Martin Odersky
+  - EPFL
+paradigms:
+  - object-oriented
+  - functional
+  - imperative
+  - concurrent
+typing:
+  discipline: static
+  strength: strong with nominal types, type inference, variance, path-dependent types, and contextual abstractions
+memory:
+  model: managed by target runtime, primarily JVM garbage collection
+runtime:
+  model: JVM bytecode by default, with Scala.js for JavaScript and Scala Native for native binaries
+officialSite: https://www.scala-lang.org/
+repository: https://github.com/scala/scala3
+packageManagers:
+  - sbt
+  - Scala CLI
+  - Coursier
+  - Mill
+  - Maven Central
+comparedWith:
+  - java
+  - kotlin
+  - python
+  - r
+bestFor:
+  - JVM backend services and distributed systems where the team wants stronger functional modeling, expressive types, and access to Java libraries.
+  - Apache Spark and JVM data engineering work where Scala APIs, typed Datasets, and JVM deployment are already part of the stack.
+  - Teams deliberately standardizing on functional programming libraries, effect systems, type classes, and algebraic data modeling.
+  - JVM libraries or applications that benefit from concise domain models, pattern matching, immutability, and Java interoperability.
+poorFit:
+  - Teams that want the simplest possible JVM language, broadest hiring pool, or lowest learning curve for ordinary enterprise code.
+  - New Android applications, where Kotlin has the clearer platform-centered default.
+  - Small scripts, small services, or short-lived tools where sbt, JVM startup, dependency cross-building, or type-system complexity would dominate the task.
+  - Scala 2 codebases that rely heavily on macros, compiler plugins, or unmaintained dependencies and cannot budget for Scala 3 migration work.
+sources:
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: 10 Years of Scala
+    url: https://www.scala-lang.org/blog/2014/01/22/10-years-of-scala.html
+    publisher: Scala
+  - title: Scala Core Team
+    url: https://www.scala-lang.org/scala-core/
+    publisher: Scala
+  - title: Scala 3.8.3
+    url: https://www.scala-lang.org/download/3.8.3.html
+    publisher: Scala
+  - title: JDK Compatibility
+    url: https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Given Instances
+    url: https://docs.scala-lang.org/scala3/reference/contextual/givens.html
+    publisher: Scala Documentation
+  - title: Scala 3 Migration Guide - Compatibility Reference
+    url: https://docs.scala-lang.org/scala3/guides/migration/compatibility-intro.html
+    publisher: Scala Documentation
+  - title: Process Specification
+    url: https://docs.scala-lang.org/sips/process-specification.html
+    publisher: Scala Documentation
+  - title: sbt
+    url: https://www.scala-sbt.org/
+    publisher: sbt
+  - title: Scala.js Documentation
+    url: https://www.scala-js.org/doc/index.html
+    publisher: Scala.js
+  - title: Scala Native
+    url: https://scala-native.org/en/stable/
+    publisher: Scala Native
+  - title: Apache Spark Overview
+    url: https://spark.apache.org/docs/latest/index.html
+    publisher: Apache Spark
+  - title: Spark SQL, DataFrames and Datasets Guide
+    url: https://spark.apache.org/docs/latest/sql-programming-guide
+    publisher: Apache Spark
+  - title: Apache Pekko Introduction to Actors
+    url: https://pekko.apache.org/docs/pekko/current/typed/actors.html
+    publisher: Apache Pekko
+  - title: Akka core licenses
+    url: https://doc.akka.io/libraries/akka-core/current/project/licenses.html
+    publisher: Akka
+lastVerified: 2026-05-19
+---
+
+## Origin And Design Goals
+
+Scala was created by Martin Odersky and collaborators at EPFL. Odersky's 2014 retrospective dates Scala's first release to January 20, 2004, and the current Scala Core Team page still identifies him as the language creator. The name and design both point at scalability: the language tries to stay useful from small scripts and libraries to large JVM applications.
+
+The core idea is a typed blend of object-oriented and functional programming. Scala keeps classes, traits, objects, methods, packages, inheritance, and Java interoperability, while also making functions values, encouraging immutable collections, supporting case classes, pattern matching, higher-order functions, type inference, and algebraic-style domain modeling.
+
+That combination is powerful, but it sets the adoption bar. Scala is most useful when the team intentionally wants its modeling tools and functional ecosystem, not merely a shorter Java syntax.
+
+## Runtime And Targets
+
+Scala's primary platform is the Java Virtual Machine. Scala source normally compiles to JVM bytecode, runs on a JVM, and can use Java libraries, JDK tooling, Maven artifacts, profilers, monitoring agents, and deployment practices. The Scala documentation also identifies Scala.js and Scala Native as supported platforms.
+
+Scala.js compiles Scala for JavaScript environments and is commonly managed through a Scala build tool. Scala Native is an ahead-of-time compiler and lightweight managed runtime for native binaries, with native-code interoperability and lower startup overhead than a JVM process. Those targets are real, but the mainstream production decision is still usually a JVM decision.
+
+On the JVM, Scala inherits managed memory, JIT behavior, class loading, garbage collection, and the operational questions of the surrounding Java platform. Production teams should pick the Scala line, JDK version, build tool, target artifact, and dependency policy together rather than treating Scala as independent of the JVM.
+
+## Type System And Language Model
+
+Scala is statically typed with local type inference and a rich type system. Everyday Scala includes classes, traits, objects, enums, case classes, pattern matching, generic types, variance annotations, higher-order functions, extension methods, and immutable collections. More advanced Scala uses path-dependent types, abstract type members, opaque types, union and intersection types, contextual abstractions, type classes, and compile-time derivation.
+
+Scala 3 reorganized several of Scala's most powerful features. Given instances and using clauses replace many Scala 2 implicit patterns with clearer contextual-abstraction syntax. The same mechanism can still make APIs hard to follow when overused, but it gives library authors a structured way to express type class instances, capability passing, dependency contexts, serializers, encoders, and other compiler-resolved values.
+
+The practical tradeoff is that Scala can model domains very precisely, but the local style guide matters. A restrained Scala codebase can be readable and maintainable. A codebase that mixes every advanced feature, symbolic operators, implicit conversions, macros, and deep generic abstractions can become expensive for newcomers and reviewers.
+
+## Object-Oriented And Functional Blend
+
+Scala is object-oriented in the sense that values are objects and behavior is described with classes and traits. It is functional in the sense that functions are values, higher-order functions are ordinary tools, immutable data structures are common, and pattern matching over algebraic-style data shapes is central to idiomatic code.
+
+This blend is why Scala often appears in two different production styles. Some teams use it as a concise JVM application language with case classes, pattern matching, collections, and Java libraries. Other teams use it as a functional programming platform with Cats, Cats Effect, ZIO, http4s, FS2, Doobie, refined domain types, and type class driven APIs.
+
+Both styles are legitimate, but they should not be mixed accidentally. A team choosing Scala should decide how much type-level and functional abstraction it wants in ordinary product code, public APIs, tests, and onboarding material.
+
+## Syntax Example
+
+```scala
+enum CheckResult:
+  case Ok(name: String, status: Int)
+  case Failed(name: String, reason: String)
+
+trait Parser[A]:
+  def parse(value: String): Option[A]
+
+given Parser[Int] with
+  def parse(value: String): Option[Int] = value.toIntOption
+
+def parseStatus(name: String, raw: String)(using parser: Parser[Int]): CheckResult =
+  parser.parse(raw) match
+    case Some(status) if status >= 200 && status < 400 =>
+      CheckResult.Ok(name, status)
+    case Some(status) =>
+      CheckResult.Failed(name, s"unexpected status $status")
+    case None =>
+      CheckResult.Failed(name, "missing or invalid status")
+
+@main def runStatusReport(): Unit =
+  val reports = List(
+    parseStatus("Scala", "200"),
+    parseStatus("Example", "503"),
+    parseStatus("Archive", "unknown")
+  )
+
+  reports.foreach:
+    case CheckResult.Ok(name, _) => println(s"$name: ok")
+    case CheckResult.Failed(name, reason) => println(s"$name: $reason")
+```
+
+This Scala 3 example uses enums, traits, a given instance, a using clause, pattern matching, string interpolation, and a top-level `@main` entry point. It is intentionally small; in production, teams should avoid introducing contextual abstractions unless they make the API clearer than an explicit parameter.
+
+## Tooling, Packages, And Builds
+
+sbt is the traditional Scala build tool and remains the most recognizable build surface for Scala projects. It supports Scala and Java projects, a Scala-based `build.sbt` DSL, Zinc incremental compilation, file-watch workflows, plugins, testing, publishing, and cross-building across Scala versions. Mill, Maven, Gradle, Coursier, and Scala CLI also appear in real projects depending on the team's preferences and ecosystem constraints.
+
+Dependency coordinates matter more in Scala than in plain Java because many Scala libraries are published for a Scala binary version. Cross-building is normal for libraries that support multiple Scala lines, especially during Scala 2.13 and Scala 3 migration periods. Spark adds another constraint: current Spark 4 documentation says Scala applications must use the same Scala version Spark was compiled for, and Spark 4.0.0 and later use Scala 2.13.
+
+Editor support is centered on IntelliJ IDEA and Metals-based language-server workflows. Build speed, incremental compilation, dependency resolution, generated code, and compiler plugins should be evaluated before assuming Scala will feel lightweight in a large repository.
+
+## Backend And Distributed Systems
+
+Scala is a practical backend language when the JVM is already a good fit and the team values expressive data modeling, functional composition, typed error handling, and access to Java libraries. It can use the same databases, queues, HTTP libraries, logging tools, metrics systems, profilers, and deployment environments as Java and Kotlin.
+
+The Scala backend ecosystem is split across several styles. Some teams use Play, Akka, Pekko, or Java frameworks. Others choose Typelevel libraries such as Cats Effect, http4s, FS2, and Doobie, or ZIO-centered stacks. These ecosystems can be productive, but they are not interchangeable. Choose the concurrency, effect, streaming, and HTTP model deliberately.
+
+Akka remains important historically and operationally, but current Akka documentation states that Akka is available under Business Source License 1.1. Apache Pekko is an Apache-licensed fork that provides actor-model APIs for Java and Scala and is a common evaluation point for teams that want Akka-style actors under Apache project governance.
+
+## Data Engineering And Spark
+
+Scala has a durable role in JVM data engineering because Apache Spark itself exposes Scala APIs, ships Scala examples, and runs on the JVM. Spark SQL and DataFrames are usable from Scala, Java, Python, and R, and Spark's execution engine is shared across APIs, but Scala remains useful when the team needs JVM integration, typed Dataset APIs, Spark internals familiarity, or libraries that sit close to Spark's native implementation language.
+
+That does not make Scala the default data language for every team. Python is often the easier choice for notebooks, analyst workflows, ML orchestration, and package availability. SQL is the better owner for relational transformations inside databases and warehouses. R is stronger for statistics-heavy analysis and reporting. Choose Scala for Spark-centered production jobs when JVM deployment, typed APIs, and Spark ecosystem fit outweigh Python's broader data-science ergonomics.
+
+## Scala 2 To Scala 3 Migration
+
+Scala 3 is a major language and compiler redesign, not a patch-level update. The official migration guide describes source, classpath, runtime, and metaprogramming compatibility questions, including interoperability between Scala 2.13 and Scala 3. Current Scala releases also include separate active lines: the current 3.8.x feature release, the 3.3.x LTS line, and Scala 2.13 maintenance releases.
+
+Migration risk depends on the codebase. Projects with ordinary application code, maintained libraries, and limited macro or compiler-plugin use can often migrate incrementally. Projects with Scala 2 macros, symbolic DSLs, custom compiler plugins, unmaintained dependencies, or deep implicit-heavy APIs need a real migration plan. Library maintainers may need cross-publishing, source compatibility decisions, and tests across Scala versions.
+
+Do not treat "Scala" as one compatibility target. Identify whether the project is Scala 2.12, Scala 2.13, Scala 3.3 LTS, or a newer Scala 3 feature line, and verify every important dependency against that choice.
+
+## Governance, Releases, And Stewardship
+
+Scala is developed through the Scala Core Team, compiler contributors, EPFL, Scala Center involvement, VirtusLab and other ecosystem contributors, and the broader community. Language changes go through the Scala Improvement Process. The SIP process covers Scala language syntax, type system, semantics, and the core standard library, with proposal documents, committee review, and staged acceptance.
+
+As of this verification, the Scala site lists Scala 3.8.3 as the latest release and Scala 3.3.7 as the latest LTS release. Scala 3.8 raises the minimum JDK to 17, while the documented 3.3 LTS through 3.7 lines support older JDKs. Production teams should separate language version selection from JDK version selection and choose the line that matches support, dependencies, and migration capacity.
+
+## Best-Fit Use Cases
+
+Scala is a strong fit for:
+
+- JVM backend services where functional modeling and Java ecosystem access are both valuable.
+- Spark and JVM data engineering jobs maintained by engineers comfortable with Scala and JVM builds.
+- Distributed systems, streaming systems, and typed concurrency stacks where Akka, Pekko, Cats Effect, ZIO, FS2, or similar libraries are central.
+- Libraries or applications that benefit from case classes, pattern matching, type classes, and precise domain modeling.
+- Teams prepared to own build tooling, dependency cross-building, style discipline, and onboarding.
+
+## Poor-Fit Or Risky Use Cases
+
+Scala can be a poor fit when:
+
+- The team wants the lowest-friction JVM default and does not need Scala's type-system or FP ecosystem.
+- Hiring, training, and code review need to optimize for the broadest Java or Kotlin familiarity.
+- The workload is a small script, simple service, or one-off tool where JVM and sbt setup outweigh language benefits.
+- Android is the center of the work; Kotlin is usually the better first evaluation.
+- The codebase is stuck on Scala 2 features, macros, plugins, or dependencies that have no maintained Scala 3 path.
+- The organization cannot keep Scala versions, JDK versions, build tools, and binary-compatible dependencies aligned.
+
+## Comparison Notes
+
+Java is the conservative JVM baseline. Scala gives stronger functional abstractions, concise domain modeling, pattern matching, type classes, and a richer type system. Java gives broader familiarity, simpler interop defaults, and a more conservative compatibility story.
+
+Kotlin is the closest modern JVM alternative for teams that want a more concise language than Java. Kotlin usually has the clearer Android and pragmatic Java-modernization story. Scala is usually the better fit when functional programming, type classes, Spark, or advanced type modeling are the reason for leaving Java.
+
+Python and R are the main data-work comparisons. Scala is strongest in Spark-centered production jobs and JVM data platforms. Python is usually stronger for notebooks, ML tooling, and general data ecosystem reach. R is usually stronger for statistics, reporting, and analyst-led research workflows.

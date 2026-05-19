@@ -9,6 +9,7 @@ candidates:
   - go
   - csharp
   - kotlin
+  - scala
   - python
   - typescript
 sources:
@@ -48,7 +49,19 @@ sources:
   - title: Android's Kotlin-first approach
     url: https://developer.android.com/kotlin/first
     publisher: Android Developers
-lastVerified: 2026-05-15
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: JDK Compatibility
+    url: https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+    publisher: Scala Documentation
+  - title: Scala 3 Migration Guide - Compatibility Reference
+    url: https://docs.scala-lang.org/scala3/guides/migration/compatibility-intro.html
+    publisher: Scala Documentation
+lastVerified: 2026-05-19
 ---
 
 ## Start With The Platform Constraint
@@ -98,7 +111,7 @@ Prefer Java as the JVM default when:
 - Long-term compatibility is more important than source-code concision.
 - A mixed-experience team needs predictable syntax and conservative language features.
 
-Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Scala or another JVM language only when the team intentionally wants that language's type system, ecosystem, and complexity budget.
+Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Scala when functional programming, type classes, Spark, actor systems, streaming libraries, or richer compile-time domain modeling are central enough to justify the learning curve and build complexity.
 
 ## Android And Mobile Context
 
@@ -130,6 +143,8 @@ Start with Go for smaller network services, CLIs, agents, and infrastructure too
 Start with C# when the organization is centered on .NET, Azure, ASP.NET Core, Windows desktop, or Unity.
 
 Start with Kotlin when the JVM is desired but source-code concision, null safety, Android-first development, or coroutines are central.
+
+Start with Scala when the JVM is desired and the system intentionally benefits from functional programming, richer types, Spark-centered data engineering, actor systems, or a Scala-specific backend ecosystem.
 
 Start with Python or TypeScript when the surrounding ecosystem, not the JVM, is the real reason for the language choice.
 
