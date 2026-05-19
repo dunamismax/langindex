@@ -1,0 +1,102 @@
+---
+title: Lua vs JavaScript
+slug: lua-vs-javascript
+summary: Lua and JavaScript are both dynamic, garbage-collected scripting languages, but Lua is usually chosen as a small embeddable extension language while JavaScript is usually chosen for browsers, Node.js, web tooling, and engines such as V8.
+languages:
+  - lua
+  - javascript
+useCases:
+  - embedded scripting
+  - game scripting
+  - plugin systems
+  - web applications
+  - host application extension
+sources:
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: LuaRocks Documentation
+    url: https://luarocks.org/docs
+    publisher: LuaRocks
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+  - title: ECMAScript Language Specification
+    url: https://tc39.es/ecma262/
+    publisher: Ecma TC39
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
+  - title: Getting started with embedding V8
+    url: https://v8.dev/docs/embed
+    publisher: V8
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing a scripting language for host application extension, game logic, plugins, automation, or web-adjacent work. It is not a claim that one language is generally better. Lua and JavaScript both work as dynamic scripting languages, but their default ecosystems point in different directions.
+
+Use Lua when the host application wants a small embedded language. Use JavaScript when browser, Node.js, npm, or an existing JavaScript engine is the center of the work.
+
+## Shared Territory
+
+Lua and JavaScript are dynamically typed, garbage-collected, and flexible enough for small scripts, callbacks, configuration-like code, and host-defined APIs. Both can represent data with table-like or object-like structures. Both support first-class functions, closures, modules, and runtime extension patterns. Both can be embedded in larger systems through engine APIs.
+
+The practical question is not whether either language can script behavior. The question is which runtime and ecosystem the host wants to own.
+
+## Key Differences
+
+| Dimension        | Lua                                                         | JavaScript                                                    |
+| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------- |
+| Main center      | Embedded scripting inside host applications                 | Browsers, Node.js, edge runtimes, tooling, and web platforms  |
+| Runtime shape    | Small C library plus standalone interpreter                 | ECMAScript engines such as V8, JavaScriptCore, and SpiderMonkey |
+| Data model       | Tables as arrays, maps, records, modules, and objects       | Objects, arrays, maps, prototypes, and host APIs              |
+| Extension model  | C API, userdata, host-registered functions, metatables      | Host objects, Web APIs, Node APIs, native addons, engine APIs |
+| Package center   | LuaRocks and host-specific distribution                     | npm-compatible package managers and package.json              |
+| Version risk     | Reference Lua 5.5/5.4, Lua 5.1, LuaJIT, Luau, host dialects | ECMAScript plus runtime and package compatibility             |
+| Web fit          | Indirect, usually through a host or special toolchain       | Direct language of browsers and common server JS runtimes     |
+| Game/plugin fit  | Longstanding embedded scripting role                        | Strong when the engine or tool already uses JS                |
+
+## Choose Lua When
+
+- The product is a C, C++, game, editor, database, media, or device host that needs an embedded scripting layer.
+- The scripting API should be small, domain-specific, and controlled by the host.
+- Startup size, embeddability, and simple C integration matter more than a large standard library.
+- Designers, modders, or plugin authors need a compact language for behavior while native code owns the heavy systems.
+- LuaJIT, Lua 5.4, Lua 5.5, or a Lua-derived host dialect is already part of the platform.
+
+## Choose JavaScript When
+
+- The product is browser, Node.js, edge, Electron, or web-framework centered.
+- npm packages, JavaScript examples, frontend integration, or TypeScript adoption matter.
+- The host already embeds a JavaScript engine such as V8 or exposes JavaScript APIs.
+- The same language should span UI code, backend code, build tooling, and package scripts.
+- Plugin authors are expected to come from a web development background.
+
+## Watch Points
+
+Lua's risk is ecosystem fragmentation across versions and hosts. A script written for Lua 5.5 may not run unchanged in a LuaJIT 5.1-style environment, a game engine's custom Lua, or Luau. Package compatibility and C modules also depend on the selected interpreter, ABI, and build environment.
+
+JavaScript's risk is runtime and dependency weight. V8 is embeddable, but embedding a modern JavaScript engine is a larger platform decision than embedding reference Lua. JavaScript also brings npm dependency management, module-format decisions, event-loop behavior, and host API design.
+
+For untrusted plugins, neither language is safe by default. The host must restrict accessible APIs, file and process access, CPU time, memory use, native extension loading, debug hooks, and network behavior.
+
+## Migration Or Interoperability Notes
+
+Lua and JavaScript usually meet through host boundaries, not direct source migration. A game engine might expose similar APIs to Lua and JavaScript plugins, but the data model, package manager, runtime lifecycle, and debugging workflow are different.
+
+If a host already has Lua plugins, migrating to JavaScript means changing the plugin ecosystem, version compatibility, documentation, examples, and support expectations. If a product is already JavaScript-centered, adding Lua should have a clear embedding or modding reason rather than being a second scripting language for the same tasks.
+
+## Practical Default
+
+Use Lua for small embedded scripting in applications that own their host APIs. Use JavaScript when the web platform, Node.js, npm, or an existing JavaScript engine is the real platform. If both are plausible for plugins, prototype the embedder API, sandbox model, debugger, package story, and version upgrade path before choosing.

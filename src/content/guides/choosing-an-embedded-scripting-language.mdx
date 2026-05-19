@@ -1,0 +1,132 @@
+---
+title: Choosing An Embedded Scripting Language
+slug: choosing-an-embedded-scripting-language
+summary: A practical guide for choosing Lua, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
+audience: Developers adding a scripting or plugin layer to a host application, game, editor, native tool, device UI, database, or extensible product.
+candidates:
+  - lua
+  - javascript
+  - python
+sources:
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: Lua uses
+    url: https://www.lua.org/uses.html
+    publisher: Lua
+  - title: LuaRocks Documentation
+    url: https://luarocks.org/docs
+    publisher: LuaRocks
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+  - title: Getting started with embedding V8
+    url: https://v8.dev/docs/embed
+    publisher: V8
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: About Packages and Modules
+    url: https://docs.npmjs.com/about-packages-and-modules/
+    publisher: npm Docs
+  - title: Extending and Embedding the Python Interpreter
+    url: https://docs.python.org/3/extending/
+    publisher: Python Software Foundation
+  - title: Embedding Python in Another Application
+    url: https://docs.python.org/3/extending/embedding.html
+    publisher: Python Software Foundation
+lastVerified: 2026-05-19
+---
+
+## Start With The Host
+
+Embedded scripting is a host-application decision. The host owns the process, lifecycle, APIs, assets, permissions, state, and compatibility policy. The scripting language is useful only if it gives plugin authors enough power without making the host fragile.
+
+Before choosing a language, decide:
+
+- Which behavior should be scriptable.
+- Which host objects and APIs scripts can access.
+- Whether scripts are trusted internal code, third-party plugins, or untrusted user content.
+- How scripts are loaded, versioned, updated, disabled, and debugged.
+- Whether scripts can use files, network access, processes, native modules, or package managers.
+- What memory, CPU, latency, and frame-budget limits apply.
+- How plugin compatibility will survive host upgrades.
+
+The language matters, but the exposed API is the product.
+
+## When Lua Fits
+
+Lua is usually the first language to evaluate when the host needs a small embedded scripting runtime. It was designed for this role, has a documented C API, runs through a compact VM, and lets the host decide which libraries and domain functions are available.
+
+Choose Lua when:
+
+- The host is written in C, C++, or another native language and wants a narrow scripting API.
+- Scripts are mostly configuration, callbacks, game logic, scripted events, mods, or plugin glue.
+- A small runtime and simple deployment story matter.
+- The host wants tables, functions, metatables, and coroutines without a large standard library.
+- Existing users or tools already expect Lua, LuaJIT, or a Lua-like dialect.
+
+The main watch point is version clarity. Reference Lua 5.5, Lua 5.4, LuaJIT's Lua 5.1-style compatibility, Luau, and host-customized dialects are not interchangeable. Write down the supported language version and test plugin compatibility against it.
+
+## When JavaScript Fits
+
+JavaScript is a strong embedded scripting choice when the product is already web-adjacent or when plugin authors are expected to know the JavaScript ecosystem. V8 and other JavaScript engines can be embedded, and JavaScript gives teams a familiar language with broad tooling and npm ecosystem expectations.
+
+Choose JavaScript when:
+
+- The host already embeds a JavaScript engine or is built around browser, Node.js, Electron, or web technology.
+- Plugin authors expect JavaScript, TypeScript, npm packages, or web-style APIs.
+- The same scripting language should be used in UI, backend, build tools, and plugin examples.
+- The team is prepared to own the larger runtime and dependency-management surface.
+
+The main watch point is platform size and policy. Embedding a JavaScript engine is a bigger commitment than embedding reference Lua, and npm package access can widen the security and support surface quickly.
+
+## When Python Fits
+
+Python fits embedded scripting when plugin authors need Python's libraries, data tooling, scientific ecosystem, or broad organizational familiarity. Python's documentation covers embedding and extension, and many technical applications already use Python as an automation or plugin language.
+
+Choose Python when:
+
+- Scripts need access to Python packages, file formats, data processing, notebooks, or scientific libraries.
+- The plugin audience already knows Python.
+- The host is an engineering, data, media, CAD, operations, or automation tool where Python ecosystem access is part of the value.
+- Runtime size, startup, packaging, and native dependency management are acceptable.
+
+The main watch point is operational surface. Python embedding can be the right choice, but it brings interpreter versioning, virtual environments or equivalent isolation, native wheels, package compatibility, and a larger standard library.
+
+## Sandboxing And Trust
+
+Do not treat embedded scripting as a sandbox by default. A language runtime can limit what scripts can name, but the host decides what scripts can actually do.
+
+For third-party or user scripts, define:
+
+- Which libraries are loaded.
+- Which host APIs are exposed.
+- Whether native extensions or dynamic loading are allowed.
+- How file, network, process, and environment access are restricted.
+- How runaway loops, memory growth, and long-running tasks are interrupted.
+- How secrets, credentials, user data, and internal state are protected.
+- How script errors are isolated from the host process.
+
+If the host cannot enforce those boundaries, treat scripts as trusted code and document that plainly.
+
+## Package And Distribution Policy
+
+Embedded scripting needs a package policy earlier than most teams expect. A plugin system can become hard to support if each plugin downloads arbitrary packages, builds native modules differently, or assumes global interpreter state.
+
+Lua commonly uses LuaRocks, but many hosts vendor allowed modules or expose only host-provided APIs. JavaScript may bring npm package expectations, but many hosts cannot safely allow arbitrary package installation. Python may bring PyPI expectations, but binary wheels and native dependencies can complicate deployment.
+
+For a durable plugin surface, prefer a small host-provided API, versioned plugin manifests, explicit dependency rules, and compatibility tests over letting every plugin define its own runtime.
+
+## Practical Default
+
+Start with Lua when the goal is a small, host-controlled embedded scripting language.
+
+Start with JavaScript when the host and plugin authors are already web or Node.js centered.
+
+Start with Python when plugin value depends on Python's libraries, data ecosystem, or user familiarity.
+
+Choose a host-specific scripting language when the engine or application already provides one with better editor integration, debugger support, lifecycle hooks, and documentation than a generic language embed.

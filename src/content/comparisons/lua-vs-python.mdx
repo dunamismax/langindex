@@ -1,0 +1,112 @@
+---
+title: Lua vs Python
+slug: lua-vs-python
+summary: Lua and Python are both dynamic scripting languages, but Lua is optimized for small embeddable host scripting while Python is a broader batteries-included language for automation, data work, web services, tooling, and general application code.
+languages:
+  - lua
+  - python
+useCases:
+  - embedded scripting
+  - plugin systems
+  - automation
+  - application scripting
+  - game scripting
+  - general-purpose scripting
+sources:
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: LuaRocks Documentation
+    url: https://luarocks.org/docs
+    publisher: LuaRocks
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Extending and Embedding the Python Interpreter
+    url: https://docs.python.org/3/extending/
+    publisher: Python Software Foundation
+  - title: Embedding Python in Another Application
+    url: https://docs.python.org/3/extending/embedding.html
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: pip Documentation
+    url: https://pip.pypa.io/en/stable/
+    publisher: Python Packaging Authority
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for teams choosing a scripting language for host extension, plugins, automation, tooling, game scripting, or application support code. Lua and Python can both be embedded and both can be used as standalone scripting languages, but their strengths are different.
+
+Lua is usually the sharper choice when the host needs a small extension language. Python is usually the broader choice when the script itself needs libraries, tooling, data packages, and cross-domain reach.
+
+## Shared Territory
+
+Lua and Python are dynamically typed, garbage-collected, readable scripting languages. Both support functions as first-class values, modules, exceptions or error handling, C extension boundaries, interactive use, and embedding in larger applications. Both are useful for gluing together host APIs and letting users automate behavior.
+
+Both also need production discipline. Version selection, package compatibility, native extensions, sandboxing, runtime validation, deployment isolation, and host API design matter more than syntax preference.
+
+## Key Differences
+
+| Dimension       | Lua                                                    | Python                                                        |
+| --------------- | ------------------------------------------------------ | ------------------------------------------------------------- |
+| Design center   | Lightweight embeddable extension language             | General-purpose scripting, automation, data, web, and tooling |
+| Runtime shape   | Small C library, bytecode VM, standalone interpreter   | CPython and other implementations with broad runtime support  |
+| Core library    | Intentionally small standard libraries                 | Large standard library                                        |
+| Main data shape | Tables for arrays, maps, records, modules, and objects | Lists, dicts, tuples, classes, dataclasses, modules           |
+| Package center  | LuaRocks and host-specific module distribution         | PyPI, pip, virtual environments, pyproject tooling            |
+| Embedding fit   | Primary design goal                                    | Supported, but a larger runtime and ecosystem decision        |
+| Ecosystem pull  | Games, plugins, embedded hosts, configuration          | Automation, data, science, web, ML, ops, education            |
+| Version risk    | Lua 5.5/5.4, LuaJIT 5.1, Luau, host dialects           | CPython versions, packaging, native wheels, GIL/free-threaded path |
+
+## Choose Lua When
+
+- A native application needs a small script runtime with a clear C API boundary.
+- Game logic, plugin hooks, configuration, or modding are the main use case.
+- The host wants to expose a narrow domain API instead of a broad general-purpose standard library.
+- Embedding size, startup behavior, and host control matter more than package breadth.
+- Existing host tooling, game engine conventions, or LuaJIT compatibility already shape the product.
+
+## Choose Python When
+
+- The script needs broad standard-library coverage, PyPI packages, data processing, HTTP clients, file formats, notebooks, or scientific libraries.
+- Automation and tooling will be shared across developers, analysts, operations staff, or researchers.
+- The code may grow into a command-line tool, backend service, data pipeline, or ML-adjacent workflow.
+- Optional type hints, virtual environments, and mature packaging workflows are useful for maintenance.
+- Embedding is secondary to general application scripting and library access.
+
+## Embedding And Plugin Boundaries
+
+Lua is often easier to reason about as a host-defined extension language because the core is small and the C API is central to the design. The host can expose a limited API and avoid opening libraries it does not want scripts to use.
+
+Python can also be embedded, and its documentation covers both extending Python and embedding Python in another application. The tradeoff is that Python brings a larger runtime, richer standard library, package installation expectations, native extension behavior, and more operational surface. That can be worth it when plugin authors need Python libraries, but it should be treated as a platform decision.
+
+For untrusted code, neither language is automatically sandboxed. Lua embedders and Python embedders both need explicit controls over host APIs, filesystem access, process creation, native modules, memory, CPU time, debugging hooks, and network behavior.
+
+## Game And Tool Scripting
+
+Lua is usually the stronger default for game and application scripting when scripts are small, numerous, and tightly bound to host objects. Tables, functions, metatables, and coroutines fit many engine APIs, and LuaJIT remains relevant in game and performance-sensitive scripting contexts.
+
+Python is stronger when the tooling around the game or application needs asset processing, build automation, content pipelines, test data, machine learning tools, or broader engineering scripts. A common split is Lua inside the runtime and Python outside it for pipeline tooling.
+
+## Migration Or Interoperability Notes
+
+Moving between Lua and Python changes more than syntax. The host API, object model, module system, package manager, native extension strategy, debugger, sandbox model, and plugin documentation all change.
+
+For mixed systems, keep the boundary explicit. Lua can own runtime scripts while Python owns build tools or data pipelines. Python can own a plugin surface while Lua remains inside a smaller embedded subsystem. Avoid letting both languages compete for the same extension surface unless there is a clear compatibility reason.
+
+## Practical Default
+
+Use Lua when the main problem is embedding a small script language into a host application. Use Python when the main problem is broad scripting, automation, data work, or library access. If the work is plugins, decide from the host API, sandbox model, package story, and expected plugin-author audience.

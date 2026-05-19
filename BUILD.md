@@ -45,6 +45,7 @@ Observed on 2026-05-16:
   - R
   - Bash / Shell
   - Dart
+  - Lua
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -64,6 +65,8 @@ Observed on 2026-05-16:
   - Shell vs Python for Scripts comparison
   - Dart vs TypeScript comparison
   - Dart vs Kotlin comparison
+  - Lua vs JavaScript comparison
+  - Lua vs Python comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -75,6 +78,7 @@ Observed on 2026-05-16:
   - Choosing Swift for Apple-platform and mobile work guide
   - Choosing R for data analysis, statistics, and research guide
   - Choosing Shell for operations and automation guide
+  - Choosing an embedded scripting language guide
   - Ownership concept page
 - Current local baseline:
 
@@ -473,11 +477,11 @@ continue with Phase 17.
 
 ### Phase 18 - Lua
 
-- [ ] Add a complete Lua page.
-- [ ] Cover embeddability, Lua VM, tables, metatables, C API, package
+- [x] Add a complete Lua page.
+- [x] Cover embeddability, Lua VM, tables, metatables, C API, package
       ecosystem, game/plugin use, and implementation variants.
-- [ ] Add Lua vs JavaScript and Lua vs Python comparisons where useful.
-- [ ] Add Lua to embedded scripting and game scripting guides.
+- [x] Add Lua vs JavaScript and Lua vs Python comparisons where useful.
+- [x] Add Lua to embedded scripting and game scripting guides.
 
 ### Phase 19 - Scala
 

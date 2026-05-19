@@ -703,11 +703,19 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 17);
+        assert_eq!(content.languages.len(), 18);
+        assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
         assert!(content.language("rust").is_some());
+        assert!(content.comparison("lua-vs-javascript").is_some());
+        assert!(content.comparison("lua-vs-python").is_some());
         assert!(content.comparison("dart-vs-typescript").is_some());
         assert!(content.comparison("rust-vs-go").is_some());
+        assert!(
+            content
+                .guide("choosing-an-embedded-scripting-language")
+                .is_some()
+        );
         assert!(content.guide("choosing-a-systems-language").is_some());
         assert!(content.concept("ownership").is_some());
     }
@@ -716,10 +724,14 @@ mod tests {
     fn route_manifest_covers_public_content() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
         let routes = content.all_routes();
+        assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
+        assert!(routes.contains("/comparisons/lua-vs-javascript"));
+        assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
+        assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));
         assert!(routes.contains("/concepts/ownership"));
         assert!(routes.contains("/languages.json"));

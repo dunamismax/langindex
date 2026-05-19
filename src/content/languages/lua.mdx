@@ -1,0 +1,195 @@
+---
+title: Lua
+slug: lua
+status: active
+summary: Lua is a lightweight, dynamically typed scripting language designed to be embedded in host applications, with a small C implementation, a register-based virtual machine, tables as the central data structure, metatables for extensibility, and a long role in game, plugin, configuration, and application scripting.
+firstReleased: 1993
+creators:
+  - Roberto Ierusalimschy
+  - Luiz Henrique de Figueiredo
+  - Waldemar Celes
+paradigms:
+  - procedural
+  - object-oriented through tables and metatables
+  - functional
+  - data-driven
+typing:
+  discipline: dynamic
+  strength: runtime typing with explicit type checks and limited coercion rules
+memory:
+  model: automatic memory management with incremental and generational garbage collection
+runtime:
+  model: register-based bytecode virtual machine implemented as an embeddable ISO C library, with standalone interpreter and alternate implementations
+officialSite: https://www.lua.org/
+repository: https://github.com/lua/lua
+packageManagers:
+  - LuaRocks
+  - rockspec
+  - luarocks
+comparedWith:
+  - javascript
+  - python
+  - c
+  - ruby
+bestFor:
+  - Host applications that need a small, embeddable scripting layer for plugins, configuration, game logic, modding, or user automation.
+  - Games and tools where designers, modders, or advanced users need scriptable behavior without rebuilding the native host.
+  - C and C++ applications that want a stable extension-language boundary through a documented C API.
+  - Configuration and data-description formats where ordinary data tables, functions, and small control-flow constructs are useful.
+  - Teams that can benefit from Lua's small core and are willing to choose libraries, version policy, and sandboxing boundaries deliberately.
+poorFit:
+  - Browser and Node.js products where direct JavaScript runtime compatibility, npm packages, and web framework conventions are the central constraint.
+  - General application scripting where Python's standard library, packaging ecosystem, data tooling, and organizational familiarity matter more than embedding size.
+  - Large standalone applications that need a batteries-included standard library, static type contracts, or a broad default framework ecosystem.
+  - Hard real-time firmware, kernels, or tiny microcontroller deployments where even a small garbage-collected VM is too much runtime.
+  - Sandboxed plugin systems that assume embedding automatically makes untrusted code safe without restricting libraries, host APIs, resource use, and debug access.
+sources:
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: Lua authors
+    url: https://www.lua.org/authors.html
+    publisher: Lua
+  - title: Lua version history
+    url: https://www.lua.org/versions.html
+    publisher: Lua
+  - title: Lua download
+    url: https://www.lua.org/download.html
+    publisher: Lua
+  - title: Lua uses
+    url: https://www.lua.org/uses.html
+    publisher: Lua
+  - title: LuaRocks Documentation
+    url: https://luarocks.org/docs
+    publisher: LuaRocks
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+  - title: Luau
+    url: https://luau.org/
+    publisher: Luau
+lastVerified: 2026-05-19
+---
+
+## Origin And Design Goals
+
+Lua was created at PUC-Rio in Brazil by Roberto Ierusalimschy, Luiz Henrique de Figueiredo, and Waldemar Celes. Its early history was shaped by extension-language needs: a host application should be able to load scripts, expose domain operations, and let users or product teams change behavior without rebuilding the whole program.
+
+That origin still defines Lua's value. Lua is small enough to embed, portable enough to build in many C and C++ environments, and flexible enough to act as a configuration language, plugin language, game scripting language, or standalone scripting language. It is not trying to be a full platform like Python, JavaScript, Java, or .NET. The core language stays compact, while host applications and libraries define much of the useful surface.
+
+## Runtime, VM, And Embedding
+
+The reference Lua implementation is an ISO C library plus a standalone `lua` interpreter. Source code is compiled to bytecode and executed by a register-based virtual machine. A host program can create Lua states, load chunks, call Lua functions, read and write Lua values, register C functions, and decide which standard libraries are available to scripts.
+
+That embedding model is the main reason to choose Lua. In a game, editor, database, media tool, device UI, or extensible application, Lua can be the controlled script layer while the host owns rendering, storage, networking, simulation, or platform APIs. This keeps the native application in charge of the expensive or sensitive work and gives scripts a small language for behavior and customization.
+
+The boundary must still be engineered. A serious embedder needs explicit decisions about which libraries are opened, which host APIs are exposed, how errors are reported, how scripts are loaded and versioned, whether scripts can access files or processes, how memory and CPU time are limited, and how plugin compatibility is maintained across host releases.
+
+## Tables, Metatables, And The Object Model
+
+Tables are Lua's central data structure. A table can act as an array, map, record, object, namespace, module table, or data description. Functions are first-class values, so tables commonly hold methods, callbacks, constructors, and module exports.
+
+Metatables give values extensible behavior through metamethods. They can define operator behavior, indexing fallback, calls, string conversion, finalization, and other hooks. This is how many Lua libraries build object-oriented APIs, prototypes, read-only views, weak tables, resource wrappers, and domain-specific data models without a separate class system in the core language.
+
+The power is real, but so is the maintenance cost. Metatable-heavy code can hide control flow and make errors harder to trace, especially for plugin authors. Lua codebases usually stay healthiest when the host or framework exposes a small set of clear idioms instead of letting every module invent a different object model.
+
+## Type System, Memory, And Concurrency
+
+Lua is dynamically typed: values have types, variables do not. The basic value types include nil, booleans, numbers, strings, functions, userdata, threads, and tables. `nil` represents absence and also removes a key from a table. That behavior is useful but important when modeling sparse arrays, optional fields, and data formats.
+
+Lua has automatic memory management. Current Lua supports incremental and generational garbage collection, and the host can tune or drive collection through the API. For most scripting work, this is the right tradeoff. For frame-budgeted games, realtime-adjacent plugins, and memory-sensitive embedded hosts, allocation patterns and garbage-collector tuning still need profiling.
+
+Lua coroutines provide cooperative concurrency. They are useful for state machines, scripted sequences, game logic, iterators, and asynchronous-style workflows controlled by the host. They are not parallel threads. If scripts need true parallel execution, the host must provide separate states, worker processes, native threads with careful isolation, or another concurrency model.
+
+## Syntax Example
+
+```lua
+local Language = {}
+Language.__index = Language
+
+function Language.new(name, domains)
+  return setmetatable({
+    name = name,
+    domains = domains,
+  }, Language)
+end
+
+function Language:fits(domain)
+  for _, candidate in ipairs(self.domains) do
+    if candidate == domain then
+      return true
+    end
+  end
+
+  return false
+end
+
+local languages = {
+  Language.new("Lua", { "embedded scripting", "games", "plugins" }),
+  Language.new("Python", { "automation", "data", "backend" }),
+  Language.new("JavaScript", { "web", "node", "tools" }),
+}
+
+for _, language in ipairs(languages) do
+  if language:fits("games") then
+    print(language.name .. " fits game scripting")
+  end
+end
+```
+
+This example uses tables, a metatable-backed object pattern, method-call syntax with `:`, arrays indexed with `ipairs`, local variables, and string concatenation.
+
+## Packages, Modules, And Tooling
+
+Lua's standard libraries are intentionally small. The package library provides `require`, module search paths, loaded-module tracking, and C module loading hooks, but the broader package ecosystem is not part of the core distribution.
+
+LuaRocks is the main package manager and module repository for Lua. Packages are described with rockspec files and resolved through manifests, with version-specific manifests for Lua 5.1 through current release lines. LuaRocks is useful, but production teams should still verify the exact Lua version, C compiler, native dependencies, operating system packages, and host application constraints.
+
+Lua tooling is often host-specific. Standalone Lua scripts can use `lua`, `luac`, LuaRocks, formatters, linters, and test frameworks. Game and plugin scripts often use an engine editor, host-provided debugger, hot-reload workflow, or custom packaging rules. That means a Lua choice should be evaluated in the actual host environment, not only from the language manual.
+
+## Game, Plugin, And Application Scripting
+
+Lua is strongly associated with games and extensible applications because it lets a native host expose a tailored API to scripts. The host can keep rendering, physics, storage, networking, asset loading, and platform integration in C, C++, or another runtime while Lua handles behavior, configuration, mod hooks, scripted events, UI logic, or automation.
+
+This is different from choosing Lua as the whole application platform. Lua is most compelling when there is a host that benefits from being scriptable. If the project is an ordinary web service, data tool, command-line application, or desktop app with no embedding need, Python, JavaScript, Go, C#, Java, or Rust may offer broader defaults.
+
+Lua also has important implementation variants. LuaJIT is a JIT compiler centered on Lua 5.1 compatibility plus extensions such as FFI. It can be a practical choice for embedders that depend on its performance profile or ecosystem, but it is not the same language version as current reference Lua. Luau is a Lua-derived language with a gradual type system and its own runtime direction. Treat variants as separate platform choices, especially for language-version compatibility and module support.
+
+## Governance, Releases, And Compatibility
+
+Lua is designed, implemented, and maintained at PUC-Rio. The reference manual is the official language definition for a release line, and the Lua site publishes version history, source releases, documentation, and licensing information.
+
+As of this verification, the current Lua release line is Lua 5.5, with Lua 5.5.0 released in December 2025. Lua 5.4 remains important in deployed ecosystems, and Lua 5.1 remains relevant because LuaJIT and many host applications are still tied to 5.1-era compatibility. Production Lua users should therefore ask which Lua they mean: reference Lua 5.5, reference Lua 5.4, Lua 5.1, LuaJIT, Luau, or a host-customized dialect.
+
+Lua version changes can affect API and ABI compatibility. Applications that embed Lua and C libraries for Lua should plan rebuilds, compatibility switches, test suites, and plugin migration notes when moving across version lines.
+
+## Best-Fit Use Cases
+
+Lua is a strong fit for:
+
+- Embedded scripting in C, C++, game, media, editor, database, device, or plugin host applications.
+- Game logic, modding, configuration, scripted events, and tool automation where host APIs do the heavy work.
+- Applications that need a small language core and can define a domain-specific script API deliberately.
+- Systems where the team wants dynamic scripting without embedding a larger runtime such as Python or V8.
+- Data-description or configuration workflows where tables and simple procedural logic are both useful.
+
+## Poor-Fit Or Risky Use Cases
+
+Lua can be a poor fit when:
+
+- The project mainly needs browser, Node.js, npm, or mainstream JavaScript framework compatibility.
+- The project mainly needs Python's standard library, PyPI ecosystem, notebooks, data libraries, or organization-wide familiarity.
+- Static typing, package depth, framework conventions, or batteries-included libraries matter more than a small embeddable core.
+- The team expects Lua to sandbox untrusted plugins automatically. Sandboxing requires host-level API design and resource controls.
+- The language version is ambiguous across reference Lua, LuaJIT, Luau, and host-specific dialects.
+
+## Comparison Notes
+
+JavaScript is the closest comparison when the host already embeds V8 or when scripting must connect to browser, Node.js, or web tooling. Lua is usually smaller and more deliberately shaped for embedding in C and C++ hosts. JavaScript is usually the better default when web runtime compatibility and npm packages are central.
+
+Python is the closest comparison for general scripting, automation, plugins, and application extension. Python provides a much larger standard library and ecosystem. Lua has the smaller embedding footprint and simpler core language, which can be an advantage when the host wants a tight script boundary.
+
+C is not a scripting-language competitor, but it is the key interop boundary. Lua is often embedded by C or C++ hosts, and C modules can extend Lua. The public boundary between the host and scripts needs the same care as any other API.

@@ -31,7 +31,19 @@ sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
-lastVerified: 2026-05-15
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua uses
+    url: https://www.lua.org/uses.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+lastVerified: 2026-05-19
 ---
 
 ## Start With The Engine
@@ -82,9 +94,23 @@ Rust is worth evaluating for custom engines, game-adjacent tools, asset pipeline
 
 Rust is a weaker default when the engine, documentation, asset workflow, and community examples are C++ or C# centered. In games, ecosystem fit and editor workflow often beat language elegance. Prototype the build integration, debugger, platform targets, and content pipeline before committing.
 
+## When Lua Fits
+
+Lua is a strong scripting choice when the engine or host application wants a small embedded language for gameplay logic, mods, plugins, configuration, or designer-authored behavior. Lua's C API, tables, metatables, coroutines, and small runtime make it practical when native code owns rendering, physics, storage, networking, and platform integration while scripts own behavior.
+
+Choose Lua when:
+
+- The engine already exposes Lua or LuaJIT as a supported scripting layer.
+- Modding, plugin compatibility, live iteration, or data-driven gameplay matters.
+- Designers or advanced users need scriptable behavior without native rebuilds.
+- The host can expose a small, well-documented API and keep sensitive operations out of script reach.
+- Lua version compatibility is documented, especially for LuaJIT, Lua 5.1-era APIs, Lua 5.4, Lua 5.5, or host-customized dialects.
+
+Lua is not a replacement for engine architecture. The host still needs debugging, profiling, serialization, sandboxing, resource limits, and clear ownership between native objects and scripts.
+
 ## Scripting And Tool Languages
 
-Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua or another embedded scripting language for modding or data-driven logic, and JavaScript or TypeScript for web games or tooling.
+Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua for embedded scripting, modding, or data-driven logic, and JavaScript or TypeScript for web games or tooling.
 
 Do not choose a scripting layer only because it is easy to start. Check how it handles:
 
@@ -102,5 +128,7 @@ Start with C++ for Unreal, custom engines, native middleware, and engine-level p
 Start with C# for Unity gameplay, editor tooling, and teams that want a managed language inside a mature commercial engine.
 
 Start with the engine-native scripting language for prototypes, designer-authored logic, small games, and workflows where iteration speed matters more than maximum control.
+
+Start with Lua when the engine supports it well or when a custom host needs a compact embedded scripting layer for mods, plugins, or gameplay behavior.
 
 Evaluate Rust for custom native components and tools when its safety model is worth the integration cost.
