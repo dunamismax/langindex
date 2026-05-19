@@ -510,11 +510,11 @@ continue with Phase 17.
 
 ### Phase 21 - Objective-C
 
-- [ ] Add a complete Objective-C page.
-- [ ] Cover C interoperability, Apple platform history, runtime messaging,
+- [x] Add a complete Objective-C page.
+- [x] Cover C interoperability, Apple platform history, runtime messaging,
       ARC, legacy codebase relevance, and migration to Swift.
-- [ ] Add Objective-C vs Swift comparison.
-- [ ] Add Objective-C to Apple-platform and legacy-maintenance guides.
+- [x] Add Objective-C vs Swift comparison.
+- [x] Add Objective-C to Apple-platform and legacy-maintenance guides.
 
 ### Phase 22 - Fortran
 

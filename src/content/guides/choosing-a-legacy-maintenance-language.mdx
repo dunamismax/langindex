@@ -60,6 +60,12 @@ sources:
   - title: Objective-C Runtime
     url: https://developer.apple.com/documentation/objectivec
     publisher: Apple Developer Documentation
+  - title: Objective-C Automatic Reference Counting
+    url: https://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    publisher: LLVM Project
+  - title: Migrating Your Objective-C Code to Swift
+    url: https://developer.apple.com/documentation/swift/migrating-your-objective-c-code-to-swift
+    publisher: Apple Developer Documentation
   - title: ISO/IEC 1539-1:2023 - Fortran
     url: https://www.iso.org/standard/82170.html
     publisher: International Organization for Standardization
@@ -139,7 +145,9 @@ Java systems may be old but still maintainable if the JDK, build tool, dependenc
 
 Python is often the migration target for automation, data, and glue code, but it has its own dependency and runtime risks. Use it when the ecosystem and owners match the future work.
 
-Objective-C and Fortran systems usually exist because they sit near platform APIs, numerical code, or long-lived domain libraries. Preserve tested boundaries before moving behavior to Swift, C++, Python, Julia, Rust, or another platform.
+Objective-C systems usually exist because they sit near Apple platform APIs, Objective-C runtime behavior, Objective-C++ bridges, or long-lived Cocoa code. Start by pinning Xcode and SDK versions, enabling or documenting ARC settings, adding nullability to headers, isolating dynamic selectors or swizzles, and writing tests around Swift/Objective-C boundaries before migrating behavior to Swift.
+
+Fortran systems usually exist because they sit near numerical code or long-lived scientific domain libraries. Preserve tested boundaries before moving behavior to C++, Python, Julia, Rust, or another platform.
 
 ## Practical Default
 

@@ -1,0 +1,243 @@
+---
+title: Objective-C
+slug: objective-c
+status: active
+summary: Objective-C is a compiled C-family language with Smalltalk-style message sending and a dynamic runtime, still important for Apple-platform legacy code, Cocoa and Cocoa Touch frameworks, Objective-C++ bridges, and incremental migration to Swift.
+firstReleased: 1984
+creators:
+  - Brad Cox
+  - Tom Love
+paradigms:
+  - object-oriented
+  - imperative
+  - reflective
+  - dynamic
+  - procedural
+typing:
+  discipline: static and dynamic
+  strength: C-compatible static declarations, object pointer types, protocols, `id`, nullable annotations, and runtime message dispatch
+memory:
+  model: Automatic Reference Counting for Objective-C objects and blocks in modern builds, with manual retain/release history, autorelease pools, weak references, and no cycle collector
+runtime:
+  model: native code compiled by Clang/LLVM plus the Objective-C runtime for dynamic message dispatch, class metadata, selectors, categories, protocols, and reflection
+officialSite: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/
+repository: https://github.com/apple-oss-distributions/objc4
+packageManagers:
+  - Xcode
+  - CocoaPods
+  - Carthage
+  - Swift Package Manager
+comparedWith:
+  - swift
+  - c
+  - cpp
+bestFor:
+  - Maintaining existing iOS, macOS, watchOS, tvOS, and visionOS applications, frameworks, and SDK integrations that already use Objective-C.
+  - Mixed Swift and Objective-C Apple-platform projects where stable legacy code can remain in place while new code moves to Swift incrementally.
+  - Runtime-heavy Cocoa patterns such as selectors, target-action, delegates, KVC, KVO, method swizzling, message forwarding, and plugin-style boundaries.
+  - Objective-C++ bridges around C and C++ libraries used from Apple-platform application code.
+poorFit:
+  - New Apple-platform application code where Swift, SwiftUI, Swift Package Manager, and modern Apple documentation are the natural default.
+  - Cross-platform products that need strong non-Apple ecosystem support, broad hiring pools, or portable standard tooling outside Cocoa-family frameworks.
+  - Codebases where nullability, ownership, and runtime behavior are poorly documented and the team expects the compiler to enforce Swift-like guarantees.
+  - New systems, embedded, backend, or performance-critical libraries where C, C++, Rust, Swift, Go, or another ecosystem already owns the deployment target.
+sources:
+  - title: Programming with Objective-C
+    url: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/
+    publisher: Apple Developer Documentation Archive
+  - title: The Objective-C Programming Language
+    url: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html
+    publisher: Apple Developer Documentation Archive
+  - title: Objective-C Runtime
+    url: https://developer.apple.com/documentation/objectivec/objective-c-runtime
+    publisher: Apple Developer Documentation
+  - title: Adopting Modern Objective-C
+    url: https://developer.apple.com/library/archive/releasenotes/ObjectiveC/ModernizationObjC/
+    publisher: Apple Developer Documentation Archive
+  - title: Objective-C Automatic Reference Counting
+    url: https://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    publisher: LLVM Project
+  - title: Xcode Build Settings Reference
+    url: https://developer.apple.com/documentation/xcode/build-settings-reference
+    publisher: Apple Developer Documentation
+  - title: Importing Objective-C into Swift
+    url: https://developer.apple.com/documentation/swift/importing-objective-c-into-swift
+    publisher: Apple Developer Documentation
+  - title: Importing Swift into Objective-C
+    url: https://developer.apple.com/documentation/swift/importing-swift-into-objective-c
+    publisher: Apple Developer Documentation
+  - title: Migrating Your Objective-C Code to Swift
+    url: https://developer.apple.com/documentation/swift/migrating-your-objective-c-code-to-swift
+    publisher: Apple Developer Documentation
+  - title: objc4 source
+    url: https://github.com/apple-oss-distributions/objc4
+    publisher: Apple Open Source Distributions
+  - title: CocoaPods
+    url: https://cocoapods.org/
+    publisher: CocoaPods
+  - title: Cox, Brad oral history
+    url: https://www.computerhistory.org/collections/catalog/102717175
+    publisher: Computer History Museum
+lastVerified: 2026-05-19
+---
+
+## Origin And Design Goals
+
+Objective-C was created by Brad Cox and Tom Love in the early 1980s, then shaped through Stepstone, NeXT, Apple, the Cocoa frameworks, Clang, and the Objective-C runtime. Computer History Museum material frames the original motivation around bringing Smalltalk-style object orientation and reusable components into C-centered Unix and telecom environments without throwing away C compatibility.
+
+That origin explains the language's odd but durable shape. Objective-C keeps C syntax, headers, functions, pointers, structs, preprocessor use, and ABI habits, then adds classes, methods, protocols, dynamic dispatch, categories, properties, blocks, and runtime reflection. The result is not "C with classes" in the C++ sense. It is C plus a dynamic object system built around messages sent to receivers.
+
+Objective-C became central to NeXTSTEP and then to Apple's Cocoa and Cocoa Touch application frameworks. Swift is now the default center for new Apple-platform code, but Objective-C remains relevant because many Apple frameworks, third-party SDKs, app codebases, test suites, plugins, and C/C++ bridges still expose Objective-C surfaces.
+
+## Apple Platform Role
+
+Objective-C is most important today as an Apple-platform maintenance and interoperability language. A working iOS, macOS, watchOS, tvOS, or visionOS project may still contain Objective-C view controllers, delegates, model objects, categories, Objective-C++ files, generated headers, old CocoaPods dependencies, and public APIs that are consumed by Objective-C callers.
+
+That does not make Objective-C the normal greenfield choice. New Apple app work should usually start in [Swift](/languages/swift), especially when using SwiftUI, Swift concurrency, Swift Package Manager, and current Apple examples. Objective-C earns its place when it lowers migration risk, keeps stable code working, preserves a public Objective-C API, or gives access to runtime patterns that are already part of the application.
+
+The practical skill is therefore boundary design. Keep stable Objective-C modules stable. Add nullability and lightweight generics where Swift callers need cleaner imports. Move new leaf features, tests, or well-bounded modules to Swift when there is a clear payoff. Do not rewrite Objective-C only because it looks old.
+
+## C Interoperability And Objective-C++
+
+Objective-C is a strict superset of C in the Clang ARC documentation's description of the modern dialect. Ordinary C functions, headers, structs, enums, pointers, macros, and libraries can be used directly from Objective-C source files. This is one reason Objective-C stayed useful near platform SDKs and native libraries: C APIs are not foreign-function calls; they are in the same compilation world.
+
+Objective-C++ extends that bridge to C++ by compiling files with `.mm` or equivalent settings. It is commonly used as a boundary layer when an Apple app needs C++ libraries, game code, rendering engines, media libraries, or shared native modules while exposing Objective-C or Swift-friendly APIs to the rest of the app.
+
+The bridge cuts both ways. C macros, manual pointer ownership, Core Foundation conventions, C++ exceptions, templates, and object lifetimes can make an Objective-C module harder to import into Swift cleanly. Treat Objective-C and Objective-C++ as boundary tools: keep the headers narrow, test ownership rules, and avoid leaking C++ or unsafe pointer details through ordinary application code.
+
+## Runtime Messaging And Dynamic Behavior
+
+Objective-C's most distinctive feature is message sending. Code such as `[catalog languageNamed:@"swift"]` sends a selector to a receiver. The runtime resolves the method implementation through class metadata and inheritance, and dynamic behavior can influence dispatch at runtime.
+
+That runtime supports important Cocoa idioms:
+
+- Selectors and target-action patterns.
+- Delegates and data sources.
+- Key-value coding and key-value observing.
+- Categories that add methods to existing classes.
+- Protocols that describe object capabilities.
+- Dynamic method resolution, message forwarding, and swizzling.
+- Reflection over classes, methods, properties, and protocols.
+
+These tools are powerful because they make framework code flexible. They are risky when used casually because the compiler cannot see every runtime behavior. A selector typed as a string, a category method collision, an untested swizzle, or a message sent through `id` can fail in ways that Swift's type system is designed to avoid.
+
+## Type System And Object Model
+
+Objective-C has C's static declarations plus a dynamic object model. Classes are declared with `@interface` and implemented with `@implementation`. Object pointers can name a concrete class such as `NSString *`, use protocol-qualified forms such as `id<UITableViewDelegate>`, or use the dynamic `id` type when the exact receiver type is intentionally late-bound.
+
+Modern Objective-C improved the old surface with properties, object literals, subscripting, `instancetype`, lightweight generics, and nullability annotations. Those features matter especially in mixed Swift projects. A header that says whether a value is nullable and what element type a collection intends to hold gives Swift better imported types and makes migration less error-prone.
+
+The limits remain real. Objective-C generics are lightweight annotations, not Swift-style or C++-style compile-time generics. Many checks happen at runtime. Nil is also part of the object model: sending a message to `nil` is allowed and returns a zero-like result. That behavior can simplify some Cocoa code, but it can also hide missing data unless APIs are explicit.
+
+## Memory Management, ARC, And Ownership
+
+Objective-C's memory model is reference-count based. Older code may use manual `retain`, `release`, `autorelease`, and `dealloc` patterns. Modern Apple-platform Objective-C normally uses Automatic Reference Counting, where the compiler inserts the retains and releases for Objective-C objects and blocks. Xcode exposes ARC through the `CLANG_ENABLE_OBJC_ARC` build setting, and Clang documents ARC as a language feature enabled with `-fobjc-arc`.
+
+ARC is not tracing garbage collection. It does not collect reference cycles. Developers still need `weak` references for delegates and back-pointers, careful capture behavior in blocks, autorelease pools in allocation-heavy loops, and explicit ownership boundaries when crossing into Core Foundation, C, C++, or manual-memory code.
+
+This is where Objective-C maintenance often succeeds or fails. If a codebase already has clear ownership conventions, ARC, tests, and documented bridging rules, it can remain stable for years. If it mixes manual retain/release, unmanaged Core Foundation references, unannotated nullability, and callback-heavy code without tests, Swift migration will expose problems rather than automatically solving them.
+
+## Syntax Example
+
+```objc
+#import <Foundation/Foundation.h>
+
+@interface LILanguage : NSObject
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, assign, readonly) NSInteger firstReleased;
+
+- (instancetype)initWithName:(NSString *)name firstReleased:(NSInteger)year;
+- (NSString *)summaryLine;
+@end
+
+@implementation LILanguage
+
+- (instancetype)initWithName:(NSString *)name firstReleased:(NSInteger)year {
+    self = [super init];
+    if (self) {
+        _name = [name copy];
+        _firstReleased = year;
+    }
+    return self;
+}
+
+- (NSString *)summaryLine {
+    return [NSString stringWithFormat:@"%@ first appeared in %ld.",
+                                      self.name,
+                                      (long)self.firstReleased];
+}
+
+@end
+
+int main(void) {
+    @autoreleasepool {
+        LILanguage *language =
+            [[LILanguage alloc] initWithName:@"Objective-C" firstReleased:1984];
+        NSLog(@"%@", [language summaryLine]);
+    }
+}
+```
+
+This example shows common Objective-C shapes: an interface and implementation, properties, an initializer, message sends in square brackets, `NSString`, an autorelease pool, object allocation, and method dispatch through selectors.
+
+## Tooling, Packages, And Builds
+
+Objective-C development on Apple platforms is normally centered on Xcode, Clang/LLVM, Apple SDKs, headers, modules, build settings, XCTest, Instruments, signing, provisioning, simulators, devices, and app bundles. Files usually use `.h` for headers, `.m` for Objective-C implementation files, and `.mm` for Objective-C++.
+
+Dependency management depends on the age and shape of the project. Existing Objective-C apps commonly use Xcode project files, workspaces, CocoaPods, Carthage, vendored frameworks, binary SDKs, or Swift Package Manager where dependencies support it. CocoaPods still describes itself as a dependency manager for Swift and Objective-C Cocoa projects, but new projects should verify the package manager's current maintenance and repository model before standardizing on it.
+
+For legacy code, build reproducibility is more important than tool preference. Record the Xcode version, SDKs, deployment targets, compiler flags, ARC settings, module settings, precompiled headers, warning policies, dependency locks, binary SDK versions, code signing setup, and CI image. A mixed Objective-C, Swift, C, and C++ build can be stable, but only if the boundaries are explicit.
+
+## Migration To Swift
+
+Apple documents both directions of interoperability: importing Objective-C into Swift and importing eligible Swift declarations into Objective-C. That makes gradual migration practical. Teams can add Swift files to an Objective-C target, use bridging headers or generated headers, and migrate one class, feature, or module at a time.
+
+Good migration candidates are tests, model transformations, networking clients, leaf screens, new features, and modules with clean headers. Poor candidates are runtime-heavy subsystems, fragile delegate chains, public Objective-C SDK surfaces, Objective-C++ bridges, and code whose behavior is not covered by tests.
+
+Before Swift depends on Objective-C APIs, modernize the Objective-C boundary:
+
+- Add nullability annotations.
+- Use `instancetype` for initializers and factory methods.
+- Add lightweight generics to collection-heavy APIs.
+- Keep bridging headers small.
+- Decide which Swift declarations need Objective-C exposure.
+- Test selectors, delegates, errors, collections, subclassing, and threading across the boundary.
+
+The goal is not to make every line Swift. The goal is to reduce maintenance risk while preserving behavior. Sometimes that means a Swift rewrite of a leaf module. Sometimes it means a small Objective-C cleanup and no migration.
+
+## Best-Fit Use Cases
+
+Objective-C is a strong fit for:
+
+- Maintaining existing Apple-platform applications and frameworks.
+- Public APIs that must remain natural for Objective-C consumers.
+- Objective-C++ adapter layers around C++ libraries used by Apple apps.
+- Runtime-aware Cocoa patterns that are already central to the codebase.
+- Incremental migration where Swift can be adopted one boundary at a time.
+- Teams that still have Objective-C expertise and a tested release process.
+
+## Poor-Fit Or Risky Use Cases
+
+Objective-C can be a poor fit when:
+
+- The project is new Apple-platform application code without a legacy Objective-C constraint.
+- The team wants Swift's optionals, enums, value types, generics, concurrency model, and compiler-enforced initialization as the primary safety boundary.
+- The product target is Android, browser UI, generic backend services, embedded firmware, or portable command-line tooling.
+- The codebase relies on undocumented runtime behavior, untyped selectors, unannotated `id`, manual memory management, or untested swizzling.
+- Hiring and onboarding would be easier in Swift, Kotlin, TypeScript, Python, Go, Java, C#, C++, Rust, or another locally standard ecosystem.
+
+## Governance, Implementation, And Compatibility
+
+Objective-C is not governed like Swift, Rust, Python, or Java. There is no current public language steering process for Objective-C comparable to Swift Evolution or the Java Community Process. In practice, modern Apple-platform Objective-C is defined by Apple's archived language documentation, Apple SDK behavior, Clang/LLVM support, Xcode build settings, the Objective-C runtime, and compatibility pressure from existing Cocoa-family software.
+
+Apple publishes current runtime documentation and an open source distribution of `objc4`, while Clang documents ARC and implements the language support used by Apple toolchains. This gives Objective-C a durable implementation base, but the language's visible evolution is much quieter than Swift's.
+
+For production planning, assume Objective-C remains a supported interoperability and maintenance language for Apple platforms, not the strategic center for new language features. Track Xcode, Clang, Apple SDKs, deployment targets, Swift interoperability, and third-party dependency support rather than expecting Objective-C language-level roadmap material.
+
+## Comparison Notes
+
+[Swift vs Objective-C](/comparisons/swift-vs-objective-c) is the main comparison. Swift is the normal default for new Apple-platform application and package code. Objective-C remains the practical choice for stable legacy code, public Objective-C APIs, runtime-heavy Cocoa patterns, and Objective-C++ bridges.
+
+C is the closest low-level comparison because Objective-C keeps C compatibility and often sits around C APIs. Use C for portable low-level interfaces, ABI boundaries, and systems code where an object runtime is unnecessary. Use Objective-C when Cocoa object APIs and runtime behavior are part of the application.
+
+C++ matters when the codebase uses engines, rendering, media, scientific, or shared native libraries. Objective-C++ is often the adapter layer between those libraries and Apple-platform application code. Keep that adapter thin so Swift or Objective-C callers do not inherit C++ build and ownership complexity.

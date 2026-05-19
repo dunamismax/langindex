@@ -38,6 +38,15 @@ sources:
   - title: Apple Developer Swift
     url: https://developer.apple.com/swift/
     publisher: Apple Developer
+  - title: Programming with Objective-C
+    url: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/
+    publisher: Apple Developer Documentation Archive
+  - title: Objective-C Runtime
+    url: https://developer.apple.com/documentation/objectivec/objective-c-runtime
+    publisher: Apple Developer Documentation
+  - title: Objective-C Automatic Reference Counting
+    url: https://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    publisher: LLVM Project
   - title: Importing Objective-C into Swift
     url: https://developer.apple.com/documentation/swift/importing-objective-c-into-swift
     publisher: Apple Developer
@@ -94,7 +103,9 @@ Before importing Objective-C APIs into Swift, improve the boundary:
 - Test generated Swift-to-Objective-C headers.
 - Keep dynamic runtime behavior isolated when Swift callers do not need to know about it.
 
-Keep Objective-C when a mature subsystem is stable, heavily dynamic, exposed to Objective-C consumers, or tied to Objective-C++ and C++ libraries. Swift adoption should reduce maintenance cost, not create a mixed-language maze.
+Keep Objective-C when a mature subsystem is stable, heavily dynamic, exposed to Objective-C consumers, or tied to Objective-C++ and C++ libraries. Objective-C is also still useful when selectors, target-action, delegates, KVC/KVO, method forwarding, swizzling, plugin boundaries, or old framework contracts are the actual surface being maintained.
+
+Swift adoption should reduce maintenance cost, not create a mixed-language maze. If an Objective-C module is stable and well tested, modernizing headers, nullability, ARC settings, and dependency management may be a better first step than rewriting it. If a module is isolated and actively changing, Swift is usually the better destination for new work.
 
 ## Choose Kotlin For Android
 
