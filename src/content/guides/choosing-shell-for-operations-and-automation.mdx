@@ -5,6 +5,7 @@ summary: A decision guide for using POSIX shell, Bash, Python, Go, Rust, JavaScr
 audience: Developers, operators, and maintainers deciding whether an automation task should stay shell, use Bash-specific features, or move into a general-purpose language.
 candidates:
   - bash
+  - perl
   - python
   - go
   - rust
@@ -56,7 +57,19 @@ sources:
   - title: ShellCheck
     url: https://www.shellcheck.net/
     publisher: ShellCheck
-lastVerified: 2026-05-16
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: perlintro - a brief introduction and overview of Perl
+    url: https://perldoc.perl.org/perlintro
+    publisher: Perldoc
+  - title: perlre - Perl regular expressions
+    url: https://perldoc.perl.org/perlre
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
+lastVerified: 2026-05-19
 ---
 
 ## Start With The Boundary
@@ -99,6 +112,17 @@ Move automation to Python when the task has program shape:
 
 Python is often the best next step after shell because it still works well as glue code, but gives clearer data structures and a larger standard library.
 
+## Choose Perl When
+
+Use Perl when the automation is still Unix-shaped but has outgrown shell's string and pipeline model:
+
+- Regex-heavy log processing, report generation, cleanup jobs, or file migrations.
+- Existing Perl scripts or CPAN-backed operational tools that need modernization rather than replacement.
+- Hashes, arrays, nested records, reusable modules, or tests would make the script clearer.
+- The target environment already supports Perl and the team can pin the interpreter and module set.
+
+Perl is usually a narrower new-project default than Python, but it remains a practical step up from shell when the work is mostly text processing and Unix glue.
+
 ## Choose Go Or Rust When
 
 Use Go when the automation is becoming an infrastructure tool that should ship as a native binary, run concurrently, expose an HTTP API, or have predictable deployment without a Python environment. Go is a strong fit for agents, CLIs, control-plane tools, and services where operational simplicity matters.
@@ -138,7 +162,7 @@ For Go, Rust, JavaScript, and Ruby, keep the same operational standard: typed or
 
 ## Practical Default
 
-Start with POSIX shell for tiny bootstrap wrappers. Use Bash for local or CI automation that is mostly command orchestration and benefits from Bash features. Move to Python when data structures, parsing, tests, or cross-platform behavior become important.
+Start with POSIX shell for tiny bootstrap wrappers. Use Bash for local or CI automation that is mostly command orchestration and benefits from Bash features. Move to Perl when text processing, regexes, hashes, and CPAN modules are the natural next step. Move to Python when structured data, broad libraries, tests, or cross-platform behavior become important.
 
 Use Go or Rust when the automation is really a distributable infrastructure tool. Use JavaScript or Ruby when the script belongs inside an ecosystem that already depends on Node.js, npm, RubyGems, or Bundler.
 

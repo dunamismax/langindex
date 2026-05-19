@@ -1,0 +1,108 @@
+---
+title: Perl vs Shell For Scripts
+slug: perl-vs-shell
+summary: Shell is best for small command-and-pipeline orchestration, while Perl is better when Unix automation needs richer text processing, data structures, reusable modules, tests, or maintainable logic beyond shell quoting.
+languages:
+  - perl
+  - bash
+useCases:
+  - scripting
+  - automation
+  - operations
+  - text processing
+  - legacy maintenance
+  - command-line tools
+sources:
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: perlintro - a brief introduction and overview of Perl
+    url: https://perldoc.perl.org/perlintro
+    publisher: Perldoc
+  - title: perlrun - how to execute the Perl interpreter
+    url: https://perldoc.perl.org/perlrun
+    publisher: Perldoc
+  - title: perlre - Perl regular expressions
+    url: https://perldoc.perl.org/perlre
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/bash.html
+    publisher: GNU Project
+  - title: Pipelines - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Pipelines.html
+    publisher: GNU Project
+  - title: Shell Expansions - Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html
+    publisher: GNU Project
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is about Unix-style scripts: operations tasks, release hooks, CI steps, log processing, file migration, cron jobs, report generation, and maintenance tools. It is not about interactive shell preference.
+
+Shell and Perl are often used together. Shell starts commands and connects processes. Perl is a better fit when the script has enough parsing, state, or reusable logic that shell becomes fragile.
+
+## Shared Territory
+
+Both can run commands, read files, process standard input, use environment variables, produce exit statuses, and live comfortably on Unix-like systems. Both are common in old operational environments and both can be misused in ways that make maintenance painful.
+
+The important boundary is whether the script is command-shaped or program-shaped. Command-shaped work belongs in shell. Program-shaped work usually wants Perl, Python, Ruby, Go, Rust, or another general-purpose language.
+
+## Key Differences
+
+| Dimension          | Shell / Bash                                                   | Perl                                                              |
+| ------------------ | -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Center of gravity  | Launch commands, pipelines, redirection, environment variables | Text processing, regexes, hashes, arrays, modules, Unix glue      |
+| Data model         | Strings, words, byte streams, arrays in Bash                   | Scalars, arrays, hashes, references, CPAN data-format modules     |
+| Regex handling     | Usually delegated to `grep`, `sed`, `awk`, or shell patterns   | Built into the language with match and substitution operators     |
+| Error model        | Exit statuses, `set` options, traps, explicit checks           | Exceptions through `die`, return values, tests, module boundaries |
+| Portability target | POSIX shell or a declared Bash version plus installed tools    | Perl interpreter version plus installed modules                   |
+| Dependency shape   | Commands hidden in `$PATH`                                     | CPAN/core modules plus subprocesses where needed                  |
+
+## Choose Shell When
+
+- The script is a short wrapper around commands an operator already understands.
+- The main work is a pipeline over files, streams, or exit statuses.
+- The script must run before richer runtimes or dependencies are installed.
+- A CI step, container entrypoint, package hook, or deploy wrapper only needs environment setup and command execution.
+- The target shell and utilities are declared and controlled.
+
+## Choose Perl When
+
+- The script parses text heavily enough that several `grep`, `sed`, `awk`, and shell-quoting stages are becoming hard to audit.
+- Hashes, arrays, nested data, reusable functions, or modules would make the logic clearer.
+- The script needs CPAN libraries for email, databases, formats, networking, dates, or legacy protocols.
+- Tests should exercise functions rather than only full shell command runs.
+- The organization already has Perl runtime and module management in place.
+
+## Watch Points
+
+Shell risks usually come from expansion and process boundaries: unquoted variables, globbing, word splitting, hidden command dependencies, pipeline statuses, redirection order, and ambiguous interactions with `set -e` or `pipefail`.
+
+Perl risks usually come from implicit behavior: default variables, context-sensitive expressions, dense regexes, old global variables, legacy module paths, and scripts that call the shell with interpolated strings. Use list-form system calls, validate input, enable strictness and warnings, and add tests around important transformations.
+
+## Migration Heuristics
+
+A shell script is ready to move to Perl when it has these signs:
+
+- It parses command output through several pipeline stages and then branches on the result.
+- It maintains lookup tables, counters, or nested state.
+- It has repeated regex substitutions that deserve names and tests.
+- It has cleanup, rollback, retries, or partial-failure states.
+- It is copied between systems because there is no clean module boundary.
+
+Do not rewrite every shell script. Many good shell scripts should stay shell because they only run a few commands in a known environment. Move the parts that have outgrown shell's model.
+
+## Practical Default
+
+Use shell for the outer operational boundary. Use Perl when the script becomes text-processing software rather than command orchestration. In many mature systems, the cleanest shape is a small shell launcher that sets the environment and then hands structured work to Perl or another real programming language.

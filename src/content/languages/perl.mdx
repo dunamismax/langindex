@@ -1,0 +1,255 @@
+---
+title: Perl
+slug: perl
+status: active
+summary: Perl is a dynamically typed, general-purpose scripting language created for practical text processing and Unix automation, with deep regular-expression support, CPAN as its package ecosystem, strong backward-compatibility culture, and a long role in system administration, web history, glue code, and legacy maintenance.
+firstReleased: 1987
+creators:
+  - Larry Wall
+paradigms:
+  - procedural
+  - scripting
+  - object-oriented
+  - functional
+  - text processing
+typing:
+  discipline: dynamic
+  strength: runtime typing with scalar, list, and void context plus implicit string and numeric conversions
+memory:
+  model: automatic memory management through the Perl interpreter, primarily reference-count driven with cycle risks for self-referential structures
+runtime:
+  model: interpreted by the Perl 5 interpreter after compilation to an internal syntax tree and opcode execution model
+officialSite: https://www.perl.org/
+repository: https://github.com/Perl/perl5
+packageManagers:
+  - CPAN
+  - cpan
+  - cpanm
+  - Carton
+  - local::lib
+comparedWith:
+  - python
+  - bash
+  - ruby
+  - php
+bestFor:
+  - Existing Perl systems where CPAN dependencies, operational knowledge, and business behavior are already proven and need careful maintenance.
+  - Text processing, report generation, log analysis, one-off data cleanup, and Unix automation that benefit from Perl's regular expressions and command-line ergonomics.
+  - Glue code around files, processes, databases, network services, and legacy Unix environments where Perl is already installed or accepted.
+  - Teams with Perl expertise that can use CPAN, tests, perldoc, and compatibility policy deliberately instead of treating old scripts as unowned artifacts.
+poorFit:
+  - New greenfield products where hiring, framework defaults, package familiarity, or team preference clearly point to Python, JavaScript, Go, Ruby, Java, C#, or another ecosystem.
+  - Browser applications, mobile apps, low-level systems software, hard real-time components, or performance-critical code that needs native layout control.
+  - Large codebases without tests or style discipline where Perl's context sensitivity, implicit globals, regex density, and older idioms would make review expensive.
+  - Projects that require compile-time static type guarantees as the main correctness boundary.
+sources:
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: Perl Download
+    url: https://www.perl.org/get.html
+    publisher: Perl.org
+  - title: Docs - Perl.org
+    url: https://www.perl.org/docs/
+    publisher: Perl.org
+  - title: perlintro - a brief introduction and overview of Perl
+    url: https://perldoc.perl.org/perlintro
+    publisher: Perldoc
+  - title: perlhist - the Perl history records
+    url: https://perldoc.perl.org/perlhist
+    publisher: Perldoc
+  - title: perldata - Perl data types
+    url: https://perldoc.perl.org/perldata
+    publisher: Perldoc
+  - title: perlre - Perl regular expressions
+    url: https://perldoc.perl.org/perlre
+    publisher: Perldoc
+  - title: perlref - Perl references and nested data structures
+    url: https://perldoc.perl.org/perlref
+    publisher: Perldoc
+  - title: perlmod - Perl modules
+    url: https://perldoc.perl.org/perlmod
+    publisher: Perldoc
+  - title: perlclass - Perl class syntax reference
+    url: https://perldoc.perl.org/perlclass
+    publisher: Perldoc
+  - title: perlpolicy - Perl core policies and commitments
+    url: https://perldoc.perl.org/perlpolicy
+    publisher: Perldoc
+  - title: perlgov - Perl Rules of Governance
+    url: https://perldoc.perl.org/perlgov
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
+  - title: Perl and The CPAN
+    url: https://www.perl.org/about/whitepapers/perl-cpan.html
+    publisher: Perl.org
+  - title: MetaCPAN
+    url: https://metacpan.org/
+    publisher: MetaCPAN
+  - title: App::cpanminus
+    url: https://metacpan.org/pod/App::cpanminus
+    publisher: MetaCPAN
+  - title: Carton
+    url: https://metacpan.org/pod/Carton
+    publisher: MetaCPAN
+  - title: local::lib
+    url: https://metacpan.org/pod/local::lib
+    publisher: MetaCPAN
+lastVerified: 2026-05-19
+---
+
+## Origin And Design Goals
+
+Perl was created by Larry Wall and first released publicly as Perl 1.000 on December 18, 1987. The official history frames early Perl around practical Unix work: Perl 1 brought the language to the world, Perl 2 added Henry Spencer's regular-expression package, Perl 3 handled binary data, and Perl 5 introduced the extensibility model that still defines modern Perl.
+
+The official introduction describes Perl as a general-purpose programming language originally developed for text manipulation and now used for system administration, web development, network programming, GUI development, and more. That breadth is real, but Perl's durable center is still practical scripting: extract data, transform text, call other programs, glue systems together, and keep useful old software running.
+
+Perl's design favors convenience, expressiveness, and compatibility over minimalism. It has terse operators, sigils, default variables, context-sensitive behavior, and regular expressions integrated into ordinary syntax. Those features can make small scripts very compact. They can also make large or old codebases expensive unless the team uses modern style, tests, warnings, strictness, and clear module boundaries.
+
+## Modern Perl Status
+
+Perl 5 is still actively developed. Perl.org lists Perl 5.42.2 as the latest stable release as of this verification, and the Perl download page recommends running the latest stable version. Perl.org also distinguishes Raku, formerly Perl 6, as a sister language in the Perl family rather than a replacement for Perl 5.
+
+The practical "modern Perl" story is therefore not that Perl disappeared. It is that Perl's strongest new-project defaults narrowed while its maintenance and scripting value remained significant. Current Perl has a supported release policy, perldoc documentation, CPAN and MetaCPAN, active module uploads, regular interpreter releases, and ongoing language work such as the experimental core `class` feature.
+
+For production decisions, separate three cases:
+
+- Maintaining an existing Perl system can be a sound engineering choice when tests, CPAN dependencies, runtime versions, and deployment knowledge are under control.
+- Writing new Perl can make sense in Perl-heavy organizations, Unix automation contexts, text-heavy operational workflows, and places where CPAN already solves the problem.
+- Choosing Perl for an unrelated greenfield product needs a stronger reason than nostalgia, because Python, JavaScript, Go, Ruby, Java, C#, and other ecosystems often have broader hiring and framework momentum.
+
+## Runtime And Execution Model
+
+Perl programs run on the Perl interpreter. A script is parsed and compiled into Perl's internal representation, then executed by the interpreter. In ordinary use, developers run files with `perl script.pl`, use shebang lines for executable scripts, and load modules with `use` or `require`.
+
+Perl is widely available on Unix-like systems, and Perl.org says it runs on more than 100 platforms. System Perl versions may lag the latest stable release, so production systems should declare which Perl interpreter they use rather than assuming `/usr/bin/perl` is appropriate. Version managers such as perlbrew and build-time installation in containers are common ways to control that boundary.
+
+Deployment shape is usually script or application specific. A Perl program may be a single script, a collection of modules, a daemon, a CGI-era web program, a PSGI/Plack application, an operations tool, or a package installed from CPAN. The key production question is not only "can this script run?" but "which interpreter, modules, environment variables, native dependencies, filesystem paths, and process manager does it require?"
+
+## Type System, Context, And Data Model
+
+Perl is dynamically typed. Values are checked at runtime, and variables are identified by sigils that indicate scalar, array, hash, subroutine, or typeglob use. Perldoc's data-type documentation describes three built-in data structures: scalars, arrays of scalars, and hashes of scalars. Scalars can hold strings, numbers, or references.
+
+Perl's most distinctive typing issue is context. Operators and functions can behave differently in scalar, list, or void context. That makes idioms such as reading lines, returning lists, counting arrays, matching regular expressions, and assigning hashes compact. It also means review requires knowing which context a value is being evaluated in.
+
+Perl also performs many string and numeric conversions automatically. This is convenient for text and command-line work, where data often arrives as strings. It is riskier when input validation, financial calculations, Unicode boundaries, or structured data formats require explicit contracts. Use warnings, `strict`, lexical variables, validation, tests, and simple data shapes early.
+
+## Regular Expressions And Text Processing
+
+Regular expressions are a core Perl strength, not a bolt-on library. Perl's regex documentation covers matching, substitution, quoting, modifiers, character classes, assertions, capture groups, named captures, backtracking controls, and Unicode-related behavior. Regex operators such as `m//`, `s///`, and `qr//` sit directly in Perl syntax.
+
+This makes Perl very effective for:
+
+- Log processing and report generation.
+- Text migration, cleanup, and normalization.
+- Reformatting files across old systems.
+- Extracting fields from semi-structured operational output.
+- One-off data repair where shell pipelines are too brittle and a full application is unnecessary.
+
+Regex density is also Perl's easiest failure mode. A compact expression can hide business rules that deserve names, comments, tests, or a real parser. When the input has a formal grammar, nested structure, quoting rules, or security implications, use a parser or CPAN library instead of stretching one expression past reviewability.
+
+## Memory, References, And Objects
+
+Perl memory management is automatic from the application programmer's point of view. Internally, perlguts documents reference-count driven garbage collection, while perlref documents how hard references keep track of reference counts and how circular references can leak unless weakened or broken deliberately.
+
+References let Perl build nested arrays, hashes, objects, callbacks, and data structures. That was one of Perl 5's important practical shifts. The same mechanism underlies classic Perl objects: a reference is blessed into a package, and method dispatch uses the package's subroutines.
+
+Modern Perl code may use classic blessed objects, lightweight object systems from CPAN, Moose/Moo-family object systems, or the experimental core `class` feature documented in current perldoc. The `class` feature is promising, but perldoc still marks it as experimental and incomplete, so libraries and production applications should verify their minimum Perl version and stability expectations before adopting it.
+
+## Syntax Example
+
+```perl
+#!/usr/bin/env perl
+use v5.36;
+use warnings;
+
+my %counts;
+
+while (my $line = <STDIN>) {
+    chomp $line;
+    next if $line =~ /\A\s*(?:#|\z)/;
+
+    my ($language, $domains) = split /:/, $line, 2;
+    next unless defined $domains;
+
+    for my $domain (split /,\s*/, $domains) {
+        $counts{$domain}{$language}++;
+    }
+}
+
+for my $domain (sort keys %counts) {
+    my @languages = sort keys %{ $counts{$domain} };
+    say "$domain: @languages";
+}
+```
+
+This small script reads `Language: domain, domain` lines from standard input, skips comments and blank lines, uses regular expressions for line handling, stores nested hash data through references, and prints grouped output. It is intentionally script-shaped. A larger application should move parsing, validation, and output logic into tested modules.
+
+## CPAN, Modules, And Tooling
+
+CPAN is Perl's central package ecosystem. CPAN.org lists tens of thousands of distributions and authors, and MetaCPAN is the main web search and documentation surface for CPAN modules. Perl.org's CPAN overview emphasizes module documentation, searching, mirrors, bug tracking, and CPAN Testers reports across platforms and Perl configurations.
+
+The core `cpan` client can query, download, build, test, and install modules. `cpanm` is a widely used lightweight installer. `Carton` gives application dependency management with lock-file style behavior, while `local::lib` helps install modules into a user or project-local library path. Older systems may also use MakeMaker, Module::Build, vendor packages, custom mirrors, or hand-managed `PERL5LIB`.
+
+Good Perl maintenance starts by making the module boundary explicit:
+
+- Which Perl version is supported?
+- Which modules are core, vendor-provided, CPAN-installed, or locally patched?
+- Is dependency resolution locked and reproducible?
+- Are XS/native modules tied to a compiler, C library, OpenSSL, database client, or operating-system package?
+- Does CI run the test suite against the same interpreter and module set as production?
+
+CPAN is a strength when dependencies are maintained and tested. It is a risk when a legacy application depends on abandoned modules, old installation paths, implicit global state, or production-only module versions.
+
+## Maintenance And Legacy Systems
+
+Perl is often encountered today through working software that predates the current team's language preferences. That does not make the system bad. Many Perl systems encode years of operational knowledge around billing, reporting, provisioning, ETL, bioinformatics, finance, publishing, hosting, systems administration, or internal tools.
+
+The maintenance question is whether the code can be made legible and verifiable:
+
+- Add or recover tests around business behavior before rewriting.
+- Enable `strict` and warnings where practical, but expect old code to need incremental cleanup.
+- Isolate shell calls, database access, file formats, and network protocols behind modules.
+- Pin the interpreter and module graph.
+- Replace dense regexes with named functions or parsers when the format deserves it.
+- Modernize deployment before starting a language migration.
+
+Rewrites are justified when the runtime is unsupported, dependencies cannot be made safe, domain behavior is understood well enough to port, and the target platform solves a real operational problem. Without that evidence, a small Perl modernization can be lower-risk than a full rewrite.
+
+## Governance, Releases, And Compatibility
+
+Perl 5 is developed by a community. The governance documentation defines a Core Team and Steering Council, and perlpolicy records written policies for Perl core development and maintenance. Perl's support policy says the two most recent stable release series receive full support, with critical security fixes available for supported time windows.
+
+Compatibility is a major part of Perl's identity. Perlpolicy explicitly favors backward compatibility and cautions against breaking existing syntax and semantics. That conservatism helps old systems keep running, but it also means Perl carries historical behavior that newer languages might avoid. Production teams should treat this as a tradeoff: stable old behavior is useful, but accumulated idioms and compatibility baggage need style discipline.
+
+As of this verification, Perl.org lists 5.42.2 as the latest stable release. Teams should avoid designing new systems around odd-numbered development releases and should plan upgrades around stable release series, dependency compatibility, and tests.
+
+## Best-Fit Use Cases
+
+Perl is a strong fit for:
+
+- Maintaining and improving existing Perl applications whose business behavior is still valuable.
+- Text processing, reporting, log analysis, data cleanup, and Unix-oriented automation.
+- Glue code around files, processes, databases, sockets, and established operational tools.
+- Perl-heavy organizations with CPAN expertise and working deployment patterns.
+- Scripts that need more structure than shell but live in an environment where Perl is already the local standard.
+
+## Poor-Fit Or Risky Use Cases
+
+Perl can be a poor fit when:
+
+- A greenfield team has no Perl expertise and no CPAN-specific advantage.
+- The application needs browser-side code, mobile-platform integration, static binaries, hard real-time behavior, or low-level memory control.
+- Compile-time type checking is the main safety requirement.
+- The codebase is already dense, untested, and full of implicit globals, context-sensitive tricks, string-built shell commands, or undocumented regexes.
+- Hiring, onboarding, framework ecosystem, and long-term ownership all point more strongly to another language.
+
+## Comparison Notes
+
+Python is the closest modern comparison for scripts that are becoming programs. Python usually offers broader cross-team familiarity, data tooling, notebooks, standard-library ergonomics, and type-hinting workflows. Perl remains attractive for existing Perl systems, regex-heavy text work, Unix glue, and teams that already know CPAN.
+
+Shell is the closer comparison for tiny operational glue. Shell is better when the script is mostly commands and pipelines. Perl is better when the script needs data structures, regex-heavy parsing, reusable modules, tests, and logic that would make shell quoting fragile.
+
+Ruby overlaps with Perl in scripting, dynamic object-oriented style, and web history. Ruby's modern center is Rails and RubyGems/Bundler workflows. Perl's modern center is CPAN-backed maintenance, Unix scripting, and text processing.

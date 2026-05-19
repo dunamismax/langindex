@@ -1,0 +1,146 @@
+---
+title: Choosing A Legacy Maintenance Language
+slug: choosing-a-legacy-maintenance-language
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, and related languages.
+audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
+candidates:
+  - perl
+  - php
+  - ruby
+  - bash
+  - c
+  - cpp
+  - java
+  - python
+  - objective-c
+  - fortran
+sources:
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: perlpolicy - Perl core policies and commitments
+    url: https://perldoc.perl.org/perlpolicy
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: PHP Supported Versions
+    url: https://www.php.net/supported-versions.php
+    publisher: PHP Project
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Ruby Maintenance Branches
+    url: https://www.ruby-lang.org/en/downloads/branches/
+    publisher: Ruby
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
+  - title: ISO/IEC 9899:2024 - C
+    url: https://www.iso.org/standard/82075.html
+    publisher: International Organization for Standardization
+  - title: ISO/IEC 14882:2024 - C++
+    url: https://www.iso.org/standard/83626.html
+    publisher: International Organization for Standardization
+  - title: The Java Language Specification
+    url: https://docs.oracle.com/javase/specs/
+    publisher: Oracle
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Objective-C Programming Language
+    url: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html
+    publisher: Apple Developer Documentation Archive
+  - title: Objective-C Runtime
+    url: https://developer.apple.com/documentation/objectivec
+    publisher: Apple Developer Documentation
+  - title: ISO/IEC 1539-1:2023 - Fortran
+    url: https://www.iso.org/standard/82170.html
+    publisher: International Organization for Standardization
+lastVerified: 2026-05-19
+---
+
+## Start With Ownership, Not Preference
+
+Legacy maintenance is not a referendum on whether a language is fashionable. It is a risk-management problem around working software: behavior, data, dependencies, operators, tests, deployment, security, and the people who can safely change it.
+
+The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, or Fortran system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
+
+## Inventory The System
+
+Before choosing a maintenance path, write down:
+
+- The runtime version, operating system, package manager, compiler, interpreter, and deployment target.
+- All third-party dependencies, including native libraries, vendored code, system packages, plugins, and private forks.
+- External contracts: files, databases, queues, APIs, CLIs, reports, schedules, and side effects.
+- Known owners, runbooks, incident history, release process, and rollback path.
+- Test coverage and the production behaviors that tests do not cover.
+- Security exposure: network input, shell calls, deserialization, file uploads, credentials, permissions, and unsupported dependencies.
+
+If this inventory cannot be created, a rewrite will not be safer by default. It will mostly move unknown behavior into a new language.
+
+## Choose Modernization In Place When
+
+Modernize in place when the runtime is still supportable and most risk comes from neglect rather than language limits:
+
+- Pin the interpreter, compiler, package graph, and container or host image.
+- Add characterization tests around outputs, database effects, protocols, and reports.
+- Replace unsupported dependencies one at a time.
+- Introduce formatting, linting, static analysis, and CI where the ecosystem supports it.
+- Split large scripts or modules around stable boundaries.
+- Document deployment and rollback.
+
+This is often the right first move for Perl, PHP, Ruby, shell, and Java systems. It is also useful for C and C++ systems when the ABI, build chain, hardware target, or performance constraints make replacement expensive.
+
+## Choose Wrapping When
+
+Wrap the system when it works but needs safer boundaries:
+
+- Put an HTTP, queue, file, or CLI boundary around stable behavior.
+- Move new features into a better-owned service while the old system keeps its known responsibility.
+- Add validation at the boundary instead of editing risky internals immediately.
+- Freeze fragile modules behind tests before refactoring.
+- Isolate unsupported host dependencies inside containers or dedicated machines while planning migration.
+
+Wrapping is not an excuse to ignore risk. It is useful when it reduces blast radius and gives the team room to replace behavior gradually.
+
+## Choose Rewrite Or Migration When
+
+Rewrite when the evidence supports it:
+
+- The runtime or dependencies are unsupported and cannot be isolated acceptably.
+- Security exposure is high and the current architecture cannot be made safe.
+- The team cannot hire, train, or retain enough maintainers for the existing language.
+- The system has tests or observable fixtures that define behavior well enough to port.
+- The target language solves a concrete operational problem: static binaries, memory safety, ecosystem fit, type checking, platform SDKs, data tooling, or framework support.
+- Incremental migration has a clean boundary and rollback path.
+
+Avoid rewriting only because the language is old. Old code with tests and known behavior is often less risky than new code that approximates it.
+
+## Language-Specific Notes
+
+Perl systems are often text-heavy, CPAN-backed, and operationally close to Unix. Start by pinning Perl and modules, adding tests around regex-heavy behavior, and replacing shell-string command calls with safer argument-list forms.
+
+PHP systems are often web or CMS-centered. Supported PHP versions, Composer locks, framework/CMS upgrades, OPcache/FPM configuration, and extension patching usually reduce risk before a full rewrite.
+
+Ruby systems are often Rails or automation systems. Ruby version support, Bundler locks, Rails upgrades, native gem dependencies, background workers, and test coverage are the main maintenance levers.
+
+Shell systems should stay small. When a shell script grows data structures, parsing, retries, or rollback, move the logic into Python, Perl, Ruby, Go, or Rust while keeping shell as the launcher if needed.
+
+C and C++ systems need build reproducibility, compiler warnings, sanitizer runs, memory-safety review, ABI awareness, and tests before broad refactors. Rewrites into Rust, Go, Java, or another language should start at a boundary, not by translating every file.
+
+Java systems may be old but still maintainable if the JDK, build tool, dependencies, app server, and framework are on supportable lines. Modernization often means dependency upgrades and deployment cleanup rather than leaving the JVM.
+
+Python is often the migration target for automation, data, and glue code, but it has its own dependency and runtime risks. Use it when the ecosystem and owners match the future work.
+
+Objective-C and Fortran systems usually exist because they sit near platform APIs, numerical code, or long-lived domain libraries. Preserve tested boundaries before moving behavior to Swift, C++, Python, Julia, Rust, or another platform.
+
+## Practical Default
+
+Stabilize first: tests, runtime pinning, dependency inventory, deployment docs, and rollback. Then decide whether to modernize in place, wrap, or rewrite. A language migration is successful only when it preserves the behavior people depend on while reducing a risk the old system could not reasonably absorb.

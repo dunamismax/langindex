@@ -703,11 +703,14 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 19);
+        assert_eq!(content.languages.len(), 20);
+        assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
         assert!(content.language("rust").is_some());
+        assert!(content.comparison("perl-vs-python").is_some());
+        assert!(content.comparison("perl-vs-shell").is_some());
         assert!(content.comparison("scala-vs-java").is_some());
         assert!(content.comparison("scala-vs-kotlin").is_some());
         assert!(content.comparison("lua-vs-javascript").is_some());
@@ -717,6 +720,11 @@ mod tests {
         assert!(
             content
                 .guide("choosing-an-embedded-scripting-language")
+                .is_some()
+        );
+        assert!(
+            content
+                .guide("choosing-a-legacy-maintenance-language")
                 .is_some()
         );
         assert!(content.guide("choosing-a-systems-language").is_some());

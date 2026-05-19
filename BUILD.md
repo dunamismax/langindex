@@ -47,6 +47,7 @@ Observed on 2026-05-16:
   - Dart
   - Lua
   - Scala
+  - Perl
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -70,6 +71,8 @@ Observed on 2026-05-16:
   - Lua vs Python comparison
   - Scala vs Java comparison
   - Scala vs Kotlin comparison
+  - Perl vs Python comparison
+  - Perl vs Shell comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -82,6 +85,7 @@ Observed on 2026-05-16:
   - Choosing R for data analysis, statistics, and research guide
   - Choosing Shell for operations and automation guide
   - Choosing an embedded scripting language guide
+  - Choosing a legacy maintenance language guide
   - Ownership concept page
 - Current local baseline:
 
@@ -497,12 +501,12 @@ continue with Phase 17.
 
 ### Phase 20 - Perl
 
-- [ ] Add a complete Perl page.
-- [ ] Cover CPAN, text processing, Unix heritage, modern Perl status,
+- [x] Add a complete Perl page.
+- [x] Cover CPAN, text processing, Unix heritage, modern Perl status,
       compatibility, regular expressions, package tooling, and maintenance
       tradeoffs.
-- [ ] Add Perl vs Python and Perl vs Shell comparisons.
-- [ ] Add Perl to scripting and legacy-maintenance guides.
+- [x] Add Perl vs Python and Perl vs Shell comparisons.
+- [x] Add Perl to scripting and legacy-maintenance guides.
 
 ### Phase 21 - Objective-C
 

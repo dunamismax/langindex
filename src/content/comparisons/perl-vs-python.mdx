@@ -1,0 +1,99 @@
+---
+title: Perl vs Python
+slug: perl-vs-python
+summary: Perl and Python are both dynamic scripting languages with strong text and automation roots, but Perl is strongest in existing CPAN-backed Unix and text-processing systems while Python is usually the broader default for new scripting, data, backend, and cross-team automation work.
+languages:
+  - perl
+  - python
+useCases:
+  - scripting
+  - automation
+  - text processing
+  - legacy maintenance
+  - backend services
+  - data workflows
+sources:
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: perlintro - a brief introduction and overview of Perl
+    url: https://perldoc.perl.org/perlintro
+    publisher: Perldoc
+  - title: perlre - Perl regular expressions
+    url: https://perldoc.perl.org/perlre
+    publisher: Perldoc
+  - title: perlpolicy - Perl core policies and commitments
+    url: https://perldoc.perl.org/perlpolicy
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: PEP 484 - Type Hints
+    url: https://peps.python.org/pep-0484/
+    publisher: Python Software Foundation
+  - title: PEP 602 - Annual Release Cycle for Python
+    url: https://peps.python.org/pep-0602/
+    publisher: Python Software Foundation
+lastVerified: 2026-05-19
+---
+
+## Scope
+
+This comparison is for scripts, automation, text processing, backend support code, data cleanup, and maintenance of existing systems. It is not a claim that either language is universally better.
+
+Perl and Python overlap most when a team needs a dynamic language that can read files, process text, call commands, use packages, and grow beyond shell. The decision changes depending on whether the project is new, existing, text-heavy, data-heavy, or tied to a legacy runtime.
+
+## Shared Territory
+
+Both languages are dynamically typed, garbage-collected, interpreted in normal use, useful for command-line scripts, and supported by large package ecosystems. Both can run on Unix-like systems, call subprocesses, parse files, talk to databases and APIs, and serve web applications.
+
+Both also need production discipline. Interpreter version, dependency isolation, native extensions, test coverage, Unicode behavior, subprocess safety, and deployment reproducibility matter more than syntax preference.
+
+## Key Differences
+
+| Dimension          | Perl                                                               | Python                                                                 |
+| ------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Design center      | Practical text processing, Unix scripting, CPAN modules, glue code | Readable general-purpose scripting, automation, data, web, and tooling |
+| Text processing    | Regex and substitution are deeply integrated into syntax           | Strong libraries and `re`, but less regex-centered syntax              |
+| Data model         | Scalars, arrays, hashes, references, context-sensitive operators   | Lists, dicts, tuples, classes, dataclasses, explicit iteration         |
+| Package ecosystem  | CPAN, MetaCPAN, cpan/cpanm, Carton, local::lib                     | PyPI, pip, venv, pyproject build tooling                               |
+| Modern default     | Strong for existing Perl and specialist text/Unix work             | Broader default for new scripts, data, web, education, and AI tooling  |
+| Compatibility pull | Strong backward-compatibility culture in Perl 5                    | Annual releases with deprecations and managed compatibility policy     |
+| Hiring/onboarding  | Often narrower today outside Perl-heavy domains                    | Usually broader across teams and adjacent roles                        |
+
+## Choose Perl When
+
+- The system is already Perl and the business behavior is valuable.
+- CPAN dependencies solve the problem well and are maintained.
+- The task is regex-heavy text processing, report generation, log analysis, or Unix glue.
+- Perl is already installed, supported, and understood in the target operational environment.
+- Incremental modernization is lower-risk than a rewrite.
+
+## Choose Python When
+
+- The script is new and several teams, analysts, operations staff, or researchers may maintain it.
+- The work needs broad standard-library support, PyPI packages, notebooks, data tooling, web frameworks, or ML-adjacent libraries.
+- Optional type hints, dataclasses, virtual environments, and common packaging workflows help maintainability.
+- The project may grow into a CLI, service, data pipeline, internal tool, or shared package.
+- Hiring and onboarding are important constraints.
+
+## Migration And Maintenance Notes
+
+Moving from Perl to Python is rarely a syntax-only port. Perl's regexes, context behavior, implicit globals, CPAN modules, shell calls, and data structure idioms often encode hidden behavior. Before rewriting, add tests around outputs, edge cases, file formats, database changes, and command invocations.
+
+Good migration candidates have clear input and output contracts, pinned dependencies, test fixtures, and domain behavior that maintainers understand. Poor candidates are old scripts whose only specification is production behavior. For those, modernizing Perl in place may be safer: pin Perl, clean module installs, add tests, isolate dangerous shell calls, and replace only the parts that are actually risky.
+
+Python is often the right target when the future work needs data libraries, notebooks, web frameworks, or broad team ownership. Perl remains a reasonable owner when the system is stable, text-heavy, CPAN-backed, and maintained by people who can read and test it.
+
+## Practical Default
+
+For new general scripting and automation, start with Python unless the environment, dependencies, or maintainers specifically favor Perl. For existing Perl systems, start with tests and dependency control before proposing a rewrite. For one-off text processing, choose from the actual task: shell for tiny pipelines, Perl for dense text transformations, Python for structured data and maintainable scripts.

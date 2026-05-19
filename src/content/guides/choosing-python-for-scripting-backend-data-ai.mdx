@@ -6,6 +6,7 @@ audience: Developers and teams deciding whether Python should be the main langua
 candidates:
   - python
   - bash
+  - perl
   - sql
   - go
   - javascript
@@ -105,6 +106,18 @@ sources:
   - title: Spark SQL, DataFrames and Datasets Guide
     url: https://spark.apache.org/docs/latest/sql-programming-guide
     publisher: Apache Spark
+  - title: The Perl Programming Language
+    url: https://www.perl.org/
+    publisher: Perl.org
+  - title: perlintro - a brief introduction and overview of Perl
+    url: https://perldoc.perl.org/perlintro
+    publisher: Perldoc
+  - title: perlpolicy - Perl core policies and commitments
+    url: https://perldoc.perl.org/perlpolicy
+    publisher: Perldoc
+  - title: Comprehensive Perl Archive Network
+    url: https://www.cpan.org/
+    publisher: CPAN
 lastVerified: 2026-05-19
 ---
 
@@ -125,7 +138,7 @@ Prefer Python over shell when:
 - Several teams will maintain the script and readability matters more than terseness.
 - The script may grow into a packaged tool or service.
 
-Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands, and prefer Bash only when the target environment can guarantee Bash-specific behavior. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
+Prefer Perl when the system is already Perl, the task is regex-heavy text processing, or CPAN modules and Unix glue are the natural fit. Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands, and prefer Bash only when the target environment can guarantee Bash-specific behavior. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, or stronger compile-time guarantees.
 
 ## Choose Python For Backend Services When
 
@@ -192,6 +205,8 @@ Keep the architecture honest:
 ## Practical Default
 
 Start with Python for scripts that are more than shell glue, data workflows, notebooks, scientific computing, ML orchestration, and backend services where Python libraries dominate the product. Add type hints, tests, dependency locking, and deployment isolation early enough that the code can grow without becoming environment-specific.
+
+Start with Perl when maintaining existing Perl software, extending a CPAN-backed operational system, or doing text-heavy Unix automation where Perl is already the team's supported scripting language.
 
 Start with Go for network services, CLIs, platform tools, and infrastructure components where deployment as a static binary and simple concurrency matter more than data ecosystem reach.
 
