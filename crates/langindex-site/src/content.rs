@@ -703,7 +703,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 23);
+        assert_eq!(content.languages.len(), 24);
+        assert!(content.language("haskell").is_some());
         assert!(content.language("delphi").is_some());
         assert!(content.language("fortran").is_some());
         assert!(content.language("objective-c").is_some());
@@ -715,6 +716,8 @@ mod tests {
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
         assert!(content.comparison("delphi-vs-csharp").is_some());
+        assert!(content.comparison("haskell-vs-ocaml").is_some());
+        assert!(content.comparison("haskell-vs-scala").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -738,7 +741,13 @@ mod tests {
                 .guide("choosing-a-legacy-maintenance-language")
                 .is_some()
         );
+        assert!(
+            content
+                .guide("choosing-a-functional-programming-language")
+                .is_some()
+        );
         assert!(content.guide("choosing-a-systems-language").is_some());
+        assert!(content.concept("functional-programming").is_some());
         assert!(content.concept("ownership").is_some());
     }
 
@@ -747,16 +756,21 @@ mod tests {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
         let routes = content.all_routes();
         assert!(routes.contains("/languages/delphi"));
+        assert!(routes.contains("/languages/haskell"));
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
+        assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
+        assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
+        assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));
+        assert!(routes.contains("/concepts/functional-programming"));
         assert!(routes.contains("/concepts/ownership"));
         assert!(routes.contains("/languages.json"));
         assert!(routes.contains("/search.json"));

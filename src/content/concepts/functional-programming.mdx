@@ -1,0 +1,117 @@
+---
+title: Functional Programming
+slug: functional-programming
+summary: Functional programming is a family of language and design practices centered on functions as values, expression-oriented code, composition, immutable data, explicit effects, and modeling behavior through transformations rather than shared mutable state.
+relatedLanguages:
+  - haskell
+  - scala
+  - javascript
+  - python
+  - kotlin
+  - rust
+  - r
+  - swift
+sources:
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: The OCaml Manual
+    url: https://ocaml.org/manual/
+    publisher: OCaml
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Kotlin Language Specification
+    url: https://kotlinlang.org/spec/introduction.html
+    publisher: JetBrains
+  - title: MDN JavaScript Guide - Functions
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+    publisher: MDN Web Docs
+  - title: Python Functional Programming HOWTO
+    url: https://docs.python.org/3/howto/functional.html
+    publisher: Python Software Foundation
+lastVerified: 2026-05-20
+---
+
+## What Functional Programming Means
+
+Functional programming treats functions and values as the main building blocks of software. Instead of organizing behavior primarily around mutable objects or step-by-step commands, FP-heavy code tends to describe transformations: map this collection, fold these events, parse this input into a typed value, compose these smaller functions into a pipeline, or evaluate this expression into a result.
+
+The term covers a spectrum. JavaScript, Python, Kotlin, Swift, Rust, and C# support many functional idioms while remaining multi-paradigm languages. Scala, OCaml, F#, Clojure, Elixir, and Erlang put functional programming closer to the center. Haskell is more radical: it is pure and lazy by default, and effects are represented in types.
+
+## Common Ingredients
+
+Functional programming often includes:
+
+- First-class functions that can be passed as values, returned from other functions, and stored in data structures.
+- Higher-order functions such as `map`, `filter`, `fold`, callbacks, combinators, and parser builders.
+- Immutable or persistent data structures, or at least local discipline that reduces mutation.
+- Algebraic data types, tagged unions, enums, tuples, records, and pattern matching.
+- Composition through small expressions instead of large mutable procedures.
+- Explicit error and absence modeling through result, option, either, maybe, or validation types.
+- Controlled effects through monads, effect systems, capability passing, structured concurrency, or library conventions.
+
+No single feature makes a language "functional." The practical question is how much of the design depends on values, transformations, and explicit control of effects.
+
+## Purity And Effects
+
+Pure functions return the same output for the same input and do not directly perform side effects. This makes them easier to test, cache, reorder, and reason about. Haskell takes this far: ordinary functions are pure, and effectful work is represented in types such as `IO`.
+
+Most languages use a mixed model. Scala, OCaml, F#, Rust, Kotlin, Python, and JavaScript can all write pure functions, but they also allow direct mutation and effects. That can be pragmatic, but the team must decide which parts of the codebase should remain pure and which parts may touch files, databases, clocks, randomness, network calls, or shared state.
+
+The engineering value comes from boundaries. Pure domain logic behind effectful adapters is often easier to test and refactor, even in languages that are not purely functional.
+
+## Immutability
+
+Immutability means a value does not change after it is created. Persistent data structures go further by sharing structure between old and new versions efficiently. This reduces accidental shared-state bugs and makes concurrent reasoning easier, but it can introduce allocation, performance, and library-choice tradeoffs.
+
+Functional programming does not always mean no mutation. OCaml, Scala, Rust, Swift, Kotlin, Python, and JavaScript all allow some mutable style. The key decision is whether mutation is local and obvious or spread through shared references and hidden global state.
+
+## Types And Modeling
+
+Functional languages often make invalid states harder to represent. Algebraic data types can encode alternatives; pattern matching forces code to consider cases; option/result types make absence and failure visible; type classes or modules can describe reusable behavior without inheritance.
+
+Haskell uses type classes heavily for overloadable abstractions. OCaml uses a strong module system, signatures, and functors. Scala supports object-oriented design and functional type-class patterns through contextual abstractions. Rust uses enums, traits, and ownership. Each language gives a different answer to the same modeling problem.
+
+## When FP Helps
+
+Functional programming helps most when:
+
+- Domain rules are complex enough that explicit data modeling matters.
+- Business behavior should be testable without databases, clocks, queues, or network calls.
+- Concurrency bugs from shared mutable state are a real risk.
+- Transformations over collections, trees, events, queries, or syntax are central.
+- Refactoring confidence matters more than immediate familiarity.
+- The team can learn the vocabulary and keep abstractions proportionate.
+
+## Watch Points
+
+FP can be misused. Point-free style, custom operators, deeply nested generic abstractions, unnecessary monad stacks, and clever type-level code can make ordinary changes harder. Functional programming should clarify behavior, not hide it behind terminology.
+
+The runtime still matters. Pure-looking code can allocate heavily. Lazy code can retain memory unexpectedly. Immutable data can be slower if the wrong structure is used. Effect systems and streaming libraries can improve safety, but they also create ecosystem commitments.
+
+Choose functional programming techniques where they reduce real complexity. Avoid turning every small function into an abstraction exercise.
+
+## Language Spectrum
+
+Use Haskell when purity, laziness, type classes, and explicit effects are the point.
+
+Use OCaml or F# when an ML-family strict functional language with strong inference and practical effects fits the platform.
+
+Use Scala when the JVM is required and functional programming must coexist with Java libraries, Spark, or JVM service operations.
+
+Use Clojure, Elixir, or Erlang when immutable data, message passing, macros or actors/processes, and their runtime ecosystems are more important than static typing.
+
+Use Rust, Kotlin, Swift, JavaScript, Python, R, or C# when functional techniques improve a multi-paradigm codebase but the language is still chosen for another platform, ecosystem, or deployment reason.

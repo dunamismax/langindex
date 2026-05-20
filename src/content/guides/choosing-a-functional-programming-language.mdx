@@ -1,0 +1,125 @@
+---
+title: Choosing A Functional Programming Language
+slug: choosing-a-functional-programming-language
+summary: A practical guide for choosing Haskell, Scala, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
+candidates:
+  - haskell
+  - scala
+  - kotlin
+  - rust
+  - javascript
+  - python
+sources:
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Glasgow Haskell Compiler
+    url: https://www.haskell.org/ghc/
+    publisher: GHC
+  - title: The Haskell Cabal
+    url: https://www.haskell.org/cabal/
+    publisher: Cabal
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: OCaml Platform
+    url: https://ocaml.org/platform
+    publisher: OCaml
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Kotlin Language Specification
+    url: https://kotlinlang.org/spec/introduction.html
+    publisher: JetBrains
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: Python Functional Programming HOWTO
+    url: https://docs.python.org/3/howto/functional.html
+    publisher: Python Software Foundation
+  - title: MDN JavaScript Guide - Functions
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+    publisher: MDN Web Docs
+lastVerified: 2026-05-20
+---
+
+## Start With The Reason
+
+Do not choose a functional language only because functional programming sounds cleaner. Choose it because the system benefits from at least one concrete property:
+
+- Domain rules can be modeled more accurately with algebraic data types, pattern matching, and explicit invalid states.
+- Pure functions make core behavior easier to test and refactor.
+- Effects, errors, cancellation, or resources need clearer boundaries.
+- Immutable data reduces shared-state and concurrency risk.
+- Parser, compiler, symbolic, query, or data-transformation work is central.
+- The team wants to build and maintain abstractions through types, not only through conventions.
+
+If the project mostly needs conventional CRUD, broad hiring, vendor SDKs, or mainstream framework defaults, a functional-first language may add more cost than value.
+
+## Choose Haskell When
+
+Choose Haskell when purity, laziness, type classes, and explicit effects are not incidental; they are the reason the language fits.
+
+Haskell is strongest for compilers, DSLs, parsers, static analysis, symbolic systems, complex domain modeling, rules-heavy services, and teaching or research settings where the team wants to think in pure transformations. It is also viable for production backend services when the team is Haskell-fluent and willing to own GHC, Cabal or Stack, Hackage/Stackage compatibility, HLS support, profiling, and deployment pinning.
+
+Do not choose Haskell when the team cannot budget for onboarding, when memory behavior must be predictable but profiling discipline is absent, or when the ecosystem's vendor/library coverage is a major product constraint.
+
+## Choose Scala When
+
+Choose Scala when the JVM matters and functional programming should live inside Java-compatible infrastructure.
+
+Scala is a strong fit for JVM backend services, Spark-centered data engineering, typed streaming, actor systems, and functional effect stacks such as Cats Effect or ZIO. It can interoperate with Java libraries and use JVM deployment, profiling, monitoring, and dependency infrastructure.
+
+The main risk is abstraction sprawl. Decide how much Scala 3, type classes, contextual abstractions, effect systems, symbolic syntax, and macro use belong in ordinary product code.
+
+## Choose OCaml Or F# When They Fit The Platform
+
+OCaml and F# are important strict ML-family options even when a LangIndex page for each is not yet complete.
+
+Evaluate OCaml when the work is compiler-like, analyzer-heavy, systems-adjacent, or domain-driven and the team wants strict evaluation, strong inference, native code, opam, Dune, and a powerful module system.
+
+Evaluate F# when the organization is centered on .NET and wants ML-family functional programming with practical access to C#, .NET libraries, tooling, and deployment practices.
+
+These languages are usually better than Haskell when strict evaluation and platform interop are more important than purity and laziness.
+
+## Use Functional Style In Mainstream Languages When
+
+Many teams should start by using functional techniques in a language they already operate well.
+
+Use Kotlin, Swift, C#, JavaScript, TypeScript, Python, R, or Rust functionally when:
+
+- The language is already the platform default.
+- The team can gain value from immutable data, small pure functions, map/filter/reduce, result/option types, pattern matching or enums, and clearer effect boundaries.
+- Ecosystem and hiring constraints outweigh the benefits of a functional-first language.
+- The codebase can isolate pure domain logic from framework, I/O, database, or UI edges.
+
+Rust deserves special mention: it is not a functional-first language, but enums, pattern matching, traits, iterators, closures, ownership, and `Result` make functional design techniques valuable in systems code.
+
+## Questions To Answer
+
+- Is the main value stronger modeling, safer effects, better concurrency reasoning, or better transformation pipelines?
+- Does the team want purity enforced by the language or only encouraged by style?
+- Should evaluation be lazy by default, strict by default, or explicit at call sites?
+- Which platform is non-negotiable: JVM, .NET, native binaries, browser, BEAM, Python ecosystem, or something else?
+- Which package manager, build tool, editor integration, CI image, and deployment target will be pinned?
+- How will new developers learn the vocabulary without turning code review into a language seminar?
+- Which abstractions are allowed in application code, and which are reserved for libraries?
+
+## Practical Default
+
+Start with functional style inside an existing mainstream platform when the project does not yet need a functional-first language.
+
+Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions.
+
+Start with Haskell when purity, laziness, type classes, and explicit effects are the core advantage and the team can own the GHC ecosystem.
+
+Evaluate OCaml or F# when a strict ML-family language fits the platform better than Haskell.
+
+Revisit the decision after a prototype that exercises tooling, dependency management, editor support, testing, deployment, profiling, and the hardest domain model. A functional language earns adoption when the prototype makes difficult behavior clearer, not just more elegant.

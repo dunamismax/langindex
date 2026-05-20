@@ -1,0 +1,106 @@
+---
+title: Haskell vs Scala
+slug: haskell-vs-scala
+summary: Haskell is a pure, lazy functional language centered on GHC and type classes, while Scala is a JVM-centered object-functional language that brings functional abstractions into Java-compatible production ecosystems.
+languages:
+  - haskell
+  - scala
+useCases:
+  - functional programming
+  - backend services
+  - JVM applications
+  - domain modeling
+  - data engineering
+  - education and research
+sources:
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Glasgow Haskell Compiler
+    url: https://www.haskell.org/ghc/
+    publisher: GHC
+  - title: The Haskell Cabal
+    url: https://www.haskell.org/cabal/
+    publisher: Cabal
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Given Instances
+    url: https://docs.scala-lang.org/scala3/reference/contextual/givens.html
+    publisher: Scala Documentation
+  - title: JDK Compatibility
+    url: https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+    publisher: Scala Documentation
+  - title: Apache Spark Overview
+    url: https://spark.apache.org/docs/latest/index.html
+    publisher: Apache Spark
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for teams choosing between Haskell and Scala for functional programming, backend services, domain modeling, data platforms, distributed systems, or advanced type-driven application architecture. It is not a comparison of all JVM languages; Java and Kotlin remain separate alternatives.
+
+## Shared Territory
+
+Both languages support functional programming, algebraic-style data modeling, pattern matching, higher-order functions, generic abstractions, type-class-like programming, immutable data, and advanced type-system techniques. Both can be used for backend services and both have ecosystems for effect systems, streaming, testing, parsing, and domain-heavy code.
+
+The practical difference is platform gravity. Haskell is centered on purity, laziness, GHC, Cabal or Stack, and Hackage. Scala is centered on the JVM, Java interoperability, sbt or nearby JVM build tools, Maven artifacts, and ecosystems such as Spark, Pekko, Cats Effect, ZIO, FS2, and http4s.
+
+## Key Differences
+
+| Dimension       | Haskell                                      | Scala                                                   |
+| --------------- | -------------------------------------------- | ------------------------------------------------------- |
+| Runtime center  | GHC runtime and native binaries              | JVM by default, with Scala.js and Scala Native options  |
+| Language model  | Purely functional and lazy by default        | Object-functional and strict by default                 |
+| Effects         | Effects are explicit in types, especially `IO` | Effects can be direct or modeled through libraries      |
+| Overloading     | Type classes                                 | Scala 3 givens/using clauses and library type classes   |
+| Interop         | FFI and process/protocol boundaries          | Java libraries and JVM deployment are central           |
+| Data platforms  | Possible, but not Spark's center             | Strong Spark and JVM data-engineering association       |
+| Hiring/onboarding | Narrower, deeper FP learning curve         | Broader JVM path, but still advanced when FP-heavy      |
+| Main risk       | Laziness, GHC extension discipline, ecosystem fit | Abstraction sprawl, binary/version constraints, JVM complexity |
+
+## Choose Haskell When
+
+- Purity and explicit effects are central to the design.
+- The team wants lazy evaluation and Haskell's type-class ecosystem.
+- The system is compiler-like, parser-heavy, symbolic, rule-driven, or formal-methods-adjacent.
+- The team wants to keep Java/JVM assumptions out of the architecture.
+- The educational or research value of Haskell's language model is part of the reason for choosing it.
+
+## Choose Scala When
+
+- The JVM is required or strongly preferred.
+- Java libraries, Maven artifacts, Spark, JVM observability, or existing JVM operations matter.
+- The team wants functional programming while retaining object-oriented APIs and Java interoperability.
+- Cats Effect, ZIO, FS2, http4s, Pekko, Spark, or other Scala/JVM ecosystems are central.
+- Incremental adoption inside a JVM organization is more realistic than adopting a separate GHC/Haskell platform.
+
+## Watch Points
+
+Haskell can be the cleaner functional language when the team wants purity, laziness, and type classes without JVM legacy. Its risk is that the surrounding ecosystem, hiring market, and operational defaults are less familiar to many organizations.
+
+Scala can be the more pragmatic production language when JVM integration matters. Its risk is that it can accumulate multiple programming models at once: Java-style object orientation, Scala 2 legacy, Scala 3 features, contextual abstractions, macros, effect systems, actors, Spark constraints, and build cross-versioning.
+
+In both languages, functional programming should pay for itself through clearer domain modeling, safer refactoring, better composition, or stronger invariants. If it only adds vocabulary, choose a simpler mainstream language.
+
+## Backend And Data Work
+
+For backend services, Haskell is strongest when the service's core complexity is domain logic and the team wants explicit effect boundaries. It can be a good fit for internal tools and services maintained by Haskell-fluent developers.
+
+Scala is stronger when backend work lives in the JVM ecosystem. It can reuse Java libraries, run alongside Java and Kotlin services, and share JVM operations practices. It is also the more natural choice for Spark-centered data engineering because Spark exposes Scala APIs and Scala version constraints are part of Spark application development.
+
+## Migration Or Interoperability Notes
+
+Haskell and Scala should usually interoperate across service, queue, file, or protocol boundaries. Scala can share JVM libraries with Java and Kotlin; Haskell should be treated as a separate runtime unless a narrow FFI or generated-code boundary is deliberately designed.
+
+Do not translate Haskell abstractions directly into Scala just because both support type classes. Scala's contextual abstractions and ecosystem conventions have different ergonomics, and Haskell's laziness and purity assumptions do not transfer automatically.

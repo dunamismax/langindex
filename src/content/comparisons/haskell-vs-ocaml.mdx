@@ -1,0 +1,104 @@
+---
+title: Haskell vs OCaml
+slug: haskell-vs-ocaml
+summary: Haskell and OCaml are both ML-family functional languages with strong static typing, but Haskell centers purity, laziness, and type classes while OCaml centers strict evaluation, modules, pragmatic effects, and a cohesive opam/Dune platform.
+languages:
+  - haskell
+  - ocaml
+useCases:
+  - functional programming
+  - compilers and language tooling
+  - domain modeling
+  - research-influenced application code
+  - backend services
+sources:
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+  - title: Glasgow Haskell Compiler
+    url: https://www.haskell.org/ghc/
+    publisher: GHC
+  - title: The Haskell Cabal
+    url: https://www.haskell.org/cabal/
+    publisher: Cabal
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: The OCaml Manual
+    url: https://ocaml.org/manual/
+    publisher: OCaml
+  - title: OCaml Platform
+    url: https://ocaml.org/platform
+    publisher: OCaml
+  - title: OCaml Governance
+    url: https://ocaml.org/governance
+    publisher: OCaml
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for teams choosing between Haskell and OCaml for functional programming, compilers, language tooling, static analysis, domain-heavy services, research-influenced systems, or application code where strong types are part of the value. It assumes the team is willing to use a less mainstream language deliberately.
+
+## Shared Territory
+
+Both languages are statically typed, functional, garbage-collected, and expressive enough for algebraic data modeling, pattern matching, recursive data structures, parsers, compilers, DSLs, test tooling, and backend systems. Both have REPL workflows, native-code compilers, package ecosystems, and a history of influence on programming-language research and education.
+
+The decision is mostly about language semantics, abstraction style, tooling expectations, ecosystem fit, and team taste.
+
+## Key Differences
+
+| Dimension         | Haskell                                                   | OCaml                                                     |
+| ----------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| Evaluation        | Lazy by default                                           | Strict by default, with explicit lazy constructs          |
+| Effects           | Pure by default; `IO` and libraries model effects in types | Effects are ordinary language features, used pragmatically |
+| Overloading       | Type classes and GHC extensions                           | Modules, functors, objects, first-class modules, and local patterns |
+| Module system     | Haskell modules plus type classes                         | Strong ML-style module system with signatures and functors |
+| Main compiler     | GHC                                                       | OCaml compiler                                            |
+| Tooling center    | GHCup, Cabal, Hackage, Stack, Stackage, HLS               | opam, Dune, OCaml-LSP, Merlin, utop, odoc                |
+| Learning curve    | Purity, laziness, monads, type classes, extensions        | Modules, functors, polymorphism limits, effects, platform tooling |
+| Production risk   | Laziness and extension/style discipline                   | Smaller ecosystem than mainstream languages, module complexity |
+
+## Choose Haskell When
+
+- Pure functions, explicit effects, and type classes are central to the architecture.
+- Lazy evaluation is useful for composition, infinite structures, parser-like code, or domain-specific abstractions.
+- The team wants GHC's advanced type-system extensions and is willing to govern their use.
+- The codebase benefits from separating pure domain logic from effectful edges.
+- Teaching, research, compilers, formal methods, or advanced functional programming are part of the product or team culture.
+
+## Choose OCaml When
+
+- Strict evaluation is the more predictable default for the team.
+- The module system, signatures, functors, and abstraction boundaries are a better fit than type classes.
+- The team wants functional programming with pragmatic mutation and effects available without an `IO` boundary.
+- opam, Dune, OCaml-LSP, Merlin, utop, and odoc match the desired workflow.
+- The project is compiler, analyzer, static tooling, systems-adjacent application code, or domain logic where OCaml's native compiler and module system are strong fits.
+
+## Watch Points
+
+Haskell can make simple operational questions feel abstract if the team overuses type-level programming, effect systems, or custom operators. It also requires profiling discipline because laziness can hide allocation and evaluation costs.
+
+OCaml can look simpler than Haskell at first because it is strict and effects are direct. The complexity often moves to modules, functors, package switches, PPX usage, and deciding how much object or imperative style to allow.
+
+Both languages are poor choices if the organization only wants a fashionable functional language. They work best when the team is intentionally buying their type systems and ecosystem tradeoffs.
+
+## Tooling And Ecosystem
+
+Haskell's common setup is GHCup plus Cabal or Stack. Cabal works with Hackage and solver-based package plans; Stack works with project snapshots and Stackage package sets. HLS improves editor support but must line up with the selected GHC.
+
+OCaml's platform centers on opam for package and compiler switch management, Dune for builds, OCaml-LSP or Merlin for editor support, utop for an interactive toplevel, and odoc for documentation.
+
+Haskell tooling gives several viable workflows, which can be productive but can confuse teams that do not pin a standard. OCaml's modern platform is more cohesive, though opam switches and Dune conventions still require ownership.
+
+## Migration Or Interoperability Notes
+
+Haskell and OCaml do not share a routine application-level interoperability story. Use process boundaries, protocol boundaries, generated code, C FFI, or shared data formats rather than trying to mix them inside one codebase.
+
+For migration, translate design ideas before translating syntax. Haskell type classes do not map directly to OCaml modules, and OCaml functors do not map directly to Haskell type classes. Laziness versus strictness can also change performance and termination behavior.

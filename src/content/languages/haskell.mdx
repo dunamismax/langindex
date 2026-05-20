@@ -1,0 +1,247 @@
+---
+title: Haskell
+slug: haskell
+status: active
+summary: Haskell is a statically typed, purely functional language centered on purity, lazy evaluation, type inference, algebraic data types, and type classes, with GHC as the dominant practical compiler and toolchain center.
+firstReleased: 1990
+creators:
+  - Haskell Committee
+paradigms:
+  - functional
+  - declarative
+  - concurrent
+typing:
+  discipline: static
+  strength: strong with Hindley-Milner-style inference, algebraic data types, type classes, higher-kinded types in common GHC use, and many optional GHC extensions
+memory:
+  model: managed heap with garbage collection in mainstream GHC implementations
+runtime:
+  model: GHC-compiled native code, bytecode through GHCi, and additional GHC backends or experimental targets depending on release and platform
+officialSite: https://www.haskell.org/
+repository: https://gitlab.haskell.org/ghc/ghc
+packageManagers:
+  - Cabal
+  - Hackage
+  - Stack
+  - Stackage
+  - GHCup
+comparedWith:
+  - ocaml
+  - scala
+  - fsharp
+  - clojure
+bestFor:
+  - Domain-heavy software where pure functions, algebraic data types, type classes, and explicit effects help keep complex rules reviewable.
+  - Compilers, language tooling, formal-methods-adjacent systems, parsers, interpreters, symbolic processing, and research-influenced application code.
+  - Backend services or internal platforms maintained by teams that deliberately want Haskell's type system, effect discipline, and functional ecosystem.
+  - Teaching and studying functional programming, type classes, laziness, monads, and advanced type-system ideas.
+poorFit:
+  - Teams that need the broadest hiring pool, lowest onboarding cost, or most conventional web/backend ecosystem.
+  - Small scripts, CRUD services, or short-lived tools where Cabal/Stack/GHC versioning and Haskell's learning curve would dominate the work.
+  - Codebases that need predictable strict evaluation, memory use, and performance behavior but cannot invest in profiling laziness, allocation, and runtime settings.
+  - Products whose primary risk is library availability, vendor SDK support, or framework maturity in an ecosystem where another language is clearly stronger.
+sources:
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+  - title: Definition of Haskell and the Standard Libraries
+    url: https://www.haskell.org/definition/
+    publisher: Haskell.org
+  - title: Glasgow Haskell Compiler
+    url: https://www.haskell.org/ghc/
+    publisher: GHC
+  - title: GHC 9.12.4 download
+    url: https://www.haskell.org/ghc/download_ghc_9_12_4.html
+    publisher: GHC
+  - title: Get Started
+    url: https://www.haskell.org/get-started/
+    publisher: Haskell.org
+  - title: GHCup Installation
+    url: https://www.haskell.org/ghcup/install/
+    publisher: GHCup
+  - title: The Haskell Cabal
+    url: https://www.haskell.org/cabal/
+    publisher: Cabal
+  - title: Hackage
+    url: https://hackage.haskell.org/
+    publisher: Hackage
+  - title: Stack
+    url: https://docs.haskellstack.org/en/stable/
+    publisher: The Haskell Tool Stack
+  - title: Stackage Server
+    url: https://www.stackage.org/
+    publisher: Stackage
+  - title: Haskell Language Server
+    url: https://haskell-language-server.readthedocs.io/en/stable/
+    publisher: Haskell Language Server
+  - title: GHC Proposals
+    url: https://github.com/ghc-proposals/ghc-proposals
+    publisher: GHC Steering Committee
+  - title: Haskell.org Committee
+    url: https://www.haskell.org/haskell-org-committee/
+    publisher: Haskell.org
+  - title: Haskell Foundation
+    url: https://haskell.foundation/
+    publisher: Haskell Foundation
+lastVerified: 2026-05-20
+---
+
+## Origin And Design Goals
+
+Haskell was designed by the Haskell Committee as a common non-strict, purely functional language. The Haskell definition page keeps links to historic language reports, including Haskell 1.0, and the Haskell 2010 report describes the language as a general-purpose, purely functional language with higher-order functions, non-strict semantics, static polymorphic typing, algebraic data types, pattern matching, modules, monadic I/O, and primitive numeric and collection types.
+
+The design center is not "functional syntax on top of an imperative core." Haskell makes pure functions ordinary, treats effects through types, uses lazy evaluation by default, and relies heavily on algebraic data types plus pattern matching to model possible states. This gives the language unusual leverage for domain modeling, but it also asks teams to learn a different execution and design model.
+
+Haskell is influential beyond its production footprint. Type classes, monadic I/O, algebraic data modeling, laziness, parser combinators, property testing, and advanced type-system experiments have shaped later language and library design in many ecosystems.
+
+## Runtime, Compiler, And Targets
+
+GHC is the practical center of modern Haskell. The GHC site describes it as an open source compiler and interactive environment for Haskell, supporting the full Haskell 2010 language plus many extensions. It also documents concurrency, parallelism, Software Transactional Memory, multiple platforms, optimization, and release downloads.
+
+Most production Haskell code should be understood as "GHC Haskell," not merely "Haskell 2010." Haskell 2010 remains the language report, but many real projects depend on GHC extensions such as language pragmas, deriving extensions, generalized algebraic data types, type families, overloaded strings, record-related extensions, and newer default language sets. GHC Proposals are the main public process for significant compiler and GHC/Haskell language changes.
+
+GHC can compile programs and run interactive sessions through GHCi. On the current verification date, the GHC site lists recent releases including GHC 9.12.4 and GHC 9.14.1, while GHCup tags GHC 9.14.1 as latest and GHC 9.6.7 as recommended. That split matters: teams should choose a compiler line by ecosystem support, Haskell Language Server support, library compatibility, and deployment needs rather than assuming the newest release is the safest default.
+
+## Type System And Language Model
+
+Haskell is statically typed with strong inference. The Haskell 2010 report describes a Hindley-Milner-style type system extended with type classes, and the public Haskell site emphasizes that expressions have compile-time types and mismatched applications are rejected by the compiler.
+
+Everyday Haskell includes algebraic data types, records, newtypes, pattern matching, higher-order functions, parametric polymorphism, modules, type signatures, and type classes. Type classes are Haskell's structured mechanism for overloaded operations: a class declares required operations, and instances define those operations for particular types.
+
+GHC extends the practical type-system surface significantly. Depending on project style, Haskell code may use generalized algebraic data types, type families, data kinds, type applications, rank-n types, quantified constraints, deriving strategies, higher-kinded abstractions, and effect-system libraries. These tools can make invalid states and architectural constraints explicit, but they can also raise the review and onboarding bar sharply.
+
+## Purity, Effects, And Laziness
+
+Haskell is pure by default. Pure functions cannot directly mutate variables, perform I/O, read time, generate random values, or touch hidden global state. Effectful operations are represented in types, most visibly through `IO`, and ordinary pure code can assemble effect descriptions without performing them until the runtime executes `main`.
+
+Lazy evaluation is also central. Haskell expressions are not evaluated until their values are needed, which makes some composition patterns natural and allows infinite data structures in ordinary code. It also means performance behavior can be less obvious to programmers coming from strict languages. Space leaks, unexpected retention, thunk buildup, and accidentally deferred work are real production concerns.
+
+The practical rule is simple: Haskell's purity and laziness are strengths when they make composition, testing, and domain modeling clearer. They become liabilities when a team treats performance, evaluation order, and memory residency as afterthoughts.
+
+## Syntax Example
+
+```haskell
+module Main where
+
+import Data.Char (isDigit)
+
+data CheckResult
+  = Ok String Int
+  | Failed String String
+  deriving (Eq, Show)
+
+class FromText a where
+  fromText :: String -> Maybe a
+
+instance FromText Int where
+  fromText value
+    | not (null value) && all isDigit value = Just (read value)
+    | otherwise = Nothing
+
+parseStatus :: String -> String -> CheckResult
+parseStatus name raw =
+  case fromText raw :: Maybe Int of
+    Just status
+      | status >= 200 && status < 400 -> Ok name status
+      | otherwise -> Failed name ("unexpected status " <> show status)
+    Nothing -> Failed name "missing or invalid status"
+
+main :: IO ()
+main =
+  mapM_
+    print
+    [ parseStatus "Haskell" "200"
+    , parseStatus "Example" "503"
+    , parseStatus "Archive" "unknown"
+    ]
+```
+
+This example uses algebraic data types, deriving, a type class, an instance, guards, pattern matching, explicit type signatures, and `IO`. It is intentionally small; production Haskell style should make type signatures, module boundaries, and effect boundaries easier to review, not harder.
+
+## Tooling, Packages, And Builds
+
+GHCup is the common installer and toolchain manager for GHC, Cabal, Stack, and Haskell Language Server. Cabal is the standard package system for Haskell software and the `cabal` command builds, tests, runs, documents, and installs Cabal packages. Hackage is the central package archive for Cabal packages.
+
+Stack is an alternative project workflow that uses Cabal package descriptions while adding `stack.yaml`, project templates, isolated GHC installation behavior, and snapshot-based dependency sets. Stackage provides curated package sets that are known to build together, with Nightly and LTS snapshots tied to GHC versions.
+
+This means Haskell has capable tooling, but the project should pick a workflow deliberately:
+
+- Cabal-first projects usually manage dependencies through `.cabal`, `cabal.project`, freeze files, and solver behavior.
+- Stack-first projects usually manage compiler and package versions through resolvers and `stack.yaml`.
+- GHCup helps install and switch toolchain versions across either workflow.
+- Haskell Language Server improves editor integration, but it must support the GHC version used by the project.
+
+Tooling risk is mostly version alignment. A Haskell project is easier to maintain when the GHC version, package index or snapshot, Cabal/Stack version, HLS support, CI image, and deployment target are all pinned and tested together.
+
+## Concurrency And Parallelism
+
+GHC gives Haskell a serious concurrency story. The GHC site highlights support for concurrency, parallelism, and Software Transactional Memory, and Haskell.org documents lightweight threads, async-style APIs, and STM examples.
+
+The important distinction is that Haskell's effect typing shapes concurrent code. STM transactions can restrict arbitrary `IO`; pure code remains separate from effectful coordination; and libraries can encode cancellation, streaming, resource, and effect constraints in types.
+
+This is powerful for teams comfortable with Haskell abstractions. It can also be a poor fit if the team mostly wants a straightforward service-concurrency model that new backend developers can read immediately. Go, Java, C#, Kotlin, and Elixir may be easier operational defaults unless Haskell's type and effect discipline is the reason for choosing it.
+
+## Ecosystem And Production Constraints
+
+Haskell has libraries for web services, parsing, JSON, databases, streaming, testing, property testing, concurrency, compilers, symbolic processing, and infrastructure work. Hackage and Stackage are useful, but ecosystem fit must be checked per domain.
+
+The strongest production cases are usually domains where correctness, refactoring, and domain modeling matter enough to pay for the language curve. Haskell is often compelling for compilers, DSLs, financial or rules-heavy systems, protocol-heavy services, static analysis, language tooling, and internal platforms maintained by Haskell-fluent teams.
+
+Common risks:
+
+- Hiring and onboarding are harder than for mainstream backend languages.
+- Library choice can be fragmented between effect systems, web stacks, streaming libraries, and build workflows.
+- GHC extensions can make a codebase less portable and less approachable if used casually.
+- Laziness and allocation behavior require profiling discipline.
+- Some vendor SDKs and cloud libraries are thinner than in Java, TypeScript, Python, Go, or C#.
+
+Choose Haskell because its model fits the problem, not because functional programming is aesthetically attractive.
+
+## Governance, Standards, And Stewardship
+
+Haskell has a language-report history, with Haskell 2010 as the current report linked from Haskell.org. The standard report is intentionally different from the broader GHC extension ecosystem used by many real projects.
+
+GHC development is open source, and significant GHC/Haskell language or compiler behavior changes can go through GHC Proposals and the GHC Steering Committee process. Haskell.org, Inc. oversees Haskell.org community infrastructure such as Hackage, GHC pages and release infrastructure, mailing lists, Discourse, and Hoogle. The Haskell Foundation is a separate nonprofit that supports Haskell's tools, libraries, education, and research.
+
+For production planning, treat governance as plural:
+
+- Haskell 2010 defines the portable language baseline.
+- GHC defines the dominant practical compiler and extension surface.
+- Cabal, Hackage, Stack, Stackage, GHCup, HLS, and major libraries have their own maintainers and release cadences.
+- Haskell.org and the Haskell Foundation support important shared infrastructure, but they do not make every ecosystem decision.
+
+## Best-Fit Use Cases
+
+Haskell is a strong fit when:
+
+- The domain has complex invariants and the team wants them visible in types.
+- Pure functions, algebraic data types, type classes, and explicit effects make code easier to test and refactor.
+- The system is compiler-like, parser-heavy, symbolic, rule-driven, protocol-heavy, or research-adjacent.
+- The team already has Haskell skill or can budget for real onboarding.
+- The organization is willing to own GHC, Cabal or Stack, package compatibility, profiling, and deployment pinning.
+
+## Poor-Fit Or Risky Use Cases
+
+Haskell can be a poor fit when:
+
+- Broad hiring, conventional framework familiarity, or vendor SDK availability is the main constraint.
+- The team wants a simple service language and does not need Haskell's type or effect discipline.
+- Performance requirements demand predictable strict evaluation but the team cannot profile laziness and allocation.
+- The project is a short-lived script, CRUD app, or integration task where Python, TypeScript, Go, Java, or C# would be cheaper to sustain.
+- The organization will copy advanced type-level patterns without shared style rules.
+
+## Nearby Comparisons
+
+OCaml is the closest strict ML-family comparison. OCaml is strict by default, has a powerful module and functor system, garbage collection, native and bytecode compilers, and the opam/Dune platform. Haskell is lazier, purer by default, and centered more heavily on type classes and GHC extensions.
+
+Scala is the closest JVM-adjacent functional comparison. Scala keeps object-oriented and Java interoperability at the center while supporting functional programming, type classes, effects, and advanced types. Haskell is the more principled pure FP environment; Scala is the more practical choice when JVM libraries, Spark, or Java integration are core requirements.
+
+F# is the closest .NET-family comparison. F# is strict and ML-family, with strong .NET interop and a more conventional production platform for Microsoft-centered teams. Haskell is a better fit when purity, laziness, type classes, and GHC's research-influenced ecosystem are central.
+
+Clojure is a JVM/Lisp comparison for teams choosing functional programming on a managed runtime. Clojure favors dynamic typing, immutable persistent data structures, macros, REPL-driven development, and Java interop. Haskell favors static typing, compile-time modeling, and explicit effect boundaries.

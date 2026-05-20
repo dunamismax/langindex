@@ -51,6 +51,7 @@ Observed on 2026-05-16:
   - Objective-C
   - Fortran
   - Delphi / Object Pascal
+  - Haskell
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -79,6 +80,8 @@ Observed on 2026-05-16:
   - Fortran vs C++ comparison
   - Fortran vs Python for Numerics comparison
   - Delphi vs C# comparison
+  - Haskell vs OCaml comparison
+  - Haskell vs Scala comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -92,7 +95,9 @@ Observed on 2026-05-16:
   - Choosing Shell for operations and automation guide
   - Choosing an embedded scripting language guide
   - Choosing a legacy maintenance language guide
+  - Choosing a functional programming language guide
   - Ownership concept page
+  - Functional programming concept page
 - Current local baseline:
 
 ```text
@@ -540,11 +545,11 @@ continue with Phase 17.
 
 ### Phase 24 - Haskell
 
-- [ ] Add a complete Haskell page.
-- [ ] Cover purity, laziness, type classes, GHC, Cabal/Stack, ecosystem,
+- [x] Add a complete Haskell page.
+- [x] Cover purity, laziness, type classes, GHC, Cabal/Stack, ecosystem,
       concurrency, production constraints, and education/research influence.
-- [ ] Add Haskell vs OCaml and Haskell vs Scala comparisons.
-- [ ] Add Haskell to functional programming concepts and guides.
+- [x] Add Haskell vs OCaml and Haskell vs Scala comparisons.
+- [x] Add Haskell to functional programming concepts and guides.
 
 ### Phase 25 - Elixir
 
