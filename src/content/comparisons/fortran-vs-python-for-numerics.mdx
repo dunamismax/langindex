@@ -1,0 +1,105 @@
+---
+title: Fortran vs Python For Numerics
+slug: fortran-vs-python-for-numerics
+summary: Fortran and Python both matter in numerical work, but Fortran is a compiled kernel language for scientific code while Python is usually the orchestration, analysis, notebook, and library-facing layer around native numerical implementations.
+languages:
+  - fortran
+  - python
+useCases:
+  - numerical computing
+  - scientific computing
+  - data analysis
+  - high-performance computing
+  - research software
+sources:
+  - title: The Fortran Programming Language
+    url: https://fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Fortran 2023
+    url: https://wg5-fortran.org/f2023.html
+    publisher: ISO/IEC JTC1/SC22/WG5
+  - title: Fortran Package Manager
+    url: https://fpm.fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: SciPy
+    url: https://scipy.org/
+    publisher: SciPy
+  - title: Interoperability with C
+    url: https://gcc.gnu.org/onlinedocs/gfortran/Interoperability-with-C.html
+    publisher: GNU Compiler Collection
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for numerical computing, scientific workflows, simulations, data analysis, and research software. It is not asking whether Python can replace all Fortran or whether Fortran should own notebooks and application glue. In practice, the languages are often complements.
+
+Fortran is strongest near the compiled numerical core. Python is strongest near exploration, orchestration, packaging around workflows, notebooks, analysis, visualization, testing harnesses, and broad ecosystem integration.
+
+## Shared Territory
+
+Both languages are used in scientific computing. Fortran has a long history in numerical libraries and HPC codes. Python has become a common interface layer through NumPy, SciPy, pandas, notebooks, machine-learning frameworks, plotting libraries, and workflow tools.
+
+The overlap appears when scientists or engineers need numerical results and maintainable workflows. The right architecture may use Python for the workflow and Fortran for performance-critical kernels rather than forcing all code into one language.
+
+## Key Differences
+
+| Dimension          | Fortran                                                        | Python                                                            |
+| ------------------ | -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Runtime model      | Ahead-of-time native compilation                               | Interpreted bytecode on CPython and other implementations         |
+| Numeric center     | Built-in multidimensional arrays and compiled numerical code   | NumPy arrays, SciPy algorithms, pandas, notebooks, native libraries |
+| Performance model  | Optimize compiled kernels directly                            | Keep hot paths in vectorized/native libraries or extensions       |
+| Tooling            | fpm, Make, CMake, Spack, compiler wrappers, HPC modules        | pip, PyPI, venv, packaging tools, notebooks, scientific stack      |
+| Best workflow      | Validated kernels, solvers, simulations, HPC batch jobs        | Exploration, orchestration, analysis, ML workflows, reporting      |
+| Main risk          | Smaller general ecosystem and harder onboarding                | Slow Python-level loops and packaging native dependencies          |
+
+## Choose Fortran When
+
+- The work is a native numerical kernel, solver, simulation, or long-running scientific code.
+- Existing validated Fortran code is already the scientific source of truth.
+- HPC compilers, MPI, OpenMP, BLAS/LAPACK, and cluster modules are part of the operating environment.
+- Python-level loops would be too slow and vectorization or existing packages do not express the algorithm cleanly.
+- The team can test numerical tolerances and maintain compiler/build reproducibility.
+
+## Choose Python When
+
+- The work is exploratory analysis, notebooks, orchestration, plotting, reporting, ML integration, or scientific workflow glue.
+- The expensive numerical work already lives in NumPy, SciPy, PyTorch, vendor libraries, databases, or another native implementation.
+- The team needs readable scripts, packaging, APIs, file handling, cloud SDKs, data-frame workflows, or integration with application code.
+- Researchers and engineers need to collaborate around results quickly before stabilizing the hot path.
+- Deployment can control interpreter versions, wheels, compiled dependencies, and environment isolation.
+
+## Use Them Together When
+
+Many scientific systems should use both:
+
+- Put kernels, solvers, or legacy validated models in Fortran.
+- Expose a C-compatible boundary through `iso_c_binding` and `bind(C)` when needed.
+- Wrap the native boundary from Python with a small extension layer or generated binding.
+- Keep input validation, orchestration, reports, notebooks, plotting, and experiment management in Python.
+- Test the same numerical cases from both the native and Python-facing APIs.
+
+This division lets Python provide a productive workflow while Fortran keeps ownership of numerical code that needs native compilation and scientific continuity.
+
+## Watch Points
+
+Python is not slow when the work stays inside optimized native libraries. Python can be very slow when large workloads run in pure Python loops. Before rewriting in Fortran, check whether NumPy/SciPy vectorization, a compiled extension, Numba, Cython, multiprocessing, or a domain library already solves the hot path.
+
+Fortran is not automatically faster just because it is compiled. Poor algorithms, bad memory layout, avoidable copies, weak compiler flags, and untested parallelization can lose the advantage. Measure with realistic data and preserve scientific test cases.
+
+Packaging is often the hidden cost. Python packages with native Fortran code need compilers or wheels. Fortran applications need reproducible compiler and library environments. Choose the boundary that your team can rebuild on a clean machine.
+
+## Migration Or Interoperability Notes
+
+Avoid broad rewrites when the existing Fortran code is validated. Start by wrapping a narrow kernel, adding tests, and comparing outputs against known cases. If Python is driving the workflow, keep the Fortran API small and array-centered.
+
+If a Python prototype becomes too slow, profile first. Move only the measured hot path into Fortran or another compiled language. Leave configuration, I/O, visualization, reports, notebooks, and orchestration in Python unless those layers become their own bottleneck.

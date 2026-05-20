@@ -1,0 +1,229 @@
+---
+title: Fortran
+slug: fortran
+status: active
+summary: Fortran is a standardized compiled language for numerical computing, scientific simulation, engineering models, dense array work, and long-lived high-performance codebases where modern Fortran and legacy Fortran often coexist.
+firstReleased: 1957
+creators:
+  - John Backus
+  - IBM FORTRAN team
+paradigms:
+  - numerical
+  - procedural
+  - array-oriented
+  - modular
+  - object-oriented
+  - parallel
+typing:
+  discipline: static
+  strength: strong numeric typing with historical implicit typing unless projects require `implicit none`
+memory:
+  model: automatic storage, allocatable arrays, pointers, explicit allocation and deallocation for dynamic data, and compiler/runtime-managed temporaries
+runtime:
+  model: ahead-of-time native compilation through implementation-specific compilers and runtime libraries
+officialSite: https://fortran-lang.org/
+repository: https://github.com/j3-fortran/fortran_proposals
+packageManagers:
+  - fpm
+  - CMake
+  - Make
+  - Spack
+comparedWith:
+  - cpp
+  - python
+  - r
+  - julia
+  - c
+bestFor:
+  - Numerical kernels, simulation codes, solvers, climate and weather models, computational physics, engineering analysis, and other dense-array scientific workloads.
+  - Maintaining or modernizing long-lived Fortran codebases without rewriting validated numerical behavior in another language.
+  - Libraries that need efficient column-major multidimensional arrays, predictable native compilation, and direct access from C, Python, R, Julia, or C++ boundaries.
+  - HPC environments where Fortran compilers, MPI, OpenMP, BLAS, LAPACK, and vendor math libraries are already part of the supported toolchain.
+poorFit:
+  - General web applications, product backends, CLIs, GUI applications, and infrastructure tools where ecosystem breadth matters more than numerical kernels.
+  - New teams without Fortran expertise, compiler access, scientific validation tests, or a clear reason to own low-level numerical code directly.
+  - Projects that need one universal package manager, a large general-purpose web ecosystem, or easy hiring outside scientific and engineering communities.
+  - Mixed-language systems where array layout, ownership, error handling, and ABI boundaries cannot be tested carefully.
+sources:
+  - title: The Fortran Programming Language
+    url: https://fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Quickstart Tutorial
+    url: https://fortran-lang.org/learn/quickstart/
+    publisher: Fortran-lang
+  - title: Arrays and Strings
+    url: https://fortran-lang.org/learn/quickstart/arrays_strings/
+    publisher: Fortran-lang
+  - title: Organising Code Structure
+    url: https://fortran-lang.org/learn/quickstart/organising_code/
+    publisher: Fortran-lang
+  - title: Fortran Compilers
+    url: https://fortran-lang.org/compilers/
+    publisher: Fortran-lang
+  - title: Fortran 2023
+    url: https://wg5-fortran.org/f2023.html
+    publisher: ISO/IEC JTC1/SC22/WG5
+  - title: ISO/IEC 1539-1:2023 - Programming Languages - Fortran - Part 1
+    url: https://www.iso.org/standard/82170.html
+    publisher: International Organization for Standardization
+  - title: J3 Fortran Standards Committee
+    url: https://j3-fortran.org/
+    publisher: INCITS/Fortran
+  - title: GNU Fortran
+    url: https://gcc.gnu.org/fortran/
+    publisher: GNU Compiler Collection
+  - title: Interoperability with C
+    url: https://gcc.gnu.org/onlinedocs/gfortran/Interoperability-with-C.html
+    publisher: GNU Compiler Collection
+  - title: The Flang Compiler
+    url: https://flang.llvm.org/
+    publisher: LLVM Project
+  - title: Fortran Package Manager
+    url: https://fpm.fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Specifications
+    url: https://www.openmp.org/specifications/
+    publisher: OpenMP Architecture Review Board
+  - title: MPI Documents
+    url: https://www.mpi-forum.org/docs/
+    publisher: MPI Forum
+  - title: Fortran
+    url: https://www.ibm.com/history/fortran
+    publisher: IBM
+lastVerified: 2026-05-20
+---
+
+## Origin And Design Goals
+
+Fortran began at IBM under John Backus and the original FORTRAN team, with the first commercial release appearing in 1957. IBM frames the language as "formula translation": a way for scientists, mathematicians, and engineers to express numerical work without writing machine code by hand.
+
+That origin still matters. Fortran is not a general-productivity language that later found numerical libraries. It was built around numerical calculation, arrays, compiled performance, and scientific programming from the start. Modern Fortran adds modules, free-form source, array syntax, derived types, generic interfaces, object-oriented features, C interoperability, coarrays, and other features, but the language's center remains numerical and scientific code.
+
+The practical question is therefore not whether Fortran is old. It is whether the software is close enough to numerical kernels, existing Fortran libraries, or high-performance scientific workflows for Fortran's strengths to outweigh its smaller general-purpose ecosystem.
+
+## Standards History And Current Status
+
+Fortran is standardized through ISO/IEC JTC1/SC22/WG5, with INCITS/Fortran, commonly called J3, developing technical content as the United States Fortran standards committee. WG5 identifies Fortran 2023, ISO/IEC 1539:2023, as the current standard, published in November 2023. ISO lists ISO/IEC 1539-1:2023 as the current published base-language standard.
+
+The standards history explains the split between legacy and modern code:
+
+- FORTRAN 66 and FORTRAN 77 shaped many long-lived scientific codebases.
+- Fortran 90 introduced free-form source, modules, array operations, dynamic allocation, and other features that define much of modern Fortran style.
+- Fortran 95, 2003, 2008, 2018, and 2023 continued the language through interoperability, object-oriented features, coarrays, teams/events, and more incremental modernization.
+
+Good Fortran work is explicit about which standard and compiler features it relies on. A codebase described only as "Fortran" may mean fixed-form FORTRAN 77, modern free-form Fortran with modules, vendor extensions, OpenMP/MPI-heavy HPC code, or a mixture of all of those.
+
+## Compilers And Implementations
+
+Fortran is usually compiled ahead of time to native code. The compiler choice matters because standard support, diagnostics, optimization, OpenMP support, coarray support, module-file behavior, and vendor extensions vary.
+
+Common implementation choices include GNU Fortran (`gfortran`), Intel Fortran (`ifx` and older `ifort` in existing environments), LLVM Flang, NAG Fortran, NVIDIA `nvfortran`, AOCC Flang, and vendor compilers on HPC systems. Fortran-lang's compiler page describes more than a dozen open source and commercial compilers, while GCC and LLVM publish their own compiler documentation and standards-support notes.
+
+In HPC, users often compile through environment modules and wrapper commands rather than invoking the raw compiler directly. MPI wrapper compilers, OpenMP flags, BLAS/LAPACK vendor libraries, math libraries, processor-specific optimization flags, and scheduler modules can be part of the build contract. Reproducible Fortran therefore means recording the compiler family, exact version, flags, target platform, libraries, and runtime environment.
+
+## Type System, Arrays, And Modules
+
+Fortran is statically typed. Historical implicit typing means undeclared names can receive a type based on their first letter unless a program disables that behavior. Modern Fortran projects should normally use `implicit none` in every program unit so misspelled names are compiler errors instead of implicit variables.
+
+The language is strongly shaped around arrays:
+
+- Arrays are one-based by default, though bounds can be declared explicitly.
+- Multidimensional arrays use column-major storage order.
+- Whole-array operations and array slices are part of ordinary syntax.
+- `allocatable` arrays are the normal modern tool for dynamic array ownership.
+- Assumed-shape and explicit-interface procedures let libraries accept array arguments without losing rank and shape information.
+
+Modules are the normal way to organize modern Fortran. A module can hold types, constants, procedures, interfaces, and visibility rules, then expose them with `use`. This is a major difference between modern Fortran and old fixed-form code built around common blocks, external procedures, and include files.
+
+## Memory Model And Parallelism
+
+Fortran does not require a garbage collector. Local variables, arrays, and temporaries are managed by the compiler and runtime according to the language rules and implementation choices. Dynamic data is usually expressed with `allocatable` variables, explicit `allocate` and `deallocate`, or scoped ownership through derived types. Fortran pointers exist, but they are not the default tool for ordinary dynamic arrays.
+
+Parallel Fortran has several layers. Coarrays are part of the language standard for parallel images. OpenMP supports multi-platform shared-memory parallel programming in C, C++, and Fortran. MPI defines Fortran bindings for distributed-memory message passing. Many production HPC codes combine these with domain decomposition, vendor math libraries, accelerator directives, or platform-specific compiler features.
+
+That flexibility is powerful and operationally demanding. A scientific code may depend as much on MPI implementation, OpenMP version, compiler flags, math libraries, and cluster module policy as on the Fortran source itself.
+
+## C Interoperability And Mixed-Language Boundaries
+
+Fortran 2003 standardized C interoperability through `iso_c_binding` and `bind(C)`. GNU Fortran documents this as the standard way to create interoperable procedures, derived types, and global variables with C. This is one reason Fortran remains useful inside larger systems: the numerical core can expose a C-compatible boundary and be called from C, C++, Python extensions, R packages, Julia wrappers, or other runtimes.
+
+Interop is not automatic safety. Teams still need to decide:
+
+- Who owns allocated memory.
+- Whether arrays are column-major or row-major at the boundary.
+- How strings, errors, optional arguments, and callbacks are represented.
+- Which compiler and linker produce each object.
+- Whether exceptions, signals, or process aborts can cross the boundary.
+- How tests validate both native and high-level callers.
+
+Fortran can be a good boundary language for kernels, but the boundary must be boring, documented, and tested.
+
+## Syntax Example
+
+```fortran
+module statistics
+  use, intrinsic :: iso_fortran_env, only: real64
+  implicit none
+contains
+  function centered(values) result(out)
+    real(real64), intent(in) :: values(:)
+    real(real64) :: out(size(values))
+
+    out = values - sum(values) / real(size(values), real64)
+  end function centered
+end module statistics
+
+program demo
+  use, intrinsic :: iso_fortran_env, only: real64
+  use statistics, only: centered
+  implicit none
+
+  real(real64) :: samples(4) = [1.0_real64, 2.0_real64, 4.0_real64, 8.0_real64]
+
+  print '(f6.2)', centered(samples)
+end program demo
+```
+
+This example shows modern Fortran basics: a module, `implicit none`, `iso_fortran_env` for a named real kind, an assumed-shape input array, a result array sized from the input, and a whole-array expression instead of an explicit loop.
+
+## Tooling, Packages, And Ecosystem
+
+Fortran tooling is improving, but it is still less uniform than Python, Rust, Go, Java, or .NET. Existing projects commonly use Make, CMake, Autotools, Meson, custom HPC build scripts, Spack packages, environment modules, and vendor compiler wrappers. The Fortran Package Manager, `fpm`, is the modern Fortran-lang effort to provide a package manager and build system around `fpm.toml`, with commands for building, testing, running, and managing dependencies.
+
+The ecosystem is strongest in numerical and scientific computing. BLAS and LAPACK sit underneath large parts of scientific software. Many R, Python, Julia, and C/C++ numerical stacks call into libraries written in Fortran, C, or C++ for hot paths. Fortran also appears in weather and climate codes, computational fluid dynamics, finite-element solvers, physics, chemistry, geoscience, aerospace, and engineering models.
+
+The weak spot is general-purpose application development. For web services, CLIs, UI applications, cloud SDKs, data pipelines, and product software, another language will usually offer broader libraries, easier onboarding, and more conventional deployment.
+
+## Best-Fit Use Cases
+
+Fortran is a strong fit for:
+
+- Scientific and engineering codes centered on arrays, floating-point computation, solvers, simulations, or models.
+- Maintaining long-lived validated Fortran applications where numerical behavior is trusted and rewriting would create more risk than value.
+- HPC environments where Fortran compilers, MPI, OpenMP, BLAS/LAPACK, vendor math libraries, and domain code are already supported.
+- Numerical kernels exposed to Python, R, Julia, C, or C++ through a narrow interoperable boundary.
+- Teams with domain scientists or engineers who already read, test, and review Fortran.
+
+## Poor-Fit Or Risky Use Cases
+
+Fortran can be a poor fit when:
+
+- The product is mostly web, mobile, GUI, backend, CLI, platform tooling, or business application code.
+- The team needs a large general-purpose package ecosystem more than custom numerical kernels.
+- The organization cannot control compilers, build flags, library versions, and deployment environments.
+- The codebase is old fixed-form Fortran with little test coverage and the team assumes "modernizing" syntax will preserve scientific behavior automatically.
+- Mixed-language boundaries are treated casually, especially around arrays, ownership, strings, error handling, and linker behavior.
+
+## Governance, Release Cadence, And Compatibility
+
+Fortran evolves through standards bodies rather than a single vendor roadmap. WG5 is the international Fortran standards committee, and J3 develops technical content for standards work. Published standards are stable reference points, while compiler support arrives at different speeds across implementations.
+
+Compatibility is both a strength and a cost. Old Fortran code can run for decades, which is valuable for validated scientific software. It also means projects may carry fixed-form source, common blocks, compiler extensions, implicit typing, old build systems, and platform assumptions long after modern alternatives exist. The safest modernization path is incremental: add tests, pin compilers, introduce modules and explicit interfaces, remove implicit typing, isolate global state, and document numerical tolerances before changing algorithms.
+
+## Comparison Notes
+
+[Fortran vs C++](/comparisons/fortran-vs-cpp) is the main native-language comparison for high-performance scientific and engineering code. Fortran is narrower and array-centered; C++ is broader, with stronger generic programming, systems integration, and application architecture reach.
+
+[Fortran vs Python For Numerics](/comparisons/fortran-vs-python-for-numerics) is the practical comparison when teams are choosing between writing numerical kernels directly and orchestrating work through Python libraries. Python often owns notebooks, analysis, orchestration, and ML workflows. Fortran earns its place when the team must maintain or write native numerical kernels.
+
+R and Julia are adjacent scientific languages. R is usually better for statistics, reports, and analyst-facing workflows. Julia is a newer scientific language centered on multiple dispatch and high-level numerical programming. Fortran remains strongest where existing code, validated libraries, and compiler-supported HPC environments are already the constraint.

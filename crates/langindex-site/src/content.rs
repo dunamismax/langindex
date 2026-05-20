@@ -703,7 +703,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 21);
+        assert_eq!(content.languages.len(), 22);
+        assert!(content.language("fortran").is_some());
         assert!(content.language("objective-c").is_some());
         assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
@@ -711,6 +712,12 @@ mod tests {
         assert!(content.language("dart").is_some());
         assert!(content.language("rust").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
+        assert!(content.comparison("fortran-vs-cpp").is_some());
+        assert!(
+            content
+                .comparison("fortran-vs-python-for-numerics")
+                .is_some()
+        );
         assert!(content.comparison("swift-vs-objective-c").is_some());
         assert!(content.comparison("perl-vs-shell").is_some());
         assert!(content.comparison("scala-vs-java").is_some());

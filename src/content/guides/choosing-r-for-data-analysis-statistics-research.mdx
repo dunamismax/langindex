@@ -49,7 +49,13 @@ sources:
   - title: ISO/IEC 9075-2:2023 - SQL Foundation
     url: https://www.iso.org/standard/76584.html
     publisher: International Organization for Standardization
-lastVerified: 2026-05-16
+  - title: The Fortran Programming Language
+    url: https://fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Fortran 2023
+    url: https://wg5-fortran.org/f2023.html
+    publisher: ISO/IEC JTC1/SC22/WG5
+lastVerified: 2026-05-20
 ---
 
 ## Start With The Deliverable
@@ -88,6 +94,12 @@ Do not make R own the whole system only because one step is statistical.
 Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
 
 R can still participate. The cleaner design is often to let R own the analysis or reporting layer while another language owns storage, services, scheduling, or production APIs.
+
+## Use Fortran At The Numerical Boundary
+
+Fortran is nearby when an R workflow depends on long-lived numerical libraries, scientific models, or HPC kernels. R can own the statistical analysis, reports, graphics, Shiny app, or research narrative while Fortran owns the validated numerical routine behind a package or native boundary.
+
+This split is useful when domain scientists already trust the Fortran code, the hot path is array-heavy, or the deployment target is an HPC environment. It is risky when the R project cannot rebuild the native code, pin compilers and libraries, or test numerical results across platforms.
 
 ## Make Reproducibility A First-Class Requirement
 

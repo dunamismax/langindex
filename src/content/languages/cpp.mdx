@@ -28,6 +28,7 @@ packageManagers:
   - pkg-config
 comparedWith:
   - c
+  - fortran
   - rust
   - java
   - csharp
@@ -258,6 +259,8 @@ C++ evolves steadily, but compatibility is one of its defining constraints. The 
 ## Comparison Notes
 
 C is the comparison when the main question is a small procedural language, freestanding targets, C ABI boundaries, or vendor SDK compatibility. C++ adds stronger abstraction tools and RAII, but also brings a larger language and ABI surface.
+
+Fortran is the comparison when the work is scientific computing, simulation, dense arrays, solvers, or long-lived HPC code. Fortran is narrower and more array-centered. C++ is broader when numerical code needs to live inside a larger native application, engine, SDK, or generic library architecture.
 
 Rust is the comparison for new native components where memory safety and ownership checks are central. Rust makes many lifetime and sharing rules compiler-enforced; C++ has broader legacy reach, more mature C++ libraries in many domains, and a more permissive model that depends heavily on local discipline.
 

@@ -1,0 +1,99 @@
+---
+title: Fortran vs C++
+slug: fortran-vs-cpp
+summary: Fortran and C++ both serve native high-performance computing, but Fortran is narrower and array-centered for numerical science while C++ is broader for systems, libraries, engines, and application architecture.
+languages:
+  - fortran
+  - cpp
+useCases:
+  - high-performance computing
+  - scientific computing
+  - numerical libraries
+  - simulation
+  - native performance
+sources:
+  - title: The Fortran Programming Language
+    url: https://fortran-lang.org/
+    publisher: Fortran-lang
+  - title: Fortran 2023
+    url: https://wg5-fortran.org/f2023.html
+    publisher: ISO/IEC JTC1/SC22/WG5
+  - title: Interoperability with C
+    url: https://gcc.gnu.org/onlinedocs/gfortran/Interoperability-with-C.html
+    publisher: GNU Compiler Collection
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: CMake Tutorial
+    url: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+    publisher: Kitware
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for teams choosing a native language for scientific computing, simulation, numerical kernels, performance-sensitive libraries, and long-lived codebases. It is not about general web or business software. For that work, both languages usually need a stronger justification than Java, C#, Go, Python, TypeScript, or another application-centered ecosystem.
+
+The practical question is where the complexity should live. Fortran concentrates on numerical arrays, compilers, and legacy scientific continuity. C++ offers a much larger native software surface: templates, RAII, value types, generic libraries, engines, SDKs, GUI frameworks, embedded systems, and broad application architecture.
+
+## Shared Territory
+
+Fortran and C++ both compile to native code, are standardized, have multiple compilers, work in HPC environments, and can call into C-compatible libraries. Both appear in numerical libraries, simulations, engineering codes, scientific applications, vendor math libraries, and mixed-language stacks.
+
+They also share operational realities. Serious projects must pin compilers, flags, standard versions, math libraries, MPI/OpenMP behavior, target architectures, profiling tools, sanitizers or checkers, and test tolerances. Language choice does not remove the need to validate numerical results.
+
+## Key Differences
+
+| Dimension        | Fortran                                                            | C++                                                                  |
+| ---------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| Center of gravity | Numerical arrays, scientific codes, solvers, HPC legacy           | Broad native software, systems, engines, libraries, applications     |
+| Abstraction model | Modules, procedures, arrays, derived types, generic interfaces     | Classes, templates, concepts, RAII, value types, generic programming |
+| Memory model      | Automatic and allocatable data, explicit allocation when needed    | RAII, smart pointers, containers, custom allocators, manual escape hatches |
+| Build tooling     | fpm, Make, CMake, Spack, HPC wrappers, vendor toolchains           | CMake, MSBuild, Meson, Bazel, Conan, vcpkg, platform SDKs            |
+| Interop shape     | Standard C interoperability through `iso_c_binding` and `bind(C)` | C ABI wrappers are common; C++ ABI boundaries require discipline     |
+| Main risk         | Legacy dialects, thin ecosystem outside science, compiler variance | Language complexity, ABI/build fragmentation, unsafe escape hatches  |
+
+## Choose Fortran When
+
+- The core work is numerical: arrays, solvers, simulations, models, finite elements, fluid dynamics, weather, physics, chemistry, geoscience, or engineering analysis.
+- The organization already owns validated Fortran code and needs to modernize it incrementally rather than rewrite algorithms.
+- Domain experts can read and review Fortran, and the code sits inside a supported HPC compiler/MPI/OpenMP environment.
+- The public boundary can be narrow enough to expose kernels through C, Python, R, Julia, or C++ wrappers.
+- A simple array-centered language is preferable to C++'s larger abstraction and template surface.
+
+## Choose C++ When
+
+- The project needs high-performance code plus broad systems integration, application structure, GUI/engine work, embedded SDKs, or large native libraries.
+- Generic programming, RAII, deterministic cleanup, containers, value semantics, templates, and modern C++ libraries materially reduce code volume or improve architecture.
+- The surrounding ecosystem is already C++: engines, robotics stacks, browser components, CAD, databases, trading systems, plugins, or vendor SDKs.
+- The team can sustain C++ build discipline, sanitizers, static analysis, ABI policy, and code review.
+- The same codebase must mix numerical kernels with non-numerical native software at scale.
+
+## Watch Points
+
+Fortran can be underestimated because of age. Modern Fortran is not the same thing as fixed-form FORTRAN 77, and many old codes still matter because their scientific behavior has been validated over years. Rewriting them in C++ can lose correctness even if the new code looks more familiar to general software engineers.
+
+C++ can be overchosen for numerical work because it is more general. Templates, object models, allocators, exceptions, build systems, and ABI policy are useful when they solve real problems. They are overhead when the real workload is a tight numerical kernel over arrays.
+
+Measure on the target workload. Neither language guarantees performance by name. Data layout, memory bandwidth, vectorization, compiler flags, math libraries, algorithm choice, and parallel decomposition usually dominate.
+
+## Migration Or Interoperability Notes
+
+Fortran and C++ often coexist. A common architecture keeps legacy or array-heavy kernels in Fortran, exposes a C ABI through `bind(C)`, and calls that boundary from C++ or higher-level languages. Another architecture keeps application orchestration in C++ and calls Fortran libraries such as BLAS/LAPACK implementations through stable interfaces.
+
+Avoid direct broad coupling between C++ templates/classes and Fortran modules. Keep boundaries small:
+
+- Use C-compatible functions and plain data where possible.
+- Document array ordering, dimensions, strides, and ownership.
+- Decide which side allocates and frees memory.
+- Keep exceptions, process aborts, and error codes from crossing implicitly.
+- Test the boundary with the exact compilers and linkers used in production.

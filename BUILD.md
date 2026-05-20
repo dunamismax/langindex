@@ -48,6 +48,8 @@ Observed on 2026-05-16:
   - Lua
   - Scala
   - Perl
+  - Objective-C
+  - Fortran
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -73,6 +75,8 @@ Observed on 2026-05-16:
   - Scala vs Kotlin comparison
   - Perl vs Python comparison
   - Perl vs Shell comparison
+  - Fortran vs C++ comparison
+  - Fortran vs Python for Numerics comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -518,11 +522,11 @@ continue with Phase 17.
 
 ### Phase 22 - Fortran
 
-- [ ] Add a complete Fortran page.
-- [ ] Cover standards history, numerical computing, compilers, arrays,
+- [x] Add a complete Fortran page.
+- [x] Cover standards history, numerical computing, compilers, arrays,
       interoperability with C, package/build tooling, and scientific legacy.
-- [ ] Add Fortran vs C++ and Fortran vs Python-for-numerics comparisons.
-- [ ] Add Fortran to scientific and high-performance computing guides.
+- [x] Add Fortran vs C++ and Fortran vs Python-for-numerics comparisons.
+- [x] Add Fortran to scientific and high-performance computing guides.
 
 ### Phase 23 - Delphi / Object Pascal
 
