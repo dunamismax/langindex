@@ -703,7 +703,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 22);
+        assert_eq!(content.languages.len(), 23);
+        assert!(content.language("delphi").is_some());
         assert!(content.language("fortran").is_some());
         assert!(content.language("objective-c").is_some());
         assert!(content.language("perl").is_some());
@@ -713,6 +714,7 @@ mod tests {
         assert!(content.language("rust").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
+        assert!(content.comparison("delphi-vs-csharp").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -744,9 +746,11 @@ mod tests {
     fn route_manifest_covers_public_content() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
         let routes = content.all_routes();
+        assert!(routes.contains("/languages/delphi"));
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
+        assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));

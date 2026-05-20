@@ -1,0 +1,245 @@
+---
+title: Delphi / Object Pascal
+slug: delphi
+status: active
+summary: Delphi is a commercial Object Pascal language and RAD toolchain centered on native desktop, mobile, database, and business applications, with its strongest fit in long-lived Windows VCL codebases, cross-platform FireMonkey apps, and Delphi maintenance work.
+firstReleased: 1995
+creators:
+  - Niklaus Wirth
+  - Anders Hejlsberg
+  - Borland Delphi R&D team
+paradigms:
+  - object-oriented
+  - imperative
+  - procedural
+  - component-oriented
+  - event-driven
+typing:
+  discipline: static
+  strength: strong nominal typing with classes, interfaces, records, generics, properties, RTTI, and explicit pointer and variant escape hatches
+memory:
+  model: manual object ownership with constructors and destructors, automatic management for strings, dynamic arrays, variants, and interfaces, plus platform-specific memory managers
+runtime:
+  model: ahead-of-time native compilation through Delphi compilers, RAD Studio project tooling, the RTL, and optional VCL, FireMonkey, and package runtimes
+officialSite: https://www.embarcadero.com/products/delphi
+repository: https://gitlab.com/freepascal.org/fpc/source
+packageManagers:
+  - GetIt Package Manager
+  - Delphi packages
+  - Lazarus Package Manager
+  - Free Pascal packages
+comparedWith:
+  - csharp
+  - cpp
+  - java
+  - objective-c
+bestFor:
+  - Maintaining and modernizing existing Delphi, VCL, COM, database, reporting, and Windows desktop applications where behavior and component dependencies are already proven.
+  - Windows-native business applications that benefit from visual form design, VCL controls, native binaries, database components, and RAD Studio debugging.
+  - Cross-platform GUI applications where a team deliberately accepts FireMonkey's framework model and RAD Studio's supported target platform matrix.
+  - Object Pascal codebases that need incremental modernization instead of a risky rewrite into C#, Java, C++, TypeScript, or another platform.
+poorFit:
+  - New browser, cloud-native, mobile-first, or large open-source ecosystem projects where TypeScript, Kotlin, Swift, C#, Java, Go, Python, or Rust have stronger community gravity.
+  - Teams that need a free, vendor-neutral primary toolchain and cannot accept RAD Studio licensing, release cadence, or IDE-centered workflows.
+  - Hard real-time, kernel, firmware, or ABI-first systems where C, C++, Rust, or Ada-style ecosystems fit the target better.
+  - Legacy Delphi applications with undocumented component dependencies, no tests, unsupported third-party controls, and no maintainers who understand Object Pascal ownership and build settings.
+sources:
+  - title: Delphi Product Page
+    url: https://www.embarcadero.com/products/delphi
+    publisher: Embarcadero
+  - title: Delphi FAQ For Application Developers
+    url: https://www.embarcadero.com/products/delphi/faq
+    publisher: Embarcadero
+  - title: Delphi Language Reference
+    url: https://docwiki.embarcadero.com/RADStudio/Athens/en/Delphi_Language_Reference
+    publisher: Embarcadero DocWiki
+  - title: Supported Target Platforms
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/Supported_Target_Platforms
+    publisher: Embarcadero DocWiki
+  - title: Supported Versions
+    url: https://docwiki.embarcadero.com/Support/en/Supported_Versions
+    publisher: Embarcadero Support
+  - title: VCL Overview
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
+    publisher: Embarcadero DocWiki
+  - title: FireMonkey
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/FireMonkey
+    publisher: Embarcadero DocWiki
+  - title: Memory Management
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/Memory_Management
+    publisher: Embarcadero DocWiki
+  - title: Packages (Delphi)
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/Packages_%28Delphi%29
+    publisher: Embarcadero DocWiki
+  - title: GetIt Package Manager
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/GetIt_Package_Manager
+    publisher: Embarcadero DocWiki
+  - title: Free Pascal Documentation
+    url: https://www.freepascal.org/docs.html
+    publisher: Free Pascal
+  - title: Free Pascal Home Page
+    url: https://docs.freepascal.org/fpc.html
+    publisher: Free Pascal
+  - title: Lazarus Homepage
+    url: https://www.lazarus-ide.org/
+    publisher: Lazarus and Free Pascal Team
+  - title: Delphi 31st Anniversary
+    url: https://delphi.embarcadero.com/
+    publisher: Embarcadero
+lastVerified: 2026-05-20
+---
+
+## Origin And Design Goals
+
+Delphi sits in the Pascal and Object Pascal line. Pascal was created by Niklaus Wirth as a structured programming language. Borland's Turbo Pascal made Pascal practical on personal computers, and Delphi carried that lineage into visual Windows application development. Embarcadero's anniversary material identifies Delphi's launch as February 14, 1995, from Borland Software Corporation, with Anders Hejlsberg and the broader Delphi R&D team among the people behind the product.
+
+The original value proposition was rapid native application development: visual form design, a compiled Object Pascal language, database tooling, reusable components, and a productive IDE for Windows software. That origin still defines Delphi. It is not just a language in isolation. It is a language, compiler family, component model, visual designer, project system, debugger, RTL, VCL, FireMonkey, database libraries, and package ecosystem bundled into RAD Studio and Delphi editions.
+
+This makes Delphi different from open language ecosystems where the compiler, editor, package manager, GUI toolkit, and deployment system are separate community choices. Delphi is strongest when the integrated toolchain is an advantage. It is weaker when a team needs a vendor-neutral, broadly open, cloud-native, or web-first platform.
+
+## Pascal, Object Pascal, And Delphi Scope
+
+The name "Object Pascal" is used in several related ways. Delphi's language is an Object Pascal dialect used by Embarcadero Delphi. Free Pascal is an open source compiler for Pascal and Object Pascal with strong Delphi compatibility goals. Lazarus is a Delphi-compatible cross-platform RAD IDE built on Free Pascal and its component library.
+
+LangIndex treats this page as Delphi / Object Pascal because many real systems mix the vocabulary. A legacy application may be called "Delphi" because it depends on RAD Studio, VCL, third-party Delphi components, `.dpr` projects, `.dfm` forms, and Delphi compiler behavior. Another application may be "Object Pascal" because it uses Free Pascal and Lazarus without Embarcadero tooling. Those ecosystems overlap, but they are not identical.
+
+For production planning, be specific:
+
+- Delphi means Embarcadero's commercial compiler, IDE, libraries, and supported platform matrix.
+- VCL usually means Windows desktop applications and component-based form design.
+- FireMonkey, or FMX, means Embarcadero's cross-platform GUI framework.
+- Free Pascal means an open source Object Pascal compiler ecosystem with its own compatibility modes, packages, and platform targets.
+- Lazarus means a Free Pascal RAD IDE with a Delphi-compatible visual design workflow and the Lazarus Component Library.
+
+## Delphi Tooling And RAD Studio
+
+Delphi development is usually centered on RAD Studio or Delphi editions. The IDE provides code editing, form designers, project management, build configurations, debugging, component palettes, object inspectors, deployment tooling, package installation, and documentation integration. Embarcadero describes Delphi as an Object Pascal IDE and component library for native application development, with VCL for Windows and FireMonkey for cross-platform desktop and mobile work.
+
+The integrated workflow is the reason many Delphi teams remain productive on old systems. A form file, code-behind unit, visual component tree, dataset components, report components, COM wrapper, and database connection can all be edited in one environment. That is valuable for internal business software, desktop tools, and applications whose UI and data access were built around Delphi's component model.
+
+The same integration can be a constraint. Build reproducibility depends on exact RAD Studio versions, installed components, SDKs, GetIt packages, design-time packages, registry state, project files, build configurations, and sometimes binary-only vendor controls. A modern Delphi maintenance plan should record those dependencies as carefully as a Java, .NET, C++, or Python project records its toolchain.
+
+## VCL And Windows Desktop Work
+
+The Visual Component Library is Delphi's classic Windows application framework. Embarcadero's VCL documentation describes it as a set of visual components for rapid development of Windows applications in the Delphi language. It includes visual and nonvisual classes for Windows app building, database applications, web-related components, console support, and the component model behind design-time form work.
+
+VCL's strength is Windows-native business application development. Existing VCL systems often contain forms, frames, actions, menus, grids, data-aware controls, reporting components, COM/ActiveX integrations, registry and filesystem code, printers, installer assumptions, and direct Windows API calls. These are not just UI details. They are often the application architecture.
+
+For such systems, Delphi is frequently the lowest-risk maintenance language. Rewriting a stable VCL application into C#, Java, Electron, TypeScript, or a web stack can be justified, but only when tests and behavior inventories are strong enough to preserve what users rely on. Otherwise modernization in place, component replacement, 64-bit migration, build cleanup, and narrow service boundaries are often safer first moves.
+
+## FireMonkey And Cross-Platform Status
+
+FireMonkey is Embarcadero's cross-platform GUI framework. The RAD Studio Florence target-platform documentation lists Delphi support for Windows, macOS, iOS, Android, and Linux, with VCL limited to Windows and FireMonkey covering cross-platform UI targets. The FireMonkey documentation describes a GPU-oriented framework with platform abstractions, 2D and 3D graphics, styles, animation, and visual controls.
+
+That does not mean every Delphi application is automatically portable. VCL and FireMonkey are incompatible in the same module, and the FireMonkey documentation explicitly separates them. A VCL application that depends on Windows messages, Win32 controls, COM, ActiveX, shell integration, registry behavior, printer drivers, or third-party Windows-only controls is not cross-platform just because Delphi has non-Windows compilers.
+
+Use FireMonkey when the team has evaluated the target platforms, deployment requirements, accessibility needs, native behavior expectations, third-party components, mobile SDK requirements, and Linux support model. Use VCL when Windows desktop fidelity and existing VCL investment are the real constraints. Treat migration from VCL to FireMonkey as an application-porting project, not a compiler switch.
+
+## Type System And Language Model
+
+Delphi's language is statically typed and object-oriented, with procedural roots still visible. Units organize code. Classes inherit from `TObject` unless another ancestor is specified. Classes define fields, methods, properties, visibility sections, constructors, destructors, and class methods. The language also has records, sets, enumerations, arrays, pointers, exceptions, interfaces, generics, attributes, RTTI, anonymous methods, operator overloads, and conditional compilation.
+
+The component model is central. VCL and FireMonkey components typically descend through `TComponent`, expose published properties to the IDE, and use event handlers for user actions and framework callbacks. The Object Inspector and form designer are not superficial conveniences; they rely on language and runtime metadata.
+
+Delphi's static typing is practical rather than purely strict. Variants, pointer arithmetic, casts, untyped parameters, conditional compilation, RTTI, external libraries, and platform APIs can bypass stronger checks. A maintainable Delphi codebase should use those features at clear boundaries, especially around database fields, COM, native APIs, generated bindings, and older code that predates generics or Unicode changes.
+
+## Memory Management And Ownership
+
+Delphi does not use a tracing garbage collector for ordinary objects. Object instances are created explicitly, commonly with constructors such as `TThing.Create`, and destroyed explicitly, commonly with `Free` inside `try...finally`. That ownership pattern is basic Delphi literacy. A missing `finally`, unclear ownership transfer, or component lifetime misunderstanding can cause leaks or use-after-free defects.
+
+Some data is managed automatically. Embarcadero's memory-management documentation says long strings, wide strings, dynamic arrays, variants, and interfaces are heap allocated but managed automatically. Interfaces use reference counting, which can be useful but can also create lifetime surprises when mixed with ordinary object ownership. The same documentation distinguishes memory managers by platform, including FastMM for Win32 and Win64 and POSIX memory managers on POSIX targets.
+
+Components add another ownership layer. A component can own other components through the owner relationship, and forms can destroy owned controls and nonvisual components. This is productive when understood and risky when mixed with manual frees, global singletons, background threads, or objects that outlive their forms.
+
+## Syntax Example
+
+```pascal
+program LanguageSummary;
+
+{$APPTYPE CONSOLE}
+
+uses
+  System.SysUtils;
+
+type
+  TLanguage = class(TObject)
+  private
+    FName: string;
+    FFirstReleased: Integer;
+  public
+    constructor Create(const AName: string; AFirstReleased: Integer);
+    function Summary: string;
+  end;
+
+constructor TLanguage.Create(const AName: string; AFirstReleased: Integer);
+begin
+  inherited Create;
+  FName := AName;
+  FFirstReleased := AFirstReleased;
+end;
+
+function TLanguage.Summary: string;
+begin
+  Result := Format('%s first appeared in %d.', [FName, FFirstReleased]);
+end;
+
+var
+  Language: TLanguage;
+
+begin
+  Language := TLanguage.Create('Delphi', 1995);
+  try
+    Writeln(Language.Summary);
+  finally
+    Language.Free;
+  end;
+end.
+```
+
+This example shows ordinary Delphi shapes: a program, a unit import through `uses`, a class declaration, constructor, method, `Result`, formatted strings, explicit object creation, and a `try...finally` ownership block.
+
+## Packages And Ecosystem
+
+Delphi has several dependency concepts rather than one universal package manager. Delphi packages are compiled units of code used for runtime libraries and design-time components. Embarcadero's package documentation describes `.dpk` package source, `requires` and `contains` clauses, generated compiled package files, and IDE or command-line compilation.
+
+GetIt is RAD Studio's built-in package manager. Embarcadero documents it as a way to browse, download, purchase, and install packages into RAD Studio, including libraries, components, IDE extensions, and SDKs. This is useful for IDE-integrated packages, but it is not the same social and technical model as npm, crates.io, PyPI, Maven Central, NuGet, or Cargo. Delphi projects often also rely on commercial component vendors, vendored source, binary installers, private component libraries, and source copied into the repository.
+
+Free Pascal and Lazarus have their own ecosystem. Free Pascal publishes language, programmer, user, RTL, and FCL documentation. Lazarus describes itself as a Delphi-compatible cross-platform IDE and includes features such as a form designer, packages, a package manager with an online repository, and Delphi code conversion. Free Pascal can be a practical route for open Object Pascal work, but Delphi compatibility should be tested rather than assumed for a production migration.
+
+## Best-Fit Use Cases
+
+Delphi is a strong fit for:
+
+- Maintaining existing Delphi and VCL applications where the code, forms, components, users, and release process are already known.
+- Windows desktop business tools that need fast native UI development, database access, reporting, printing, COM, and local integration.
+- Teams with Delphi expertise and component investments that would be expensive to replace without a clear business payoff.
+- Cross-platform FireMonkey applications where the supported platform matrix, UI expectations, SDK requirements, and deployment model have been tested.
+- Gradual modernization of Object Pascal systems: Unicode cleanup, 64-bit builds, dependency inventory, component replacement, CI, tests, and service boundaries.
+
+## Poor-Fit Or Risky Use Cases
+
+Delphi can be a poor fit when:
+
+- The product is primarily browser UI, cloud services, data science, machine learning, mobile-native platform work, or open-source library development.
+- The team needs a large hiring pool in a mainstream ecosystem more than it needs Delphi's RAD workflow.
+- Licensing, commercial IDE dependence, or vendor release timing is unacceptable for the organization.
+- The application depends on old binary components, unsupported controls, abandoned database drivers, undocumented build machines, or untested form logic.
+- Management expects automatic cross-platform portability from a VCL application without budgeting for UI, platform API, and dependency migration.
+
+## Governance, Releases, And Compatibility
+
+Modern Delphi is commercially stewarded by Embarcadero. Product support status is tracked through Embarcadero support pages; as of this page's verification date, Delphi 13 Florence is the active supported Delphi line. Current behavior is defined by RAD Studio documentation, compiler behavior, RTL/VCL/FMX libraries, supported target-platform lists, IDE tooling, and compatibility expectations from existing Delphi customers.
+
+Object Pascal outside Delphi is more plural. Free Pascal and Lazarus are open source projects with their own releases, repositories, documentation, compatibility modes, packages, and target platforms. They are important for open Object Pascal work and for some Delphi-adjacent maintenance paths, but they do not make every Delphi project vendor-neutral. Third-party components, IDE designers, binary packages, and framework details are often the real boundary.
+
+For production planning, pin the exact toolchain. Record Delphi or Free Pascal version, target platforms, installed packages, form files, component vendors, SDKs, compiler directives, conditional defines, build configurations, database drivers, and deployment steps. The safest Delphi modernization work usually begins with reproducibility.
+
+## Comparison Notes
+
+[Delphi vs C#](/comparisons/delphi-vs-csharp) is the main modern desktop and business-application comparison. Delphi usually wins when an existing Delphi/VCL codebase or Delphi component ecosystem is the asset. C# usually wins when .NET, ASP.NET Core, NuGet, Visual Studio, modern Windows UI stacks, Unity, Azure, or broader hiring are the platform center.
+
+C++ is adjacent when native control, engine work, shared libraries, or low-level Windows integration matter. Delphi is usually more productive for RAD business applications; C++ is broader for native systems and performance-critical libraries.
+
+Java and C# are more common managed-runtime choices for backend and enterprise systems. Delphi can build services and database applications, but it is no longer the default language for new general-purpose backend platforms unless existing Delphi ownership is the main constraint.
+
+Objective-C is similar in one practical way: both are often maintenance languages for long-lived native GUI ecosystems. Objective-C points toward Swift on Apple platforms. Delphi points toward modern Delphi, C#, web front ends, or service boundaries depending on whether the durable asset is VCL, business behavior, data access, or the Windows deployment model.

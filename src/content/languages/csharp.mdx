@@ -21,7 +21,7 @@ memory:
   model: garbage collected managed heap with value types, spans, disposal patterns, and unsafe interop escape hatches
 runtime:
   model: .NET runtime and Common Language Runtime execution model
-officialSite: https://dotnet.microsoft.com/en-us/languages/csharp
+officialSite: https://learn.microsoft.com/en-us/dotnet/csharp/
 repository: https://github.com/dotnet/roslyn
 packageManagers:
   - NuGet
@@ -33,6 +33,7 @@ comparedWith:
   - go
   - kotlin
   - fsharp
+  - delphi
 bestFor:
   - Backend APIs, workers, cloud services, enterprise applications, and internal platforms that fit the .NET ecosystem.
   - Teams using ASP.NET Core, Azure, Microsoft identity, Windows integration, Visual Studio, or existing .NET libraries.
@@ -81,7 +82,7 @@ sources:
     url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
     publisher: Microsoft Learn
   - title: .NET and .NET Core Support Policy
-    url: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
+    url: https://learn.microsoft.com/en-us/dotnet/core/releases-and-support
     publisher: Microsoft .NET
   - title: C# Language Design
     url: https://github.com/dotnet/csharplang
@@ -95,7 +96,13 @@ sources:
   - title: Unity .NET features
     url: https://docs.unity3d.com/Manual/overview-of-dot-net-in-unity.html
     publisher: Unity
-lastVerified: 2026-05-15
+  - title: Delphi Product Page
+    url: https://www.embarcadero.com/products/delphi
+    publisher: Embarcadero
+  - title: VCL Overview
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
+    publisher: Embarcadero DocWiki
+lastVerified: 2026-05-20
 ---
 
 ## Origin And Design Goals
@@ -151,7 +158,7 @@ using System.Net;
 
 var targets = new[]
 {
-    new Endpoint("C#", new Uri("https://dotnet.microsoft.com/en-us/languages/csharp")),
+    new Endpoint("C#", new Uri("https://learn.microsoft.com/en-us/dotnet/csharp/")),
     new Endpoint(".NET", new Uri("https://learn.microsoft.com/en-us/dotnet/core/introduction")),
 };
 
@@ -246,3 +253,5 @@ Java is C#'s closest managed-runtime peer for backend and enterprise teams. Java
 TypeScript is the more direct choice for browser, Node.js, and npm-centered applications. C# can reach the browser through Blazor and WebAssembly and can share .NET code across some client/server boundaries, but it is not a drop-in replacement for JavaScript ecosystem work.
 
 Go is a common backend alternative when teams want small services, simple deployment, static binaries, and a smaller language surface. C# usually offers a richer managed runtime, more expressive language features, and deeper enterprise tooling, at the cost of more runtime and framework surface area.
+
+Delphi is a desktop and business-application comparison when an organization already owns Object Pascal, RAD Studio, VCL, or FireMonkey code. C# is usually the stronger default for new .NET-centered services, tools, and client applications; Delphi often remains the lower-risk maintenance choice for stable VCL applications and component-heavy Windows systems.

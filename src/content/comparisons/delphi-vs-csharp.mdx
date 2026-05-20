@@ -1,0 +1,122 @@
+---
+title: Delphi vs C#
+slug: delphi-vs-csharp
+summary: Delphi and C# both serve desktop and business application work, but Delphi centers on Object Pascal, native RAD Studio, VCL, and FireMonkey, while C# centers on .NET, managed runtime services, NuGet, and the broader Microsoft ecosystem.
+languages:
+  - delphi
+  - csharp
+useCases:
+  - Windows desktop applications
+  - business applications
+  - legacy modernization
+  - enterprise tooling
+  - cross-platform client applications
+sources:
+  - title: Delphi Product Page
+    url: https://www.embarcadero.com/products/delphi
+    publisher: Embarcadero
+  - title: Delphi Language Reference
+    url: https://docwiki.embarcadero.com/RADStudio/Athens/en/Delphi_Language_Reference
+    publisher: Embarcadero DocWiki
+  - title: Supported Target Platforms
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/Supported_Target_Platforms
+    publisher: Embarcadero DocWiki
+  - title: VCL Overview
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
+    publisher: Embarcadero DocWiki
+  - title: FireMonkey
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/FireMonkey
+    publisher: Embarcadero DocWiki
+  - title: GetIt Package Manager
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/GetIt_Package_Manager
+    publisher: Embarcadero DocWiki
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: An introduction to NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+  - title: .NET and .NET Core Support Policy
+    url: https://learn.microsoft.com/en-us/dotnet/core/releases-and-support
+    publisher: Microsoft .NET
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for teams choosing how to maintain or build desktop, business, internal tooling, database, and enterprise applications. It is especially relevant when an organization already owns Delphi/VCL applications and is deciding whether to modernize in place, move new work to C#, or split the system across clearer boundaries.
+
+It is not a general ranking of language quality. Delphi and C# are different platform decisions. Delphi brings Object Pascal, RAD Studio, native compilation, VCL, FireMonkey, visual component design, and a commercial component ecosystem. C# brings .NET, the CLR, NuGet, ASP.NET Core, Visual Studio and Visual Studio Code tooling, modern Windows UI stacks, Unity, and broad managed-runtime infrastructure.
+
+## Shared Territory
+
+Both languages can be used for Windows desktop applications, internal tools, database-heavy business systems, enterprise integrations, services, reporting, installers, and long-lived codebases. Both have strong IDE traditions, static typing, object-oriented programming, exceptions, generics, component or framework ecosystems, and mature debugging tools.
+
+The overlap is strongest in organizations that need durable business software rather than tiny scripts or browser-first products. The practical decision usually depends on which platform already owns the working behavior: Delphi forms, VCL components, and Object Pascal code, or .NET libraries, NuGet packages, C# developers, and managed runtime operations.
+
+## Key Differences
+
+| Dimension          | Delphi / Object Pascal                                             | C#                                                            |
+| ------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Platform center    | RAD Studio, Delphi compiler, RTL, VCL, FireMonkey                  | .NET SDK, CLR, Roslyn, NuGet, ASP.NET Core                    |
+| Main desktop fit   | VCL Windows applications and FireMonkey cross-platform clients      | Windows Forms, WPF, WinUI, .NET MAUI, Avalonia, Unity tools   |
+| Runtime model      | Ahead-of-time native compilation with framework/runtime libraries   | Managed .NET runtime with JIT, AOT options, and CLR services  |
+| Memory model       | Manual object ownership plus managed strings, arrays, variants, and interfaces | Garbage-collected managed heap plus spans, disposal, and unsafe interop |
+| Package model      | Delphi packages, GetIt, commercial components, vendored libraries   | NuGet packages, MSBuild, `dotnet` CLI, private feeds          |
+| Cross-platform UI  | FireMonkey, distinct from VCL                                      | .NET MAUI, Avalonia, Uno, Blazor Hybrid, or framework choices |
+| Backend fit        | Possible, but less common as a modern default                      | Strong ASP.NET Core, cloud, enterprise, and service ecosystem  |
+| Legacy gravity     | Existing Delphi/VCL apps and component dependencies                | Existing .NET apps, C# teams, Microsoft platform investment   |
+
+## Choose Delphi When
+
+- The working product is already a Delphi, VCL, or Object Pascal application.
+- The risk is in preserving behavior, forms, reports, database bindings, COM integrations, and third-party Delphi components.
+- Windows desktop fidelity and RAD form design matter more than joining the broader .NET ecosystem.
+- The team has Delphi maintainers and can reproduce the RAD Studio build environment.
+- FireMonkey has been tested against the actual target platforms and UI requirements.
+- Modernization can proceed incrementally through tests, 64-bit builds, component replacement, build cleanup, and narrow service boundaries.
+
+## Choose C# When
+
+- The organization is already centered on .NET, Azure, ASP.NET Core, NuGet, Visual Studio, Microsoft identity, or existing C# libraries.
+- New backend services, workers, APIs, cloud integrations, or enterprise platforms are central to the project.
+- The team needs a larger hiring pool and a broader modern package ecosystem.
+- Managed memory, Roslyn analyzers, nullable reference type analysis, LINQ, async/await, source generators, and .NET diagnostics are high-value.
+- Desktop work fits Windows Forms, WPF, WinUI, .NET MAUI, Avalonia, Unity, or another .NET-centered client stack.
+- The goal is platform consolidation around .NET rather than preserving a Delphi component architecture.
+
+## Legacy Modernization Notes
+
+Do not migrate a Delphi system to C# only because Delphi is older. Start with evidence:
+
+- Can the existing Delphi build run from a clean machine?
+- Are RAD Studio, SDKs, database drivers, GetIt packages, and third-party controls pinned?
+- Are `.dfm` form resources, reports, datasets, COM wrappers, and deployment scripts under source control?
+- Are there characterization tests around outputs, database writes, files, reports, UI flows, and business rules?
+- Which parts of the system change frequently, and which are stable?
+- Which boundary can be moved first without breaking users?
+
+If those questions are unanswered, a rewrite is likely to recreate bugs in a new language. Stabilize first. Then decide whether the right move is modern Delphi, a C# wrapper, new .NET services beside the old system, or a gradual feature-by-feature migration.
+
+## Cross-Platform And UI Boundaries
+
+Delphi's cross-platform UI story is FireMonkey. C#'s cross-platform client story is a family of choices rather than one default: .NET MAUI, Avalonia, Uno, Blazor Hybrid, Unity, and others. Neither option should be treated as automatic portability from an old Windows desktop app.
+
+A VCL application is Windows-centered. A WPF or WinForms application is also Windows-centered. Moving either one cross-platform means rethinking UI controls, file paths, platform APIs, installers, accessibility, fonts, window behavior, testing, and deployment. Pick the framework after testing the actual workflows, not from a platform checklist.
+
+## Migration Or Interoperability Notes
+
+Delphi and C# can coexist through process and platform boundaries: COM, native DLLs, C-compatible exports, HTTP APIs, gRPC, queues, files, databases, command-line tools, or separate services. In-process bridges are possible, but they can become harder to operate than a clear service or library boundary.
+
+Common migration paths include:
+
+- Keep a stable Delphi VCL application and move new backend work into C# services.
+- Wrap Delphi business behavior behind a CLI, COM, DLL, or HTTP boundary while tests are added.
+- Replace old Delphi components one at a time before considering a language rewrite.
+- Move new Windows tools to C# while leaving the main Delphi product intact.
+- Retire Delphi modules only after behavior is captured by tests and user-visible workflows.
+
+The right endpoint may still include Delphi. A maintained Delphi system with reproducible builds, supported components, and trained owners can be safer than a rushed C# rewrite with incomplete behavior coverage.

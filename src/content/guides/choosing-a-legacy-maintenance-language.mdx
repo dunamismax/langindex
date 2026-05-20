@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, Delphi, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -14,6 +14,7 @@ candidates:
   - python
   - objective-c
   - fortran
+  - delphi
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -69,14 +70,23 @@ sources:
   - title: ISO/IEC 1539-1:2023 - Fortran
     url: https://www.iso.org/standard/82170.html
     publisher: International Organization for Standardization
-lastVerified: 2026-05-19
+  - title: Delphi Product Page
+    url: https://www.embarcadero.com/products/delphi
+    publisher: Embarcadero
+  - title: Delphi Language Reference
+    url: https://docwiki.embarcadero.com/RADStudio/Athens/en/Delphi_Language_Reference
+    publisher: Embarcadero DocWiki
+  - title: VCL Overview
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
+    publisher: Embarcadero DocWiki
+lastVerified: 2026-05-20
 ---
 
 ## Start With Ownership, Not Preference
 
 Legacy maintenance is not a referendum on whether a language is fashionable. It is a risk-management problem around working software: behavior, data, dependencies, operators, tests, deployment, security, and the people who can safely change it.
 
-The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, or Fortran system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
+The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, or Delphi system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
 
 ## Inventory The System
 
@@ -148,6 +158,8 @@ Python is often the migration target for automation, data, and glue code, but it
 Objective-C systems usually exist because they sit near Apple platform APIs, Objective-C runtime behavior, Objective-C++ bridges, or long-lived Cocoa code. Start by pinning Xcode and SDK versions, enabling or documenting ARC settings, adding nullability to headers, isolating dynamic selectors or swizzles, and writing tests around Swift/Objective-C boundaries before migrating behavior to Swift.
 
 Fortran systems usually exist because they sit near numerical code or long-lived scientific domain libraries. Preserve tested boundaries before moving behavior to C++, Python, Julia, Rust, or another platform.
+
+Delphi systems usually exist because they sit near Windows desktop workflows, VCL forms, RAD Studio projects, database components, reports, COM integrations, or long-lived Object Pascal business logic. Start by making the Delphi build reproducible, pinning RAD Studio and component versions, checking 32-bit versus 64-bit assumptions, preserving `.dfm` resources, and adding tests around user-visible behavior before moving features to C#, web front ends, or services.
 
 ## Practical Default
 

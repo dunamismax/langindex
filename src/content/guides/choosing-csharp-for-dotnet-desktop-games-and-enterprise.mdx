@@ -1,8 +1,8 @@
 ---
 title: "Choosing C# For .NET, Desktop, Games, And Enterprise Work"
 slug: choosing-csharp-for-dotnet-desktop-games-and-enterprise
-summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, and .NET-centered tooling."
-audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, or Microsoft-centered platforms.
+summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, .NET-centered tooling, and Delphi-adjacent modernization decisions."
+audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, Microsoft-centered platforms, or modernization work near existing Delphi systems.
 candidates:
   - csharp
   - java
@@ -10,6 +10,7 @@ candidates:
   - go
   - kotlin
   - python
+  - delphi
 sources:
   - title: C# Documentation
     url: https://learn.microsoft.com/en-us/dotnet/csharp/
@@ -18,7 +19,7 @@ sources:
     url: https://learn.microsoft.com/en-us/dotnet/core/introduction
     publisher: Microsoft Learn
   - title: .NET and .NET Core Support Policy
-    url: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
+    url: https://learn.microsoft.com/en-us/dotnet/core/releases-and-support
     publisher: Microsoft .NET
   - title: An introduction to NuGet
     url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
@@ -38,7 +39,16 @@ sources:
   - title: Unity .NET features
     url: https://docs.unity3d.com/Manual/overview-of-dot-net-in-unity.html
     publisher: Unity
-lastVerified: 2026-05-15
+  - title: Delphi Product Page
+    url: https://www.embarcadero.com/products/delphi
+    publisher: Embarcadero
+  - title: VCL Overview
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
+    publisher: Embarcadero DocWiki
+  - title: FireMonkey
+    url: https://docwiki.embarcadero.com/RADStudio/Florence/en/FireMonkey
+    publisher: Embarcadero DocWiki
+lastVerified: 2026-05-20
 ---
 
 ## Start With The Platform
@@ -89,6 +99,8 @@ Before choosing C# for desktop, decide:
 
 If the application is mostly a browser application packaged for desktop, compare C# desktop stacks with Electron, Tauri, and web-first frameworks. If the application is deeply native to Apple platforms, Swift may be a better center. If it is Android-first, Kotlin is usually the current default.
 
+If the application is already a Delphi or VCL product, compare C# against modernization in place. C# may be the better destination for new .NET services, Windows tools, or cross-team platform consolidation, but an existing Delphi desktop application often carries form resources, component dependencies, database bindings, reports, installers, and user workflows that should be stabilized before migration. See [Delphi vs C#](/comparisons/delphi-vs-csharp) for the focused comparison.
+
 ## Choose C# For Games When
 
 C# is a strong game-development choice when Unity is the engine choice. Unity's programming model uses C# scripts to interact with engine APIs, components, scenes, serialized assets, lifecycle methods, and platform builds. This makes C# approachable for gameplay systems, editor tools, prototypes, and production game logic in Unity projects.
@@ -130,3 +142,5 @@ Start with C# when the center of gravity is .NET: ASP.NET Core services, Microso
 Start with TypeScript when the center of gravity is the browser, Node.js, npm, front-end frameworks, or full-stack JavaScript.
 
 Start with Java when the durable platform is the JVM. Start with Go when small services, infrastructure tooling, and simple deployment matter more than framework depth. Start with Python when the work is scripting, data, notebooks, or ML orchestration.
+
+Keep Delphi in the decision when the durable asset is an existing VCL, FireMonkey, Object Pascal, or RAD Studio application. A maintained Delphi system can be the right answer when the alternative is an under-specified rewrite.

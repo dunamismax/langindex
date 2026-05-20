@@ -50,6 +50,7 @@ Observed on 2026-05-16:
   - Perl
   - Objective-C
   - Fortran
+  - Delphi / Object Pascal
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -77,6 +78,7 @@ Observed on 2026-05-16:
   - Perl vs Shell comparison
   - Fortran vs C++ comparison
   - Fortran vs Python for Numerics comparison
+  - Delphi vs C# comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -530,11 +532,11 @@ continue with Phase 17.
 
 ### Phase 23 - Delphi / Object Pascal
 
-- [ ] Add a complete Delphi/Object Pascal page.
-- [ ] Cover Pascal lineage, Delphi tooling, VCL/FMX, Windows desktop
+- [x] Add a complete Delphi/Object Pascal page.
+- [x] Cover Pascal lineage, Delphi tooling, VCL/FMX, Windows desktop
       history, cross-platform status, package ecosystem, and maintenance fit.
-- [ ] Add Delphi vs C# comparison.
-- [ ] Add Delphi to desktop and legacy-maintenance guides.
+- [x] Add Delphi vs C# comparison.
+- [x] Add Delphi to desktop and legacy-maintenance guides.
 
 ### Phase 24 - Haskell
 

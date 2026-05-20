@@ -62,6 +62,7 @@ function shouldSkip(url) {
     parsed.hostname.endsWith(".example.com") ||
     parsed.hostname === "langindex.dev" ||
     parsed.hostname.endsWith(".langindex.dev") ||
+    parsed.hostname === "docwiki.embarcadero.com" ||
     parsed.hostname === "sitemaps.org" ||
     parsed.hostname.endsWith(".sitemaps.org") ||
     url.includes("/example/") ||
