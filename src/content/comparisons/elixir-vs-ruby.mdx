@@ -1,0 +1,109 @@
+---
+title: Elixir vs Ruby
+slug: elixir-vs-ruby
+summary: Elixir and Ruby are both productive dynamic languages with strong web frameworks, but Elixir centers on BEAM processes and OTP fault tolerance while Ruby centers on object-oriented expressiveness, RubyGems, Bundler, and Rails conventions.
+languages:
+  - elixir
+  - ruby
+useCases:
+  - web applications
+  - realtime backends
+  - server-rendered applications
+  - internal tools
+  - background jobs
+sources:
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Processes
+    url: https://hexdocs.pm/elixir/processes.html
+    publisher: Elixir
+  - title: GenServer
+    url: https://hexdocs.pm/elixir/GenServer.html
+    publisher: Elixir
+  - title: Supervisor
+    url: https://hexdocs.pm/elixir/Supervisor.html
+    publisher: Elixir
+  - title: Mix
+    url: https://hexdocs.pm/mix/Mix.html
+    publisher: Elixir
+  - title: Hex
+    url: https://hex.pm/
+    publisher: Hex
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+  - title: Phoenix Overview
+    url: https://hexdocs.pm/phoenix/overview.html
+    publisher: Phoenix
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Ruby Documentation
+    url: https://www.ruby-lang.org/en/documentation/
+    publisher: Ruby
+  - title: Ractor Documentation
+    url: https://docs.ruby-lang.org/en/4.0/Ractor.html
+    publisher: Ruby
+  - title: Ruby on Rails
+    url: https://rubyonrails.org/
+    publisher: Ruby on Rails
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+  - title: How to manage application dependencies with Bundler
+    url: https://guides.rubygems.org/using_bundler_in_applications/
+    publisher: RubyGems
+lastVerified: 2026-05-20
+---
+
+## Scope
+
+This comparison is for teams choosing between Elixir/Phoenix and Ruby/Rails for product backends, server-rendered web applications, APIs, realtime features, background jobs, and internal tools. It is not a general ranking of dynamic languages.
+
+## Shared Territory
+
+Both languages are dynamically typed, garbage-collected, expressive, open source, and productive for web-backed products. Both ecosystems have strong testing cultures, package managers, documentation tooling, web frameworks, database libraries, background-job patterns, and deployment practices for long-running applications.
+
+The practical choice is usually Phoenix on the BEAM versus Rails on Ruby. That is a platform choice, not only syntax preference.
+
+## Key Differences
+
+| Dimension       | Elixir                                                    | Ruby                                                    |
+| --------------- | --------------------------------------------------------- | ------------------------------------------------------- |
+| Runtime center  | Erlang/OTP and BEAM processes                             | CRuby/MRI and Ruby application servers/processes        |
+| Main framework  | Phoenix, LiveView, Ecto, Plug                             | Ruby on Rails, Active Record, Rack ecosystem            |
+| Concurrency     | Lightweight isolated processes and message passing        | Processes, threads, fibers, jobs, and Ractors by design |
+| Fault tolerance | OTP supervision trees and restart strategies              | Framework/process supervision outside the language core |
+| Language model  | Functional, immutable data, pattern matching, macros      | Object-oriented, blocks, metaprogramming, open classes  |
+| Package tooling | Mix, Hex, `mix.lock`                                      | RubyGems, Bundler, `Gemfile.lock`                       |
+| Best web fit    | Realtime, websocket-heavy, stateful, event-driven systems | Conventional product apps, CRUD, admin, SaaS, CMS-like workflows |
+| Main risk       | BEAM and OTP learning curve                               | Framework gravity and runtime concurrency constraints   |
+
+## Choose Elixir When
+
+- The product needs realtime updates, channels, websocket-heavy interaction, PubSub, presence, or long-lived supervised processes.
+- The team wants Phoenix but also wants BEAM concurrency and OTP recovery patterns as architectural primitives.
+- Background work, connection state, event streams, or user/session presence should live in supervised runtime processes.
+- Erlang interoperability, BEAM observability, and message passing are useful beyond the web framework.
+- The team accepts dynamic typing but wants functional code, immutable data, pattern matching, and explicit process boundaries.
+
+## Choose Ruby When
+
+- Ruby on Rails is the best product platform for the team and domain.
+- The application is mostly conventional CRUD, admin, SaaS, server-rendered UI, forms, database records, email, payments, and background jobs.
+- Rails conventions, Active Record, generators, migrations, RubyGems/Bundler, and Rails-aware hosting are strategic advantages.
+- The team values Ruby's object model, blocks, metaprogramming, and internal DSLs more than BEAM process architecture.
+- Existing Ruby or Rails code carries business value.
+
+## Watch Points
+
+Elixir's risk is treating Phoenix as a Rails replacement while ignoring the BEAM. Phoenix is strongest when BEAM processes, OTP supervision, PubSub, LiveView, or realtime coordination are part of the reason for choosing it. If the app is ordinary CRUD and the team already knows Rails, Ruby may be cheaper to sustain.
+
+Ruby's risk is assuming Rails productivity covers every concurrency and realtime requirement. Rails is excellent for many product backends, but CPU-bound parallelism, websocket-heavy workloads, and long-lived stateful coordination need explicit architecture through processes, threads, jobs, Action Cable or alternatives, services, or another runtime.
+
+## Migration Or Interoperability Notes
+
+Moving between Rails and Phoenix is a framework and operational migration. Routing, controllers, templates, database libraries, migrations, background jobs, deployment, package tooling, and test patterns all change.
+
+Prefer service boundaries or feature-by-feature migration when an existing product is large. Elixir can own realtime, event-driven, or worker-heavy parts while Ruby keeps mature Rails workflows. Ruby can remain the product platform while Elixir is evaluated for a narrow supervised service. A rewrite only makes sense when the runtime and framework change solves a real constraint.

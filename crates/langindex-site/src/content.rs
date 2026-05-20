@@ -703,7 +703,10 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 24);
+        assert_eq!(content.languages.len(), 25);
+        assert_eq!(content.comparisons.len(), 35);
+        assert_eq!(content.guides.len(), 18);
+        assert!(content.language("elixir").is_some());
         assert!(content.language("haskell").is_some());
         assert!(content.language("delphi").is_some());
         assert!(content.language("fortran").is_some());
@@ -718,6 +721,8 @@ mod tests {
         assert!(content.comparison("delphi-vs-csharp").is_some());
         assert!(content.comparison("haskell-vs-ocaml").is_some());
         assert!(content.comparison("haskell-vs-scala").is_some());
+        assert!(content.comparison("elixir-vs-erlang").is_some());
+        assert!(content.comparison("elixir-vs-ruby").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -746,6 +751,11 @@ mod tests {
                 .guide("choosing-a-functional-programming-language")
                 .is_some()
         );
+        assert!(
+            content
+                .guide("choosing-a-concurrency-oriented-backend-language")
+                .is_some()
+        );
         assert!(content.guide("choosing-a-systems-language").is_some());
         assert!(content.concept("functional-programming").is_some());
         assert!(content.concept("ownership").is_some());
@@ -755,6 +765,7 @@ mod tests {
     fn route_manifest_covers_public_content() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
         let routes = content.all_routes();
+        assert!(routes.contains("/languages/elixir"));
         assert!(routes.contains("/languages/delphi"));
         assert!(routes.contains("/languages/haskell"));
         assert!(routes.contains("/languages/lua"));
@@ -763,10 +774,13 @@ mod tests {
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
+        assert!(routes.contains("/comparisons/elixir-vs-erlang"));
+        assert!(routes.contains("/comparisons/elixir-vs-ruby"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
+        assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));

@@ -5,6 +5,7 @@ summary: A practical guide for choosing Haskell, Scala, or a functional style in
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
+  - elixir
   - scala
   - kotlin
   - rust
@@ -23,6 +24,18 @@ sources:
   - title: The Haskell Cabal
     url: https://www.haskell.org/cabal/
     publisher: Cabal
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Processes
+    url: https://hexdocs.pm/elixir/processes.html
+    publisher: Elixir
+  - title: Supervisor
+    url: https://hexdocs.pm/elixir/Supervisor.html
+    publisher: Elixir
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
   - title: Welcome to a World of OCaml
     url: https://ocaml.org/
     publisher: OCaml
@@ -79,6 +92,19 @@ Scala is a strong fit for JVM backend services, Spark-centered data engineering,
 
 The main risk is abstraction sprawl. Decide how much Scala 3, type classes, contextual abstractions, effect systems, symbolic syntax, and macro use belong in ordinary product code.
 
+## Choose Elixir When
+
+Choose [Elixir](/languages/elixir) when functional programming should live on
+the BEAM and the system benefits from isolated processes, message passing, OTP
+supervision, and Phoenix. Elixir is strongest for realtime backends,
+event-driven services, supervised workers, PubSub, presence, and long-running
+systems where failure recovery is part of the runtime architecture.
+
+Do not choose Elixir only because functional syntax is attractive. Choose it
+when BEAM processes and OTP supervision are part of the reason. If the main goal
+is static type modeling, Haskell, OCaml, F#, Scala, Rust, or Kotlin may fit
+better.
+
 ## Choose OCaml Or F# When They Fit The Platform
 
 OCaml and F# are important strict ML-family options even when a LangIndex page for each is not yet complete.
@@ -117,6 +143,8 @@ Rust deserves special mention: it is not a functional-first language, but enums,
 Start with functional style inside an existing mainstream platform when the project does not yet need a functional-first language.
 
 Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions.
+
+Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
 
 Start with Haskell when purity, laziness, type classes, and explicit effects are the core advantage and the team can own the GHC ecosystem.
 

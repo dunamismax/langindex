@@ -52,6 +52,7 @@ Observed on 2026-05-16:
   - Fortran
   - Delphi / Object Pascal
   - Haskell
+  - Elixir
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -82,6 +83,8 @@ Observed on 2026-05-16:
   - Delphi vs C# comparison
   - Haskell vs OCaml comparison
   - Haskell vs Scala comparison
+  - Elixir vs Erlang comparison
+  - Elixir vs Ruby comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -96,6 +99,7 @@ Observed on 2026-05-16:
   - Choosing an embedded scripting language guide
   - Choosing a legacy maintenance language guide
   - Choosing a functional programming language guide
+  - Choosing a concurrency-oriented backend language guide
   - Ownership concept page
   - Functional programming concept page
 - Current local baseline:
@@ -553,11 +557,11 @@ continue with Phase 17.
 
 ### Phase 25 - Elixir
 
-- [ ] Add a complete Elixir page.
-- [ ] Cover BEAM, OTP, fault tolerance, processes, Phoenix, Mix, Hex,
+- [x] Add a complete Elixir page.
+- [x] Cover BEAM, OTP, fault tolerance, processes, Phoenix, Mix, Hex,
       Erlang interoperability, and distributed systems fit.
-- [ ] Add Elixir vs Erlang and Elixir vs Ruby comparisons.
-- [ ] Add Elixir to concurrency and web/backend guides.
+- [x] Add Elixir vs Erlang and Elixir vs Ruby comparisons.
+- [x] Add Elixir to concurrency and web/backend guides.
 
 ### Phase 26 - Erlang
 

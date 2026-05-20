@@ -1,0 +1,250 @@
+---
+title: Elixir
+slug: elixir
+status: active
+summary: Elixir is a dynamically typed, functional language for the Erlang VM, centered on lightweight BEAM processes, OTP supervision, message passing, Mix and Hex tooling, Erlang interoperability, and Phoenix web applications.
+firstReleased: 2012
+creators:
+  - Jose Valim
+  - Plataformatec
+paradigms:
+  - functional
+  - concurrent
+  - distributed
+  - actor-style
+  - metaprogramming
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with pattern matching, guards, typespec documentation, Dialyzer-compatible analysis, and an emerging set-theoretic type-system effort
+memory:
+  model: automatic memory management on the BEAM, with isolated process heaps managed by the Erlang runtime
+runtime:
+  model: compiled to BEAM bytecode and run on Erlang/OTP
+officialSite: https://elixir-lang.org/
+repository: https://github.com/elixir-lang/elixir
+packageManagers:
+  - Mix
+  - Hex
+  - Rebar3
+comparedWith:
+  - erlang
+  - ruby
+  - go
+  - scala
+  - haskell
+bestFor:
+  - Phoenix web applications, realtime interfaces, APIs, websocket-heavy systems, and backend services that benefit from BEAM concurrency.
+  - Event-driven systems, job processors, messaging services, presence systems, soft realtime coordination, and long-running services that need supervised processes.
+  - Teams that want Erlang/OTP reliability patterns with a more modern language surface, Mix tooling, macros, and a productive web ecosystem.
+  - Systems that can model work as isolated processes exchanging messages rather than shared mutable state.
+poorFit:
+  - CPU-bound numeric kernels, tight loops, hard realtime systems, or low-level components where native code, SIMD, manual memory layout, or GPU-first libraries dominate.
+  - Teams that need compile-time static types as the main correctness boundary today.
+  - Products whose ecosystem needs are mostly vendor SDKs, data science notebooks, frontend JavaScript packages, mobile SDKs, or mainstream enterprise frameworks.
+  - Small scripts or simple CRUD services where BEAM deployment, releases, supervision, and OTP vocabulary would add more platform than the system needs.
+sources:
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Elixir Documentation
+    url: https://elixir-lang.org/docs.html
+    publisher: Elixir
+  - title: Development & Team
+    url: https://elixir-lang.org/development.html
+    publisher: Elixir
+  - title: Introduction
+    url: https://hexdocs.pm/elixir/introduction.html
+    publisher: Elixir
+  - title: Processes
+    url: https://hexdocs.pm/elixir/processes.html
+    publisher: Elixir
+  - title: Registries and supervision trees
+    url: https://hexdocs.pm/elixir/supervisor-and-application.html
+    publisher: Elixir
+  - title: GenServer
+    url: https://hexdocs.pm/elixir/GenServer.html
+    publisher: Elixir
+  - title: Supervisor
+    url: https://hexdocs.pm/elixir/Supervisor.html
+    publisher: Elixir
+  - title: Application
+    url: https://hexdocs.pm/elixir/Application.html
+    publisher: Elixir
+  - title: Modules and functions
+    url: https://hexdocs.pm/elixir/modules-and-functions.html
+    publisher: Elixir
+  - title: Patterns and guards
+    url: https://hexdocs.pm/elixir/patterns-and-guards.html
+    publisher: Elixir
+  - title: Typespecs reference
+    url: https://hexdocs.pm/elixir/typespecs.html
+    publisher: Elixir
+  - title: Compatibility and deprecations
+    url: https://hexdocs.pm/elixir/compatibility-and-deprecations.html
+    publisher: Elixir
+  - title: Erlang libraries
+    url: https://hexdocs.pm/elixir/erlang-libraries.html
+    publisher: Elixir
+  - title: Mix
+    url: https://hexdocs.pm/mix/Mix.html
+    publisher: Elixir
+  - title: Hex
+    url: https://hex.pm/
+    publisher: Hex
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+  - title: Phoenix Overview
+    url: https://hexdocs.pm/phoenix/overview.html
+    publisher: Phoenix
+  - title: Erlang/OTP 29.0
+    url: https://www.erlang.org/doc/readme.html
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+lastVerified: 2026-05-20
+---
+
+## Origin And Design Goals
+
+Jose Valim created Elixir in 2012 as a research and development project inside Plataformatec. The official development page describes the goal as a productive and extensible language for maintainable and reliable software, built on the Erlang Virtual Machine.
+
+Elixir's center is not "Ruby for the backend" or "functional syntax for web apps." It is a language designed to make Erlang/OTP's concurrency, distribution, and fault-tolerance model more approachable while keeping direct access to the Erlang ecosystem. The syntax is modern, the tooling is integrated, and macros let libraries build expressive domain-specific interfaces, but the runtime bargain is still the BEAM.
+
+That runtime shape explains the language's strongest fit: long-running systems composed of isolated processes that communicate by messages and can be supervised when failures occur.
+
+## Runtime, BEAM, And Erlang/OTP
+
+Elixir compiles to BEAM bytecode and runs on Erlang/OTP. As of this verification, the official Elixir documentation lists v1.19 as stable, HexDocs serves Elixir v1.19.5 documentation, and Elixir 1.19 supports Erlang/OTP 26, 27, and 28.
+
+The BEAM gives Elixir lightweight processes, message passing, distribution, garbage collection, hot runtime introspection, and OTP application structure. Erlang/OTP remains the underlying platform: applications, supervisors, GenServers, process registries, releases, standard library modules, ports, NIFs, distribution, and observability tools come from the Erlang world even when the application source is mostly Elixir.
+
+Production Elixir therefore needs both an Elixir version and an Erlang/OTP version. Teams should pin and test that pair in development, CI, and deployment because Elixir and Erlang/OTP versioning are independent.
+
+## Processes, OTP, And Fault Tolerance
+
+In Elixir, all code runs inside processes. These are BEAM processes, not operating-system processes. They are isolated, lightweight, concurrent, and communicate by message passing. A process has a mailbox, and a receiver uses pattern matching to select messages.
+
+The important production abstraction is OTP. A GenServer wraps a long-running server process behind a standard callback interface for state, synchronous calls, asynchronous casts, tracing, and error reporting. A Supervisor is itself a process that supervises child processes in a supervision tree and defines how they start, stop, and restart.
+
+This does not make failures disappear. It gives the system a place to express failure handling. Elixir is strongest when a team can decompose a system into supervised workers, registries, queues, sessions, connections, subscriptions, or stateful coordinators that can fail and recover independently.
+
+## Type System And Language Model
+
+Elixir is dynamically typed. Values carry runtime types, names can be rebound, and a function can fail at runtime when no clause matches or when a value has the wrong shape for an operation.
+
+The language leans heavily on pattern matching, guards, immutable data structures, tagged tuples, atoms, maps, structs, pipelines, modules, protocols, behaviours, macros, and explicit message passing. Pattern matching is not just destructuring; it is a control-flow and validation tool used in assignment, function heads, `case`, `receive`, and many library APIs.
+
+Typespecs are useful for documentation and tools such as Dialyzer, but the official typespec reference is explicit that Elixir remains dynamically typed and that typespecs are not used by the compiler to optimize or modify code. Elixir is also developing its own set-theoretic type-system work, so teams should separate today's production type guarantees from future type-system direction.
+
+## Syntax Example
+
+```elixir
+defmodule Health.Registry do
+  use GenServer
+
+  def start_link(_opts) do
+    GenServer.start_link(__MODULE__, %{})
+  end
+
+  def record(server, name, status) when is_binary(name) and is_integer(status) do
+    GenServer.call(server, {:record, name, status})
+  end
+
+  def ok?(server, name) do
+    GenServer.call(server, {:ok?, name})
+  end
+
+  @impl true
+  def init(checks), do: {:ok, checks}
+
+  @impl true
+  def handle_call({:record, name, status}, _from, checks) do
+    {:reply, :ok, Map.put(checks, name, status)}
+  end
+
+  def handle_call({:ok?, name}, _from, checks) do
+    result =
+      case Map.fetch(checks, name) do
+        {:ok, status} when status in 200..399 -> {:ok, status}
+        {:ok, status} -> {:error, {:unexpected_status, status}}
+        :error -> {:error, :missing}
+      end
+
+    {:reply, result, checks}
+  end
+end
+
+{:ok, registry} = Health.Registry.start_link([])
+:ok = Health.Registry.record(registry, "Elixir", 200)
+:ok = Health.Registry.record(registry, "Example", 503)
+
+IO.inspect(Health.Registry.ok?(registry, "Elixir"))
+IO.inspect(Health.Registry.ok?(registry, "Example"))
+IO.inspect(Health.Registry.ok?(registry, "Archive"))
+```
+
+This can run as a script with `elixir file.exs`. It uses a standard GenServer, pattern matching, guards, tagged tuples, immutable state updates, and explicit calls into a BEAM process.
+
+## Tooling, Packages, And Builds
+
+Elixir ships with IEx, ExUnit, Logger, EEx, and Mix. Mix is the project and build tool: it creates projects, compiles code, runs tests, executes tasks, manages dependencies, and integrates with Hex.
+
+Hex is the package manager for the Erlang ecosystem. Elixir projects usually declare dependencies in `mix.exs`, resolve them through Hex or source repositories, and lock them in `mix.lock`. Rebar3 remains relevant because Erlang dependencies and some BEAM projects use it directly, and Mix can participate in mixed Elixir/Erlang dependency graphs.
+
+Deployment is usually not "copy a script and run it." Production systems commonly build releases, configure runtime values, start OTP applications, run supervised processes, and operate long-running BEAM nodes. Phoenix projects add web-specific assets, endpoint configuration, database migrations, PubSub, LiveView, channels, and release concerns.
+
+## Phoenix And Web Backends
+
+Phoenix is Elixir's main web framework. Its official overview describes it as an Elixir framework implementing server-side MVC, with familiar web-framework concepts plus channels for realtime features and precompiled templates. The Phoenix site emphasizes APIs, HTML applications, LiveView, PubSub, channels, presence, authentication generators, Ecto database integration, Docker-ready deployment, and running on the Erlang VM.
+
+Phoenix is a strong fit when a web product benefits from stateful realtime behavior, websocket-heavy interfaces, server-rendered interactivity, background workers, PubSub, presence, and supervised long-running services. It is also useful for conventional APIs and server-rendered applications, but the BEAM/Phoenix advantage is clearest when concurrency and live coordination are central.
+
+Choose Rails, Django, Laravel, ASP.NET Core, Spring, or Go when their ecosystem, hiring pool, deployment model, or static typing story is the actual constraint. Choose Phoenix when the product benefits from BEAM processes and OTP operations, not only because the syntax is pleasant.
+
+## Erlang Interoperability
+
+Elixir has direct interoperability with Erlang. The official guide says Elixir discourages simply wrapping Erlang libraries and instead favors directly interfacing with Erlang code. Erlang modules are atoms with lowercase names, and Elixir can call them with syntax such as `:binary.first("hello")` or `:crypto.hash(:sha256, data)`.
+
+That interop is strategic. Elixir teams can use Erlang/OTP standard libraries, OTP design patterns, Erlang dependencies, BEAM observability, and mature Erlang infrastructure. The cost is that serious Elixir work eventually requires reading some Erlang documentation, understanding OTP terminology, and knowing when an Erlang library's assumptions affect an Elixir application.
+
+## Best-Fit Use Cases
+
+Elixir is a strong fit when:
+
+- The system is event-driven, message-heavy, realtime, or long-running.
+- Work can be modeled as many isolated processes with supervision.
+- Phoenix, LiveView, channels, PubSub, or presence are a good product fit.
+- The team wants a functional language with productive tooling on the BEAM.
+- Erlang/OTP reliability patterns, distribution, and observability are real advantages.
+- Operational state belongs in supervised runtime processes rather than only in stateless request handlers.
+
+## Poor-Fit Or Risky Use Cases
+
+Elixir can be a poor fit when:
+
+- The hot path is CPU-bound numeric work, image processing, scientific computing, or ML training.
+- The project needs a small native binary, browser runtime, mobile SDK, hard realtime behavior, or manual memory layout.
+- Static type checking is the team's main safety requirement today.
+- The application is a simple CRUD service where a conventional framework would be easier to hire for and operate.
+- Most dependencies are vendor SDKs or domain libraries that are much stronger in Java, C#, TypeScript, Python, Go, or Ruby.
+- The team is unwilling to learn OTP supervision, releases, process naming, observability, and Erlang/OTP compatibility.
+
+## Governance, Releases, And Compatibility
+
+Elixir is maintained by the Elixir Team in the open source `elixir-lang/elixir` repository under the Apache 2.0 license. The official development page states that Elixir v1.0 was released in September 2014 and that new minor releases are published every six months, around May and November.
+
+Elixir's compatibility page says the language is currently at major version 1, minor and patch releases are intended to be backwards compatible for well-defined behavior and documented APIs, bug fixes apply to the latest minor branch, and security patches are available for the last five minor branches. Experimental features are outside that guarantee until stabilized.
+
+For production, compatibility has two axes: Elixir version and Erlang/OTP version. Elixir aims to support the last three Erlang major versions at release time, but Erlang/OTP releases independently. Pin both.
+
+## Nearby Comparisons
+
+Erlang is the closest runtime and OTP comparison. Erlang has the original syntax, runtime heritage, telecom history, and many low-level OTP conventions. Elixir has the same BEAM foundation with a different language surface, Mix tooling, macros, Hex-centered workflows, and Phoenix.
+
+Ruby is the closest productivity and web-framework comparison. Ruby/Rails and Elixir/Phoenix can both build product backends quickly, but Rails is centered on Ruby's object model and web conventions while Phoenix is centered on BEAM processes, OTP supervision, and realtime-capable services.
+
+Go is a practical concurrency comparison for network services and infrastructure. Go gives static binaries, static typing, goroutines, channels, and a simple standard-toolchain story. Elixir gives supervised BEAM processes, distribution, hot observability, and Phoenix, but with BEAM deployment and dynamic typing.
+
+Scala is nearby when functional programming and backend services meet distributed systems. Scala usually earns its place through the JVM, Spark, type-level modeling, and Java interoperability. Elixir earns its place through BEAM process architecture and OTP reliability patterns.

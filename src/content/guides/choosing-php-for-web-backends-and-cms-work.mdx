@@ -8,6 +8,7 @@ candidates:
   - javascript
   - typescript
   - ruby
+  - elixir
   - python
   - csharp
   - java
@@ -61,7 +62,16 @@ sources:
   - title: Ruby on Rails Guides
     url: https://guides.rubyonrails.org/index.html
     publisher: Ruby on Rails
-lastVerified: 2026-05-16
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+  - title: Phoenix Overview
+    url: https://hexdocs.pm/phoenix/overview.html
+    publisher: Phoenix
+lastVerified: 2026-05-20
 ---
 
 ## Start With The Web Shape
@@ -125,6 +135,20 @@ more than a CMS or broad PHP hosting story. PHP remains the stronger default
 when WordPress, Drupal, shared hosting, PHP-FPM operations, or Laravel/Symfony
 ecosystem constraints are the real center of the project.
 
+## Choose Elixir Instead When
+
+Choose [Elixir](/languages/elixir) when the web backend is really a concurrent,
+realtime, or event-driven system. Phoenix is strongest when the product benefits
+from BEAM processes, OTP supervision, LiveView, channels, PubSub, presence,
+stateful workers, or long-running services that can be supervised and restarted
+inside the runtime.
+
+Elixir is not a drop-in replacement for PHP hosting or CMS work. PHP remains the
+stronger default when WordPress, Drupal, shared hosting, PHP-FPM, Laravel,
+Symfony, or broad PHP package compatibility is the point. Elixir earns the
+platform change when Phoenix and the BEAM process model solve a real application
+or operations problem.
+
 ## Choose Python, Java, C#, Or Go Instead When
 
 Choose Python when the backend is close to data workflows, ML tooling,
@@ -159,6 +183,7 @@ Start with PHP when the product is a web application or CMS and Laravel,
 Symfony, WordPress, Drupal, Composer packages, or PHP hosting are real
 advantages. Use TypeScript/Node.js when browser and backend code sharing is the
 main benefit. Use Ruby/Rails when Rails conventions are the platform choice.
+Use Elixir/Phoenix when realtime BEAM-backed application behavior is central.
 Use Python, Java, C#, or Go when their ecosystems or deployment models better
 match the workload.
 

@@ -1,0 +1,153 @@
+---
+title: Choosing A Concurrency-Oriented Backend Language
+slug: choosing-a-concurrency-oriented-backend-language
+summary: A decision guide for choosing Elixir, Erlang, Go, Java, C#, Kotlin, Scala, Rust, JavaScript, or Python when concurrent services, realtime systems, background work, and operational reliability drive the backend language decision.
+audience: Teams choosing a backend language for realtime applications, high-concurrency services, workers, event-driven systems, distributed systems, or long-running infrastructure.
+candidates:
+  - elixir
+  - erlang
+  - go
+  - java
+  - csharp
+  - kotlin
+  - scala
+  - rust
+  - javascript
+  - typescript
+  - python
+sources:
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Processes
+    url: https://hexdocs.pm/elixir/processes.html
+    publisher: Elixir
+  - title: GenServer
+    url: https://hexdocs.pm/elixir/GenServer.html
+    publisher: Elixir
+  - title: Supervisor
+    url: https://hexdocs.pm/elixir/Supervisor.html
+    publisher: Elixir
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+  - title: Erlang/OTP
+    url: https://www.erlang.org/
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: The Go Programming Language Specification
+    url: https://go.dev/ref/spec
+    publisher: Go Project
+  - title: The Go Memory Model
+    url: https://go.dev/ref/mem
+    publisher: Go Project
+  - title: Java Platform, Standard Edition Documentation
+    url: https://docs.oracle.com/en/java/javase/26/
+    publisher: Oracle
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Asynchronous programming with async and await
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
+    publisher: Microsoft Learn
+  - title: Coroutines Guide
+    url: https://kotlinlang.org/docs/coroutines-guide.html
+    publisher: JetBrains
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Fearless Concurrency
+    url: https://doc.rust-lang.org/book/ch16-00-concurrency.html
+    publisher: Rust Project
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: asyncio - Asynchronous I/O
+    url: https://docs.python.org/3/library/asyncio.html
+    publisher: Python Software Foundation
+lastVerified: 2026-05-20
+---
+
+## Start With The Concurrency Shape
+
+"Concurrent backend" can mean very different systems. A websocket server, a queue worker pool, an HTTP API, a distributed control plane, a batch job runner, a realtime collaboration service, and a CPU-bound media pipeline all need different runtime properties.
+
+Before choosing a language, name the dominant concurrency shape:
+
+- Many mostly idle connections.
+- Many short request/response tasks.
+- Long-lived stateful workers.
+- Message-driven or event-driven workflows.
+- CPU-bound parallel work.
+- Realtime fan-out and presence.
+- Distributed processes across machines.
+- Strict latency, cancellation, or backpressure requirements.
+
+The best language is the one whose runtime, libraries, deployment model, and team skill fit that shape.
+
+## Choose Elixir When BEAM Processes Are The Point
+
+Choose Elixir when the system benefits from isolated lightweight processes, message passing, OTP supervision, and Phoenix's realtime web ecosystem. Elixir is a strong fit for websocket-heavy applications, LiveView interfaces, PubSub, presence, event processors, stateful workers, queues, collaboration features, and services where failure recovery should be modeled through supervisors.
+
+Elixir is not the fastest answer for every backend. It earns its place when the BEAM process model changes the architecture for the better. If the service is stateless HTTP CRUD and the team already has a strong Rails, Django, Spring, ASP.NET Core, or Go platform, Elixir may add more runtime vocabulary than benefit.
+
+## Choose Erlang When Existing OTP Depth Matters
+
+Choose Erlang when the organization already owns Erlang systems, the problem sits close to mature Erlang libraries, or the team wants direct OTP conventions and Erlang syntax. Erlang remains highly relevant for telecom-style systems, messaging infrastructure, protocol servers, soft realtime coordination, and long-lived BEAM services.
+
+For new product web applications, Elixir usually offers a smoother path through Phoenix and Mix. For existing Erlang infrastructure, keep Erlang where it is stable and introduce Elixir only where the language and tooling improve delivery.
+
+## Choose Go For Network Services And Operational Simplicity
+
+Choose Go when the backend is a network service, infrastructure tool, control plane, worker, proxy, API, or daemon where static binaries, straightforward deployment, goroutines, channels, and a compact standard toolchain are central.
+
+Go is usually easier to hire for and operate than Elixir or Erlang in mainstream infrastructure teams. It is a weaker fit when the system's core value is supervised runtime process state, actor-style recovery, or Phoenix-style realtime product development.
+
+## Choose Java, C#, Kotlin, Or Scala For Managed Platform Depth
+
+Choose Java or C# when mature enterprise libraries, long support windows, runtime observability, thread pools, async APIs, database integrations, identity systems, and platform operations matter more than language novelty.
+
+Choose Kotlin when the JVM is desired but coroutines, concise source code, null-safety features, or Android/JVM alignment are central. Choose Scala when the JVM is desired and the team intentionally wants functional effect systems, actor libraries, streaming libraries, Spark, or stronger domain modeling.
+
+These runtimes are often better than BEAM languages for enterprise integration, vendor SDK coverage, static typing, and large organization familiarity. They are weaker when the system wants millions of isolated actor-style processes with OTP supervision as the core architecture.
+
+## Choose Rust For Native Concurrency Boundaries
+
+Choose Rust when native performance, memory safety without a required garbage collector, low-level networking, protocol implementation, embedded constraints, or data-race prevention are the main reasons for the language choice.
+
+Rust async can be excellent for high-performance services, but it has a steeper ownership and async ecosystem learning curve. It is usually not the fastest path for ordinary product backends unless Rust's safety and deployment properties are part of the requirement.
+
+## Choose JavaScript, TypeScript, Or Python When Ecosystem Wins
+
+Choose TypeScript or JavaScript when the backend is tied to browser code, npm packages, frontend frameworks, edge runtimes, serverless functions, or full-stack JavaScript teams. Node.js handles many concurrent I/O tasks well, but CPU-bound work and long-lived process state need explicit architecture.
+
+Choose Python when the backend is close to data workflows, ML orchestration, scripts, notebooks, or a Python-heavy organization. Python's concurrency choices include async I/O, threads for I/O, processes, native libraries, task queues, and service boundaries; it is rarely the best language for CPU-bound parallelism in pure Python code.
+
+## Questions To Answer
+
+- Are tasks mostly I/O-bound, CPU-bound, stateful, or distributed?
+- Does the system need millions of lightweight runtime processes, or only ordinary worker pools?
+- Is failure recovery a language/runtime concern, an application framework concern, or an orchestration concern?
+- Which runtime will production observe, profile, deploy, patch, and debug at 3 a.m.?
+- Is static typing a hard requirement?
+- Are vendor SDKs, framework maturity, or hiring pool stronger constraints than concurrency model?
+- Does the system need realtime browser features, background workers, queues, or both?
+- Can the team explain backpressure, cancellation, timeouts, memory growth, and restart behavior in the chosen stack?
+
+## Practical Default
+
+Start with Elixir when Phoenix and OTP supervision are real advantages for realtime, event-driven, or stateful backend systems.
+
+Start with Erlang when the system is already Erlang/OTP-centered or close to mature Erlang infrastructure.
+
+Start with Go for network services, infrastructure components, and workers where deployment simplicity and goroutines are enough.
+
+Start with Java or C# for long-lived enterprise backends where managed-runtime depth, static typing, and ecosystem coverage matter.
+
+Start with Kotlin or Scala when the JVM is required and their specific concurrency or functional ecosystems justify the extra language choice.
+
+Start with Rust when native performance and memory safety are the reason to choose the language.
+
+Start with TypeScript, JavaScript, or Python when the surrounding ecosystem is the real driver and concurrency can be handled within that runtime's normal operating model.
