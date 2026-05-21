@@ -1,0 +1,111 @@
+---
+title: Ada vs C++
+slug: ada-vs-cpp
+summary: Ada and C++ both serve large native systems, embedded software, and performance-sensitive code, but Ada emphasizes high-integrity explicitness while C++ offers broader ecosystem reach, zero-overhead abstractions, and a much larger installed base.
+languages:
+  - ada
+  - cpp
+useCases:
+  - safety-critical systems
+  - embedded systems
+  - native applications
+  - performance-sensitive software
+  - legacy modernization
+sources:
+  - title: ISO/IEC 8652:2023 - Programming languages - Ada
+    url: https://www.iso.org/standard/83621.html
+    publisher: International Organization for Standardization
+  - title: Ada Overview
+    url: https://www.adaic.org/advantages/ada-overview/
+    publisher: Ada Resource Association
+  - title: Ada 2022
+    url: https://www.adaic.org/advantages/ada-2022/
+    publisher: Ada Resource Association
+  - title: GNAT Pro for Ada
+    url: https://www.adacore.com/gnat-pro-for-ada
+    publisher: AdaCore
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee - Standard C++
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: C++ Standards Support in GCC
+    url: https://gcc.gnu.org/projects/cxx-status.html
+    publisher: GNU Compiler Collection
+  - title: C++ Support in Clang
+    url: https://clang.llvm.org/cxx_status
+    publisher: LLVM Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for embedded systems, high-integrity software, performance-sensitive native applications, device software, simulation, robotics, industrial systems, and long-lived codebases where Ada and C++ are both plausible.
+
+For the full language profiles, see [Ada](/languages/ada/) and [C++](/languages/cpp/).
+
+## Shared Territory
+
+Ada and C++ both compile to native code, can run without a required garbage collector, support abstraction over low-level data, and can be used close to hardware. Both appear in embedded and real-time domains, and both require serious build, toolchain, and target discipline.
+
+They differ in default culture. Ada is shaped around readability, strong nominal typing, packages, tasking, contracts, restrictions, and high-integrity review. C++ is shaped around multiparadigm native programming, RAII, templates, value semantics, standard-library abstractions, large engines and SDKs, and compatibility with a very large installed base.
+
+## Key Differences
+
+| Dimension       | Ada                                                       | C++                                                        |
+| --------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
+| Main appeal     | Explicit high-integrity native language                   | Broad native ecosystem with powerful zero-overhead tools   |
+| Type model      | Strong nominal typing, ranges, subtypes, packages         | Strong static typing with templates, overloads, casts      |
+| Resource model  | Stack/object lifetimes, controlled types, restrictions    | RAII, value semantics, smart pointers, manual escape hatches |
+| Concurrency     | Tasking, protected objects, real-time profiles            | Standard threads/atomics plus many library and OS models   |
+| Ecosystem       | Specialized safety, embedded, and formal-methods tooling  | Very broad engines, SDKs, libraries, compilers, tooling    |
+| Public ABI      | Usually implementation-specific; C boundaries common      | C++ ABI is powerful but fragile; C wrappers often used     |
+| Main risk       | Smaller ecosystem and staffing pool                       | Language/build/ABI complexity and unsafe subsets           |
+
+## Choose Ada When
+
+- The work is high-integrity, safety-critical, hard real-time, embedded, aerospace, rail, medical, defense, industrial, or certification-oriented.
+- Explicit ranges, domain types, packages, contracts, and restricted profiles make the design easier to review.
+- The project benefits from Ada tasking, protected objects, Ravenscar or Jorvik-style analyzable concurrency, or SPARK proof for critical modules.
+- Tool qualification, static analysis, stack analysis, coverage evidence, and runtime-profile control are part of the engineering plan.
+- The organization already has Ada code, Ada expertise, GNAT tooling, or certification artifacts.
+
+## Choose C++ When
+
+- The domain already depends on C++ engines, SDKs, libraries, middleware, compilers, native UI frameworks, graphics stacks, robotics stacks, or simulation tools.
+- RAII, templates, standard containers, value types, constexpr, overloads, and generic libraries reduce real implementation cost.
+- The team has mature C++ standards, static analysis, sanitizers, fuzzing, warnings, code review, and build reproducibility.
+- Hiring, vendor support, and third-party library depth matter more than Ada's high-integrity language design.
+- Modernization inside an existing C++ estate is lower risk than introducing Ada.
+
+## Safety And Maintainability
+
+Ada tries to make intent explicit in the language: separate types for separate meanings, constrained ranges, package specifications, contracts, tasking rules, and restricted profiles. That can reduce accidental misuse and improve review in systems where requirements and traceability matter.
+
+C++ gives powerful abstractions, but the project must choose a disciplined subset. RAII and standard library types can make C++ robust, yet raw pointers, casts, unchecked indexing, undefined behavior, exceptions, allocator mismatches, ABI leakage, and build complexity remain close at hand.
+
+The important comparison is not ideal Ada versus bad C++. A mature C++ organization with strong rules may be safer than an Ada project without target discipline. An Ada/SPARK project with restricted profiles may provide stronger assurance than ordinary C++ for critical control code.
+
+## Tooling, ABI, And Integration
+
+C++ has the wider ecosystem. CMake, MSBuild, Conan, vcpkg, Unreal Engine, Qt, ROS, graphics APIs, native SDKs, and many vendor toolchains are C++-centered. That breadth can decide the project before language design does.
+
+Ada has more specialized tooling. GNAT, GPRbuild, Alire, GNATprove, GNATcoverage, GNATstack, and related tools are attractive when the project values analyzability, certification support, and high-integrity workflows.
+
+For public binary boundaries, both languages often use C-compatible interfaces. C++ ABI compatibility is sensitive to compiler, standard library, flags, exceptions, RTTI, templates, and allocator policy. Ada representation and runtime details are also implementation-specific. Use C ABI boundaries, protocols, or generated binding layers when consumers are mixed.
+
+## Migration Or Interoperability Notes
+
+Ada and C++ can coexist in the same system, especially through C ABI boundaries or toolchain-supported mixed builds. GNAT tooling includes C and C++ interfacing utilities, but the boundary still needs explicit rules.
+
+Document who owns memory, which allocator is used, whether exceptions may cross the boundary, how Ada tasking and C++ threads interact, which side initializes runtime support, and which compiler versions are part of the release matrix.
+
+## Practical Default
+
+Choose Ada when correctness evidence, real-time analyzability, explicit domain modeling, and certification-oriented tooling are central.
+
+Choose C++ when ecosystem depth, existing native code, engine or SDK integration, library availability, and a mature C++ team are the decisive constraints.

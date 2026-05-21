@@ -1,0 +1,111 @@
+---
+title: Ada vs Rust
+slug: ada-vs-rust
+summary: Ada and Rust both target reliable native software without a required garbage collector, but Ada is strongest in high-integrity embedded and certification-oriented systems while Rust is stronger for new memory-safe systems work with Cargo-centered ecosystem reach.
+languages:
+  - ada
+  - rust
+useCases:
+  - safety-critical systems
+  - embedded systems
+  - systems programming
+  - native libraries
+  - formal verification
+sources:
+  - title: ISO/IEC 8652:2023 - Programming languages - Ada
+    url: https://www.iso.org/standard/83621.html
+    publisher: International Organization for Standardization
+  - title: Ada Overview
+    url: https://www.adaic.org/advantages/ada-overview/
+    publisher: Ada Resource Association
+  - title: GNAT Pro for Ada
+    url: https://www.adacore.com/gnat-pro-for-ada
+    publisher: AdaCore
+  - title: SPARK
+    url: https://www.adacore.com/languages/spark
+    publisher: AdaCore
+  - title: Concurrency and Ravenscar Profile
+    url: https://docs.adacore.com/spark2014-docs/html/ug/en/source/concurrency.html
+    publisher: AdaCore
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Embedded Rust Book - no_std
+    url: https://doc.rust-lang.org/stable/embedded-book/intro/no-std.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing a language for native systems, embedded modules, safety-sensitive components, formal-verification paths, or long-lived infrastructure where a required garbage collector is not acceptable.
+
+For the full language profiles, see [Ada](/languages/ada/) and [Rust](/languages/rust/).
+
+## Shared Territory
+
+Ada and Rust both compete with C and C++ in domains that need native code, strong static checking, and predictable resource behavior. Both can be used for embedded systems, libraries, command-line tools, infrastructure components, and FFI boundaries. Both ask developers to model more intent in the type system than C.
+
+They differ in their center of gravity. Ada comes from high-integrity, real-time, and large-system engineering, with packages, tasking, contracts, restricted runtime profiles, and SPARK adjacency. Rust comes from memory-safe systems programming, with ownership, borrowing, lifetimes, Cargo, crates.io, and a large modern open-source ecosystem.
+
+## Key Differences
+
+| Dimension       | Ada                                                       | Rust                                                       |
+| --------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
+| Main appeal     | High-integrity native software with explicit contracts    | Memory-safe native software with ownership checking        |
+| Safety model    | Strong typing, checks, restrictions, contracts, SPARK path | Safe Rust enforces ownership and borrowing by default      |
+| Concurrency     | Language tasking, protected objects, Ravenscar/Jorvik     | Threads, async/await, ownership-based `Send` and `Sync`    |
+| Tooling         | GNAT, GPRbuild, Alire, GNATprove, certification tools     | Cargo, crates.io, rustup, clippy, rustfmt                  |
+| Ecosystem       | Specialized high-integrity and embedded ecosystem         | Broader open-source systems and application ecosystem      |
+| Verification    | SPARK proof path adjacent to Ada                          | Strong compiler checks; formal proof usually external      |
+| Onboarding      | Smaller mainstream hiring pool and examples              | Larger modern community but steeper ownership learning     |
+
+## Choose Ada When
+
+- The project is safety-critical, high-integrity, hard real-time, embedded, aerospace, rail, defense, medical, industrial, or certification-driven.
+- Ada tasking, protected objects, Ravenscar or Jorvik profiles, and runtime restrictions match the system model.
+- Domain types, ranges, package specifications, contracts, and readable explicit syntax help review and traceability.
+- SPARK proof, GNATprove, stack analysis, coverage tooling, or tool qualification are part of the planned assurance case.
+- Existing Ada code, tools, certification artifacts, or team expertise make incremental Ada modernization lower risk.
+
+## Choose Rust When
+
+- The project is new native code and memory safety without a required garbage collector is the main product requirement.
+- Cargo, crates.io, rustup, standard formatting, and a broad package ecosystem reduce delivery risk.
+- Ownership, borrowing, `Result`, `Option`, enums, traits, and pattern matching are a natural fit for the API.
+- The domain is infrastructure, parsers, protocol implementations, CLIs, WebAssembly, libraries, agents, security-sensitive components, or embedded modules with usable target support.
+- Unsafe code can be kept small and reviewed behind safe APIs.
+
+## Safety And Verification
+
+Rust's default advantage is memory safety in safe code. The compiler rejects many use-after-free, double-free, aliasing, iterator invalidation, and data-race patterns before the program runs. That is a strong fit when the main risk is native-code memory behavior.
+
+Ada's default advantage is broader high-integrity modeling. Ranges, subtypes, packages, contracts, run-time checks, tasking rules, restrictions, and analyzable profiles can make requirements and review boundaries explicit. SPARK can then prove selected Ada-like modules against stronger properties, including absence of run-time errors and user-written contracts.
+
+The tradeoff is process. Ada and SPARK often shine when an organization already accepts restricted subsets, certification evidence, and tool qualification. Rust often shines when a team wants strong safety defaults inside a broader modern development ecosystem.
+
+## Embedded And Runtime Fit
+
+Ada has a long embedded and real-time history, with runtime profiles that can be restricted for analyzability. GNAT runtimes can range from full language support to minimal embedded runtimes. That makes Ada credible for projects where the runtime itself must be part of the assurance story.
+
+Rust's embedded story centers on `no_std`, target support tiers, hardware abstraction layers, panic policy, linker integration, and dependency compatibility. It can be excellent for new firmware modules, but target support and vendor tooling need early proof.
+
+For either language, the board and toolchain decide more than the language website. Test the exact target, compiler, linker, debugger, runtime profile, interrupt model, allocation policy, and CI environment before committing.
+
+## Migration Or Interoperability Notes
+
+Ada and Rust can interoperate through C ABI boundaries, generated bindings, message protocols, files, or separate processes. Do not make the public boundary depend on either language's private ABI unless the consumer set is tightly controlled.
+
+For Ada inside a Rust estate, keep the Ada boundary small and document runtime initialization, tasking, allocation, exceptions, and C ABI representation. For Rust inside an Ada estate, document ownership, panics, allocator policy, thread safety, and which side owns buffers and callbacks.
+
+## Practical Default
+
+Choose Ada when the project is high-integrity native software and the engineering process benefits from Ada's explicit packages, contracts, tasking, restricted profiles, and SPARK path.
+
+Choose Rust when the project is new systems software whose main goal is memory-safe native code with a broad package ecosystem and a modern open-source workflow.

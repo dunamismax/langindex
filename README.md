@@ -62,10 +62,10 @@ redeployed.
 
 LangIndex ships four content groups:
 
-- `languages` — 39 individual programming language profiles.
-- `comparisons` — 55 dimensional, tradeoff-first comparisons between related
+- `languages` — 40 individual programming language profiles.
+- `comparisons` — 57 dimensional, tradeoff-first comparisons between related
   languages.
-- `guides` — cross-language decision guides framed by the problem the
+- `guides` — 22 cross-language decision guides framed by the problem the
   developer is solving.
 - `concepts` — 40 shared programming-language ideas grouped by type systems,
   memory, runtime and execution, concurrency, paradigms, and tooling.

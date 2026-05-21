@@ -23,9 +23,9 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 39 language profiles.
-  - 55 comparisons.
-  - 21 guides.
+  - 40 language profiles.
+  - 57 comparisons.
+  - 22 guides.
   - 40 concepts.
 - Completed architecture work:
   - Rust/Leptos/Axum site crate.
@@ -180,12 +180,12 @@ the same explanations inside every language page.
 
 ### Phase 47 - Ada
 
-- [ ] Add a complete Ada page.
-- [ ] Cover safety-critical systems, strong typing, packages, tasking,
+- [x] Add a complete Ada page.
+- [x] Cover safety-critical systems, strong typing, packages, tasking,
       SPARK adjacency, compiler/tooling ecosystem, and certification
       constraints.
-- [ ] Add Ada vs Rust and Ada vs C++ comparisons.
-- [ ] Update systems, embedded, and safety-critical guide material.
+- [x] Add Ada vs Rust and Ada vs C++ comparisons.
+- [x] Update systems, embedded, and safety-critical guide material.
 
 ### Phase 48 - Visual Basic
 

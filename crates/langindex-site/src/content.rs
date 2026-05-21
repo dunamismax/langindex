@@ -10,6 +10,7 @@ use thiserror::Error;
 use url::Url;
 
 const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
+    "ada",
     "assembly",
     "bash",
     "c",
@@ -708,10 +709,18 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 39);
-        assert_eq!(content.comparisons.len(), 55);
-        assert_eq!(content.guides.len(), 21);
+        assert_eq!(content.languages.len(), 40);
+        assert_eq!(content.comparisons.len(), 57);
+        assert_eq!(content.guides.len(), 22);
         assert_eq!(content.concepts.len(), 40);
+        assert!(content.language("ada").is_some());
+        assert!(content.comparison("ada-vs-rust").is_some());
+        assert!(content.comparison("ada-vs-cpp").is_some());
+        assert!(
+            content
+                .guide("choosing-a-safety-critical-language")
+                .is_some()
+        );
         assert!(content.language("solidity").is_some());
         assert!(
             content

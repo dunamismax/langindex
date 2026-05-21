@@ -1,12 +1,13 @@
 ---
 title: Choosing an Embedded Language
 slug: choosing-an-embedded-language
-summary: A practical guide for choosing C, Rust, C++, Zig, or another language for firmware and embedded systems by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
+summary: A practical guide for choosing C, Rust, Ada, C++, Zig, or another language for firmware and embedded systems by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
   - assembly
   - c
   - rust
+  - ada
   - cpp
   - zig
 sources:
@@ -40,6 +41,18 @@ sources:
   - title: rustc book - Platform Support
     url: https://doc.rust-lang.org/rustc/platform-support.html
     publisher: Rust Project
+  - title: ISO/IEC 8652:2023 - Programming languages - Ada
+    url: https://www.iso.org/standard/83621.html
+    publisher: International Organization for Standardization
+  - title: Ada Overview
+    url: https://www.adaic.org/advantages/ada-overview/
+    publisher: Ada Resource Association
+  - title: GNAT Pro for Ada
+    url: https://www.adacore.com/gnat-pro-for-ada
+    publisher: AdaCore
+  - title: Concurrency and Ravenscar Profile
+    url: https://docs.adacore.com/spark2014-docs/html/ug/en/source/concurrency.html
+    publisher: AdaCore
   - title: The Committee - Standard C++
     url: https://isocpp.org/std/the-committee
     publisher: Standard C++ Foundation
@@ -123,6 +136,20 @@ Use Rust when:
 
 Rust is not automatically a drop-in C replacement for every board. Check target tiers, vendor support, debugger behavior, panic strategy, allocation policy, and dependency compatibility before committing.
 
+## When Ada Fits
+
+Ada is worth evaluating when embedded software needs strong domain types, explicit package interfaces, real-time tasking, analyzable concurrency profiles, and a high-integrity engineering story. It is especially relevant for aerospace, rail, defense, medical, industrial control, and other systems where certification evidence or SPARK proof may matter.
+
+Use Ada when:
+
+- The target has a usable Ada compiler, runtime profile, debugger workflow, and build path.
+- The firmware benefits from ranges, subtypes, contracts, packages, protected objects, and readable long-term maintenance.
+- Ravenscar, Jorvik, or another restricted runtime profile fits the scheduling and certification model.
+- SPARK can be used for the most critical modules, or Ada's static checks and tooling improve review even without proof.
+- The team can support GNAT, GPRbuild or Alire, runtime restrictions, and target-specific test evidence.
+
+Ada is not automatically easier than C or Rust for every board. Prove the exact runtime, interrupt behavior, stack policy, allocation policy, debugger support, and certification/tooling path before expanding it across firmware.
+
 ## When C++ Fits
 
 C++ can be a strong embedded fit when the team wants native control plus RAII, constructors/destructors, templates, type-safe interfaces, and zero-overhead abstractions. It is common in embedded application layers, robotics, automotive stacks, high-performance devices, and codebases that share libraries with desktop or simulation environments.
@@ -166,7 +193,7 @@ Ask these questions before choosing:
 - Can tests run on host, emulator, and hardware?
 - Does the language make peripheral ownership clearer or blur it?
 
-For C, allocation and lifetime policies must be project rules. For Rust, `no_std`, ownership, and type-level peripheral APIs can help, but target integration still has to be proved. For C++, RAII can improve cleanup, but global initialization and runtime feature policies need discipline.
+For C, allocation and lifetime policies must be project rules. For Rust, `no_std`, ownership, and type-level peripheral APIs can help, but target integration still has to be proved. For Ada, restrictions, runtime profiles, tasking policy, and stack analysis are first-order design choices. For C++, RAII can improve cleanup, but global initialization and runtime feature policies need discipline.
 
 ## Practical Starting Points
 
@@ -176,8 +203,10 @@ Start with C when the board, SDK, RTOS, debugger, and examples are C-first and t
 
 Start with Rust when new firmware needs stronger ownership and type guarantees, the target support is solid, and the team can validate the embedded Rust toolchain early.
 
+Start with Ada when high-integrity design, real-time tasking, restricted profiles, readable package boundaries, or SPARK proof are central and the target toolchain is credible.
+
 Start with C++ when the team already has embedded C++ expertise and the codebase benefits from RAII, templates, and richer abstractions under a controlled feature policy.
 
 Consider Zig for explicit allocation, C interop, and cross-compilation only after checking target maturity, tooling, and ecosystem depth for the exact chip family.
 
-For mixed systems, keep boundaries narrow. It is common to use C for startup and vendor SDK layers, Rust for safety-sensitive new modules, and C++ for higher-level device logic or shared libraries. The important part is making ownership, allocation, interrupt safety, and ABI contracts explicit at every boundary.
+For mixed systems, keep boundaries narrow. It is common to use C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. The important part is making ownership, allocation, interrupt safety, tasking, and ABI contracts explicit at every boundary.

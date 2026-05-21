@@ -5,6 +5,7 @@ summary: A practical guide for evaluating systems languages by runtime constrain
 audience: Developers choosing a language for infrastructure, native tooling, embedded work, network services, or performance-sensitive components.
 candidates:
   - assembly
+  - ada
   - rust
   - go
   - c
@@ -22,6 +23,21 @@ sources:
   - title: x86-64 psABI
     url: https://gitlab.com/x86-psABIs/x86-64-ABI
     publisher: x86 psABI maintainers
+  - title: ISO/IEC 8652:2023 - Programming languages - Ada
+    url: https://www.iso.org/standard/83621.html
+    publisher: International Organization for Standardization
+  - title: Ada Overview
+    url: https://www.adaic.org/advantages/ada-overview/
+    publisher: Ada Resource Association
+  - title: GNAT Pro for Ada
+    url: https://www.adacore.com/gnat-pro-for-ada
+    publisher: AdaCore
+  - title: SPARK
+    url: https://www.adacore.com/languages/spark
+    publisher: AdaCore
+  - title: Concurrency and Ravenscar Profile
+    url: https://docs.adacore.com/spark2014-docs/html/ug/en/source/concurrency.html
+    publisher: AdaCore
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
@@ -125,7 +141,7 @@ lastVerified: 2026-05-21
 
 The first question is not which language is more admired. It is what the program is allowed to depend on at runtime.
 
-If the project cannot tolerate a garbage collector, Go is probably the wrong default. That does not make Go slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, and allocator-sensitive libraries often need a no-GC language such as Rust, C, C++, or Zig. Assembly belongs even lower: use it for exact target instructions, startup code, ABI shims, and hardware entry points, not as the default owner for ordinary systems logic.
+If the project cannot tolerate a garbage collector, Go is probably the wrong default. That does not make Go slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, high-integrity control software, and allocator-sensitive libraries often need a no-GC language such as Ada, Rust, C, C++, or Zig. Assembly belongs even lower: use it for exact target instructions, startup code, ABI shims, and hardware entry points, not as the default owner for ordinary systems logic.
 
 If a managed runtime is acceptable and the target is a network service, command-line tool, control plane, or deployment helper, Go becomes much more attractive. It gives native binaries, a standard formatter, a standard test workflow, and built-in concurrency without requiring the team to model ownership and lifetimes in every module.
 
@@ -141,6 +157,8 @@ Choose a no-GC language when:
 - Compile-time ownership or manual memory control is worth the added complexity.
 
 Choose Rust when the project needs no required garbage collector and the team wants the compiler to enforce ownership, borrowing, and many thread-sharing rules. This is a strong fit for new systems components, parsers, libraries, agents, embedded modules, WebAssembly, and code where lifetime errors would be expensive.
+
+Choose Ada when the project needs native execution, strong nominal typing, explicit package interfaces, real-time tasking, restricted runtime profiles, or high-integrity review and certification evidence. Ada is strongest when the system benefits from ranges, contracts, analyzable concurrency, and SPARK adjacency more than from a broad general package ecosystem.
 
 Choose C when existing code, ABI requirements, vendor SDKs, platform conventions, freestanding targets, or broad compiler reach dominate the decision. C is often the integration language for operating-system interfaces, embedded SDKs, language runtimes, and plugin surfaces. Ownership can be disciplined in C, but the discipline usually lives in API contracts, documentation, coding standards, sanitizers, static analysis, fuzzing, and review rather than in the type system.
 
@@ -177,6 +195,21 @@ Before starting new assembly work, answer these questions:
 - How will target-specific variants be maintained for x86-64, AArch64, RISC-V, embedded cores, or vendor ABIs?
 
 If these answers are vague, assembly's closeness to hardware becomes a liability. Keep it narrow and let a systems language own the surrounding logic.
+
+## Ada Adoption Constraints
+
+Ada is the systems choice to evaluate when explicitness, high-integrity engineering, real-time behavior, and long-lived maintenance are central. It is especially relevant for embedded control, aerospace, rail, defense, medical, industrial systems, and codebases where certification evidence or SPARK proof can matter.
+
+Before starting new Ada work, answer these questions:
+
+- Which Ada standard, compiler, runtime profile, and target platforms are required?
+- Will the project use full Ada tasking, Ravenscar, Jorvik, another restricted profile, or no tasking?
+- Which restrictions, coding standards, run-time checks, contracts, and static analysis tools gate releases?
+- Is SPARK part of the plan, and if so, which modules need proof instead of only tests and review?
+- How will GPRbuild, Alire, GNAT tools, cross-compilation, debugger support, and CI be pinned?
+- Does the team have enough Ada expertise, or a training and review plan, to make the language's explicitness an asset?
+
+If these answers are vague, Ada's high-integrity strengths can turn into toolchain and staffing risk. Prototype the target runtime, tasking model, proof path, and build before committing broadly.
 
 ## Rust Adoption Constraints
 
@@ -305,7 +338,9 @@ The best technical fit can still fail if the team cannot maintain the code. Rust
 
 Go usually asks less from the reader. The language is smaller, formatting is uniform, package structure is conventional, and many service patterns are easy to recognize. The tradeoff is that some invariants remain social, test-driven, or operational rather than statically enforced.
 
-C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify.
+C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust or Ada immediately. A C codebase with weak ownership documentation may benefit from Rust at new memory-sensitive boundaries or Ada/SPARK at high-integrity control boundaries, but the migration plan must be narrow enough to verify.
+
+Ada fits teams that value explicit domain modeling, real-time profiles, packages, contracts, and assurance evidence. It is less attractive when the team needs the largest mainstream package ecosystem, fast onboarding from common web/backend backgrounds, or terse exploratory code.
 
 Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership.
 
@@ -328,6 +363,8 @@ Start with Go when the project is a network service, HTTP API, control plane, in
 
 Start with Rust when the project is a low-level component, performance-sensitive library, embedded target, WebAssembly module, parser, security-sensitive component, or service part where memory control and stronger compile-time guarantees justify a steeper learning curve.
 
+Start with Ada when the project is high-integrity native software, embedded control, hard real-time work, or a safety-critical component where packages, contracts, restricted profiles, and SPARK adjacency are valuable.
+
 Start with C when the work is a narrow ABI layer, platform interface, firmware target, or existing C estate where toolchain reach and integration outweigh stronger language checks.
 
 Start with C++ when the domain already depends on C++ engines, frameworks, libraries, or performance tooling, and the organization has a real plan for modern C++ safety practices, ABI boundaries, and build reproducibility.
@@ -338,4 +375,4 @@ Start with Nim when native compilation, C-family interop, macros, and Python-lik
 
 Start with Crystal when native compilation, Ruby-like readability, fibers, Shards, and C bindings are the draw, and the project can absorb a smaller ecosystem plus platform-support checks.
 
-Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Nim or Crystal for native tools or wrapper layers, and C or C++ at legacy or ABI edges.
+Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Ada or SPARK for high-integrity control modules, Nim or Crystal for native tools or wrapper layers, and C or C++ at legacy or ABI edges.

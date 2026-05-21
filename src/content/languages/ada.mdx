@@ -1,0 +1,216 @@
+---
+title: Ada
+slug: ada
+status: active
+summary: Ada is a standardized, strongly typed systems language for long-lived, embedded, real-time, and high-integrity software where explicit contracts, packages, tasking, and analyzability matter.
+firstReleased: 1983
+creators:
+  - Jean Ichbiah
+  - CII-Honeywell-Bull
+paradigms:
+  - imperative
+  - procedural
+  - object-oriented
+  - concurrent
+  - systems
+typing:
+  discipline: static
+  strength: very strong nominal typing with ranges, subtypes, discriminants, generics, contracts, and limited type inference
+memory:
+  model: deterministic stack and object lifetimes, access types, controlled types, optional dynamic allocation, and restricted profiles for high-integrity subsets
+runtime:
+  model: ahead-of-time native compilation through implementation-specific runtimes, from full Ada tasking runtimes to restricted embedded and certifiable runtimes
+officialSite: https://www.adaic.org/
+packageManagers:
+  - GNAT
+  - GPRbuild
+  - Alire
+  - GNATprove
+  - AUnit
+comparedWith:
+  - rust
+  - cpp
+  - c
+  - assembly
+bestFor:
+  - Safety-critical, high-integrity, embedded, aerospace, defense, rail, medical, industrial, and real-time systems where explicit design constraints and certification evidence matter.
+  - Long-lived native software that benefits from strong nominal typing, packages, contracts, range checks, bounded concurrency, and readable maintenance-oriented syntax.
+  - Firmware and systems components where C or C++ reach is needed but the project wants more language-level structure around types, modules, concurrency, and run-time checks.
+  - Ada/SPARK workflows where formal proof, static analysis, coding restrictions, and tool qualification are part of the engineering process.
+poorFit:
+  - Web, mobile, data-science, AI, scripting, and ordinary backend work where another ecosystem has much broader libraries, examples, hiring, and deployment conventions.
+  - Projects whose safety case depends on broad third-party package reuse rather than controlled toolchains, restricted subsets, review, and verification evidence.
+  - Teams that want terse syntax, heavy type inference, one dominant open package registry culture, or mainstream tutorial coverage more than high-integrity language features.
+  - Safety-critical work that assumes Ada alone is certification evidence; certification still depends on requirements, process, tests, analysis, tool qualification, and target runtime constraints.
+sources:
+  - title: ISO/IEC 8652:2023 - Programming languages - Ada
+    url: https://www.iso.org/standard/83621.html
+    publisher: International Organization for Standardization
+  - title: Ada 2022 Documents
+    url: https://www.adaic.org/ada-resources/standards/ada22/
+    publisher: Ada Resource Association
+  - title: Ada Reference Manual
+    url: https://arg.adaic.org/ada-reference-manual
+    publisher: Ada Rapporteur Group
+  - title: Ada Overview
+    url: https://www.adaic.org/advantages/ada-overview/
+    publisher: Ada Resource Association
+  - title: Ada 2022
+    url: https://www.adaic.org/advantages/ada-2022/
+    publisher: Ada Resource Association
+  - title: Introduction to Ada
+    url: https://learn.adacore.com/courses/intro-to-ada/chapters/introduction.html
+    publisher: AdaCore
+  - title: GNAT Pro for Ada
+    url: https://www.adacore.com/gnat-pro-for-ada
+    publisher: AdaCore
+  - title: Alire User's Guide
+    url: https://docs.adacore.com/live/wave/alire/html/alire/index.html
+    publisher: AdaCore
+  - title: SPARK
+    url: https://www.adacore.com/languages/spark
+    publisher: AdaCore
+  - title: Concurrency and Ravenscar Profile
+    url: https://docs.adacore.com/spark2014-docs/html/ug/en/source/concurrency.html
+    publisher: AdaCore
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Ada was created for a practical systems problem: the United States Department of Defense had too many incompatible programming languages and wanted a common language for large, long-lived software. AdaCore's introductory course identifies the winning proposal as the one submitted by Jean Ichbiah from CII-Honeywell-Bull, and says the first Ada standard was issued in 1983. The Ada Resource Association describes Ada 83 as the early-1980s language led by Ichbiah's team, followed by upward-compatible revisions including Ada 95, Ada 2005, Ada 2012, and Ada 2022.
+
+That origin still shapes Ada. It is not designed primarily for small scripts, terse expression syntax, or rapid library churn. It is designed for programs whose types, packages, interfaces, concurrency, run-time checks, and maintenance contracts should be explicit enough for humans and tools to review over long periods.
+
+The name is not an acronym. The Ada Resource Association says it honors Augusta Ada Lovelace.
+
+## Standardization And Current Status
+
+Ada is an ISO-standardized programming language. ISO lists ISO/IEC 8652:2023 as the current published Ada standard, edition 4, with a May 2023 publication date. The Ada Resource Association describes this revision as Ada 2022 and hosts the Ada 2022 Reference Manual corresponding to ISO/IEC 8652:2023(E). The Ada Rapporteur Group says the Ada Reference Manual provides the basis for the International Standard and that the most recent Ada standard is Ada 2022, approved by ISO in 2023 after editorial fixes.
+
+This standards model matters in production. Ada is not one vendor syntax backed only by a single implementation. The language definition, conformance expectations, annexes, and implementation-defined areas are part of the engineering contract. Real projects still need to name the compiler, runtime profile, target, restrictions, coding standard, certification context, and tool versions because Ada implementations can range from full hosted runtimes to restricted embedded runtimes.
+
+Ada 2022 added features around parallel execution, containers and iterators, more expressive contracts, atomic operations, and the Jorvik real-time profile. Those additions are useful, but legacy projects may be written against Ada 83, Ada 95, Ada 2005, or Ada 2012 dialect expectations. Treat the selected standard and compiler mode as a project decision.
+
+## Strong Typing And Domain Modeling
+
+Ada's type system is one of its central features. AdaCore's introduction describes Ada's philosophy as very strong typing, explicitness, limited type inference, and well-defined semantics. The Ada Resource Association highlights scalar ranges, strong type checking, packages, generics, exception handling, concurrency, systems programming, and real-time support.
+
+The practical effect is that developers can model domain distinctions directly. Different physical units, identifiers, ranges, array bounds, record variants, and constrained values can be separate types instead of comments. That helps catch accidental mixing and invalid values early, especially in control, measurement, protocol, and embedded code.
+
+Ada does not remove the need for tests or review. Range checks, subtype constraints, and contracts can detect many wrong states, but a program can still implement the wrong requirement, use an incomplete model, or call a device API incorrectly. Ada's strength is that it gives teams more places to write intent in the language.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing/), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing/), [Generics And Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism/), and [Null Safety](/concepts/null-safety/).
+
+## Packages, Visibility, And Large Systems
+
+Ada packages are the main modularity mechanism. A package specification exposes the public contract; a package body holds the implementation. Private parts let a package publish operations and type names while hiding representation details from clients.
+
+That split is well suited to long-lived systems. A team can review a package specification as an interface contract, keep device or algorithm details behind the body, and use child packages or generics for larger designs. The Ada Resource Association identifies packages as part of "programming in the large" and describes generics as compile-time parameterization for reusable components.
+
+Ada's explicit `with` and `use` model also makes dependencies visible at compilation-unit boundaries. That can feel heavier than import systems in newer languages, but it is useful when traceability, review, and build reproducibility matter.
+
+## Tasking, Protected Objects, And Real-Time Profiles
+
+Ada has language-level concurrency through tasks and protected objects. The Ada Resource Association describes a task as the unit of concurrency and protected objects as shared data with operations executed under mutual exclusion. The Real-Time Annex and profiles such as Ravenscar and Jorvik constrain concurrency to make scheduling and analysis more tractable.
+
+This is different from treating threads as only a library feature. Tasking, rendezvous, protected operations, timing, and restrictions are part of the language and runtime story. That helps in embedded and real-time systems, but it also means the runtime profile must be selected deliberately.
+
+For high-integrity work, unrestricted tasking may be too flexible. AdaCore's SPARK user guide says concurrency in SPARK requires the Ravenscar profile, and describes Ravenscar as a subset of Ada concurrency features suitable for hard real-time and embedded systems requiring stringent analysis, including certification and safety analyses. It also documents Jorvik as an Ada 2022 profile that relaxes some Ravenscar restrictions while remaining analyzable for hard real-time and embedded use cases.
+
+Related concepts: [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), [Structured Concurrency](/concepts/structured-concurrency/), and [Build Systems](/concepts/build-systems/).
+
+## Memory, Runtime, And Systems Programming
+
+Ada normally compiles ahead of time to native code through an implementation-specific compiler and runtime. GNAT is the best-known implementation family. AdaCore describes `gnat` as the official open-source compiler for Ada, with GCC and LLVM support, and describes GNAT Pro runtimes ranging from full language support to minimal embedded runtimes.
+
+Ada does not require a garbage collector. Programs commonly use stack allocation, records, arrays, controlled types, access types, and implementation-defined runtime services. Dynamic allocation exists, but high-integrity projects often restrict or avoid it after initialization because allocation policy, fragmentation, ownership, and certification evidence matter.
+
+The language also has systems-programming features. The Ada Resource Association notes that Ada can specify record bit layout, alignment, size, placement at specific machine addresses, assembly sequences, and interrupt handlers. Those features are useful for hardware, firmware, and ABI-facing code, but they should be isolated and documented like any other low-level boundary.
+
+Related concepts: [Memory Safety](/concepts/memory-safety/), [Manual Memory Management](/concepts/manual-memory-management/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), [Compilation Targets](/concepts/compilation-targets/), [Foreign Function Interface](/concepts/foreign-function-interface/), and [ABI Stability](/concepts/abi-stability/).
+
+## SPARK Adjacency
+
+SPARK is closely related to Ada but should not be treated as the same thing. AdaCore describes SPARK as a subset of Ada designed so code is amenable to automatic proof. AdaCore's SPARK page describes memory-safety proof through dynamic-allocation mitigation, borrow-checking analysis, and formal proof, and notes certification support for standards such as DO-178, EN 50128, ISO 26262, ECSS, and IEC 61508.
+
+The practical relationship is important:
+
+- Ada can be used without SPARK for ordinary native, embedded, and real-time software.
+- SPARK can be used for the modules where proof of absence of run-time errors, data-flow properties, or functional contracts is worth the cost.
+- Mixed Ada/SPARK systems are common in high-integrity thinking: prove the critical core, restrict the surrounding Ada code, and use tests, analysis, and review for everything else.
+
+Do not oversell SPARK as magic certification. Proof obligations, contracts, tool qualification, coding standards, target runtime behavior, requirements traceability, and review still matter. SPARK is a stronger verification lane adjacent to Ada, not a replacement for an engineering process.
+
+## Tooling And Ecosystem
+
+Ada's tooling is more specialized than mainstream web or application ecosystems. GNAT, GPRbuild, GNAT Studio, GNATprove, GNATtest, GNATcoverage, GNATstack, Libadalang, AUnit, and vendor or project-specific toolchains are common names around AdaCore-centered workflows. Alire is the package manager and project builder for Ada and SPARK, and AdaCore documents it as part of the GNAT Pro toolchain.
+
+That tooling shape is a strength in high-integrity environments and a constraint elsewhere. Ada has serious compilers, analysis tools, cross-target support, and certification-oriented products. It does not have the breadth of package availability, public examples, hiring pool, or cloud-native framework culture of Rust, C++, Java, C#, Go, Python, or TypeScript.
+
+A maintainable Ada project should pin the compiler and runtime profile, document GPRbuild or Alire configuration, name restrictions and coding standards, track target platforms, and decide which tools gate releases. For safety-critical projects, the toolchain itself may become part of the assurance case.
+
+## Syntax Example
+
+```ada
+with Ada.Text_IO;
+
+procedure Sensor_Check is
+   type Celsius is range -50 .. 150;
+   type Sensor_Id is range 1 .. 16;
+
+   type Reading is record
+      Sensor : Sensor_Id;
+      Value  : Celsius;
+   end record;
+
+   function In_Service_Window (Item : Reading) return Boolean is
+   begin
+      return Item.Value >= 0 and Item.Value <= 85;
+   end In_Service_Window;
+
+   Sample : constant Reading := (Sensor => 3, Value => 42);
+begin
+   if In_Service_Window (Sample) then
+      Ada.Text_IO.Put_Line ("sensor is in service window");
+   else
+      Ada.Text_IO.Put_Line ("sensor is outside service window");
+   end if;
+end Sensor_Check;
+```
+
+The example shows Ada's explicit types, constrained ranges, named record components, readable control flow, and package-qualified I/O. In production Ada, the same style usually appears with package specifications, private types, contracts, target-specific runtime settings, and stronger test or proof evidence.
+
+## Best-Fit Use Cases
+
+Ada is a strong fit for:
+
+- Avionics, rail, defense, space, medical, industrial, automotive, and control systems where high-integrity engineering is part of the product.
+- Embedded and real-time systems that need native code, explicit tasking, analyzable concurrency, hardware access, and strong type modeling.
+- Long-lived software where readability, interface stability, package boundaries, and source-level explicitness matter more than fashionable syntax.
+- Mixed Ada/SPARK systems where the most critical modules justify contracts, proof, static analysis, and restricted profiles.
+- Existing Ada estates where compiler upgrades, runtime-profile cleanup, tests, and selective SPARK adoption are safer than wholesale rewrites.
+
+## Poor-Fit Or Risky Use Cases
+
+Ada is a poor default when:
+
+- The project is ordinary web, mobile, scripting, data, AI, or business application work and the main requirement is ecosystem speed.
+- Hiring, onboarding, tutorials, and package breadth matter more than high-integrity language features.
+- The team expects Ada to remove the need for requirements discipline, tests, analysis, certification process, or target-specific runtime review.
+- The target depends heavily on vendor SDKs, frameworks, or libraries that are C++, Rust, Java, C#, Python, or TypeScript-first with no credible Ada binding plan.
+- The organization cannot support the compiler, runtime profile, build tooling, review culture, and verification tools needed to make Ada's strengths pay off.
+
+## Governance, Compatibility, And Community
+
+Ada evolves through ISO standardization and the Ada Rapporteur Group rather than through a single open-source language repository. That gives Ada a durable standard, but it also means practical compatibility depends on implementations such as GNAT, vendor runtimes, target profiles, tool qualification, and project restrictions.
+
+Community gravity is strongest in embedded, real-time, aerospace, defense, rail, medical, formal methods, and high-integrity software. Ada can be used outside those domains, but its comparative advantage is clearest where correctness evidence, maintainability, native execution, and analyzable runtime behavior are worth more than broad application-framework reach.
+
+## Comparison Notes
+
+[Ada vs Rust](/comparisons/ada-vs-rust/) is the closest modern safety-oriented systems comparison. Rust is usually the better default for new open-source infrastructure, libraries, CLIs, WebAssembly, and memory-safe native components with Cargo-centered workflows. Ada is stronger when the project already lives in high-integrity embedded or certification-heavy environments and benefits from Ada tasking, packages, contracts, restricted runtimes, and SPARK adjacency.
+
+[Ada vs C++](/comparisons/ada-vs-cpp/) is the main comparison for large native systems, embedded application layers, and performance-sensitive software where both languages are plausible. C++ has broader ecosystem reach and deeper platform gravity; Ada gives a more explicit high-integrity language surface.
+
+C remains adjacent because C ABIs, vendor SDKs, kernels, and embedded platforms often define the lowest common interface. Assembly is adjacent only at the hardware and ABI edge; Ada should usually own more product logic than assembly when target support is available.
