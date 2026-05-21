@@ -57,6 +57,7 @@ Observed on 2026-05-16:
   - Clojure
   - Julia
   - Zig
+  - OCaml
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -95,6 +96,7 @@ Observed on 2026-05-16:
   - Julia vs R comparison
   - Zig vs C comparison
   - Rust vs Zig comparison
+  - OCaml vs Rust comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -612,11 +614,11 @@ continue with Phase 17.
 
 ### Phase 30 - OCaml
 
-- [ ] Add a complete OCaml page.
-- [ ] Cover ML lineage, type inference, modules/functors, native and bytecode
+- [x] Add a complete OCaml page.
+- [x] Cover ML lineage, type inference, modules/functors, native and bytecode
       compilation, opam, Dune, multicore effects status, and industrial use.
-- [ ] Add OCaml vs Haskell and OCaml vs Rust comparisons where useful.
-- [ ] Add OCaml to functional programming guides.
+- [x] Add OCaml vs Haskell and OCaml vs Rust comparisons where useful.
+- [x] Add OCaml to functional programming guides.
 
 ### Phase 31 - F#
 

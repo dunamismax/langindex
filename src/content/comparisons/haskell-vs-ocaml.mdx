@@ -39,12 +39,14 @@ sources:
   - title: OCaml Governance
     url: https://ocaml.org/governance
     publisher: OCaml
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Scope
 
 This comparison is for teams choosing between Haskell and OCaml for functional programming, compilers, language tooling, static analysis, domain-heavy services, research-influenced systems, or application code where strong types are part of the value. It assumes the team is willing to use a less mainstream language deliberately.
+
+For the full OCaml profile, see [OCaml](/languages/ocaml).
 
 ## Shared Territory
 
@@ -88,6 +90,8 @@ Haskell can make simple operational questions feel abstract if the team overuses
 OCaml can look simpler than Haskell at first because it is strict and effects are direct. The complexity often moves to modules, functors, package switches, PPX usage, and deciding how much object or imperative style to allow.
 
 Both languages are poor choices if the organization only wants a fashionable functional language. They work best when the team is intentionally buying their type systems and ecosystem tradeoffs.
+
+OCaml 5 adds an extra current-state watch point: multicore domains are part of the modern runtime, but the manual still marks the `Stdlib.Effect` interface as unstable. Treat effects and domain libraries as version-sensitive architecture choices rather than settled application defaults.
 
 ## Tooling And Ecosystem
 

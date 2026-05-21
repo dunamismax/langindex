@@ -1,10 +1,11 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, Scala, Clojure, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, OCaml, Scala, Clojure, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
+  - ocaml
   - elixir
   - erlang
   - scala
@@ -149,15 +150,19 @@ Do not choose Erlang only to adopt functional programming. Choose it when the
 BEAM and OTP are the platform you want, and when the team accepts Erlang syntax,
 Rebar3, releases, Dialyzer-style analysis, and OTP operations.
 
-## Choose OCaml Or F# When They Fit The Platform
+## Choose OCaml When
 
-OCaml and F# are important strict ML-family options even when a LangIndex page for each is not yet complete.
+Choose [OCaml](/languages/ocaml) when a strict ML-family language fits the work better than Haskell's purity and laziness.
 
-Evaluate OCaml when the work is compiler-like, analyzer-heavy, systems-adjacent, or domain-driven and the team wants strict evaluation, strong inference, native code, opam, Dune, and a powerful module system.
+OCaml is strongest for compilers, static analyzers, proof-assistant tooling, DSLs, interpreters, symbolic transformation, and domain-heavy code where algebraic data types, pattern matching, type inference, modules, signatures, and functors are practical advantages. It can also fit internal services and tools when native compilation, opam, Dune, and a managed runtime are acceptable.
+
+Do not choose OCaml only because it is concise or functional. Choose it when the module system and ML type model clarify the design. If the main requirement is no-GC memory control, Rust may fit better. If the main requirement is a mainstream platform, JVM, .NET, BEAM, Python, or TypeScript may be easier to sustain.
+
+## Choose F# When .NET Is The Platform
 
 Evaluate F# when the organization is centered on .NET and wants ML-family functional programming with practical access to C#, .NET libraries, tooling, and deployment practices.
 
-These languages are usually better than Haskell when strict evaluation and platform interop are more important than purity and laziness.
+OCaml and F# are usually better than Haskell when strict evaluation and pragmatic platform integration are more important than purity and laziness. The difference is platform gravity: OCaml centers native and bytecode compilation with opam and Dune, while F# centers .NET.
 
 ## Use Functional Style In Mainstream Languages When
 
@@ -196,6 +201,8 @@ Start with Erlang when existing OTP depth, direct Erlang libraries, or long-runn
 
 Start with Haskell when purity, laziness, type classes, and explicit effects are the core advantage and the team can own the GHC ecosystem.
 
-Evaluate OCaml or F# when a strict ML-family language fits the platform better than Haskell.
+Start with OCaml when strict ML, type inference, modules, functors, native compilation, and compiler-like domain modeling are the core advantage.
+
+Evaluate F# when a strict ML-family language fits .NET better than a separate OCaml platform.
 
 Revisit the decision after a prototype that exercises tooling, dependency management, editor support, testing, deployment, profiling, and the hardest domain model. A functional language earns adoption when the prototype makes difficult behavior clearer, not just more elegant.

@@ -1,0 +1,243 @@
+---
+title: OCaml
+slug: ocaml
+status: active
+summary: OCaml is a strict ML-family language for functional-first native and bytecode programs, centered on type inference, algebraic data types, pattern matching, modules, functors, managed memory, opam, and Dune.
+firstReleased: 1996
+creators:
+  - Xavier Leroy
+  - Jerome Vouillon
+  - Damien Doligez
+  - Didier Remy
+paradigms:
+  - functional
+  - imperative
+  - object-oriented
+  - modular
+  - concurrent
+typing:
+  discipline: static
+  strength: strong static typing with Hindley-Milner-style inference, algebraic data types, polymorphic variants, objects, modules, signatures, functors, and GADTs in modern use
+memory:
+  model: managed heap with garbage collection, immutable-by-default values, explicit mutable references and fields, and multicore runtime support in OCaml 5
+runtime:
+  model: bytecode through ocamlc and ocamlrun, native code through ocamlopt, interactive toplevels, and OCaml 5 domains for shared-memory parallelism
+officialSite: https://ocaml.org/
+repository: https://github.com/ocaml/ocaml
+packageManagers:
+  - opam
+  - Dune
+  - OCaml Platform
+  - OCaml-LSP
+  - Merlin
+  - utop
+  - odoc
+comparedWith:
+  - haskell
+  - rust
+  - fsharp
+  - scala
+  - clojure
+bestFor:
+  - Compilers, interpreters, static analyzers, proof-assistant tooling, program transformation, DSLs, and syntax-heavy systems where algebraic data types, pattern matching, and modules fit the domain.
+  - Functional-first application code where strict evaluation, native compilation, pragmatic effects, and strong inference are more attractive than Haskell-style purity and laziness.
+  - Domain-heavy services, trading tools, verification tools, blockchain infrastructure, and internal platforms maintained by teams that are ready to own opam, Dune, and OCaml ecosystem choices.
+  - Libraries and tools that benefit from explicit abstraction boundaries through signatures, modules, functors, and interface files.
+poorFit:
+  - Teams that need the broadest hiring pool, the deepest vendor SDK coverage, or mainstream web/mobile framework defaults before they need OCaml's type and module system.
+  - Hard real-time, kernel, embedded, or allocator-sensitive systems where garbage collection and the OCaml runtime are unacceptable constraints.
+  - Projects that expect Rust-style ownership checking, C-like ABI control, or a no-GC native runtime.
+  - Codebases that would turn PPX, functors, local opam switches, and advanced type features into review complexity without a clear domain payoff.
+sources:
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: Why OCaml?
+    url: https://ocaml.org/about
+    publisher: OCaml
+  - title: The OCaml Manual
+    url: https://ocaml.org/manual/
+    publisher: OCaml
+  - title: The OCaml Manual 5.4
+    url: https://ocaml.org/manual/5.4/index.html
+    publisher: OCaml
+  - title: Modules
+    url: https://ocaml.org/docs/modules
+    publisher: OCaml
+  - title: Functors
+    url: https://ocaml.org/docs/functors
+    publisher: OCaml
+  - title: Installing OCaml
+    url: https://ocaml.org/docs/installing-ocaml
+    publisher: OCaml
+  - title: Introduction to opam Switches
+    url: https://ocaml.org/docs/opam-switch-introduction
+    publisher: OCaml
+  - title: Using the OCaml Compiler Toolchain
+    url: https://ocaml.org/docs/using-the-ocaml-compiler-toolchain
+    publisher: OCaml
+  - title: opam Manual
+    url: https://opam.ocaml.org/doc/Manual.html
+    publisher: opam
+  - title: Dune Documentation
+    url: https://dune.readthedocs.io/en/stable/
+    publisher: Dune
+  - title: Release of OCaml 5.0.0
+    url: https://ocaml.org/changelog/2022-12-16-ocaml-50
+    publisher: OCaml
+  - title: Transitioning to Multicore with ThreadSanitizer
+    url: https://ocaml.org/docs/multicore-transition
+    publisher: OCaml
+  - title: Stdlib.Effect
+    url: https://ocaml.org/manual/5.4/api/Stdlib.Effect.html
+    publisher: OCaml
+  - title: OCaml Governance
+    url: https://ocaml.org/governance
+    publisher: OCaml
+  - title: Success Stories
+    url: https://ocaml.org/industrial-users/businesses
+    publisher: OCaml
+  - title: ocaml version package
+    url: https://opam.ocaml.org/packages/ocaml/
+    publisher: opam
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+OCaml is the modern Objective Caml line in the ML family. The official OCaml history traces ML to Robin Milner's work on LCF, Caml to INRIA research in the 1980s, Caml Light to Xavier Leroy and Damien Doligez in 1990, Caml Special Light to the 1995 native-code compiler and module system, and OCaml to the 1996 addition of the object system by Didier Remy and Jerome Vouillon.
+
+The design center is pragmatic ML. OCaml gives teams strong static typing and inference, algebraic data types, pattern matching, first-class functions, modules, signatures, and functors, while still allowing direct effects, mutation, exceptions, objects, C interop, and native executables. It is not pure like Haskell and not ownership-checked like Rust. It is a strict, garbage-collected language that tries to make expressive typed programming practical.
+
+That history matters because OCaml is often strongest where the code shape is language-like: compilers, analyzers, proof tooling, DSLs, symbolic transformations, parsers, type checkers, optimization passes, and domain models with many explicit cases. It also supports ordinary application work, but the language earns its keep when its type and module systems make real complexity easier to review.
+
+## Runtime, Compiler, And Targets
+
+The OCaml toolchain has two main compilation paths. `ocamlc` compiles source files to bytecode and links bytecode executables that run with the OCaml runtime. `ocamlopt` compiles to native code for supported platforms. The manual also documents the interactive toplevel, runtime system, debugger, profiler, C interface, and standard library.
+
+Modern projects usually do not call compiler commands by hand for every file. Dune is the normal build tool for OCaml projects, and the OCaml compiler-toolchain documentation describes Dune as the popular modern system for building OCaml projects. Dune can build bytecode and native executable modes from project descriptions, run tests, generate docs, and coordinate libraries.
+
+The active implementation story is OCaml 5 plus the maintained 4.14 compatibility branch for some users. OCaml 5.0 introduced runtime support for shared-memory parallelism and effect handlers, but the release announcement explicitly described 5.0 as more experimental than usual during the multicore transition. When this page was verified, opam listed the `ocaml` package's latest version as 5.6.0. Teams should still pin the exact compiler, opam repository state, Dune version, platform tools, and CI image they use.
+
+## Type System And Language Model
+
+OCaml is statically typed with strong inference. In normal code, developers write many fewer type annotations than in Java, C#, C++, or Rust, but the compiler still rejects mismatched types before runtime. The introductory docs emphasize that expressions have types before evaluation and values after evaluation have the same type.
+
+The everyday modeling tools are algebraic data types, records, tuples, options, results, pattern matching, recursive functions, modules, signatures, functors, objects, polymorphic variants, exceptions, references, arrays, and first-class functions. OCaml values are immutable by default, but the language includes explicit mutation through references, mutable fields, arrays, hash tables, channels, and effectful functions.
+
+This gives OCaml a different feel from Haskell. Haskell pushes effects into types and is lazy by default. OCaml is strict by default, lets effects happen directly, and relies on code structure, modules, and conventions to separate pure domain logic from effectful edges. That makes OCaml easier for many teams to operationalize, but it also means purity is a discipline rather than a language-wide guarantee.
+
+## Modules, Signatures, And Functors
+
+OCaml's module system is one of its core strengths. The official module tutorial describes modules as the basic way to organize OCaml software, and every OCaml source file defines a module. Signatures describe module interfaces, and implementation files can be paired with interface files to control what a module exposes.
+
+Functors are parameterized modules. They take modules as input and return modules as output. The standard library's `Set.Make` and `Map.Make` are everyday examples: given a module that describes an ordered element type, they produce a set or map module specialized to that type.
+
+This is a powerful abstraction tool for libraries, compilers, and domain code with replaceable implementations. A parser can be parameterized over a token source. A storage layer can be parameterized over an effect or backend module. A data structure can expose only an abstract type through a signature. The cost is that module-heavy code can be hard for newcomers to navigate if functors, first-class modules, and signatures are used where simpler records or functions would be enough.
+
+## Syntax Example
+
+```ocaml
+module type CHECK = sig
+  type t
+
+  val name : string
+  val parse : string -> t option
+  val healthy : t -> bool
+  val show : t -> string
+end
+
+module Make_report (Check : CHECK) = struct
+  let describe raw =
+    match Check.parse raw with
+    | Some value when Check.healthy value ->
+        Printf.sprintf "%s %s ok" Check.name (Check.show value)
+    | Some value ->
+        Printf.sprintf "%s %s attention" Check.name (Check.show value)
+    | None ->
+        Printf.sprintf "%s invalid" Check.name
+end
+
+module Http_status = struct
+  type t = int
+
+  let name = "ocaml"
+
+  let parse value =
+    match int_of_string_opt value with
+    | Some status when status >= 100 && status <= 599 -> Some status
+    | _ -> None
+
+  let healthy status = status >= 200 && status < 400
+  let show = string_of_int
+end
+
+module Http_report = Make_report (Http_status)
+
+let () =
+  [ "200"; "503"; "unknown" ]
+  |> List.iter (fun raw -> print_endline (Http_report.describe raw))
+```
+
+This example uses a module signature, a functor, a concrete module, an option-returning parser, guards, pattern matching, a pipeline, and side-effecting output. In production OCaml, the same mechanics often appear in compiler passes, data validators, service adapters, and library boundaries.
+
+## Tooling, Packages, And Builds
+
+The OCaml Platform centers the modern developer experience around opam, Dune, OCaml-LSP or Merlin, utop, odoc, and OCamlFormat. The official install guide says opam is OCaml's official package manager and the recommended way to install the compiler, tools, and libraries.
+
+opam manages packages and compiler switches. A switch is an isolated OCaml environment with its own compiler, packages, and binaries. Local switches can live in a project `_opam` directory, which helps keep project dependencies separate. This is useful, but it means teams need to document how switches are created, updated, cached in CI, and kept reproducible.
+
+Dune is the build-system center for most new projects. It reads `dune-project` and `dune` files, builds libraries and executables, runs tests, generates docs, and can produce bytecode or native outputs. opam handles package installation and compiler environments; Dune handles project build structure. Treat them as complementary rather than substitutes.
+
+The main tooling risks are version alignment and convention drift. Pin the compiler, opam repository, Dune language version, formatter profile, lint/test commands, local switch policy, generated code policy, and release artifact. OCaml tooling is capable, but it rewards teams that make the workflow explicit.
+
+## Concurrency, Parallelism, And Effects
+
+OCaml 5 changed the runtime story by adding multicore support. The 5.0 release announcement highlighted shared-memory parallelism and effect handlers, and the multicore transition guide says OCaml 5.0 brought `Domain`-based parallelism. Domains allow parallel execution on multiple cores, but shared mutable memory can introduce data races that the type system does not yet catch automatically.
+
+Effect handlers are also part of the OCaml 5 story, but they need careful wording. The 5.4 `Stdlib.Effect` API is marked unstable and may change incompatibly. That makes effects important for libraries and runtime research, but application teams should avoid building a broad architecture on unstable effect APIs without tracking compiler and library compatibility closely.
+
+For many production applications, ordinary OCaml concurrency still means using the ecosystem's async, I/O, worker, process, or domain libraries deliberately. Compare this with Go, Erlang, Elixir, Java, C#, or Rust based on the actual concurrency model the application needs, not on the presence of multicore support alone.
+
+## Ecosystem And Industrial Use
+
+OCaml has a smaller ecosystem than Python, JavaScript, Java, C#, Go, Rust, or the JVM/.NET families, but it has deep pockets of strength. It is especially visible in compilers, static analysis, formal methods, finance, blockchain infrastructure, proof tooling, program transformation, and language research. The official industrial users page lists organizations and products using OCaml, including finance, security, analysis, blockchain, modeling, and document-processing examples.
+
+The practical ecosystem question is domain-specific. If the work needs a parser, compiler front end, symbolic engine, static analyzer, protocol checker, or typed domain core, OCaml may have excellent libraries and local expertise. If the work needs a broad vendor SDK, mainstream web framework, cloud integration, mobile tooling, or a large hiring pipeline, another ecosystem may be the better owner.
+
+OCaml also has a meaningful C interface, which matters for native libraries and existing systems. Treat FFI as boundary engineering: document allocation ownership, callbacks, exceptions, blocking behavior, runtime locking, build flags, and platform support.
+
+## Best-Fit Use Cases
+
+OCaml is a strong fit when:
+
+- The core problem is compiler-like, analyzer-heavy, proof-adjacent, symbolic, DSL-heavy, or domain-model-heavy.
+- Algebraic data types and pattern matching express the problem more directly than object graphs or ad hoc maps.
+- Strict evaluation and pragmatic effects are a better team fit than Haskell's laziness and pure-by-default model.
+- Module signatures and functors can enforce abstraction boundaries in libraries or internal platforms.
+- Native compilation and a managed runtime are both acceptable.
+- The team is willing to standardize opam, Dune, formatter, editor, CI, and release workflows.
+
+## Poor-Fit Or Risky Use Cases
+
+OCaml can be a poor fit when:
+
+- The main constraint is hiring availability, broad SDK support, or a mainstream application framework.
+- The system cannot tolerate a garbage collector or runtime dependency.
+- The team specifically needs Rust-style ownership and borrowing checks.
+- The project is mostly ordinary CRUD, web UI, mobile, scripting, or cloud glue where the OCaml advantage would not offset ecosystem cost.
+- Advanced modules, PPX extensions, or local type-system idioms would become a barrier to routine maintenance.
+
+## Governance, Releases, And Stewardship
+
+OCaml has open source compiler development and an ecosystem governance structure around OCaml.org and the OCaml Platform. The governance page describes roles for OCaml.org, platform projects, infrastructure, maintainers, and community processes. The compiler repository is public on GitHub.
+
+This is not the same as an ISO-style external standard. The manual, compiler implementation, opam packages, platform tooling, and ecosystem libraries are the practical source of truth. For production planning, track compiler releases, opam package constraints, Dune versions, OCaml-LSP/Merlin support, and any PPX or multicore/effects dependencies directly.
+
+## Comparison Notes
+
+[Haskell vs OCaml](/comparisons/haskell-vs-ocaml) is the closest functional-language comparison. Choose Haskell when purity, laziness, type classes, and explicit effects are the point. Choose OCaml when strict evaluation, pragmatic effects, native compilation, opam/Dune, and the ML module system are a better fit.
+
+[OCaml vs Rust](/comparisons/ocaml-vs-rust) is useful when a team is choosing between strong typed native-adjacent languages. Rust is the stronger default when memory safety without a garbage collector is a product requirement. OCaml is stronger when the problem is compiler-like, symbolic, or domain-heavy and a managed runtime is acceptable.
+
+F# is the nearby ML-family comparison when .NET is the platform requirement. Scala is nearby when JVM integration and functional abstractions are central. Standard ML is the historical and educational neighbor when a smaller ML core matters more than OCaml's object, module, package, and industrial ecosystem.

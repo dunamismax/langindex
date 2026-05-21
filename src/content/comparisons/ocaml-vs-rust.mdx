@@ -1,0 +1,111 @@
+---
+title: OCaml vs Rust
+slug: ocaml-vs-rust
+summary: OCaml and Rust are both statically typed languages with strong modeling tools, but OCaml is a strict garbage-collected ML-family language centered on inference, modules, functors, and compiler-like work, while Rust is a no-GC systems language centered on ownership, borrowing, traits, Cargo, and memory safety.
+languages:
+  - ocaml
+  - rust
+useCases:
+  - compilers and language tooling
+  - static analysis
+  - domain modeling
+  - native libraries
+  - systems programming
+sources:
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: Why OCaml?
+    url: https://ocaml.org/about
+    publisher: OCaml
+  - title: The OCaml Manual
+    url: https://ocaml.org/manual/
+    publisher: OCaml
+  - title: OCaml Platform
+    url: https://ocaml.org/platform
+    publisher: OCaml
+  - title: Using the OCaml Compiler Toolchain
+    url: https://ocaml.org/docs/using-the-ocaml-compiler-toolchain
+    publisher: OCaml
+  - title: Release of OCaml 5.0.0
+    url: https://ocaml.org/changelog/2022-12-16-ocaml-50
+    publisher: OCaml
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Traits
+    url: https://doc.rust-lang.org/book/ch10-02-traits.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between OCaml and Rust for compilers, analyzers, developer tools, domain-heavy libraries, native tools, infrastructure components, or systems-adjacent software. It is not a general web-framework comparison.
+
+## Shared Territory
+
+Both languages are statically typed, compile ahead of execution for normal production builds, support algebraic-style data modeling, pattern matching, generics or polymorphism, modules or packages, and functional programming techniques. Both can produce native executables, call C, and be used for command-line tools, parsers, compilers, static analyzers, and infrastructure utilities.
+
+The practical difference is the runtime and correctness model. OCaml gives strong inference, a managed runtime, garbage collection, modules, signatures, functors, and direct effects. Rust gives ownership, borrowing, lifetimes, RAII, traits, `Result`, `Option`, a safe/unsafe split, and no required garbage collector.
+
+## Key Differences
+
+| Dimension       | OCaml                                                    | Rust                                                       |
+| --------------- | -------------------------------------------------------- | ---------------------------------------------------------- |
+| Runtime         | Managed runtime with garbage collection                  | Native code with no required garbage collector             |
+| Memory model    | GC plus immutable defaults and explicit mutation          | Ownership, borrowing, lifetimes, and RAII                  |
+| Abstraction     | Modules, signatures, functors, first-class functions      | Traits, generics, enums, modules, macros                   |
+| Type inference  | Broad ML-style inference across ordinary code             | Local inference with more explicit public API types        |
+| Effects         | Direct effects, exceptions, mutation, and libraries       | Explicit `Result`/`Option`, ownership, and effect patterns  |
+| Concurrency     | OCaml 5 domains, libraries, and effect work               | Threads, async ecosystems, `Send`/`Sync`, ownership checks |
+| Tooling center  | opam, Dune, OCaml-LSP, Merlin, utop, odoc                 | Cargo, crates.io, rustup, rustfmt, clippy                  |
+| Main risk       | Smaller ecosystem and module/tooling complexity           | Learning curve, compile times, lifetimes, async choices    |
+
+## Choose OCaml When
+
+- The core work is compiler-like, analyzer-heavy, proof-adjacent, symbolic, or DSL-heavy.
+- Algebraic data types, pattern matching, and concise inference are central to the codebase.
+- The module system, signatures, and functors fit the abstraction boundaries better than Rust traits.
+- A garbage-collected runtime is acceptable, and predictable manual lifetime control is not the main product requirement.
+- The team wants strict functional programming with pragmatic effects rather than Haskell-style purity or Rust-style ownership.
+
+## Choose Rust When
+
+- The project needs memory safety without a required garbage collector.
+- Ownership, borrowing, lifetimes, and data-race constraints should be represented in the compiler's rules.
+- The code is a systems component, embedded module, WebAssembly module, parser, security-sensitive library, CLI, or service part where resource control is central.
+- Cargo, crates.io, rustup, and the broader Rust package ecosystem are practical advantages.
+- FFI boundaries, native deployment, binary size, allocator behavior, or no-GC constraints are more important than OCaml's inference and module system.
+
+## Compilers And Tooling
+
+OCaml has a long association with compilers and language tools because variants, pattern matching, recursion, modules, and functors map naturally to syntax trees, type checkers, passes, and interpreters. If the project is mostly "transform this typed representation into another representation," OCaml can be unusually direct.
+
+Rust is also strong for language tooling, especially when the tool must be distributed as a robust native binary, operate on large inputs with tight memory control, or expose safe libraries to other Rust code. Rust's ownership model can make long-lived data structures and graph-like compiler internals harder to express at first, but it can also prevent many accidental sharing and lifetime mistakes.
+
+## Memory And Runtime Tradeoffs
+
+OCaml's garbage collector simplifies many data structures. ASTs, intermediate representations, symbol tables, options, lists, and tree rewrites are often easier to write without explicit lifetime ownership. That simplicity is one reason OCaml remains attractive for compiler-like code.
+
+Rust makes memory and ownership explicit. That is a better default when allocator behavior, borrowing boundaries, zero-copy parsing, thread sharing, or resource cleanup are product requirements. It is a worse default when the team mostly wants to express transformations over symbolic data and the borrow checker becomes the main design constraint.
+
+## Tooling And Ecosystem
+
+OCaml's modern workflow is opam plus Dune. opam manages compiler switches and packages; Dune structures builds, tests, libraries, and executables. OCaml-LSP or Merlin provide editor support, utop supports interactive exploration, and odoc generates documentation.
+
+Rust's workflow is more standardized for most projects. Cargo handles packages, builds, tests, docs, workspaces, examples, and publishing. rustup manages toolchains and target components. That consistency is a major Rust advantage for teams that do not already know OCaml.
+
+The ecosystem question is domain-specific. OCaml may be better for compiler, proof, analysis, or typed-domain libraries. Rust is broader for systems components, CLIs, WebAssembly, embedded, infrastructure, parsers, and native libraries.
+
+## Migration Or Interoperability Notes
+
+OCaml and Rust can interoperate through C ABI boundaries, generated bindings, subprocesses, protocols, or file formats, but neither should be casually embedded inside the other without a clear boundary plan. Define ownership, allocation, exception or panic behavior, callbacks, blocking behavior, build tools, and release artifacts explicitly.
+
+For greenfield tools, prototype the hardest representation and boundary first. If most complexity is symbolic transformation, OCaml may produce clearer code sooner. If most complexity is resource control, concurrency, packaging, or unsafe native boundaries, Rust may be the better long-term owner.
