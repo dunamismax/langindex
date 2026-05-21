@@ -1,13 +1,14 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, Scala, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, Scala, Clojure, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
   - elixir
   - erlang
   - scala
+  - clojure
   - kotlin
   - rust
   - javascript
@@ -55,6 +56,15 @@ sources:
   - title: Scala 3 Reference
     url: https://docs.scala-lang.org/scala3/reference/index.html
     publisher: Scala Documentation
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Values and Change
+    url: https://clojure.org/about/state
+    publisher: Clojure
   - title: Kotlin Language Specification
     url: https://kotlinlang.org/spec/introduction.html
     publisher: JetBrains
@@ -98,6 +108,20 @@ Choose Scala when the JVM matters and functional programming should live inside 
 Scala is a strong fit for JVM backend services, Spark-centered data engineering, typed streaming, actor systems, and functional effect stacks such as Cats Effect or ZIO. It can interoperate with Java libraries and use JVM deployment, profiling, monitoring, and dependency infrastructure.
 
 The main risk is abstraction sprawl. Decide how much Scala 3, type classes, contextual abstractions, effect systems, symbolic syntax, and macro use belong in ordinary product code.
+
+## Choose Clojure When
+
+Choose [Clojure](/languages/clojure) when functional programming should live on
+the JVM but the team wants immutable persistent data, Lisp macros, interactive
+REPL development, and Java interoperability more than static type modeling.
+Clojure is strongest for data-heavy services, integration systems, rules,
+internal platforms, and domains where maps, vectors, sets, sequences, specs,
+and pure transformations are clearer than mutable object graphs.
+
+Do not choose Clojure only because Java feels verbose. Choose it when dynamic
+data-first design and REPL workflows are part of the engineering advantage. If
+compile-time types are the main requirement, Scala, Haskell, OCaml, F#, Rust, or
+Kotlin may fit better.
 
 ## Choose Elixir When
 
@@ -162,7 +186,9 @@ Rust deserves special mention: it is not a functional-first language, but enums,
 
 Start with functional style inside an existing mainstream platform when the project does not yet need a functional-first language.
 
-Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions.
+Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions with static types.
+
+Start with Clojure when the JVM, immutable data, Java interoperability, macros, and REPL-driven development are central, and dynamic typing is acceptable.
 
 Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
 

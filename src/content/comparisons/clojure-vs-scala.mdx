@@ -1,0 +1,117 @@
+---
+title: Clojure vs Scala
+slug: clojure-vs-scala
+summary: "Clojure and Scala are both functional JVM languages, but Scala uses static types and object-functional abstractions while Clojure uses dynamic data, immutable persistent collections, macros, and REPL-centered Lisp workflows."
+languages:
+  - clojure
+  - scala
+useCases:
+  - JVM applications
+  - backend services
+  - functional programming
+  - data transformation
+  - distributed systems
+sources:
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Values and Change
+    url: https://clojure.org/about/state
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: The REPL and main entry points
+    url: https://clojure.org/reference/repl_and_main
+    publisher: Clojure
+  - title: Macros
+    url: https://clojure.org/reference/macros
+    publisher: Clojure
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Tour of Scala
+    url: https://docs.scala-lang.org/tour/tour-of-scala.html
+    publisher: Scala Documentation
+  - title: Scala 3 Reference
+    url: https://docs.scala-lang.org/scala3/reference/index.html
+    publisher: Scala Documentation
+  - title: Given Instances
+    url: https://docs.scala-lang.org/scala3/reference/contextual/givens.html
+    publisher: Scala Documentation
+  - title: JDK Compatibility
+    url: https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+    publisher: Scala Documentation
+  - title: Apache Spark Overview
+    url: https://spark.apache.org/docs/latest/index.html
+    publisher: Apache Spark
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Clojure and Scala as functional JVM languages. It assumes the JVM is a real asset and the question is whether the source language should emphasize dynamic data and Lisp workflows or static types and object-functional modeling.
+
+Java, Kotlin, and plain SQL may still be better defaults when the team does not specifically need a functional JVM language. Do not choose either Clojure or Scala only because Java feels verbose.
+
+## Shared Territory
+
+Clojure and Scala both run on the JVM, interoperate with Java, use managed memory, consume Maven artifacts, and can build backend services, data pipelines, distributed systems, libraries, and internal platforms. Both can use Java observability tools, profilers, containers, cloud SDKs, databases, queues, and common deployment practices.
+
+Both also add language-specific complexity on top of the JVM. Scala adds compiler, type-system, binary-version, and ecosystem choices. Clojure adds dynamic typing, Lisp syntax, macro discipline, REPL workflow, and tooling convention choices.
+
+## Key Differences
+
+| Dimension        | Clojure                                            | Scala                                                   |
+| ---------------- | -------------------------------------------------- | ------------------------------------------------------- |
+| Language family  | Lisp                                               | Object-functional language                             |
+| Typing           | Dynamic runtime typing                            | Static typing with inference and advanced type features |
+| Data model       | Immutable persistent maps, vectors, sets, lists    | Case classes, enums, sealed traits, collections, objects |
+| Abstraction      | Functions, namespaces, protocols, multimethods, macros | Traits, classes, givens, type classes, extension methods, macros |
+| Workflow         | REPL-first interactive development                 | Compile-time modeling with REPL, worksheets, and builds |
+| Functional style | Data transformations and explicit state references | Algebraic modeling, effects, type classes, streaming    |
+| Ecosystem pull   | Clojure libraries, Java libraries, Clojars, REPL tooling | Scala libraries, Spark, effect systems, actors, sbt/Mill |
+| Main risk        | Informal data contracts and overuse of macros      | Abstraction sprawl and build/version complexity         |
+
+## Choose Clojure When
+
+- The domain is best represented as data and transformations over maps, vectors, sets, and sequences.
+- REPL-driven development, live data inspection, and fast feedback are central to how the team will work.
+- Dynamic typing is acceptable when paired with tests, specs, validation, and disciplined boundaries.
+- Macros or DSLs are useful enough to justify Lisp syntax and compile-time code transformation.
+- The team wants Java interop without adopting Scala's type-system and ecosystem complexity.
+
+## Choose Scala When
+
+- Static types, algebraic data modeling, pattern matching, type classes, or effect systems are the main reason to adopt a functional JVM language.
+- Spark, Akka, Apache Pekko, Cats Effect, ZIO, FS2, http4s, or another Scala-centered stack is central.
+- The domain benefits from compile-time modeling enough to pay for onboarding and build complexity.
+- The team can enforce a Scala style guide and keep advanced abstractions proportionate.
+- Java interop is required but the codebase should still expose statically typed APIs.
+
+## Watch Points
+
+Clojure can look simple because the syntax is small, but production Clojure depends on conventions: namespace layout, dependency tooling, linting, specs, data schemas, resource lifecycle, test culture, and macro restraint. Without those, dynamic data can become implicit structure that only the original authors understand.
+
+Scala can look safer because of static typing, but sophisticated type-level abstractions can make ordinary product code harder to read. Scala adoption should define which features belong in application code and which are reserved for libraries.
+
+Both languages should justify themselves against Java and Kotlin. If the team only wants less boilerplate, Kotlin may be enough. If the team wants the lowest-risk JVM default, Java may be better.
+
+## Backend, Data, And Platform Fit
+
+Clojure is strong for data-heavy backend work, rules systems, configuration-heavy applications, internal platforms, exploratory services, and integration code where immutable data and interactive evaluation matter. Its strength is not only syntax; it is the ability to shape a running program around data.
+
+Scala is strong for typed backend services, streaming systems, Spark-centered data engineering, actor systems, and functional effect stacks. Its strength is using the type system and ecosystem to express composition, effects, and domain constraints.
+
+For Spark-heavy teams, Scala has a clearer ecosystem story. For data transformation that is not Spark-centered, Clojure can be attractive when the shape of data changes often and the team values REPL inspection.
+
+## Migration Or Interoperability Notes
+
+Both Clojure and Scala can live beside Java, but they expose different boundary risks. Scala public APIs may include Scala collections, contextual abstractions, default parameters, binary-version constraints, or generated names that Java callers dislike. Clojure APIs may expose dynamic maps, keywords, functions, and namespaces that Java callers cannot use naturally.
+
+Use Java-friendly facades when broad JVM consumers matter. Keep Clojure or Scala-specific abstractions inside modules owned by teams that know the language.
+
+Do a prototype before standardizing. The prototype should include editor setup, formatting, linting, test execution, dependency resolution, packaging, deployment, a Java interop boundary, and one hard domain model. The right language will make the difficult part clearer, not merely shorter.

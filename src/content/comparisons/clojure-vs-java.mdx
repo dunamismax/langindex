@@ -1,0 +1,116 @@
+---
+title: Clojure vs Java
+slug: clojure-vs-java
+summary: "Clojure and Java share the JVM, but Java is the conservative statically typed baseline while Clojure adds Lisp syntax, immutable persistent data, macros, REPL-driven development, and a dynamic functional style."
+languages:
+  - clojure
+  - java
+useCases:
+  - JVM applications
+  - backend services
+  - enterprise applications
+  - data transformation
+  - interactive development
+sources:
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Clojure Downloads
+    url: https://clojure.org/releases/downloads
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Values and Change
+    url: https://clojure.org/about/state
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: The REPL and main entry points
+    url: https://clojure.org/reference/repl_and_main
+    publisher: Clojure
+  - title: Macros
+    url: https://clojure.org/reference/macros
+    publisher: Clojure
+  - title: deps.edn Reference
+    url: https://clojure.org/reference/deps_edn
+    publisher: Clojure
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Learn Java
+    url: https://dev.java/learn/
+    publisher: Oracle
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Java and Clojure on the JVM. It assumes the JVM is already a plausible runtime because Java libraries, Maven artifacts, managed memory, observability, deployment infrastructure, or existing platform ownership matter.
+
+If the real question is whether to use the JVM at all, compare Java and Clojure together against Go, C#, TypeScript, Python, Rust, Elixir, or another runtime. Clojure's advantage is not escaping the JVM; it is using the JVM through a dynamic functional Lisp.
+
+## Shared Territory
+
+Java and Clojure both run on the JVM, use garbage collection, consume Java libraries, use Maven coordinates, interoperate with Java code, and fit backend services, internal tools, data processing, integration systems, and long-lived applications.
+
+Both still require ordinary JVM operations: JDK choice, classpath or module boundaries, dependency governance, heap sizing, GC observation, containers, logging, metrics, security updates, and release testing.
+
+The decision is therefore about source-language fit: static object-oriented baseline versus dynamic data-oriented Lisp.
+
+## Key Differences
+
+| Dimension        | Java                                           | Clojure                                                   |
+| ---------------- | ---------------------------------------------- | --------------------------------------------------------- |
+| JVM role         | Baseline JVM language and specification center | JVM-hosted Lisp designed for Java interop                 |
+| Typing           | Static nominal typing with generics            | Dynamic runtime typing with specs, protocols, and hints   |
+| Data model       | Classes, records, objects, collections         | Immutable persistent maps, vectors, sets, lists, sequences |
+| Default style    | Object-oriented and imperative, with functional features | Functional, data-oriented, expression-oriented Lisp       |
+| State model      | Mutable objects, fields, synchronization, concurrency libraries | Immutable values plus vars, atoms, refs, agents, and Java concurrency |
+| Abstraction      | Classes, interfaces, annotations, frameworks   | Functions, namespaces, protocols, multimethods, macros    |
+| Workflow         | Compile-test-run IDE and build workflows       | REPL-driven interactive development plus tests and builds |
+| Tooling center   | JDK, Maven, Gradle, IDEs, mainstream frameworks | Clojure CLI, deps.edn, tools.build, Leiningen, REPL tooling |
+
+## Choose Java When
+
+- The team wants the broadest JVM hiring pool and the least language-specific onboarding.
+- Static typing, IDE refactoring, annotation processors, generated code, and Java-first frameworks are central.
+- Public APIs need to be natural for Java consumers.
+- Conservative language evolution and long-term maintenance by mixed-experience teams matter more than REPL speed or macro power.
+- The system already follows Java platform conventions and would gain little from changing the source language.
+
+## Choose Clojure When
+
+- The problem is naturally data-heavy and benefits from maps, vectors, sets, specs, and pure transformations.
+- REPL-driven development will materially improve feedback loops for domain logic, data pipelines, rules, integrations, or exploratory backend work.
+- Java libraries and JVM deployment are required, but Java source code creates more ceremony than value.
+- Immutability and explicit state references are a better default than mutable object graphs.
+- Macros or DSLs can remove real repetition at framework boundaries without making ordinary code obscure.
+
+## Watch Points
+
+Java's main risk is ceremony sprawl: framework defaults, reflection, generated code, annotations, and enterprise patterns can make simple behavior hard to inspect.
+
+Clojure's main risk is informal dynamism: ad hoc map shapes, unchecked boundary data, unconstrained macros, global vars, and inconsistent build conventions can make a codebase hard to maintain. Good Clojure needs naming discipline, tests, boundary validation, small functions, linting, formatter rules, and shared REPL practices.
+
+Neither language removes JVM complexity. Clojure can make source code smaller, but the runtime is still Java's managed platform.
+
+## Backend And Enterprise Work
+
+Java remains the safest default for ordinary JVM backend and enterprise systems. It has the broadest staff familiarity, framework coverage, vendor examples, IDE support, and public API expectations.
+
+Clojure becomes compelling when the backend is not just CRUD through a framework. It fits systems with rich data transformations, rules, configuration, event processing, integration workflows, internal DSLs, and exploratory development where seeing and reshaping live data matters.
+
+For heavily regulated or very large mixed-skill teams, Java's explicitness may be worth the boilerplate. For smaller expert teams or platforms whose domain can be expressed as stable data transformations, Clojure's concision and REPL workflow can be a real advantage.
+
+## Migration Or Interoperability Notes
+
+Java and Clojure can coexist in the same JVM system, but the boundary should be designed. Java callers usually prefer named classes, interfaces, ordinary methods, and documented types. Clojure callers often prefer functions, maps, keywords, namespaces, and immutable data.
+
+Use Java APIs at boundaries where Java consumers matter. Use Clojure internally where the team benefits from data-first design. Avoid exposing arbitrary Clojure maps to broad Java consumers unless the schema and lifecycle are explicit.
+
+Adopt Clojure incrementally: start with tests, internal tools, data transformation modules, reporting, migration scripts, or service components where Java interop is straightforward and the REPL advantage is visible.

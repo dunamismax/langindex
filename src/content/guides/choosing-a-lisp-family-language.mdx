@@ -1,0 +1,116 @@
+---
+title: Choosing A Lisp-Family Language
+slug: choosing-a-lisp-family-language
+summary: A practical guide for evaluating Clojure, Common Lisp, Scheme, Racket, and Lisp-family systems by platform, macro power, interactive development, ecosystem fit, tooling, deployment, and team maintenance cost.
+audience: Developers and teams considering a Lisp-family language for production work, language tooling, DSLs, education, research, symbolic systems, or data-heavy JVM applications.
+candidates:
+  - clojure
+sources:
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Clojure Downloads
+    url: https://clojure.org/releases/downloads
+    publisher: Clojure
+  - title: The REPL and main entry points
+    url: https://clojure.org/reference/repl_and_main
+    publisher: Clojure
+  - title: Macros
+    url: https://clojure.org/reference/macros
+    publisher: Clojure
+  - title: Differences with Lisps
+    url: https://clojure.org/reference/lisps
+    publisher: Clojure
+  - title: Common Lisp HyperSpec
+    url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+    publisher: LispWorks
+  - title: R7RS Small Language
+    url: https://standards.scheme.org/corrected-r7rs/r7rs.html
+    publisher: Scheme Reports
+  - title: The Racket Guide
+    url: https://docs.racket-lang.org/guide/
+    publisher: Racket
+  - title: ClojureScript
+    url: https://clojurescript.org/
+    publisher: ClojureScript
+lastVerified: 2026-05-21
+---
+
+## Start With The Platform
+
+Do not choose a Lisp-family language only because parentheses, macros, or REPL demos look elegant. Start with the platform constraint:
+
+- Clojure when the JVM, Java libraries, immutable data, and interactive development are useful.
+- ClojureScript when the target is JavaScript and the team specifically wants Clojure semantics in that ecosystem.
+- Common Lisp when an ANSI-standardized Lisp, image-based development, CLOS, mature implementations, and implementation-specific deployment tradeoffs fit the team.
+- Scheme when a small language, teaching, language research, interpreters, compilers, or standards-oriented simplicity matters.
+- Racket when language-oriented programming, DSLs, teaching languages, macros, documentation, and the Racket platform are the point.
+
+LangIndex has a complete page for Clojure first because it is the most direct production Lisp choice for JVM teams. Common Lisp, Scheme, and Racket should each get their own pages before this guide treats them as complete recommendations.
+
+## Choose Clojure When
+
+Choose [Clojure](/languages/clojure) when Lisp ideas should live on the JVM. Clojure is a strong fit for backend services, internal platforms, data transformations, integration systems, rule engines, and applications where Java libraries matter but the team wants immutable data, pure functions, macros, and REPL-driven development.
+
+Clojure is not a general replacement for Java. It earns adoption when the work benefits from data-first modeling, live evaluation, persistent collections, controlled state, and concise functional code. The team still needs JVM operations, dependency discipline, tests, specs or validation, linting, build conventions, and clear Java interop boundaries.
+
+Prefer Java or Kotlin when the goal is broad JVM readability, static typing, mainstream framework support, Android, or public APIs for ordinary JVM consumers. Prefer Scala when static functional modeling and Scala's ecosystem are the reason to leave Java.
+
+## Choose Common Lisp When
+
+Evaluate Common Lisp when the team wants a standardized, mature Lisp with powerful interactive development, macros, CLOS, multiple implementations, image-based workflows, and decades of language history.
+
+Common Lisp can be compelling for symbolic systems, expert tools, compilers, DSL-heavy applications, long-lived interactive processes, and teams already fluent in its ecosystem. The practical risk is not the language's age; it is whether the chosen implementation, library ecosystem, deployment model, editor workflow, FFI, and maintenance pool fit the product.
+
+Do not choose Common Lisp only to avoid the JVM. Make the implementation and deployment story explicit before committing.
+
+## Choose Scheme Or Racket When
+
+Evaluate Scheme when a small Lisp-family language, teaching, interpreters, compilers, formal semantics, or research-friendly simplicity is the real fit. Scheme's value is often clarity and minimalism, but production decisions depend heavily on the chosen implementation and library ecosystem.
+
+Evaluate Racket when language-oriented programming is the product advantage. Racket is especially relevant for DSLs, teaching languages, macro systems, program analysis, documentation-heavy language tools, and projects that benefit from Racket's batteries-included platform.
+
+For ordinary backend services, a Scheme or Racket choice should be deliberate and evidence-backed. Prototype deployment, libraries, staff onboarding, packaging, observability, and integration with the surrounding system before treating either as a production default.
+
+## Lisp Strengths
+
+Lisp-family languages are strongest when code and data benefit from sharing a representation, and when developers can safely extend the language surface for the problem.
+
+Common strengths include:
+
+- Interactive development through a REPL or live image.
+- Macros for syntax that ordinary functions cannot express.
+- Small core semantics with powerful composition.
+- Data-driven representation of programs, rules, queries, and DSLs.
+- Fast experimentation with program structure.
+- Strong fit for language tools, symbolic processing, configuration, transformation pipelines, and exploratory systems.
+
+Those strengths require restraint. Macro-heavy application code can become harder to debug than ordinary functions. REPL workflows can hide initialization and lifecycle problems if production startup is not tested separately.
+
+## Watch Points
+
+The main risks are ecosystem and maintenance fit:
+
+- Is there a current package ecosystem for the required domain?
+- Which implementation, runtime, or host platform owns deployment?
+- Can the team debug production issues without the original language expert?
+- How are dependencies pinned, audited, and upgraded?
+- What is the formatter, linter, test runner, editor workflow, and CI story?
+- How will macros be reviewed?
+- What API shape will non-Lisp callers consume?
+
+For Clojure specifically, watch JVM startup, classpath complexity, dynamic data contracts, macro discipline, and mixed `deps.edn`/Leiningen conventions.
+
+For Common Lisp, Scheme, and Racket, watch implementation portability, library coverage, packaging, deployment familiarity, and hiring.
+
+## Practical Default
+
+Start with Clojure when the organization already wants the JVM and the code benefits from immutable data, Java interop, REPL-driven development, and Lisp macros.
+
+Start with Racket when building languages, DSLs, teaching tools, or research systems where Racket's platform is part of the value.
+
+Start with Scheme when the goal is a small Lisp for teaching, language implementation, or research-influenced work.
+
+Start with Common Lisp when the team already values its implementations, CLOS, interactive image workflows, and mature language surface.
+
+Start with Java, Kotlin, Scala, Python, TypeScript, or another mainstream language when the project's real constraints are ecosystem, hiring, deployment defaults, or static typing rather than Lisp-family expressiveness.

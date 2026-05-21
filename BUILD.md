@@ -54,6 +54,7 @@ Observed on 2026-05-16:
   - Haskell
   - Elixir
   - Erlang
+  - Clojure
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -86,6 +87,8 @@ Observed on 2026-05-16:
   - Haskell vs Scala comparison
   - Elixir vs Erlang comparison
   - Elixir vs Ruby comparison
+  - Clojure vs Java comparison
+  - Clojure vs Scala comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -102,6 +105,7 @@ Observed on 2026-05-16:
   - Choosing a functional programming language guide
   - Choosing a concurrency-oriented backend language guide
   - Choosing a distributed systems language guide
+  - Choosing a Lisp-family language guide
   - Ownership concept page
   - Functional programming concept page
 - Current local baseline:
@@ -575,12 +579,12 @@ continue with Phase 17.
 
 ### Phase 27 - Clojure
 
-- [ ] Add a complete Clojure page.
-- [ ] Cover Lisp lineage, JVM target, immutability, persistent data
+- [x] Add a complete Clojure page.
+- [x] Cover Lisp lineage, JVM target, immutability, persistent data
       structures, REPL workflow, macros, dependency tooling, and ecosystem
       constraints.
-- [ ] Add Clojure vs Java and Clojure vs Scala comparisons.
-- [ ] Add Clojure to Lisp and JVM guides.
+- [x] Add Clojure vs Java and Clojure vs Scala comparisons.
+- [x] Add Clojure to Lisp and JVM guides.
 
 ### Phase 28 - Julia
 

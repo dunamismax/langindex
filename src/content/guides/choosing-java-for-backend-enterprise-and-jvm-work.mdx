@@ -10,6 +10,7 @@ candidates:
   - csharp
   - kotlin
   - scala
+  - clojure
   - python
   - typescript
 sources:
@@ -61,7 +62,16 @@ sources:
   - title: Scala 3 Migration Guide - Compatibility Reference
     url: https://docs.scala-lang.org/scala3/guides/migration/compatibility-intro.html
     publisher: Scala Documentation
-lastVerified: 2026-05-19
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Platform Constraint
@@ -111,7 +121,7 @@ Prefer Java as the JVM default when:
 - Long-term compatibility is more important than source-code concision.
 - A mixed-experience team needs predictable syntax and conservative language features.
 
-Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Scala when functional programming, type classes, Spark, actor systems, streaming libraries, or richer compile-time domain modeling are central enough to justify the learning curve and build complexity.
+Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Scala when functional programming, type classes, Spark, actor systems, streaming libraries, or richer compile-time domain modeling are central enough to justify the learning curve and build complexity. Prefer Clojure when Lisp syntax, immutable persistent data, macros, REPL-driven development, and dynamic data-first modeling are worth the onboarding cost.
 
 ## Android And Mobile Context
 
@@ -145,6 +155,8 @@ Start with C# when the organization is centered on .NET, Azure, ASP.NET Core, Wi
 Start with Kotlin when the JVM is desired but source-code concision, null safety, Android-first development, or coroutines are central.
 
 Start with Scala when the JVM is desired and the system intentionally benefits from functional programming, richer types, Spark-centered data engineering, actor systems, or a Scala-specific backend ecosystem.
+
+Start with Clojure when the JVM is desired and the system benefits from immutable data transformations, Java interop, macros, interactive REPL workflows, and dynamic data-first design more than static typing.
 
 Start with Python or TypeScript when the surrounding ecosystem, not the JVM, is the real reason for the language choice.
 

@@ -1,0 +1,246 @@
+---
+title: Clojure
+slug: clojure
+status: active
+summary: Clojure is a dynamically typed, functional Lisp for the JVM, centered on immutable persistent data structures, Java interoperability, REPL-driven development, macros, controlled state, and pragmatic use of the Java ecosystem.
+firstReleased: 2007
+creators:
+  - Rich Hickey
+paradigms:
+  - functional
+  - lisp
+  - concurrent
+  - metaprogramming
+  - data-oriented
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with optional specs, Java type hints, protocols, multimethods, and runtime validation conventions
+memory:
+  model: automatic memory management on the JVM, with immutable persistent collections and controlled mutable references through vars, atoms, refs, and agents
+runtime:
+  model: compiled on load to JVM bytecode, with optional ahead-of-time compilation and host variants such as ClojureScript and ClojureCLR
+officialSite: https://clojure.org/
+repository: https://github.com/clojure/clojure
+packageManagers:
+  - Clojure CLI
+  - tools.deps
+  - tools.build
+  - Leiningen
+  - Clojars
+  - Maven
+comparedWith:
+  - java
+  - scala
+  - kotlin
+  - haskell
+  - elixir
+  - erlang
+bestFor:
+  - JVM services, internal platforms, data-heavy applications, and integration systems where Java libraries matter but immutable data and interactive development are valuable.
+  - Teams that want Lisp macros, code-as-data, REPL workflows, and small composable functions on a production-grade managed runtime.
+  - Domain models represented as maps, vectors, sets, sequences, specs, protocols, and pure transformations rather than large mutable object graphs.
+  - Concurrent applications that benefit from immutable values plus controlled state through atoms, refs, agents, futures, promises, Java concurrency APIs, and JVM libraries.
+poorFit:
+  - Teams that require static typing as the primary correctness boundary, Java-style IDE refactoring, or broad mainstream hiring before they need Lisp and REPL-centered workflows.
+  - Public JVM libraries whose consumers are mostly Java, Kotlin, or Scala users and need idiomatic static APIs.
+  - Tiny command-line tools, cold-start-sensitive serverless functions, mobile apps, browser-only work, or native binaries where JVM startup and packaging are the wrong tradeoff.
+  - Codebases where unconstrained macros, dynamic vars, ad hoc maps, or inconsistent dependency tooling would make maintenance harder than Java or Kotlin.
+sources:
+  - title: Clojure
+    url: https://clojure.org/
+    publisher: Clojure
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: A History of Clojure
+    url: https://hopl4.sigplan.org/details/hopl-4-papers/9/A-History-of-Clojure
+    publisher: HOPL IV
+  - title: Clojure Downloads
+    url: https://clojure.org/releases/downloads
+    publisher: Clojure
+  - title: Clojure Development
+    url: https://clojure.org/dev/dev
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Values and Change
+    url: https://clojure.org/about/state
+    publisher: Clojure
+  - title: Atoms
+    url: https://clojure.org/reference/atoms
+    publisher: Clojure
+  - title: Refs and Transactions
+    url: https://clojure.org/refs
+    publisher: Clojure
+  - title: Agents and Asynchronous Actions
+    url: https://clojure.org/reference/agents
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: Ahead-of-time Compilation and Class Generation
+    url: https://clojure.org/reference/compilation
+    publisher: Clojure
+  - title: The REPL and main entry points
+    url: https://clojure.org/reference/repl_and_main
+    publisher: Clojure
+  - title: Macros
+    url: https://clojure.org/reference/macros
+    publisher: Clojure
+  - title: deps.edn Reference
+    url: https://clojure.org/reference/deps_edn
+    publisher: Clojure
+  - title: Deps and CLI Guide
+    url: https://clojure.org/guides/deps_and_cli
+    publisher: Clojure
+  - title: tools.build Guide
+    url: https://clojure.org/guides/tools_build
+    publisher: Clojure
+  - title: Clojars
+    url: https://clojars.org/
+    publisher: Clojars
+  - title: Leiningen
+    url: https://leiningen.org/
+    publisher: Leiningen
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Clojure was created by Rich Hickey and released publicly in 2007. The HOPL-IV history page describes it as initially designed in 2005 and released in 2007 as a Lisp dialect that is not a direct descendant of an earlier Lisp. The official rationale says Clojure was designed for developers who wanted a Lisp for functional programming, an established platform, and concurrency support.
+
+The design center is pragmatic rather than academic purity. Clojure keeps Lisp's small syntactic core, code-as-data model, macros, and interactive development, but chooses the JVM as its primary host platform. That gives it Java libraries, managed memory, JIT compilation, deployment infrastructure, threading, tooling, and long-lived enterprise runtime support.
+
+Clojure's distinctive bet is that pervasive mutation is the wrong default for modern concurrent programs. It favors immutable persistent data structures, pure functions, explicit state references, and dynamic polymorphism instead of large mutable object graphs. That makes it strongest when the program's real shape is data transformation, coordination, rules, integration, or domain-specific abstraction.
+
+## Runtime, JVM, And Host Platforms
+
+Clojure's primary implementation runs on the JVM. The current downloads page lists Clojure 1.12.5 as the stable release, published May 12, 2026. It says Clojure depends on Java, Clojure code is compiled to Java 8-compatible bytecode, Java 8 is the minimum, and Java 25 is recommended.
+
+Most Clojure code is compiled when loaded. The compilation reference says Clojure compiles all loaded code on the fly into JVM bytecode, while ahead-of-time compilation can be useful for delivering applications without source, improving startup, generating named Java classes, or avoiding runtime bytecode generation. That means Clojure is not interpreted in the same way as a shell script, but ordinary development still feels dynamic because namespaces, vars, and functions can be reloaded during a REPL session.
+
+The JVM target is not incidental. Clojure can call Java constructors, static methods, instance methods, fields, arrays, interfaces, classes, annotations, and primitive-oriented code. It can also implement Java interfaces and generate classes when needed. In practice, production Clojure teams still own JVM realities: JDK selection, classpaths, Maven artifacts, heap sizing, GC behavior, containers, logging, observability agents, startup time, and upgrade testing.
+
+ClojureScript and ClojureCLR are important relatives, but they are not the same deployment target. Treat Clojure/JVM as the reference page here; evaluate ClojureScript separately when the target is JavaScript, browser applications, Node.js, or shared `.cljc` libraries.
+
+## Language Model
+
+Clojure is a Lisp. Source code is made of data structures that the reader reads into forms, then evaluates. Lists usually represent function calls or special forms; vectors, maps, sets, symbols, keywords, strings, numbers, and booleans are ordinary data. This gives Clojure a tight relationship between data representation and program representation.
+
+The language is functional-first and dynamically typed. Values carry runtime types, functions are first-class, and ordinary code leans on small functions, maps, sequences, higher-order operations, destructuring, recursion, protocols, multimethods, namespaces, macros, and the threading macros `->` and `->>`. Clojure does not make static type declarations the main design tool.
+
+This can be liberating or dangerous depending on team discipline. Clojure excels when a team models data clearly, gives domain maps stable shapes, writes pure transformation functions, uses specs or validation where interfaces cross boundaries, and keeps macros rare and justified. It becomes hard to maintain when every map is informal, every namespace has dynamic global state, and macros hide ordinary control flow.
+
+## Persistent Data And State
+
+Clojure's core collections are immutable and persistent. The official data-structures reference says Clojure's collections are immutable, readable, support value equality, support sequencing, and support persistent manipulation. Updating a map, vector, list, or set returns a new value that can share structure with the old value.
+
+This is the foundation of Clojure's state model. Values do not change; identities can point at different values over time. Clojure provides controlled reference types for cases where state must change:
+
+- Vars name global or thread-local bindings.
+- Atoms manage independent synchronous shared state with atomic updates.
+- Refs coordinate synchronous changes to multiple identities through software transactional memory.
+- Agents manage asynchronous changes to a single state value.
+
+Use these tools deliberately. Immutable data makes concurrent reads cheap and stable, but mutable identities still need ownership rules. Many applications use atoms for local process state, databases for durable state, queues for coordination, and Java concurrency libraries when host-platform APIs are the right fit.
+
+## REPL Workflow And Macros
+
+Clojure development is strongly REPL-oriented. The official tools can start a REPL, run programs, evaluate expressions, and download dependencies. In mature Clojure workflows, developers evaluate forms into a running process, inspect data, redefine functions, run tests, and build behavior incrementally without restarting the whole application for every change.
+
+That workflow is productive when the system is designed for reloadability: side effects are pushed to boundaries, namespaces can be reloaded safely, long-lived resources have explicit lifecycle management, and tests can exercise pure functions without a running service.
+
+Macros are Clojure's syntactic abstraction mechanism. They run at compile time and transform forms before evaluation. They are useful for creating binding forms, control constructs, DSLs, test syntax, routing declarations, query builders, and code-generation boundaries that ordinary functions cannot express. They are also easy to overuse. Prefer functions when functions are sufficient; use macros when the abstraction genuinely needs access to unevaluated forms.
+
+## Syntax Example
+
+```clojure
+(ns health.summary
+  (:require [clojure.string :as str]))
+
+(def checks (atom {}))
+
+(defn healthy? [status]
+  (<= 200 status 399))
+
+(defn record! [name status]
+  (swap! checks assoc name {:status status
+                            :healthy? (healthy? status)}))
+
+(defn status-line [[name {:keys [status healthy?]}]]
+  (str (str/upper-case name)
+       " "
+       status
+       " "
+       (if healthy? "ok" "attention")))
+
+(defn report []
+  (->> @checks
+       (sort-by key)
+       (map status-line)
+       (str/join "\n")))
+
+(record! "clojure" 200)
+(record! "example" 503)
+
+(println (report))
+```
+
+Save this as `health_summary.clj`, then run:
+
+```sh
+clojure -M health_summary.clj
+```
+
+The example uses a namespace, a Java-hosted standard library namespace, an atom for controlled state, immutable map updates, keywords, destructuring, a predicate function, the thread-last macro, sequence processing, sorting, mapping, and string joining. Production code would usually keep mutable process state behind a small API and test the pure functions separately.
+
+## Tooling, Packages, And Builds
+
+Clojure tooling is powerful but less uniform than Java, Go, Rust, or .NET tooling. The official Clojure CLI and `tools.deps` use `deps.edn` to construct classpaths from project paths, Maven dependencies, Git dependencies, local dependencies, aliases, and tool configuration. The official guide says the tools can run a REPL, run programs, evaluate expressions, and handle dependencies by making libraries available on the JVM classpath.
+
+`tools.build` is the official library for writing build programs in Clojure. It is flexible by design: builds are Clojure programs rather than one fixed declarative project format. That is useful for custom library and application packaging, but teams must establish their own project conventions.
+
+Leiningen remains common in existing Clojure projects. It centers `project.clj`, plugins, templates, dependency management, REPL workflows, and packaging. Clojars is the Clojure community Maven repository, while Maven Central and ordinary Maven coordinates remain central because Clojure lives in the Java ecosystem.
+
+The practical question is not "which tool is official?" It is which convention the team will standardize: `deps.edn` plus Clojure CLI and `tools.build`, Leiningen, Maven/Gradle integration, Babashka for scripts, or a mixed setup for legacy projects. Pin the JDK, Clojure version, dependency sources, test runner, linter, formatter, build tasks, deployment artifact, and REPL workflow before scaling a team.
+
+## Best-Fit Use Cases
+
+Clojure is a strong fit when:
+
+- The JVM is already an asset, but Java source code is too ceremony-heavy for the problem.
+- The domain is data-heavy and benefits from maps, vectors, sets, specs, pure transformations, and explicit boundary validation.
+- Interactive development is a real productivity advantage because the team will use REPL-driven workflows responsibly.
+- Java libraries, Maven artifacts, database drivers, observability tools, and JVM deployment are important.
+- Macros or DSLs would remove real duplication in routing, testing, rules, queries, configuration, or embedded languages.
+- Concurrency needs are mostly local-process coordination over immutable values rather than distributed actor semantics.
+
+## Poor-Fit Or Risky Use Cases
+
+Clojure can be a poor fit when:
+
+- Static types are the team's main safety mechanism.
+- The organization needs the broadest JVM hiring pool and the least language-specific onboarding.
+- Public APIs are primarily for Java, Kotlin, or Scala consumers.
+- Startup time, small binaries, mobile SDKs, browser-only delivery, or native tooling are dominant constraints.
+- The team is unlikely to standardize formatting, linting, dependency tools, namespace structure, specs, and macro discipline.
+- The codebase will be maintained by developers who cannot regularly use a REPL and inspect running data.
+
+## Governance, Releases, And Compatibility
+
+Clojure is developed by Rich Hickey and a core team of developers at Nubank. The development page says the team values measured language evolution and strong backward compatibility. It also states that Clojure is open-ended, has no fixed release schedule, and major releases typically occur about once per year.
+
+This governance style is deliberately conservative. Clojure is a small language with many capabilities in libraries rather than core syntax. Proposed features are expected to start from a compelling problem and alternatives, not only a patch. That can frustrate teams that want fast language evolution, but it is part of why older Clojure code often remains viable.
+
+For production, track both the Clojure release and the Java runtime. Clojure's source compatibility, bytecode target, Java interop behavior, dependency tooling, and host JDK policies should be tested together.
+
+## Nearby Comparisons
+
+Java is the baseline JVM comparison. Java is statically typed, object-oriented by default, broadly familiar, framework-rich, and conservative. Clojure is dynamic, functional, data-oriented, REPL-centered, and macro-capable. Choose Java for broad enterprise readability; choose Clojure when immutable data, interactive development, and Lisp abstraction are the point.
+
+Scala is the closest functional JVM comparison. Scala uses static typing, object-functional design, algebraic modeling, type classes, effect systems, and Scala-specific libraries. Clojure uses dynamic typing, persistent data, code-as-data, macros, runtime polymorphism, and a simpler data-first style. Choose Scala when types are the central modeling tool; choose Clojure when data and REPL feedback are.
+
+Kotlin is the pragmatic Java-adjacent comparison. Kotlin offers static typing, null-safety features, concise syntax, Android momentum, coroutines, and Java interoperability. Clojure is farther from Java syntax and stronger when Lisp, immutable data, macros, and dynamic interaction are worth the onboarding cost.
+
+Haskell, Elixir, and Erlang are functional comparisons outside the JVM. Haskell centers purity and static types. Elixir and Erlang center BEAM processes and OTP. Clojure centers immutable data and Lisp on the JVM.
