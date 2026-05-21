@@ -1,0 +1,52 @@
+---
+title: Formatters And Linters
+slug: formatters-and-linters
+summary: Formatters standardize source layout, while linters and static analyzers flag likely bugs, style drift, portability issues, or project-specific policy violations.
+relatedLanguages:
+  - go
+  - rust
+  - javascript
+  - typescript
+  - python
+  - c
+  - cpp
+sources:
+  - title: Effective Go - Formatting
+    url: https://go.dev/doc/effective_go#formatting
+    publisher: Go Project
+  - title: rustfmt
+    url: https://github.com/rust-lang/rustfmt
+    publisher: Rust Project
+  - title: Clippy
+    url: https://doc.rust-lang.org/clippy/
+    publisher: Rust Project
+  - title: ESLint
+    url: https://eslint.org/docs/latest/
+    publisher: ESLint
+  - title: PEP 8 - Style Guide for Python Code
+    url: https://peps.python.org/pep-0008/
+    publisher: Python Software Foundation
+lastVerified: 2026-05-21
+---
+
+## Different Jobs
+
+Formatters decide how code looks. A good formatter removes arguments about whitespace, wrapping, and layout by making the result automatic and repeatable.
+
+Linters and static analyzers inspect source for likely bugs, unused code, suspicious constructs, portability issues, style rules, security concerns, or project-specific conventions. Some linters are mostly style tools; others are real bug finders.
+
+## Ecosystem Effects
+
+Go made `gofmt` a strong cultural default. Rust projects usually use rustfmt and often Clippy. JavaScript and TypeScript projects commonly combine formatters and linters because the ecosystem has many styles and build shapes. Python has long-standing style guidance plus a large third-party linting ecosystem.
+
+The best tools are boring in daily use: fast enough for editors and CI, deterministic enough for clean diffs, and configurable only where policy really needs local choice.
+
+## Watch Points
+
+Do not confuse formatting with correctness. A formatted program can still be wrong. Do not let noisy lint rules bury high-value warnings. Treat auto-fixes carefully when they change semantics or public APIs.
+
+For contributors, document the exact commands expected before pull requests. Tooling that only runs in one editor will not scale.
+
+## Related Concepts
+
+Formatters and linters sit beside [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), and [Documentation Cultures](/concepts/documentation-cultures/).

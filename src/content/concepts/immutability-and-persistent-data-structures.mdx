@@ -1,0 +1,46 @@
+---
+title: Immutability And Persistent Data Structures
+slug: immutability-and-persistent-data-structures
+summary: Immutability keeps values from changing after creation, while persistent data structures preserve previous versions through structural sharing instead of destructive updates.
+relatedLanguages:
+  - clojure
+  - haskell
+  - fsharp
+  - scala
+  - rust
+  - javascript
+sources:
+  - title: Clojure Reference - Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Scala Collections Overview
+    url: https://docs.scala-lang.org/overviews/collections-2.13/overview.html
+    publisher: Scala
+  - title: The Rust Programming Language - Variables and Mutability
+    url: https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html
+    publisher: Rust Project
+  - title: F# Collections
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/fsharp-collection-types
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What Immutability Means
+
+Immutable values do not change after they are created. Instead of updating a value in place, code creates a new value that represents the next state. Persistent data structures make this practical by sharing unchanged structure between old and new versions.
+
+Clojure makes persistent immutable collections central. Scala and F# provide immutable collection families. Rust makes bindings immutable by default but still distinguishes immutable binding from immutable data behind references, cells, locks, or other abstractions.
+
+## Why It Matters
+
+Immutability reduces accidental shared mutation. That helps with concurrency, undo/redo, snapshots, pure functions, caching, state transitions, and testing. If old versions remain valid, readers can hold references without fearing that another part of the program changed the value underneath them.
+
+The cost is not always zero. Persistent structures can allocate, retain memory through shared history, and have different performance profiles than mutable arrays, hash tables, or buffers. Some domains still need in-place mutation for hardware, tight loops, streaming I/O, or large numeric arrays.
+
+## Watch Points
+
+Do not treat "immutable" as a universal performance or correctness guarantee. Check whether nested data is also immutable, whether references expose mutation, whether builders or transient mutable phases exist, and whether old versions are retained longer than expected.
+
+## Related Concepts
+
+This concept pairs with [Functional Programming](/concepts/functional-programming/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Garbage Collection](/concepts/garbage-collection/).

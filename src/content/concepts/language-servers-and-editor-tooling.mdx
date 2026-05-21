@@ -1,0 +1,48 @@
+---
+title: Language Servers And Editor Tooling
+slug: language-servers-and-editor-tooling
+summary: Language servers and editor tooling expose parsing, diagnostics, completion, navigation, refactoring, formatting, and semantic understanding across editors.
+relatedLanguages:
+  - rust
+  - go
+  - typescript
+  - javascript
+  - python
+  - csharp
+sources:
+  - title: Language Server Protocol Specification
+    url: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/
+    publisher: Microsoft
+  - title: rust-analyzer manual
+    url: https://rust-analyzer.github.io/book/
+    publisher: rust-analyzer
+  - title: gopls
+    url: https://pkg.go.dev/golang.org/x/tools/gopls
+    publisher: Go Project
+  - title: TypeScript Tooling in 5 minutes
+    url: https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html
+    publisher: TypeScript
+lastVerified: 2026-05-21
+---
+
+## What Language Servers Provide
+
+The Language Server Protocol lets editors communicate with language-specific tools through a common protocol. That means completion, hover text, diagnostics, go-to-definition, references, rename, formatting, code actions, and workspace symbols can be implemented once per language server and reused across many editors.
+
+Not every editor feature requires LSP, and not every language server is equally complete. Some ecosystems also rely on compiler daemons, indexers, REPL integrations, debug adapters, notebook kernels, or IDE-specific services.
+
+## Why It Matters
+
+Editor tooling affects daily productivity and onboarding. A language with strong compiler errors but weak editor integration may still be hard to use in large projects. A language with excellent navigation and diagnostics can make large codebases easier to understand and refactor.
+
+For statically typed languages, editor tooling often reuses compiler or type-checker knowledge. For dynamic languages, tooling may combine static analysis, type hints, runtime introspection, and project conventions.
+
+## Watch Points
+
+Check large-workspace performance, generated-code support, dependency indexing, cross-platform behavior, formatter integration, refactoring correctness, and whether diagnostics in the editor match CI.
+
+For teams, standardize baseline tooling without requiring everyone to use the same editor.
+
+## Related Concepts
+
+Editor tooling connects [Formatters And Linters](/concepts/formatters-and-linters/), [Build Systems](/concepts/build-systems/), [Type Inference](/concepts/type-inference/), and [Documentation Cultures](/concepts/documentation-cultures/).

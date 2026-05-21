@@ -1,0 +1,50 @@
+---
+title: Interpreters, JIT, And AOT
+slug: interpreters-jit-and-aot
+summary: Interpreters, just-in-time compilers, and ahead-of-time compilers are execution strategies that trade startup time, portability, optimization opportunity, deployment shape, and runtime complexity differently.
+relatedLanguages:
+  - python
+  - javascript
+  - java
+  - csharp
+  - go
+  - rust
+sources:
+  - title: Python Tutorial - Using the Python Interpreter
+    url: https://docs.python.org/3/tutorial/interpreter.html
+    publisher: Python Software Foundation
+  - title: Managed execution process
+    url: https://learn.microsoft.com/en-us/dotnet/standard/managed-execution-process
+    publisher: Microsoft Learn
+  - title: The Java Virtual Machine Specification
+    url: https://docs.oracle.com/javase/specs/jvms/se25/html/index.html
+    publisher: Oracle
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## What The Terms Mean
+
+An interpreter executes a program by reading source code, bytecode, or another intermediate form and performing the described operations through an implementation runtime. A just-in-time compiler compiles code during execution, usually after the runtime has enough context to decide what should be optimized. An ahead-of-time compiler produces target code before the program is run.
+
+These labels are implementation strategies, not full language identities. Python, JavaScript, Java, C#, Ruby, and many other languages have had multiple implementations with different mixes of interpretation, bytecode, JIT compilation, and native compilation. Rust, C, C++, Go, Zig, and Swift are normally discussed as AOT-compiled languages, but their toolchains still include interpreters or JITs in adjacent tooling, test harnesses, debuggers, build scripts, and embedded runtimes.
+
+## Practical Tradeoffs
+
+Interpreters are strong when interactive development, portability, dynamic loading, debugging, or embedding matter more than maximum steady-state performance. They can also keep build steps small, which is why shells, scripting languages, and REPL-centered tools often use interpreted execution.
+
+JIT compilers can use runtime information such as hot paths, dynamic types, profile feedback, CPU features, and observed call targets. That can produce excellent long-running performance, but it adds runtime complexity, warmup behavior, memory overhead, and operational questions about profiling, code cache, and startup latency.
+
+AOT compilation usually fits static deployment, small runtime assumptions, cross-compilation, native libraries, embedded systems, command-line tools, and environments where startup and packaging are important. The tradeoff is that optimizations depend more on compile-time information, build times can matter, and each target platform needs a compatible artifact.
+
+## Watch Points
+
+Do not reduce a language choice to "compiled is fast" or "interpreted is slow." Runtime implementation, libraries, allocation behavior, I/O model, compiler optimization, foreign calls, and workload shape often matter more than the label.
+
+For production decisions, ask where code is compiled, how artifacts are shipped, whether the runtime performs dynamic optimization, what startup behavior is acceptable, and which tooling can profile the actual execution model.
+
+## Related Concepts
+
+Execution strategy sits next to [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), [Compilation Targets](/concepts/compilation-targets/), [Foreign Function Interface](/concepts/foreign-function-interface/), and [Standard Library Philosophy](/concepts/standard-library-philosophy/).

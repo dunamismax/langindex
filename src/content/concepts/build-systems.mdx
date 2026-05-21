@@ -1,0 +1,52 @@
+---
+title: Build Systems
+slug: build-systems
+summary: Build systems transform source into checked, tested, packaged, documented, or deployable artifacts while encoding dependency graphs and platform-specific build steps.
+relatedLanguages:
+  - rust
+  - go
+  - java
+  - cpp
+  - c
+  - javascript
+  - typescript
+sources:
+  - title: Cargo Commands
+    url: https://doc.rust-lang.org/cargo/commands/
+    publisher: Rust Project
+  - title: Go command documentation
+    url: https://pkg.go.dev/cmd/go
+    publisher: Go Project
+  - title: Maven Build Lifecycle
+    url: https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+    publisher: Apache Maven Project
+  - title: CMake Tutorial
+    url: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+    publisher: Kitware
+  - title: Gradle User Manual
+    url: https://docs.gradle.org/current/userguide/userguide.html
+    publisher: Gradle
+lastVerified: 2026-05-21
+---
+
+## What A Build System Owns
+
+A build system decides how source files become artifacts. It may compile code, run generators, fetch dependencies, invoke linkers, package assets, run tests, generate documentation, produce containers, or publish libraries.
+
+Some languages have standard build tools: Cargo for Rust, the `go` command for Go, Maven and Gradle in much of the Java ecosystem. C and C++ commonly rely on external build systems such as CMake, Make, Meson, Bazel, or platform IDE tooling.
+
+## Why It Matters
+
+Build systems are where language choice meets operations. They encode target platforms, generated code, native dependencies, feature flags, test suites, release profiles, reproducibility, and CI behavior.
+
+A weak build story can make an otherwise good language expensive to adopt. A strong build story can make a language easier to standardize across teams, especially when formatting, tests, docs, package metadata, and cross-compilation share one entry point.
+
+## Watch Points
+
+Look for hidden network access, non-hermetic scripts, platform-specific assumptions, unpinned tools, generated files that are not reproducible, and build steps that only work on one developer's machine.
+
+For libraries, the build system is part of the public developer experience. For applications, it is part of the deployment contract.
+
+## Related Concepts
+
+Build systems intersect with [Package Managers](/concepts/package-managers/), [Compilation Targets](/concepts/compilation-targets/), [Foreign Function Interface](/concepts/foreign-function-interface/), and [Formatters And Linters](/concepts/formatters-and-linters/).

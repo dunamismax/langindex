@@ -706,6 +706,7 @@ mod tests {
         assert_eq!(content.languages.len(), 34);
         assert_eq!(content.comparisons.len(), 48);
         assert_eq!(content.guides.len(), 21);
+        assert_eq!(content.concepts.len(), 40);
         assert!(content.language("solidity").is_some());
         assert!(
             content
@@ -797,6 +798,10 @@ mod tests {
         assert!(content.guide("choosing-a-systems-language").is_some());
         assert!(content.concept("functional-programming").is_some());
         assert!(content.concept("ownership").is_some());
+        assert!(content.concept("interpreters-jit-and-aot").is_some());
+        assert!(content.concept("async-await-and-event-loops").is_some());
+        assert!(content.concept("object-oriented-programming").is_some());
+        assert!(content.concept("package-managers").is_some());
     }
 
     #[test]
@@ -839,6 +844,10 @@ mod tests {
         assert!(routes.contains("/guides/choosing-a-systems-language"));
         assert!(routes.contains("/concepts/functional-programming"));
         assert!(routes.contains("/concepts/ownership"));
+        assert!(routes.contains("/concepts/virtual-machines-and-bytecode"));
+        assert!(routes.contains("/concepts/data-races-and-memory-models"));
+        assert!(routes.contains("/concepts/modules-and-namespacing"));
+        assert!(routes.contains("/concepts/language-servers-and-editor-tooling"));
         assert!(routes.contains("/languages.json"));
         assert!(routes.contains("/search.json"));
     }

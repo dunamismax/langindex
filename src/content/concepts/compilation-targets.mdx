@@ -1,0 +1,52 @@
+---
+title: Compilation Targets
+slug: compilation-targets
+summary: Compilation targets describe the operating system, CPU architecture, ABI, runtime platform, or intermediate format a toolchain can produce code for.
+relatedLanguages:
+  - rust
+  - go
+  - c
+  - cpp
+  - zig
+  - swift
+sources:
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+  - title: Go command documentation
+    url: https://pkg.go.dev/cmd/go
+    publisher: Go Project
+  - title: Zig Language Reference - Targets
+    url: https://ziglang.org/documentation/master/#Targets
+    publisher: Zig Software Foundation
+  - title: LLVM Target-Independent Code Generator
+    url: https://llvm.org/docs/CodeGenerator.html
+    publisher: LLVM Project
+lastVerified: 2026-05-21
+---
+
+## What A Target Means
+
+A compilation target is the environment a compiler is producing code for. It usually includes a CPU architecture, operating system, binary format, ABI, pointer width, endianness, linker expectations, and sometimes a runtime or intermediate platform such as WebAssembly, the JVM, the CLR, or BEAM.
+
+Target support is not just syntax. A language may parse and type-check the same source on many systems while still depending on platform libraries, native calling conventions, filesystem behavior, threading APIs, signal behavior, dynamic linking, or CPU features.
+
+## Cross-Compilation
+
+Cross-compilation means building an artifact for a target different from the machine running the compiler. It is common for embedded firmware, mobile applications, container images, command-line tools, and release pipelines that produce binaries for many operating systems.
+
+The hard parts are often outside the compiler front end. You need the right target definitions, linker, C toolchain or SDK, system libraries, build scripts, generated bindings, and tests that actually run on the intended platform. A target listed by a compiler is not the same as a production-supported deployment target.
+
+## Practical Questions
+
+Before choosing a language or runtime, answer:
+
+- Which target platforms must run the program?
+- Are those targets tiered or guaranteed by the language project?
+- Does the dependency ecosystem support the same targets?
+- Are foreign libraries, system packages, or dynamic loaders part of the artifact?
+- Can CI build and test the real target, not only type-check it?
+
+## Related Concepts
+
+Target decisions are tightly linked to [ABI Stability](/concepts/abi-stability/), [Foreign Function Interface](/concepts/foreign-function-interface/), [Build Systems](/concepts/build-systems/), [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), and [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/).

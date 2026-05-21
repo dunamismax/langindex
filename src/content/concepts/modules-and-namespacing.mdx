@@ -1,0 +1,52 @@
+---
+title: Modules And Namespacing
+slug: modules-and-namespacing
+summary: Modules and namespaces organize code into named boundaries for visibility, reuse, dependency management, documentation, and collision avoidance.
+relatedLanguages:
+  - python
+  - rust
+  - go
+  - java
+  - javascript
+  - typescript
+  - csharp
+sources:
+  - title: Python Tutorial - Modules
+    url: https://docs.python.org/3/tutorial/modules.html
+    publisher: Python Software Foundation
+  - title: The Rust Programming Language - Packages, Crates, and Modules
+    url: https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
+    publisher: Rust Project
+  - title: How to Write Go Code
+    url: https://go.dev/doc/code
+    publisher: Go Project
+  - title: Java Language Specification - Packages and Modules
+    url: https://docs.oracle.com/javase/specs/jls/se25/html/jls-7.html
+    publisher: Oracle
+  - title: JavaScript modules
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+    publisher: MDN Web Docs
+lastVerified: 2026-05-21
+---
+
+## What Modules Do
+
+Modules create named boundaries. They help code declare what it exposes, what it imports, where names live, and how source files relate to packages, libraries, or deployable units.
+
+The vocabulary changes by language. Rust has packages, crates, modules, and paths. Go has packages inside modules. Python has modules and packages tied to files and directories. Java has packages and, since Java 9, modules. JavaScript has ECMAScript modules plus host-specific resolution rules.
+
+## Why It Matters
+
+Good module boundaries make large codebases reviewable. They reduce name collisions, keep internal implementation details private, document dependency direction, and give build tools something to compile, test, package, and publish.
+
+Bad module boundaries create circular dependencies, unstable internal APIs, imports with side effects, hidden initialization order, and code that is hard to split or reuse.
+
+## Watch Points
+
+Ask whether module paths are stable public API, whether file layout maps directly to namespace layout, whether package managers use the same unit as the compiler, and whether imports can run code at load time.
+
+For libraries, treat exported names as durable. For applications, keep internal modules small enough that ownership is clear.
+
+## Related Concepts
+
+Modules connect [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Documentation Cultures](/concepts/documentation-cultures/), and [Object-Oriented Programming](/concepts/object-oriented-programming/).

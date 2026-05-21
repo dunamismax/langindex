@@ -123,15 +123,21 @@ This model is a strong fit for I/O-heavy services, request handling, pipelines, 
 
 In production Go, `context.Context`, deadlines, cancellation, bounded worker pools, backpressure, and observable error paths are as important as the `go` keyword itself.
 
+Related concurrency concepts: [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), and [Data Races And Memory Models](/concepts/data-races-and-memory-models/).
+
 ## Modules, Packages, And Builds
 
 Go code is organized into packages, and related packages are released together as modules. A module is declared by a `go.mod` file, whose module path forms the import path prefix for packages in that module. The `go` command is the standard interface for initializing modules, fetching dependencies, building packages, running tests, formatting code, listing packages, installing commands, and inspecting module metadata.
 
 Go modules use semantic versions and module paths to make dependency resolution reproducible. The `go` directive in `go.mod` records the minimum Go version expected by the module; since Go 1.21, toolchains refuse to use modules that declare newer Go versions than the toolchain supports. Published module versions should be treated as immutable because downloaded modules are authenticated by checksums.
 
+Related tooling concepts: [Modules And Namespacing](/concepts/modules-and-namespacing/), [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Formatters And Linters](/concepts/formatters-and-linters/), and [Testing Cultures](/concepts/testing-cultures/).
+
 ## Standard Library And Ecosystem
 
 Go's standard library is unusually important to the language's practical fit. It includes packages for HTTP servers and clients, TLS, JSON, templates, SQL database interfaces, compression, cryptography, command-line flags, testing, profiling support, text processing, file I/O, networking, and concurrency primitives. That does not remove the need for third-party packages, but it means many service and tooling projects start with less framework machinery than comparable stacks.
+
+Related runtime concepts: [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), [Compilation Targets](/concepts/compilation-targets/), and [Standard Library Philosophy](/concepts/standard-library-philosophy/).
 
 The public package ecosystem is centered around Go modules and pkg.go.dev. The usual workflow is to import a package, let the `go` command resolve the providing module, review the resulting `go.mod` and `go.sum` changes, and keep direct dependencies explicit.
 

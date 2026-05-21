@@ -1,0 +1,48 @@
+---
+title: Virtual Machines And Bytecode
+slug: virtual-machines-and-bytecode
+summary: Virtual machines and bytecode let implementations run a portable intermediate program representation while adding runtime services such as verification, garbage collection, reflection, dynamic loading, or JIT compilation.
+relatedLanguages:
+  - java
+  - csharp
+  - python
+  - erlang
+  - elixir
+  - javascript
+sources:
+  - title: The Java Virtual Machine Specification
+    url: https://docs.oracle.com/javase/specs/jvms/se25/html/index.html
+    publisher: Oracle
+  - title: Managed execution process
+    url: https://learn.microsoft.com/en-us/dotnet/standard/managed-execution-process
+    publisher: Microsoft Learn
+  - title: dis - Disassembler for Python bytecode
+    url: https://docs.python.org/3/library/dis.html
+    publisher: Python Software Foundation
+  - title: Erlang Run-Time System Application
+    url: https://www.erlang.org/doc/apps/erts/index.html
+    publisher: Erlang/OTP
+lastVerified: 2026-05-21
+---
+
+## What A Virtual Machine Provides
+
+A language virtual machine is an execution environment for programs written in a form other than ordinary source text. That form may be bytecode, intermediate language, a loaded module format, or another implementation-specific representation.
+
+The Java Virtual Machine runs class files and defines runtime data areas, loading, verification, linking, initialization, and bytecode instructions. .NET compilers produce common intermediate language and metadata that the common language runtime can JIT-compile and execute. CPython compiles Python source to bytecode for its interpreter. Erlang and Elixir run on the BEAM runtime, which provides lightweight processes, scheduling, distribution support, garbage collection, and OTP-oriented execution semantics.
+
+## Why Bytecode Exists
+
+Bytecode gives implementations a stable internal format that is easier to execute, inspect, transform, cache, or verify than raw source. It can also separate language syntax from runtime behavior: multiple languages can target the JVM, CLR, BEAM, JavaScript engines, or WebAssembly runtimes if they can produce the required representation and honor the platform rules.
+
+This does not make every virtual-machine target equivalent. The VM's object model, type metadata, calling convention, threading model, memory model, exception model, module system, and standard libraries shape what feels natural on that platform.
+
+## Tradeoffs
+
+Virtual machines are strong when portability, runtime services, dynamic loading, tooling, profiling, sandboxing, or multi-language ecosystems matter. They can make deployment easier when a common runtime is already installed or standardized.
+
+They can be a poor fit when the project needs a single small native artifact, deterministic memory behavior, direct hardware control, or strict startup and footprint constraints. Those constraints do not rule out VMs, but they require measurement instead of assuming portability is free.
+
+## Related Concepts
+
+Compare this with [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), [Compilation Targets](/concepts/compilation-targets/), [Garbage Collection](/concepts/garbage-collection/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Package Managers](/concepts/package-managers/).

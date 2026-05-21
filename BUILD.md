@@ -26,7 +26,7 @@ Observed on 2026-05-21:
   - 34 language profiles.
   - 48 comparisons.
   - 21 guides.
-  - 15 concepts.
+  - 40 concepts.
 - Completed architecture work:
   - Rust/Leptos/Axum site crate.
   - Route-compatible pages, feeds, sitemap, robots, search JSON, and
@@ -35,21 +35,26 @@ Observed on 2026-05-21:
   - Cargo/just verification.
   - Docker, Compose, Caddy, local-development, and deployment docs.
 - Completed concept work:
-  - Ownership.
-  - Functional Programming.
-  - Static vs Dynamic Typing.
-  - Strong vs Weak Typing.
-  - Type Inference.
-  - Structural vs Nominal Typing.
-  - Generics and Parametric Polymorphism.
-  - Algebraic Data Types and Pattern Matching.
-  - Null Safety.
-  - Garbage Collection.
-  - Reference Counting.
-  - Manual Memory Management.
-  - RAII and Deterministic Cleanup.
-  - Stack vs Heap Allocation.
-  - Memory Safety.
+  - Type systems: static vs dynamic typing, strong vs weak typing, type
+    inference, structural vs nominal typing, generics, algebraic data types,
+    pattern matching, and null safety.
+  - Memory: ownership, garbage collection, reference counting, manual memory
+    management, RAII, stack vs heap allocation, and memory safety.
+  - Runtime and execution: interpreters/JIT/AOT, virtual machines and
+    bytecode, compilation targets, FFI, ABI stability, and standard library
+    philosophy.
+  - Concurrency: threads and shared memory, async/await and event loops,
+    goroutines and green threads, actor/message-passing models, data races and
+    memory models, and structured concurrency.
+  - Paradigms and language design: functional programming, object-oriented
+    programming, immutability and persistent data structures, closures and
+    first-class functions, errors as values vs exceptions, metaprogramming and
+    macros, and modules/namespacing.
+  - Tooling: package managers, build systems, formatters and linters, language
+    servers and editor tooling, REPL and interactive development, testing
+    cultures, and documentation cultures.
+  - `/concepts/` groups the concept surface by type systems, memory, runtime
+    and execution, concurrency, paradigms, and tooling.
 
 ---
 
@@ -152,66 +157,6 @@ link-checking code changed broadly enough to justify the network time.
 ---
 
 ## Active Phases
-
-### Phase 37 - Runtime And Execution Concepts
-
-- [ ] Add `interpreters-jit-and-aot`.
-- [ ] Add `virtual-machines-and-bytecode`.
-- [ ] Add `compilation-targets`.
-- [ ] Add `foreign-function-interface`.
-- [ ] Add `abi-stability`.
-- [ ] Add `standard-library-philosophy`.
-- [ ] Link these concepts from runtime-heavy pages and relevant guides.
-
-### Phase 38 - Concurrency Concepts
-
-- [ ] Add `threads-and-shared-memory`.
-- [ ] Add `async-await-and-event-loops`.
-- [ ] Add `goroutines-and-green-threads`.
-- [ ] Add `actor-model-and-message-passing`.
-- [ ] Add `data-races-and-memory-models`.
-- [ ] Add `structured-concurrency`.
-- [ ] Link these concepts from Go, Rust, Java, C#, Kotlin, Swift,
-      JavaScript, Python, Erlang, Elixir, and concurrency guides.
-
-### Phase 39 - Paradigm And Language Design Concepts
-
-- [ ] Add `object-oriented-programming`.
-- [ ] Add `immutability-and-persistent-data-structures`.
-- [ ] Add `closures-and-first-class-functions`.
-- [ ] Add `errors-as-values-vs-exceptions`.
-- [ ] Add `metaprogramming-and-macros`.
-- [ ] Add `modules-and-namespacing`.
-- [ ] Link these concepts from language and comparison pages where the
-      paradigm choice is a central tradeoff.
-
-### Phase 40 - Tooling And Ecosystem Concepts
-
-- [ ] Add `package-managers`.
-- [ ] Add `build-systems`.
-- [ ] Add `formatters-and-linters`.
-- [ ] Add `language-servers-and-editor-tooling`.
-- [ ] Add `repl-and-interactive-development`.
-- [ ] Add `testing-cultures`.
-- [ ] Add `documentation-cultures`.
-- [ ] Link these tooling concepts from language pages instead of restating
-      ecosystem norms inline.
-
-### Phase 41 - Concepts Hub Polish
-
-- [ ] Re-read concept pages for overlap, drift, and missing cross-links.
-- [ ] Add topical grouping to `/concepts/`: type systems, memory, runtime,
-      concurrency, paradigms, and tooling.
-- [ ] Ensure language pages link to concepts for typing, memory, runtime,
-      concurrency, and tooling when those concepts exist.
-- [ ] Ensure comparison pages link to the concept most central to the
-      tradeoff above the fold when practical.
-- [ ] Run `just check-links-external` after the final concept batch.
-- [ ] Update `README.md` if the Concepts surface has materially changed.
-
----
-
-## Next Language Candidates
 
 Add these only after the concept backbone is strong enough to avoid repeating
 the same explanations inside every language page.

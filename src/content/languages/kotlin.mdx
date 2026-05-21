@@ -136,6 +136,8 @@ Kotlin's concurrency story is centered on coroutines for many application worklo
 
 Coroutines are a useful fit for Android UI work, service calls, backend request handling, streams, and asynchronous workflows where sequential-looking code is easier to maintain than nested callbacks or manually chained futures. They still require discipline. Cancellation must be propagated, blocking calls must be isolated, dispatchers need to match the workload, shared mutable state needs coordination, and Java APIs do not become non-blocking just because they are called from a coroutine.
 
+Related concurrency concepts: [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Structured Concurrency](/concepts/structured-concurrency/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), and [Data Races And Memory Models](/concepts/data-races-and-memory-models/).
+
 On the JVM, Kotlin code can also use Java threads, executors, virtual threads, futures, locks, atomics, and framework-specific concurrency APIs. The right model depends on the surrounding stack.
 
 ## Memory Model

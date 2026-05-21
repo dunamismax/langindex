@@ -153,6 +153,8 @@ In Apple apps, Swift concurrency fits networking, storage, background work, UI-f
 
 Concurrency still requires design discipline. Blocking APIs can still block a thread, cancellation must be propagated, actors do not remove all ordering concerns, Objective-C and C APIs may not carry Swift concurrency annotations, and older callback or delegate APIs often need careful bridging.
 
+Related concurrency concepts: [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Structured Concurrency](/concepts/structured-concurrency/), [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), and [Data Races And Memory Models](/concepts/data-races-and-memory-models/).
+
 ## Objective-C, C, And C++ Interoperability
 
 Swift's Apple-platform adoption depends on interoperability. Apple documents using Objective-C and Swift files in the same app or framework target, importing Objective-C headers into Swift through bridging headers or umbrella headers, and importing Swift declarations back into Objective-C through generated headers and `@objc` exposure where appropriate.

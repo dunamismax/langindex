@@ -1,0 +1,49 @@
+---
+title: Closures And First-Class Functions
+slug: closures-and-first-class-functions
+summary: First-class functions can be passed, returned, and stored like other values, while closures capture variables from their surrounding scope.
+relatedLanguages:
+  - javascript
+  - python
+  - rust
+  - go
+  - swift
+  - ruby
+  - clojure
+sources:
+  - title: JavaScript Guide - Functions
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+    publisher: MDN Web Docs
+  - title: Python Tutorial - More on Defining Functions
+    url: https://docs.python.org/3/tutorial/controlflow.html#more-on-defining-functions
+    publisher: Python Software Foundation
+  - title: The Rust Programming Language - Closures
+    url: https://doc.rust-lang.org/book/ch13-01-closures.html
+    publisher: Rust Project
+  - title: The Go Programming Language Specification - Function literals
+    url: https://go.dev/ref/spec#Function_literals
+    publisher: Go Project
+lastVerified: 2026-05-21
+---
+
+## What First-Class Functions Provide
+
+A first-class function can be assigned to a variable, passed as an argument, returned from another function, or stored in a data structure. A closure is a function-like value that captures names from the surrounding scope.
+
+This enables callbacks, event handlers, iterators, higher-order functions, dependency injection, middleware, resource wrappers, concurrency helpers, and compact domain-specific control flow.
+
+## Capture Semantics Matter
+
+The important question is what the closure captures and how. It may capture by reference, by value, by move, by mutable reference, or through a runtime object. It may extend the lifetime of captured data. It may require heap allocation. It may be callable once, many times, concurrently, or only under borrowing rules.
+
+Rust makes capture and trait behavior visible through `Fn`, `FnMut`, and `FnOnce`. JavaScript and Python closures capture lexical variables in dynamic runtime environments. Go function literals are closures and can share variables with surrounding functions.
+
+## Watch Points
+
+Closures can hide work and ownership. Be careful with loop variables, mutable captured state, retained large objects, async callbacks, UI event handlers, and callbacks that outlive the scope a reader expects.
+
+For public APIs, name whether a callback may be called later, called concurrently, stored, retried, or called after cancellation.
+
+## Related Concepts
+
+Closures are a core tool in [Functional Programming](/concepts/functional-programming/), [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Object-Oriented Programming](/concepts/object-oriented-programming/), and [Ownership](/concepts/ownership/).

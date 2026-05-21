@@ -1,0 +1,52 @@
+---
+title: REPL And Interactive Development
+slug: repl-and-interactive-development
+summary: REPL and interactive development workflows let programmers evaluate code incrementally, inspect results, explore APIs, and shorten feedback loops.
+relatedLanguages:
+  - python
+  - javascript
+  - ruby
+  - clojure
+  - julia
+  - r
+  - elixir
+sources:
+  - title: Python Tutorial - Interactive Mode
+    url: https://docs.python.org/3/tutorial/interpreter.html#interactive-mode
+    publisher: Python Software Foundation
+  - title: REPL
+    url: https://nodejs.org/api/repl.html
+    publisher: OpenJS Foundation
+  - title: Interactive Ruby
+    url: https://docs.ruby-lang.org/en/3.3/IRB.html
+    publisher: Ruby
+  - title: Julia Manual - The Julia REPL
+    url: https://docs.julialang.org/en/v1/stdlib/REPL/
+    publisher: Julia
+  - title: Clojure Repl and Main
+    url: https://clojure.org/reference/repl_and_main
+    publisher: Clojure
+lastVerified: 2026-05-21
+---
+
+## What A REPL Gives You
+
+A read-eval-print loop reads an expression or command, evaluates it, and prints the result. More broadly, interactive development includes notebooks, shells, live reload, image-based development, debugger consoles, browser devtools, and connected editor sessions.
+
+Interactive workflows are strong for exploration: trying APIs, inspecting data, debugging small examples, teaching, data analysis, scripting, and evolving functions while a runtime stays alive.
+
+## Where It Changes Language Fit
+
+Python, Ruby, JavaScript, Clojure, Julia, R, Lisp-family languages, and Elixir all have cultures where interactive evaluation matters. That can make them appealing for data work, scripting, operations, exploratory programming, and systems where live inspection is valuable.
+
+Compiled languages can still have interactive tools, but the feedback loop usually depends on incremental compilation, test runners, playgrounds, notebooks, or debugger support rather than a central REPL culture.
+
+## Watch Points
+
+Interactive success does not guarantee production correctness. Code that works in a REPL may depend on hidden state, loaded modules, current working directory, environment variables, mutable globals, or unrecorded setup.
+
+Turn useful explorations into source files, tests, documentation, and reproducible commands before treating them as durable work.
+
+## Related Concepts
+
+Interactive workflows sit near [Testing Cultures](/concepts/testing-cultures/), [Documentation Cultures](/concepts/documentation-cultures/), [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/), and [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/).

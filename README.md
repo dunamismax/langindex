@@ -67,8 +67,8 @@ LangIndex ships four content groups:
   languages.
 - `guides` — cross-language decision guides framed by the problem the
   developer is solving.
-- `concepts` — 15 shared programming-language ideas referenced by multiple
-  language pages.
+- `concepts` — 40 shared programming-language ideas grouped by type systems,
+  memory, runtime and execution, concurrency, paradigms, and tooling.
 
 The initial milestone — defining the content model and publishing a
 source-backed seed set — is complete. See [BUILD.md](BUILD.md) for current

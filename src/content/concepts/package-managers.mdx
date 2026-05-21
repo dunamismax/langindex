@@ -1,0 +1,50 @@
+---
+title: Package Managers
+slug: package-managers
+summary: Package managers resolve, fetch, verify, build, install, publish, and version reusable code, shaping how a language ecosystem handles dependency risk and reuse.
+relatedLanguages:
+  - rust
+  - javascript
+  - typescript
+  - python
+  - go
+  - java
+  - php
+sources:
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+  - title: npm CLI documentation
+    url: https://docs.npmjs.com/cli/
+    publisher: npm
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+  - title: Maven Introduction to the POM
+    url: https://maven.apache.org/guides/introduction/introduction-to-the-pom.html
+    publisher: Apache Maven Project
+lastVerified: 2026-05-21
+---
+
+## What Package Managers Do
+
+Package managers turn reusable code into something a project can depend on. They usually handle dependency metadata, version constraints, lockfiles, registries, transitive dependency resolution, local caches, publishing, authentication, checksums, and build integration.
+
+Cargo, npm, pip and Python packaging tools, Go modules, Maven, Composer, NuGet, RubyGems, Hex, and many others encode different ideas about versions, registries, source control, build scripts, and reproducibility.
+
+## Why They Shape Ecosystems
+
+A language's package manager affects how easy it is to start a project, split libraries, publish patches, audit dependencies, reproduce builds, and maintain old systems. It also shapes supply-chain risk: install scripts, typosquatting, abandoned packages, dependency confusion, and transitive dependency size are ecosystem concerns, not only application concerns.
+
+## Watch Points
+
+Check whether a project uses lockfiles, whether builds are reproducible, whether packages can execute code during install or build, how registries verify authorship, and how security advisories are surfaced.
+
+For production systems, dependency policy is part of architecture. A package manager makes reuse possible; it does not decide which dependencies are acceptable.
+
+## Related Concepts
+
+Package managers sit with [Build Systems](/concepts/build-systems/), [Standard Library Philosophy](/concepts/standard-library-philosophy/), [Documentation Cultures](/concepts/documentation-cultures/), and [Testing Cultures](/concepts/testing-cultures/).

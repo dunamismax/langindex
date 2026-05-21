@@ -1,0 +1,52 @@
+---
+title: Testing Cultures
+slug: testing-cultures
+summary: Testing culture is the set of language tools, defaults, libraries, conventions, and community expectations around verifying behavior before release.
+relatedLanguages:
+  - go
+  - rust
+  - python
+  - java
+  - javascript
+  - typescript
+  - csharp
+sources:
+  - title: testing package
+    url: https://pkg.go.dev/testing
+    publisher: Go Project
+  - title: Cargo test
+    url: https://doc.rust-lang.org/cargo/commands/cargo-test.html
+    publisher: Rust Project
+  - title: unittest - Unit testing framework
+    url: https://docs.python.org/3/library/unittest.html
+    publisher: Python Software Foundation
+  - title: JUnit 5 User Guide
+    url: https://junit.org/junit5/docs/current/user-guide/
+    publisher: JUnit
+  - title: MSTest overview
+    url: https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What Testing Culture Covers
+
+Testing culture includes more than a unit test library. It covers how tests are named, run, filtered, isolated, parallelized, documented, generated, mocked, fuzzed, benchmarked, and enforced in CI.
+
+Some ecosystems ship strong standard testing tools. Go has the `testing` package and `go test`. Rust integrates tests into Cargo. Python ships `unittest` and has a large third-party testing culture. Java, .NET, JavaScript, and TypeScript depend heavily on external test frameworks and build integration.
+
+## What To Compare
+
+Look at how easy it is to write a small test, run one test, run the full suite, test async code, create fixtures, assert errors, fuzz inputs, collect coverage, run integration tests, and make tests deterministic in CI.
+
+For libraries, examples and documentation tests can be part of the testing culture. For services, contract tests, migration tests, smoke tests, and deployment checks may matter more than unit tests alone.
+
+## Watch Points
+
+A language can have excellent test tools and still have weak project discipline. Flaky tests, hidden network calls, global state, wall-clock assumptions, order dependence, and slow suites are design problems.
+
+Make the default test command obvious and keep it fast enough that contributors actually run it.
+
+## Related Concepts
+
+Testing connects [Build Systems](/concepts/build-systems/), [Formatters And Linters](/concepts/formatters-and-linters/), [Documentation Cultures](/concepts/documentation-cultures/), and [Structured Concurrency](/concepts/structured-concurrency/).

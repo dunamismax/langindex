@@ -802,6 +802,31 @@ input::placeholder {
   font-size: 1.15rem;
 }
 
+.collection-card h3 {
+  font-size: 1.05rem;
+}
+
+.collection-card h3 a {
+  color: var(--fg-strong);
+}
+
+.collection-card h3 a:hover {
+  color: var(--accent-strong);
+  text-decoration: none;
+}
+
+.concept-group + .concept-group {
+  margin-top: 2.5rem;
+}
+
+.concept-count {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
 .hub-card h3,
 .need-card h3 {
   font-size: 1.05rem;

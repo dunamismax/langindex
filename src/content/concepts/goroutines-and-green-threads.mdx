@@ -1,0 +1,49 @@
+---
+title: Goroutines And Green Threads
+slug: goroutines-and-green-threads
+summary: Goroutines, green threads, fibers, virtual threads, and lightweight processes are runtime-managed concurrency units that can be cheaper to create than operating-system threads.
+relatedLanguages:
+  - go
+  - erlang
+  - elixir
+  - java
+  - crystal
+  - ruby
+sources:
+  - title: The Go Programming Language Specification
+    url: https://go.dev/ref/spec
+    publisher: Go Project
+  - title: Effective Go
+    url: https://go.dev/doc/effective_go
+    publisher: Go Project
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: Thread class
+    url: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Thread.html
+    publisher: Oracle
+  - title: Crystal Concurrency
+    url: https://crystal-lang.org/reference/latest/guides/concurrency.html
+    publisher: Crystal
+lastVerified: 2026-05-21
+---
+
+## What Lightweight Concurrency Means
+
+Operating-system threads are not the only way to run many concurrent tasks. A runtime can multiplex many language-level tasks onto a smaller number of OS threads. Go calls its units goroutines. Erlang and Elixir run lightweight BEAM processes. Java has virtual threads. Crystal has fibers.
+
+The common promise is cheap task creation and blocking or waiting that the runtime can manage. The details differ sharply: BEAM processes have isolated heaps and message passing, Go goroutines share an address space, Java virtual threads keep Java's thread API shape, and fibers may cooperate with an event loop.
+
+## Why It Matters
+
+Lightweight concurrency is useful for servers, background workers, pipelines, network clients, actor-style systems, and programs with many mostly-waiting tasks. It can make code read sequentially while still allowing the runtime to schedule lots of work.
+
+It does not remove design limits. A program can still create too much work, hold too much memory, block on native calls, leak tasks, ignore cancellation, or overload downstream systems.
+
+## Watch Points
+
+Ask how tasks are scheduled, how blocking calls behave, how cancellation works, how stacks grow, how memory is reclaimed, and whether task-local state can leak across requests. Also ask whether the runtime model encourages shared memory, message passing, or both.
+
+## Related Concepts
+
+This concept sits between [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), [Async Await And Event Loops](/concepts/async-await-and-event-loops/), and [Structured Concurrency](/concepts/structured-concurrency/).

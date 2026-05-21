@@ -1,0 +1,52 @@
+---
+title: Errors As Values Vs Exceptions
+slug: errors-as-values-vs-exceptions
+summary: Error-handling designs vary between explicit error values, exception mechanisms, result types, panics, status codes, and mixed models that reserve different paths for different failure classes.
+relatedLanguages:
+  - go
+  - rust
+  - java
+  - csharp
+  - python
+  - swift
+  - zig
+sources:
+  - title: Error handling and Go
+    url: https://go.dev/blog/error-handling-and-go
+    publisher: Go Project
+  - title: The Rust Programming Language - Error Handling
+    url: https://doc.rust-lang.org/book/ch09-00-error-handling.html
+    publisher: Rust Project
+  - title: Java Tutorials - Exceptions
+    url: https://docs.oracle.com/javase/tutorial/essential/exceptions/
+    publisher: Oracle
+  - title: Python Tutorial - Errors and Exceptions
+    url: https://docs.python.org/3/tutorial/errors.html
+    publisher: Python Software Foundation
+  - title: Swift Error Handling
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/
+    publisher: Swift Project
+lastVerified: 2026-05-21
+---
+
+## The Design Choice
+
+Languages choose different ways to model failure. Go returns `error` values. Rust uses `Result` for recoverable failure and panic for unrecoverable or bug-like paths. Java and C# use exceptions heavily, with Java also distinguishing checked and unchecked exceptions. Python uses exceptions as a central control and error-reporting mechanism. Swift uses `throw`, `try`, and typed result patterns in libraries.
+
+The choice affects API shape. Error values make failure visible in signatures and ordinary control flow. Exceptions separate the normal return value from exceptional control flow, which can keep happy paths compact but move failure paths away from the call site.
+
+## Practical Tradeoffs
+
+Explicit error values are strong when callers should handle failure locally, when APIs cross process or language boundaries, and when retries, diagnostics, and fallback paths are part of normal operation.
+
+Exceptions are strong when failures should unwind through several layers, when cleanup is reliably scoped, and when framework or platform conventions expect exception handling.
+
+Mixed models are common. Many systems use status values for expected domain outcomes, exceptions or panics for bugs and invariants, and process-level exits for unrecoverable startup or configuration failure.
+
+## Watch Points
+
+Ask whether failure is visible in the type, whether cleanup runs, whether stack traces are preserved, whether errors carry enough context, and whether error paths are tested. Avoid swallowing exceptions, ignoring error values, converting rich errors into strings too early, or treating panics as normal control flow.
+
+## Related Concepts
+
+Error handling intersects with [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), [Null Safety](/concepts/null-safety/), [Testing Cultures](/concepts/testing-cultures/), and [Foreign Function Interface](/concepts/foreign-function-interface/).

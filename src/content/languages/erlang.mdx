@@ -124,6 +124,8 @@ OTP turns that low-level model into application structure. The OTP design princi
 
 This is where Erlang earns its reputation. Fault tolerance is not a slogan attached to every Erlang program. It comes from explicit process boundaries, failure semantics, supervision strategies, timeout decisions, restart limits, state ownership, and operational visibility. Erlang is strong when a team is willing to design those boundaries deliberately.
 
+Related concurrency concepts: [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), and [Structured Concurrency](/concepts/structured-concurrency/).
+
 ## Type System And Language Model
 
 Erlang is dynamically typed. Values are Erlang terms, and the runtime checks whether operations, pattern matches, function clauses, guards, and message protocols receive values of the expected shape. The standard data model includes atoms, integers, floats, tuples, lists, maps, binaries, bitstrings, pids, ports, references, funs, records, and the atoms `true` and `false` for Boolean values.

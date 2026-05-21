@@ -1,0 +1,49 @@
+---
+title: Standard Library Philosophy
+slug: standard-library-philosophy
+summary: Standard library philosophy describes how much capability a language project expects to ship with the language instead of leaving to third-party packages, frameworks, or platform libraries.
+relatedLanguages:
+  - go
+  - python
+  - rust
+  - java
+  - csharp
+  - javascript
+sources:
+  - title: Go Standard library
+    url: https://pkg.go.dev/std
+    publisher: Go Project
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Rust Standard Library
+    url: https://doc.rust-lang.org/std/
+    publisher: Rust Project
+  - title: Java SE API Documentation
+    url: https://docs.oracle.com/en/java/javase/25/docs/api/index.html
+    publisher: Oracle
+  - title: .NET API browser
+    url: https://learn.microsoft.com/en-us/dotnet/api/
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What The Standard Library Signals
+
+A standard library is more than a bundle of APIs. It signals what the language project considers ordinary work: files, networking, text, collections, concurrency, testing, reflection, serialization, dates, command-line parsing, cryptography, HTTP, database access, or platform integration.
+
+Go and Python are often treated as standard-library-heavy languages. Rust keeps a smaller standard library and pushes many ecosystem choices to crates.io. Java and .NET have large platform libraries tied to managed runtimes. JavaScript has a smaller language standard library, while browsers and Node.js provide important host APIs outside the ECMAScript language specification.
+
+## Tradeoffs
+
+A broad standard library can reduce dependency decisions, improve baseline documentation, and make examples more portable. It can also age slowly, carry compatibility constraints, and make the language distribution responsible for APIs that third-party ecosystems might evolve faster.
+
+A smaller standard library can keep the core language lighter and let package ecosystems move quickly. The cost is more early dependency choice, more supply-chain review, and less agreement about default libraries for common work.
+
+## What To Evaluate
+
+When comparing languages, ask which tasks are covered by the standard library, which require dominant third-party packages, and which depend on platform-specific host APIs. Also ask how the standard library is versioned, documented, tested, and supported.
+
+## Related Concepts
+
+Standard library decisions intersect with [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), and [Documentation Cultures](/concepts/documentation-cultures/).

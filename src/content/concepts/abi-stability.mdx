@@ -1,0 +1,48 @@
+---
+title: ABI Stability
+slug: abi-stability
+summary: ABI stability is the ability for compiled components to keep calling each other correctly across compiler, library, language, or operating-system changes without recompilation.
+relatedLanguages:
+  - c
+  - cpp
+  - swift
+  - rust
+  - go
+  - objective-c
+sources:
+  - title: Swift 5 ABI Stability and More
+    url: https://www.swift.org/blog/abi-stability-and-more/
+    publisher: Swift.org
+  - title: The Rust Reference - External blocks
+    url: https://doc.rust-lang.org/reference/items/external-blocks.html
+    publisher: Rust Project
+  - title: Itanium C++ ABI
+    url: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
+    publisher: Itanium C++ ABI
+  - title: Java Native Interface Specification
+    url: https://docs.oracle.com/en/java/javase/25/docs/specs/jni/index.html
+    publisher: Oracle
+lastVerified: 2026-05-21
+---
+
+## What ABI Stability Means
+
+An application binary interface defines how compiled code calls other compiled code. It includes calling conventions, register use, stack layout, symbol names, object layout, exception handling rules, alignment, dynamic linking behavior, and other details below the source-code API.
+
+ABI stability means those details remain compatible enough that compiled clients and compiled libraries can keep working together. Source compatibility is weaker: code may still compile after a change, but already-built binaries might need recompilation.
+
+## Why C Is Common At Boundaries
+
+C is frequently used as the interoperability surface because many platforms define stable C calling conventions and dynamic-library behavior. That does not make every C library safe or portable, but it gives other languages a common denominator for FFI.
+
+C++ is harder because templates, overloads, name mangling, exceptions, standard-library types, and object layout can vary by compiler and platform ABI. Swift made ABI stability a major milestone because Apple platform libraries needed stable binary interfaces for apps and OS frameworks.
+
+## Watch Points
+
+ABI promises are platform-specific. The same language can have stable ABI rules on one target and no stable ABI promise on another. Compiler flags, standard-library versions, target triples, linkers, and build modes can all affect binary compatibility.
+
+Public plugin systems, native extensions, operating-system integrations, and long-lived shared libraries need ABI review early. Internal applications that rebuild all components together may be able to rely on source-level compatibility instead.
+
+## Related Concepts
+
+ABI stability is central to [Foreign Function Interface](/concepts/foreign-function-interface/), [Compilation Targets](/concepts/compilation-targets/), [Build Systems](/concepts/build-systems/), and [Manual Memory Management](/concepts/manual-memory-management/).

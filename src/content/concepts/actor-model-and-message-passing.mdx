@@ -1,0 +1,47 @@
+---
+title: Actor Model And Message Passing
+slug: actor-model-and-message-passing
+summary: Actor-style and message-passing systems organize concurrency around isolated units that communicate by sending messages rather than by freely sharing mutable state.
+relatedLanguages:
+  - erlang
+  - elixir
+  - scala
+  - clojure
+  - go
+sources:
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
+  - title: GenServer
+    url: https://hexdocs.pm/elixir/GenServer.html
+    publisher: Elixir
+  - title: Akka Guide
+    url: https://doc.akka.io/docs/akka/current/typed/guide/introduction.html
+    publisher: Akka
+lastVerified: 2026-05-21
+---
+
+## What Message Passing Changes
+
+Actor-style systems model concurrent work as isolated entities that receive messages, update private state, and send messages to other entities. The goal is not merely syntax; it is to reduce accidental shared mutable state and make communication explicit.
+
+Erlang and Elixir make this model central through BEAM processes, mailboxes, links, monitors, and OTP supervision. Scala has actor libraries such as Akka. Go channels support message passing even though goroutines can also share memory.
+
+## Strengths
+
+Message passing fits stateful services, realtime systems, protocol servers, queues, event processors, workflow coordinators, and systems where failure isolation matters. It can make ownership clearer because a process or actor owns its state and other code interacts through messages.
+
+Supervision adds another layer: when an actor or process fails, a parent can restart it according to a defined strategy. That is why OTP-style systems are often discussed in terms of fault tolerance rather than only concurrency.
+
+## Watch Points
+
+Message passing does not remove distributed-systems problems. Queues can grow, messages can arrive late or out of expected order, serialization can fail, backpressure must be designed, and state recovery needs persistence or replay strategy.
+
+Actor systems also vary. Some are local runtime abstractions; others support distributed nodes. Do not assume location transparency, delivery guarantees, or restart behavior without checking the platform.
+
+## Related Concepts
+
+Compare with [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Structured Concurrency](/concepts/structured-concurrency/).

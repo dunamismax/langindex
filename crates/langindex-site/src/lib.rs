@@ -151,6 +151,18 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn concepts_index_groups_reference_pages() {
+        let (status, body) = get("/concepts/").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Type Systems"));
+        assert!(body.contains("Runtime And Execution"));
+        assert!(body.contains("Concurrency"));
+        assert!(body.contains("Tooling"));
+        assert!(body.contains("/concepts/async-await-and-event-loops/"));
+        assert!(body.contains("/concepts/package-managers/"));
+    }
+
+    #[tokio::test]
     async fn every_content_detail_route_renders() {
         let content = load_site_content(&default_content_root()).expect("content loads");
         let routes: Vec<_> = content

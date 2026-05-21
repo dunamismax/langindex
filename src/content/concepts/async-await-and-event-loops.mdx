@@ -1,0 +1,49 @@
+---
+title: Async Await And Event Loops
+slug: async-await-and-event-loops
+summary: Async/await and event loops structure concurrent I/O by letting tasks suspend while a runtime waits for external events, timers, sockets, or other operations to become ready.
+relatedLanguages:
+  - javascript
+  - typescript
+  - python
+  - csharp
+  - rust
+  - kotlin
+  - swift
+sources:
+  - title: asyncio - Asynchronous I/O
+    url: https://docs.python.org/3/library/asyncio.html
+    publisher: Python Software Foundation
+  - title: Asynchronous programming with async and await
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
+    publisher: Microsoft Learn
+  - title: Node.js Event Loop
+    url: https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick
+    publisher: OpenJS Foundation
+  - title: The Rust Programming Language - async and await
+    url: https://doc.rust-lang.org/book/ch17-01-futures-and-syntax.html
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## What Async/Await Does
+
+Async/await syntax lets code express a suspended operation without manually threading callbacks through every step. An async function usually returns a future, task, promise, or coroutine-like value. `await` marks a point where the current task may yield until the awaited operation is ready.
+
+Event loops are runtimes that watch for I/O readiness, timers, signals, callbacks, or scheduled tasks and resume work when events occur. JavaScript and Node.js make event-loop behavior central. Python's `asyncio`, Rust async runtimes, .NET async APIs, Kotlin coroutines, and Swift concurrency all expose different versions of this idea.
+
+## What It Is Good For
+
+Async I/O fits programs with many outstanding waits: HTTP servers, websocket connections, proxies, crawlers, database clients, RPC clients, UI event handling, and background orchestration. It can keep one thread busy with many pending operations instead of blocking a thread per wait.
+
+Async does not automatically make CPU-bound code faster. Long synchronous work can block the event loop or starve other tasks unless it is moved to a worker pool, separate process, native library, or explicitly parallel algorithm.
+
+## Watch Points
+
+The hard parts are cancellation, backpressure, timeouts, exception propagation, task lifetime, context propagation, and blocking calls hidden inside async code. A program can look concurrent while leaking tasks or allowing unbounded queues.
+
+Different languages place the runtime boundary differently. In Rust, the language has async syntax, but executors usually come from libraries. In JavaScript, host environments provide event loops. In .NET, async integrates deeply with the task runtime and libraries.
+
+## Related Concepts
+
+Async designs should be compared with [Structured Concurrency](/concepts/structured-concurrency/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), and [Testing Cultures](/concepts/testing-cultures/).

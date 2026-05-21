@@ -1,0 +1,48 @@
+---
+title: Structured Concurrency
+slug: structured-concurrency
+summary: Structured concurrency treats concurrent work as a scoped tree so child tasks have clear lifetimes, cancellation, error propagation, and joining behavior.
+relatedLanguages:
+  - kotlin
+  - swift
+  - python
+  - java
+  - csharp
+  - rust
+sources:
+  - title: Coroutines guide
+    url: https://kotlinlang.org/docs/coroutines-guide.html
+    publisher: JetBrains
+  - title: Swift Concurrency
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/
+    publisher: Swift Project
+  - title: asyncio Task Groups
+    url: https://docs.python.org/3/library/asyncio-task.html#task-groups
+    publisher: Python Software Foundation
+  - title: StructuredTaskScope
+    url: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/StructuredTaskScope.html
+    publisher: Oracle
+lastVerified: 2026-05-21
+---
+
+## What Structured Concurrency Changes
+
+Structured concurrency applies the same discipline to tasks that structured programming applies to control flow: concurrent work should have a clear lexical or logical scope. A parent starts child tasks, waits for them, cancels them when needed, and observes their errors before the scope exits.
+
+This contrasts with fire-and-forget concurrency, where tasks can outlive the request, object, screen, command, or service operation that created them. Unstructured tasks are sometimes necessary, but they need explicit ownership.
+
+## Why It Helps
+
+Structured concurrency makes cancellation and failure behavior easier to reason about. If one child fails, the runtime or library can cancel siblings and return an error to the parent. If a parent is cancelled, child work can be cancelled too. If the scope exits, the program should know what happened to all child tasks.
+
+Kotlin coroutines, Swift concurrency, Python task groups, and Java structured task scopes all expose forms of this idea. The APIs differ, but the design pressure is the same: avoid lost tasks and hidden background failure.
+
+## Watch Points
+
+Structured concurrency is not just an API label. Check how cancellation is delivered, whether blocking calls cooperate, how errors are aggregated, whether resources close on cancellation, and how task-local context behaves.
+
+Long-lived daemons, supervisors, queues, and background services can still be structured, but their lifetime owner must be explicit.
+
+## Related Concepts
+
+Structured concurrency connects [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), and [Testing Cultures](/concepts/testing-cultures/).

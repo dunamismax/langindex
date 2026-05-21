@@ -161,6 +161,8 @@ Async Rust is powerful but more ecosystem-shaped than Go's built-in goroutine mo
 
 Rust is a strong fit when the project needs concurrent code with explicit ownership and no required garbage collector. It can be a poor fit when the team mainly needs simple concurrent request handling and does not need the extra safety and control that Rust makes them model.
 
+Related concurrency concepts: [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Structured Concurrency](/concepts/structured-concurrency/).
+
 ## Cargo, crates.io, And rustup
 
 Cargo is the standard package manager and build tool. It initializes packages, resolves dependencies, builds code, runs tests, formats and documents packages through standard commands, packages crates, and publishes to crates.io. A Rust package is usually a crate, and a workspace can group multiple related crates under one build.
@@ -168,6 +170,8 @@ Cargo is the standard package manager and build tool. It initializes packages, r
 crates.io is the public Rust package registry used by Cargo by default. Teams should still review dependencies carefully: the registry gives discoverability and version resolution, not a guarantee that every package is maintained, audited, secure, or appropriate for production.
 
 rustup manages Rust toolchains, components, targets, and release channels. The standard workflow is to install stable Rust, add targets as needed, and pin project expectations through files such as `rust-toolchain.toml` and Cargo's `rust-version` field when a minimum supported Rust version matters.
+
+Related tooling concepts: [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Compilation Targets](/concepts/compilation-targets/), [Formatters And Linters](/concepts/formatters-and-linters/), [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/), and [Documentation Cultures](/concepts/documentation-cultures/).
 
 Typical commands:
 

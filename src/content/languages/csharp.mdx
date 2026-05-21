@@ -149,6 +149,8 @@ C# has threads, tasks, thread pools, concurrent collections, locks, channels, ti
 
 For CPU-bound work, async is not a substitute for parallelism. Use tasks, data parallel APIs, channels, or worker processes only when the workload and runtime behavior justify it. For UI and Unity work, understand the main-thread model before moving work across threads.
 
+Related concurrency concepts: [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Structured Concurrency](/concepts/structured-concurrency/).
+
 ## LINQ, Data, And Expressiveness
 
 Language Integrated Query is a defining part of C#'s everyday style. LINQ lets developers query and transform objects, collections, XML, databases, and provider-backed data sources through a shared set of language and library patterns. Query expressions and method chains compile into strongly typed calls, giving C# concise tools for filtering, grouping, projecting, joining, and aggregating data.

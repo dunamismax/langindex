@@ -130,6 +130,8 @@ The important production abstraction is OTP. A GenServer wraps a long-running se
 
 This does not make failures disappear. It gives the system a place to express failure handling. Elixir is strongest when a team can decompose a system into supervised workers, registries, queues, sessions, connections, subscriptions, or stateful coordinators that can fail and recover independently.
 
+Related concurrency concepts: [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), and [Structured Concurrency](/concepts/structured-concurrency/).
+
 ## Type System And Language Model
 
 Elixir is dynamically typed. Values carry runtime types, names can be rebound, and a function can fail at runtime when no clause matches or when a value has the wrong shape for an operation.

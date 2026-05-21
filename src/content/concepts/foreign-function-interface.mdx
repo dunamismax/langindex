@@ -1,0 +1,52 @@
+---
+title: Foreign Function Interface
+slug: foreign-function-interface
+summary: A foreign function interface lets code in one language call functions, load libraries, exchange data, or expose callable APIs across language and runtime boundaries.
+relatedLanguages:
+  - c
+  - cpp
+  - rust
+  - go
+  - python
+  - java
+  - csharp
+sources:
+  - title: The Rust Reference - External blocks
+    url: https://doc.rust-lang.org/reference/items/external-blocks.html
+    publisher: Rust Project
+  - title: cgo command
+    url: https://pkg.go.dev/cmd/cgo
+    publisher: Go Project
+  - title: ctypes - A foreign function library for Python
+    url: https://docs.python.org/3/library/ctypes.html
+    publisher: Python Software Foundation
+  - title: Java Native Interface Specification
+    url: https://docs.oracle.com/en/java/javase/25/docs/specs/jni/index.html
+    publisher: Oracle
+  - title: Native interoperability
+    url: https://learn.microsoft.com/en-us/dotnet/standard/native-interop/
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What FFI Solves
+
+Foreign function interfaces let programs cross language boundaries. A Rust library can call C APIs. Go can use cgo to call C code. Python can load shared libraries through `ctypes`. Java can use JNI. .NET exposes native interop features for platform libraries and native components.
+
+FFI is important because real systems rarely live in one language forever. Operating systems, databases, compression libraries, graphics APIs, numerical kernels, device SDKs, and legacy libraries often expose C or C-compatible interfaces even when the application language is higher level.
+
+## Boundary Costs
+
+The boundary is usually where the safety model changes. The caller and callee must agree on layout, ownership, allocation, lifetimes, strings, exceptions, callbacks, thread attachment, error reporting, and who may free which resource.
+
+Crossing the boundary can also affect build systems and deployment. A package may need headers, link flags, dynamic libraries, platform SDKs, generated bindings, architecture-specific artifacts, or runtime loader configuration.
+
+## Good FFI Design
+
+Good FFI wrappers keep the unsafe or runtime-specific edge narrow. They translate raw handles into safer types, document ownership, isolate platform-specific code, test error paths, and avoid leaking foreign invariants into the whole application.
+
+When possible, prefer a small C-compatible surface over exposing complex language-specific objects directly. Stable C ABIs are often the least surprising interoperability layer, even when neither side is written primarily in C.
+
+## Related Concepts
+
+FFI belongs with [ABI Stability](/concepts/abi-stability/), [Manual Memory Management](/concepts/manual-memory-management/), [Ownership](/concepts/ownership/), [Compilation Targets](/concepts/compilation-targets/), and [Build Systems](/concepts/build-systems/).

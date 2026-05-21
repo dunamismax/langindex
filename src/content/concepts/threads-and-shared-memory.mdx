@@ -1,0 +1,49 @@
+---
+title: Threads And Shared Memory
+slug: threads-and-shared-memory
+summary: Threads and shared memory let concurrent execution contexts access the same address space, which makes communication direct but requires synchronization and clear ownership of mutable state.
+relatedLanguages:
+  - c
+  - cpp
+  - java
+  - csharp
+  - rust
+  - go
+  - python
+sources:
+  - title: Java Language Specification - Threads and Locks
+    url: https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html
+    publisher: Oracle
+  - title: The Rust Programming Language - Fearless Concurrency
+    url: https://doc.rust-lang.org/book/ch16-00-concurrency.html
+    publisher: Rust Project
+  - title: threading - Thread-based parallelism
+    url: https://docs.python.org/3/library/threading.html
+    publisher: Python Software Foundation
+  - title: Thread class
+    url: https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What Threads Provide
+
+Threads are execution contexts that run within a process and can usually access the same memory. That makes sharing data cheap in one sense: a pointer, reference, object, or handle can be visible to multiple threads without serializing it through a message format.
+
+The cost is coordination. If multiple threads can read and write the same state, the program needs rules for synchronization, visibility, mutation, ownership, and cleanup. Those rules may be enforced by the language, by runtime libraries, by locks and atomics, or by project discipline.
+
+## Common Patterns
+
+Threaded programs often use mutexes, read-write locks, condition variables, atomics, thread pools, queues, barriers, and futures. Managed runtimes usually add scheduler, memory-model, and library behavior around OS threads. Native languages expose lower-level control but place more responsibility on the programmer.
+
+Rust's ownership and type system restrict which values can cross thread boundaries and which values can be shared safely. Java and .NET provide mature thread and synchronization libraries with specified memory behavior. Python exposes threads, but CPython's global interpreter lock shapes CPU-bound parallelism differently than I/O-bound concurrency.
+
+## Watch Points
+
+Shared-memory bugs are often timing-dependent. Data races, deadlocks, priority inversion, lock-order cycles, starvation, memory visibility errors, and accidental shared mutation may not appear in simple tests.
+
+Use shared memory when it simplifies the design. Use message passing, task queues, actors, immutable values, or process boundaries when they make ownership and failure behavior clearer.
+
+## Related Concepts
+
+Threaded code should be read with [Data Races And Memory Models](/concepts/data-races-and-memory-models/), [Structured Concurrency](/concepts/structured-concurrency/), [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), and [Memory Safety](/concepts/memory-safety/).

@@ -1,0 +1,49 @@
+---
+title: Metaprogramming And Macros
+slug: metaprogramming-and-macros
+summary: Metaprogramming lets programs generate, transform, inspect, or execute code or program structure, while macro systems provide language-supported code transformation at compile time or expansion time.
+relatedLanguages:
+  - rust
+  - clojure
+  - elixir
+  - cpp
+  - c
+  - ruby
+  - javascript
+sources:
+  - title: The Rust Programming Language - Macros
+    url: https://doc.rust-lang.org/book/ch20-05-macros.html
+    publisher: Rust Project
+  - title: Clojure Reference - Macros
+    url: https://clojure.org/reference/macros
+    publisher: Clojure
+  - title: Macro
+    url: https://hexdocs.pm/elixir/Macro.html
+    publisher: Elixir
+  - title: GCC Preprocessor Manual
+    url: https://gcc.gnu.org/onlinedocs/cpp/
+    publisher: GNU Project
+lastVerified: 2026-05-21
+---
+
+## What Metaprogramming Covers
+
+Metaprogramming is code that works with code. It can include macros, code generation, reflection, templates, decorators, annotations, compile-time evaluation, dynamic evaluation, and build-time source generation.
+
+Macro systems vary widely. C preprocessor macros operate on tokens before compilation. Rust has declarative and procedural macros integrated with its compile process. Clojure and Elixir macros operate on language data structures and are central to DSL-style APIs.
+
+## Where It Helps
+
+Metaprogramming is useful when repeated boilerplate obscures the real domain model, when the language needs embedded DSLs, when bindings are generated from schemas, or when compile-time validation can prevent runtime mistakes.
+
+It is also common in framework code: routing, serialization, database models, tests, dependency injection, UI declarations, and protocol definitions often use generated or transformed code.
+
+## Watch Points
+
+Metaprogramming raises the maintenance bar. Generated code can be hard to debug. Macros can hide control flow, evaluation order, names, errors, and performance costs. Reflection can move failures from compile time to runtime.
+
+Use it when it removes real duplication or makes an API safer. Avoid it when ordinary functions, types, modules, or build scripts are clearer.
+
+## Related Concepts
+
+Metaprogramming overlaps with [Build Systems](/concepts/build-systems/), [Formatters And Linters](/concepts/formatters-and-linters/), [Documentation Cultures](/concepts/documentation-cultures/), and [Modules And Namespacing](/concepts/modules-and-namespacing/).

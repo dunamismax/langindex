@@ -417,22 +417,46 @@ pub async fn guide_detail(State(state): State<AppState>, Path(slug): Path<String
 }
 
 pub async fn concepts_index(State(state): State<AppState>) -> Response {
-    render_collection_index(
+    let mut body = index_intro(
         "Concepts",
-        "Cross-language ideas: type systems, runtimes, memory models, and tooling.",
-        NavSection::Concepts,
-        state
-            .content
-            .concepts
+        "Cross-language ideas grouped by type systems, memory, runtime, concurrency, paradigms, and tooling.",
+    );
+    body.push_str(r#"<section class="section"><div class="container concept-groups">"#);
+    for group in concept_group_definitions() {
+        let pages: Vec<_> = group
+            .slugs
             .iter()
-            .map(|page| {
-                (
-                    &page.data.title,
-                    &page.data.summary,
-                    format!("/concepts/{}/", page.data.slug),
-                )
-            })
-            .collect(),
+            .filter_map(|slug| state.content.concept(slug))
+            .collect();
+        if pages.is_empty() {
+            continue;
+        }
+        body.push_str(&format!(
+            r#"<section class="concept-group" aria-labelledby="concept-group-{}"><div class="section-head"><div><p class="eyebrow">{} concepts</p><h2 id="concept-group-{}">{}</h2><p>{}</p></div><p class="concept-count">{} page{}</p></div><div class="list-grid">"#,
+            escape_attr(group.id),
+            escape(group.title),
+            escape_attr(group.id),
+            escape(group.title),
+            escape(group.summary),
+            pages.len(),
+            if pages.len() == 1 { "" } else { "s" }
+        ));
+        for page in pages {
+            body.push_str(&concept_card(page));
+        }
+        body.push_str("</div></section>");
+    }
+    body.push_str("</div></section>");
+    render_page(
+        PageMeta {
+            title: "Concepts".to_string(),
+            description:
+                "Cross-language ideas grouped by type systems, memory, runtime, concurrency, paradigms, and tooling."
+                    .to_string(),
+            section: NavSection::Concepts,
+        },
+        body,
+        StatusCode::OK,
     )
 }
 
@@ -681,6 +705,111 @@ fn render_collection_index(
         },
         body,
         StatusCode::OK,
+    )
+}
+
+struct ConceptGroupDefinition {
+    id: &'static str,
+    title: &'static str,
+    summary: &'static str,
+    slugs: &'static [&'static str],
+}
+
+fn concept_group_definitions() -> Vec<ConceptGroupDefinition> {
+    vec![
+        ConceptGroupDefinition {
+            id: "type-systems",
+            title: "Type Systems",
+            summary: "How languages describe values, generic code, absence, inference, and type relationships.",
+            slugs: &[
+                "static-vs-dynamic-typing",
+                "strong-vs-weak-typing",
+                "type-inference",
+                "structural-vs-nominal-typing",
+                "generics-and-parametric-polymorphism",
+                "algebraic-data-types-and-pattern-matching",
+                "null-safety",
+            ],
+        },
+        ConceptGroupDefinition {
+            id: "memory",
+            title: "Memory",
+            summary: "Resource lifetime, allocation, reclamation, and safety models across native and managed runtimes.",
+            slugs: &[
+                "ownership",
+                "garbage-collection",
+                "reference-counting",
+                "manual-memory-management",
+                "raii-and-deterministic-cleanup",
+                "stack-vs-heap-allocation",
+                "memory-safety",
+            ],
+        },
+        ConceptGroupDefinition {
+            id: "runtime",
+            title: "Runtime And Execution",
+            summary: "Interpreters, bytecode, compilation targets, interop boundaries, ABIs, and standard libraries.",
+            slugs: &[
+                "interpreters-jit-and-aot",
+                "virtual-machines-and-bytecode",
+                "compilation-targets",
+                "foreign-function-interface",
+                "abi-stability",
+                "standard-library-philosophy",
+            ],
+        },
+        ConceptGroupDefinition {
+            id: "concurrency",
+            title: "Concurrency",
+            summary: "Threads, async runtimes, message passing, lightweight tasks, memory models, and scoped task lifetimes.",
+            slugs: &[
+                "threads-and-shared-memory",
+                "async-await-and-event-loops",
+                "goroutines-and-green-threads",
+                "actor-model-and-message-passing",
+                "data-races-and-memory-models",
+                "structured-concurrency",
+            ],
+        },
+        ConceptGroupDefinition {
+            id: "paradigms",
+            title: "Paradigms And Language Design",
+            summary: "Programming styles and design mechanisms that shape APIs, state, errors, code generation, and boundaries.",
+            slugs: &[
+                "functional-programming",
+                "object-oriented-programming",
+                "immutability-and-persistent-data-structures",
+                "closures-and-first-class-functions",
+                "errors-as-values-vs-exceptions",
+                "metaprogramming-and-macros",
+                "modules-and-namespacing",
+            ],
+        },
+        ConceptGroupDefinition {
+            id: "tooling",
+            title: "Tooling",
+            summary: "Ecosystem machinery for packages, builds, editors, formatting, tests, docs, and interactive work.",
+            slugs: &[
+                "package-managers",
+                "build-systems",
+                "formatters-and-linters",
+                "language-servers-and-editor-tooling",
+                "repl-and-interactive-development",
+                "testing-cultures",
+                "documentation-cultures",
+            ],
+        },
+    ]
+}
+
+fn concept_card(page: &ConceptPage) -> String {
+    let href = format!("/concepts/{}/", page.data.slug);
+    format!(
+        r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h3><a href="{}">{}</a></h3><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
+        escape_attr(&href),
+        escape(&page.data.title),
+        escape(&page.data.summary),
+        escape_attr(&href)
     )
 }
 

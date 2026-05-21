@@ -1,0 +1,46 @@
+---
+title: Data Races And Memory Models
+slug: data-races-and-memory-models
+summary: Data races and memory models define when concurrent reads and writes are valid, when writes become visible, and which synchronization operations establish ordering between tasks or threads.
+relatedLanguages:
+  - c
+  - cpp
+  - java
+  - go
+  - rust
+  - csharp
+sources:
+  - title: The Go Memory Model
+    url: https://go.dev/ref/mem
+    publisher: Go Project
+  - title: Java Language Specification - Threads and Locks
+    url: https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html
+    publisher: Oracle
+  - title: The Rustonomicon - Data Races and Race Conditions
+    url: https://doc.rust-lang.org/nomicon/races.html
+    publisher: Rust Project
+  - title: volatile keyword
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What A Data Race Is
+
+A data race usually means that multiple concurrent execution contexts access the same memory location, at least one access writes, and the accesses are not ordered by synchronization. The exact definition is language-specific, but the risk is shared: the program can observe behavior that does not match ordinary sequential reasoning.
+
+Memory models describe what reads and writes are allowed to observe, which operations synchronize with each other, and how compilers and processors may reorder work. They exist because modern hardware and optimizing compilers do not execute every memory operation in the simple order source code suggests.
+
+## Why It Matters
+
+Without a memory model, concurrent code cannot reliably say when one task sees another task's write. Locks, atomics, channels, thread joins, volatile-like operations, and runtime synchronization APIs matter because they establish ordering and visibility guarantees.
+
+Different languages make different promises. Go documents synchronization through channels, mutexes, atomics, and other operations. Java specifies happens-before relationships. Rust treats data races as outside safe Rust and uses ownership plus synchronization traits to constrain sharing.
+
+## Watch Points
+
+"It worked in testing" is weak evidence for race freedom. Races may depend on CPU architecture, compiler version, optimization level, runtime scheduler, workload, and timing. Use race detectors, sanitizers, model-aware APIs, immutable data, message passing, and code review focused on shared state.
+
+## Related Concepts
+
+Read data races with [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Memory Safety](/concepts/memory-safety/), [Ownership](/concepts/ownership/), [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/), and [Testing Cultures](/concepts/testing-cultures/).

@@ -157,6 +157,8 @@ Common approaches:
 
 PEP 703 makes the GIL optional in CPython builds on a gradual path. That is important for Python's future, but production projects should still verify whether their exact interpreter, dependencies, and deployment target support free-threaded operation before designing around it.
 
+Related concurrency concepts: [Async Await And Event Loops](/concepts/async-await-and-event-loops/), [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Structured Concurrency](/concepts/structured-concurrency/), and [Data Races And Memory Models](/concepts/data-races-and-memory-models/).
+
 ## Packages, Environments, And Builds
 
 Python packaging is powerful but fragmented enough to deserve early attention. The core public package index is PyPI, and `pip` is the standard installer. The standard library's `venv` module creates isolated environments, which keeps a project's installed packages separate from the system Python and from other projects.

@@ -138,6 +138,8 @@ The JVM and class library make Java a strong fit for high-throughput server work
 
 Virtual threads improve the economics of thread-per-task server code for many blocking I/O workloads, but they do not remove the need to bound resources or understand where native calls, monitors, synchronized bottlenecks, and external systems constrain concurrency.
 
+Related concurrency concepts: [Threads And Shared Memory](/concepts/threads-and-shared-memory/), [Goroutines And Green Threads](/concepts/goroutines-and-green-threads/), [Data Races And Memory Models](/concepts/data-races-and-memory-models/), and [Structured Concurrency](/concepts/structured-concurrency/).
+
 ## Packages, Modules, And Builds
 
 Java code is organized into packages. Since Java 9, the module system also lets projects define explicit module boundaries through `module-info.java`, but many application codebases still rely primarily on package structure, build-tool dependency graphs, and framework conventions rather than fully modularized application modules.
@@ -145,6 +147,8 @@ Java code is organized into packages. Since Java 9, the module system also lets 
 The two dominant build tools are Maven and Gradle. Maven centers projects around `pom.xml`, a lifecycle, plugins, conventions, and dependency coordinates. Gradle uses a task graph and build scripts, commonly with Kotlin or Groovy DSLs, and is especially common in Android and large multi-project builds. Both tools commonly resolve artifacts from Maven Central or internal repositories.
 
 Java's build story is mature, but dependency governance is not automatic. Production teams need version alignment, transitive dependency review, lock or bill-of-materials strategy, vulnerability handling, repository policy, reproducible builds, and an upgrade path for the JDK and framework stack.
+
+Related tooling concepts: [Modules And Namespacing](/concepts/modules-and-namespacing/), [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), and [Documentation Cultures](/concepts/documentation-cultures/).
 
 ## Syntax Example
 

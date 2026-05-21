@@ -1,0 +1,52 @@
+---
+title: Documentation Cultures
+slug: documentation-cultures
+summary: Documentation culture is how a language ecosystem writes, generates, tests, publishes, versions, and maintains reference material for users and contributors.
+relatedLanguages:
+  - rust
+  - go
+  - python
+  - java
+  - javascript
+  - typescript
+  - elixir
+sources:
+  - title: The rustdoc book
+    url: https://doc.rust-lang.org/rustdoc/
+    publisher: Rust Project
+  - title: Go Doc Comments
+    url: https://go.dev/doc/comment
+    publisher: Go Project
+  - title: Sphinx
+    url: https://www.sphinx-doc.org/en/master/
+    publisher: Sphinx
+  - title: Javadoc Guide
+    url: https://docs.oracle.com/en/java/javase/25/javadoc/javadoc.html
+    publisher: Oracle
+  - title: JSDoc
+    url: https://jsdoc.app/
+    publisher: JSDoc
+lastVerified: 2026-05-21
+---
+
+## What Documentation Culture Means
+
+Documentation culture covers the normal way an ecosystem explains code: doc comments, generated API references, tutorials, examples, doctests, guides, package registries, language manuals, and release notes.
+
+Rust uses rustdoc and supports documentation tests. Go emphasizes package documentation and doc comments that render well on pkg.go.dev. Python projects often use Sphinx for narrative docs and API reference. Java has Javadoc. JavaScript and TypeScript projects may use JSDoc, TypeDoc, generated site tooling, or framework-specific docs.
+
+## Why It Matters
+
+Documentation affects dependency choice and maintainability. A library with clear examples, versioned docs, migration notes, and generated API reference is easier to adopt and safer to upgrade than a library where behavior lives only in source or issue threads.
+
+Good docs also expose ecosystem values. Some communities privilege runnable examples. Others emphasize formal specifications, cookbook recipes, API references, or generated docs from type signatures.
+
+## Watch Points
+
+Check whether docs are versioned with releases, whether examples compile or run, whether generated docs include private internals, and whether documentation explains failure modes and compatibility promises.
+
+Documentation is part of the maintenance surface. If the docs cannot be rebuilt from source, they will drift.
+
+## Related Concepts
+
+Documentation belongs with [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), and [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/).
