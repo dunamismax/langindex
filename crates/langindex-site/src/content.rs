@@ -703,9 +703,20 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 33);
-        assert_eq!(content.comparisons.len(), 47);
-        assert_eq!(content.guides.len(), 20);
+        assert_eq!(content.languages.len(), 34);
+        assert_eq!(content.comparisons.len(), 48);
+        assert_eq!(content.guides.len(), 21);
+        assert!(content.language("solidity").is_some());
+        assert!(
+            content
+                .comparison("solidity-vs-rust-for-smart-contracts")
+                .is_some()
+        );
+        assert!(
+            content
+                .guide("choosing-a-smart-contract-language")
+                .is_some()
+        );
         assert!(content.language("crystal").is_some());
         assert!(content.comparison("crystal-vs-go").is_some());
         assert!(content.comparison("crystal-vs-ruby").is_some());
@@ -801,6 +812,7 @@ mod tests {
         assert!(routes.contains("/languages/rust"));
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/nim"));
+        assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-ocaml"));
@@ -817,10 +829,12 @@ mod tests {
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
+        assert!(routes.contains("/comparisons/solidity-vs-rust-for-smart-contracts"));
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
         assert!(routes.contains("/guides/choosing-a-lisp-family-language"));
+        assert!(routes.contains("/guides/choosing-a-smart-contract-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));
         assert!(routes.contains("/concepts/functional-programming"));

@@ -1,0 +1,108 @@
+---
+title: Solidity vs Rust For Smart Contracts
+slug: solidity-vs-rust-for-smart-contracts
+summary: "Solidity and Rust both appear in smart contract work, but they usually target different runtimes: Solidity is the default EVM contract language, while Rust is used when the chain or contract VM exposes a Rust-native SDK or WebAssembly/SBF-style target."
+languages:
+  - solidity
+  - rust
+useCases:
+  - smart contracts
+  - blockchain applications
+  - Ethereum and EVM chains
+  - Solana programs
+  - WebAssembly smart contracts
+sources:
+  - title: Solidity Documentation
+    url: https://docs.soliditylang.org/en/latest/
+    publisher: Solidity
+  - title: Introduction to Smart Contracts
+    url: https://docs.soliditylang.org/en/latest/introduction-to-smart-contracts.html
+    publisher: Solidity
+  - title: Security Considerations
+    url: https://docs.soliditylang.org/en/latest/security-considerations.html
+    publisher: Solidity
+  - title: Using the Compiler
+    url: https://docs.soliditylang.org/en/latest/using-the-compiler.html
+    publisher: Solidity
+  - title: Smart contract languages
+    url: https://ethereum.org/en/developers/docs/smart-contracts/languages/
+    publisher: ethereum.org
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: Solana Program Execution
+    url: https://solana.com/docs/core/programs/program-execution
+    publisher: Solana
+  - title: Rust SDKs for Solana
+    url: https://solana.com/docs/clients/official/rust
+    publisher: Solana
+  - title: CosmWasm
+    url: https://cosmwasm.com/build
+    publisher: CosmWasm
+  - title: ink! Overview
+    url: https://use-ink.github.io/ink/
+    publisher: ink!
+  - title: Arbitrum Stylus Documentation
+    url: https://docs.arbitrum.io/
+    publisher: Arbitrum
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is intentionally narrow. It is not "Solidity vs Rust" as general-purpose languages. It is for teams choosing a smart contract language after they already know the target chain or are still deciding between EVM and Rust-native contract environments.
+
+The practical question is: which runtime will execute the contract?
+
+## Shared Territory
+
+Both languages can be used for code that runs under blockchain consensus. In both cases, the program is constrained by a chain runtime, transaction format, fee model, serialization boundary, deployment workflow, and verification or audit culture.
+
+Both also require more care than ordinary application code. Smart contracts run with adversarial callers and often control assets. Tests and type systems are useful, but they do not replace threat modeling, invariant checks, audits, monitoring, and a plan for upgrades or migration.
+
+## Key Differences
+
+| Dimension | Solidity | Rust for smart contracts |
+| --- | --- | --- |
+| Primary contract target | EVM bytecode on Ethereum, layer 2s, and EVM-compatible chains | Platform-specific targets such as Solana SBF, CosmWasm Wasm, ink!/Polkadot, or Arbitrum Stylus Wasm |
+| Ecosystem center | Ethereum standards, wallets, explorers, ABI tooling, Solidity auditors, Hardhat, Foundry, Remix | Chain-specific SDKs, Rust crates, Cargo workflows, and VM-specific testing/deployment tools |
+| Language model | Contract-oriented, statically typed, EVM-shaped language | General-purpose Rust constrained by a contract framework and target runtime |
+| State model | Contract storage, calldata, memory, events, ABI, message calls | Runtime-specific account, storage, message, or Wasm host interfaces |
+| Safety strengths | EVM fit, domain syntax, mature audit patterns, familiar Solidity libraries | Rust ownership, traits, enums, pattern matching, tests, and stronger compile-time resource modeling where the framework preserves it |
+| Main risk | Assuming familiar syntax makes value-moving code safe | Assuming Rust safety removes platform, economic, serialization, or upgrade risk |
+| Best default | EVM contracts that must compose with deployed Ethereum-style infrastructure | Chains where Rust is the native contract language or SDK path |
+
+## Choose Solidity When
+
+- The target is Ethereum, an Ethereum layer 2, or an EVM-compatible chain.
+- ERC standards, existing DeFi contracts, wallets, explorers, and audit firms are part of the product surface.
+- The team needs Hardhat, Foundry, Remix, Etherscan-style verification, Sourcify, OpenZeppelin-style contracts, or other EVM-standard workflows.
+- Contract calls, events, ABI compatibility, proxy patterns, and EVM gas behavior are the operational reality.
+- Hiring and review depend on Solidity security experience more than general Rust experience.
+
+## Choose Rust For Smart Contracts When
+
+- The target platform explicitly supports Rust as the native or first-class contract language.
+- The chain's state model is not EVM storage and the SDK is Rust-centered, as with Solana programs.
+- The contract platform is WebAssembly-centered and expects Rust/Cargo workflows, as with CosmWasm or ink!.
+- The project wants Rust's ownership, enums, traits, tests, and package ecosystem inside the constraints of a chain-specific framework.
+- The team is ready to learn both Rust and the contract runtime rather than treating Rust as a portable smart contract layer.
+
+## Watch Points
+
+Solidity's biggest mistake is underestimating the EVM domain. A Solidity contract is not just a class with money attached. It is public, composable, fee-metered, and hard to patch after deployment. Compiler versions, optimizer settings, storage layout, proxy design, external calls, and verification metadata are part of the release.
+
+Rust's biggest mistake is overgeneralizing. "Rust smart contracts" means different things on Solana, CosmWasm, ink!, and Arbitrum Stylus. Each has its own state model, serialization rules, account or storage APIs, testing tools, deployment artifacts, and security assumptions. Rust's type system helps, but the platform still defines what the program can do.
+
+For EVM work, Solidity is usually the default unless a specific platform such as Arbitrum Stylus makes Rust part of the EVM-compatible path. For non-EVM chains, choose the language the chain's official SDK, examples, audit tooling, and deployment process are built around.
+
+## Migration Or Interoperability Notes
+
+Solidity and Rust contracts normally interoperate through chain boundaries, bridge protocols, off-chain services, indexers, clients, relayers, message queues, or cross-chain messaging. They are rarely substitutes inside the same runtime unless the platform intentionally supports both.
+
+A platform can reasonably use Solidity for EVM contracts, Rust for indexers or relayers, Rust for Solana or CosmWasm contracts, TypeScript for deployment scripts, and Go or Rust for infrastructure. Keep the boundary explicit: source language, target bytecode, ABI or message format, verification path, monitoring, and upgrade authority.
+
+For a new protocol, prototype the hardest contract path first: state layout, cross-contract calls, fee model, testing, verification, audit readiness, deployment, and emergency controls. Syntax preference should come after those constraints.

@@ -61,6 +61,7 @@ Observed on 2026-05-16:
   - F#
   - Nim
   - Crystal
+  - Solidity
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -106,6 +107,7 @@ Observed on 2026-05-16:
   - Nim vs Rust comparison
   - Crystal vs Ruby comparison
   - Crystal vs Go comparison
+  - Solidity vs Rust for Smart Contracts comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -123,6 +125,7 @@ Observed on 2026-05-16:
   - Choosing a concurrency-oriented backend language guide
   - Choosing a distributed systems language guide
   - Choosing a Lisp-family language guide
+  - Choosing a smart contract language guide
   - Ownership concept page
   - Functional programming concept page
 - Current local baseline:
@@ -656,13 +659,13 @@ continue with Phase 17.
 
 ### Phase 34 - Solidity
 
-- [ ] Add a complete Solidity page.
-- [ ] Cover Ethereum smart contracts, EVM target, tooling, security risks,
+- [x] Add a complete Solidity page.
+- [x] Cover Ethereum smart contracts, EVM target, tooling, security risks,
       language evolution, contract verification, and domain-specific
       constraints.
-- [ ] Add Solidity vs Rust-for-smart-contracts comparison only where the
+- [x] Add Solidity vs Rust-for-smart-contracts comparison only where the
       scope is precise.
-- [ ] Add Solidity to domain-specific language and blockchain guides.
+- [x] Add Solidity to domain-specific language and blockchain guides.
 
 ### Phase 35 - Type System Concepts
 

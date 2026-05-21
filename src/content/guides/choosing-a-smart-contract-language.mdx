@@ -1,0 +1,137 @@
+---
+title: Choosing A Smart Contract Language
+slug: choosing-a-smart-contract-language
+summary: A practical guide for choosing Solidity, Rust, or another platform-specific language when blockchain smart contracts, contract verification, audits, chain runtime constraints, and deployment risk shape the language decision.
+audience: Teams choosing a language for blockchain smart contracts, decentralized applications, protocol modules, tokens, governance systems, bridges, or on-chain business logic.
+candidates:
+  - solidity
+  - rust
+sources:
+  - title: Solidity Programming Language
+    url: https://soliditylang.org/
+    publisher: Solidity
+  - title: Solidity Documentation
+    url: https://docs.soliditylang.org/en/latest/
+    publisher: Solidity
+  - title: Introduction to Smart Contracts
+    url: https://docs.soliditylang.org/en/latest/introduction-to-smart-contracts.html
+    publisher: Solidity
+  - title: Security Considerations
+    url: https://docs.soliditylang.org/en/latest/security-considerations.html
+    publisher: Solidity
+  - title: Smart contract languages
+    url: https://ethereum.org/en/developers/docs/smart-contracts/languages/
+    publisher: ethereum.org
+  - title: Verify via UI
+    url: https://docs.sourcify.dev/docs/how-to-verify/index.html
+    publisher: Sourcify
+  - title: Etherscan Common Verification Errors
+    url: https://docs.etherscan.io/contract-verification/common-verification-errors
+    publisher: Etherscan
+  - title: Solana Program Execution
+    url: https://solana.com/docs/core/programs/program-execution
+    publisher: Solana
+  - title: Rust SDKs for Solana
+    url: https://solana.com/docs/clients/official/rust
+    publisher: Solana
+  - title: CosmWasm
+    url: https://cosmwasm.com/build
+    publisher: CosmWasm
+  - title: ink! Overview
+    url: https://use-ink.github.io/ink/
+    publisher: ink!
+  - title: Arbitrum Stylus Documentation
+    url: https://docs.arbitrum.io/
+    publisher: Arbitrum
+lastVerified: 2026-05-21
+---
+
+## Start With The Chain Runtime
+
+Smart contract language choice is mostly a runtime choice. A normal web application can often move logic between languages behind an API. A smart contract cannot ignore the chain runtime that executes it.
+
+Start by answering:
+
+- Is the target EVM-compatible?
+- Does the chain use Wasm, SBF, Move bytecode, Cairo VM, Michelson, or another runtime?
+- Which languages have official SDKs, examples, security tooling, explorers, and verifier support?
+- Which language do auditors for this ecosystem expect to review?
+- How will the contract be upgraded, paused, migrated, or retired?
+- Can the team reproduce and verify the deployed bytecode or Wasm artifact?
+
+If the runtime answer is unclear, do not choose a language yet. Pick the chain and execution model first.
+
+## Choose Solidity For EVM Contracts
+
+Choose [Solidity](/languages/solidity) when the target is Ethereum, an Ethereum layer 2, or an EVM-compatible chain. Solidity's advantage is not that curly-bracket syntax is universally better. Its advantage is EVM fit: ABI conventions, events, contract storage, message calls, verification workflows, audits, wallet support, block explorers, Hardhat, Foundry, Remix, and the large body of Ethereum standards and libraries.
+
+Solidity is strongest for:
+
+- ERC-style tokens and extensions.
+- DeFi protocol modules.
+- Governance contracts.
+- Auctions, escrows, multisigs, vesting, and payment flows.
+- Upgradeable systems whose storage layout and proxy design are audited deliberately.
+- Contracts that need to compose with existing EVM infrastructure.
+
+The cost is risk. Solidity code may handle valuable assets, executes publicly, and is hard to patch after deployment. A serious Solidity project needs compiler-version pinning, dependency review, tests, static analysis, fuzzing or property tests where useful, audits for value-moving systems, release artifacts, monitoring, and verification on the target chain.
+
+## Choose Rust When The Platform Is Rust-Native
+
+Choose [Rust](/languages/rust) for smart contracts when the platform's official path is Rust-centered or when the contract target is built around Rust-friendly tooling. Examples include Solana programs, CosmWasm contracts, ink! contracts, and Arbitrum Stylus contracts.
+
+Rust brings ownership, enums, traits, pattern matching, Cargo, strong tests, and a mature package ecosystem. Those are real advantages, but they are filtered through the contract platform. A Solana program is not a generic Rust binary. A CosmWasm contract is not an ordinary server-side Wasm module. A Stylus contract is not the same thing as a Solidity contract merely because it can interact with EVM infrastructure.
+
+Choose Rust when:
+
+- The chain's official SDK and examples use Rust.
+- The team can learn both Rust and the runtime's account, storage, serialization, fee, and deployment model.
+- The contract needs stronger local modeling than the platform's Solidity route provides.
+- The audit and tooling ecosystem for that chain can review Rust contracts effectively.
+
+## Treat Other Contract Languages As Platform Choices
+
+Some ecosystems use other domain-specific languages. Ethereum documents Vyper and Yul alongside Solidity. Other chains may use Move, Cairo, Michelson, Sway, Clarity, or platform-specific languages. LangIndex does not yet have full pages for those languages, but the evaluation rule is the same: use the language that the target runtime, tooling, security review, and verification pipeline support best.
+
+Be careful with "portable smart contract" claims. Moving between contract languages usually means changing runtime semantics, storage layout, serialization, fee behavior, and audit assumptions. That is a rewrite unless the platform has a deliberate compatibility layer.
+
+## Verification And Release Discipline
+
+Smart contract deployment should produce reproducible evidence:
+
+- source code and dependency versions;
+- compiler version and target runtime;
+- optimizer and code-generation settings;
+- constructor arguments and library addresses;
+- generated ABI, metadata, bytecode, or Wasm artifacts;
+- deployment transaction hashes;
+- explorer or verifier status;
+- audit reports and known limitations;
+- upgrade, pause, ownership, or governance controls.
+
+Etherscan-style verification and Sourcify-style exact matching both depend on reproducing compilation inputs. If a team changes imports, flattens source in a way that changes metadata, loses build-info files, or forgets optimizer settings, verification can fail even when the visible source looks right.
+
+## Security Questions To Answer
+
+- What assets can the contract hold or move?
+- Who can call each function, and what happens if a hostile contract calls it?
+- Which invariants must always hold?
+- Can external calls re-enter or observe intermediate state?
+- What happens when a transaction runs out of gas or a dependency reverts?
+- Does the contract depend on timestamps, randomness, oracle data, bridge messages, or chain-specific assumptions?
+- How are upgrades authorized, tested, and communicated?
+- How will users know the deployed code matches the reviewed source?
+
+If these questions do not have written answers, the language choice is not the main risk yet.
+
+## Practical Default
+
+Start with Solidity for EVM smart contracts.
+
+Start with Rust for Solana, CosmWasm, ink!, or another runtime where Rust is the official or first-class contract language.
+
+Use another platform-specific smart contract language only when the chain's tooling, verifier, examples, and auditor ecosystem make that language the practical center.
+
+For broader architecture, keep off-chain logic off-chain. Use smart contracts for the parts that genuinely need decentralized execution, public verification, asset custody, or chain-native composability. Put indexing, reporting, web UX, bots, relayers, and ordinary business workflows in languages and runtimes that are easier to test, deploy, monitor, and change.
+
+See [Solidity vs Rust for smart contracts](/comparisons/solidity-vs-rust-for-smart-contracts) for the focused Solidity/Rust comparison.

@@ -1,0 +1,221 @@
+---
+title: Solidity
+slug: solidity
+status: active
+summary: Solidity is a statically typed, contract-oriented language for Ethereum and EVM-compatible smart contracts, where source code compiles to EVM bytecode and production work is shaped by gas costs, public execution, irreversible deployment risk, testing, auditing, and contract verification.
+firstReleased: 2015
+creators:
+  - Solidity team
+paradigms:
+  - contract-oriented
+  - object-oriented
+  - imperative
+  - domain-specific
+typing:
+  discipline: static
+  strength: strong static typing with contract types, value and reference types, user-defined types, inheritance, interfaces, libraries, ABI boundaries, and explicit data locations
+memory:
+  model: EVM storage, transient storage, memory, calldata, and stack data areas; persistent contract state is explicit and gas-sensitive
+runtime:
+  model: Solidity source compiles to EVM bytecode executed by Ethereum and EVM-compatible chains
+officialSite: https://soliditylang.org/
+repository: https://github.com/argotorg/solidity
+packageManagers:
+  - solc
+  - Remix
+  - Hardhat
+  - Foundry
+  - npm
+comparedWith:
+  - rust
+bestFor:
+  - Ethereum, layer-2, and EVM-compatible smart contracts where the target chain, tooling, audits, libraries, and block explorers expect Solidity or Solidity-compatible bytecode.
+  - Tokens, governance contracts, protocol modules, upgradeable systems, multisigs, auctions, escrow flows, and DeFi-adjacent logic that must compose with existing EVM contracts.
+  - Teams that can invest in tests, review, audits, compiler-version pinning, dependency review, deployment runbooks, monitoring, and source verification before handling real value.
+  - Projects where contract logic should be transparent, independently verifiable, and readable by the EVM security and auditor ecosystem.
+poorFit:
+  - Ordinary backend, frontend, scripting, data, or systems software; Solidity is a smart-contract language, not a general-purpose application platform.
+  - Contracts that cannot justify public execution, gas cost, irreversible state transitions, adversarial callers, and the operational cost of audits and upgrades.
+  - Teams expecting language-level safety to remove the need for threat modeling, property testing, audits, or formal reasoning about value-moving code.
+  - Non-EVM chains where the native contract environment is Rust, Move, Cairo, Michelson, or another platform-specific language and toolchain.
+sources:
+  - title: Solidity Programming Language
+    url: https://soliditylang.org/
+    publisher: Solidity
+  - title: Solidity About
+    url: https://www.soliditylang.org/about/
+    publisher: Solidity
+  - title: Solidity Documentation
+    url: https://docs.soliditylang.org/en/latest/
+    publisher: Solidity
+  - title: Introduction to Smart Contracts
+    url: https://docs.soliditylang.org/en/latest/introduction-to-smart-contracts.html
+    publisher: Solidity
+  - title: Types
+    url: https://docs.soliditylang.org/en/latest/types.html
+    publisher: Solidity
+  - title: Contracts
+    url: https://docs.soliditylang.org/en/latest/contracts.html
+    publisher: Solidity
+  - title: Security Considerations
+    url: https://docs.soliditylang.org/en/latest/security-considerations.html
+    publisher: Solidity
+  - title: Using the Compiler
+    url: https://docs.soliditylang.org/en/latest/using-the-compiler.html
+    publisher: Solidity
+  - title: Contract Metadata
+    url: https://docs.soliditylang.org/en/latest/metadata.html
+    publisher: Solidity
+  - title: Solidity 0.8.35 Release Announcement
+    url: https://www.soliditylang.org/blog/2026/04/29/solidity-0.8.35-release-announcement/
+    publisher: Solidity
+  - title: argotorg/solidity Repository
+    url: https://github.com/argotorg/solidity
+    publisher: Argot Collective
+  - title: Smart contract languages
+    url: https://ethereum.org/en/developers/docs/smart-contracts/languages/
+    publisher: ethereum.org
+  - title: Hardhat
+    url: https://hardhat.org/
+    publisher: Hardhat
+  - title: Forge Overview
+    url: https://getfoundry.sh/forge/overview/
+    publisher: Foundry
+  - title: Verify via UI
+    url: https://docs.sourcify.dev/docs/how-to-verify/index.html
+    publisher: Sourcify
+  - title: Etherscan Common Verification Errors
+    url: https://docs.etherscan.io/contract-verification/common-verification-errors
+    publisher: Etherscan
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Solidity is a language for writing smart contracts: programs that define the behavior of accounts inside Ethereum state. The official about page says Solidity was publicly previewed at Devcon0 in November 2014, that versioning was committed into the codebase on July 9, 2015 as Solidity 0.0.1, and that the project began within the Ethereum Foundation before becoming part of the Argot Collective.
+
+The design center is not general application programming. Solidity exists because Ethereum contracts need a source language that can express persistent state, externally callable functions, value transfers, events, ABI-compatible interfaces, and contract-to-contract calls while compiling to EVM bytecode.
+
+That domain changes the normal programming bargain. Every deployed contract executes in a public, adversarial environment. Storage costs money. Transactions are ordered by chain rules and block producers. Bugs can freeze or lose assets. Upgrades, if possible, are themselves part of the contract architecture. Solidity is useful precisely because it fits the EVM ecosystem, but that ecosystem makes engineering discipline part of the language choice.
+
+## Runtime, EVM Target, And Execution Model
+
+Solidity normally compiles through `solc` into EVM bytecode and ABI metadata. Ethereum and EVM-compatible chains execute that bytecode, not the original source. The EVM is a sandboxed runtime for smart contracts; code has no direct access to a filesystem, network, operating-system process, or ordinary host runtime.
+
+Contracts have several important data areas:
+
+- `storage` is persistent contract state and is expensive to initialize or modify.
+- `transient storage` lasts only for the current transaction.
+- `memory` is temporary data during execution.
+- `calldata` holds external call input data.
+- the EVM stack is the low-level operand stack the compiled code ultimately works against.
+
+This is why Solidity programs look different from ordinary service code. A loop may be a gas risk. A storage write is not just an assignment. A public function is an externally callable entry point. A contract call can hand control to another contract. A deployment parameter, optimizer setting, target EVM version, or library address can change the bytecode that users later try to verify.
+
+## Type System And Contract Model
+
+Solidity is statically typed. Variables have declared types, and the language includes elementary values, arrays, mappings, structs, enums, contract types, user-defined value types, function types, libraries, interfaces, inheritance, modifiers, events, errors, and ABI-oriented encoding rules.
+
+Contracts are similar to classes in some object-oriented languages, but the similarity is limited. A Solidity contract combines persistent state and callable functions at an on-chain address. Creating a contract deploys code and initializes state. Calling a function on another contract is an EVM message call, not an in-process method call with ordinary shared memory.
+
+Data location is part of the model. Developers must understand when values live in storage, memory, or calldata, because those choices affect cost, mutability, lifetime, and ABI behavior. Mappings are storage-only key-value structures that do not track their keys. Contract types and addresses are related but not interchangeable without care, especially for payable addresses and low-level calls.
+
+The type system catches many ordinary mistakes, but it does not prove contract correctness. Access control, accounting invariants, oracle assumptions, upgrade storage layout, cross-contract control flow, and economic attacks are design issues as much as type issues.
+
+## Security And Smart Contract Risk
+
+The official Solidity security section is unusually direct: smart contracts may handle tokens or other valuable assets, every execution happens in public, and the source code is often public as well. Treat that as the baseline.
+
+Common risk areas include:
+
+- reentrancy and unexpected control transfer through external calls;
+- private data assumptions, because on-chain data is visible even when a Solidity variable is marked `private`;
+- gas griefing, unbounded loops, and state growth;
+- timestamp, block data, and randomness assumptions;
+- authorization errors around `msg.sender`, `tx.origin`, roles, owners, and delegate calls;
+- upgradeable proxy storage collisions and initializer mistakes;
+- dependency, compiler, optimizer, and target-EVM mismatches;
+- unchecked low-level calls, ABI assumptions, and dirty calldata edge cases.
+
+Solidity 0.8.x made arithmetic overflow and underflow checked by default, but that does not make contracts safe by default. Production Solidity should use small modules, tests, static analysis, fuzzing or property testing where useful, review, audits for value-moving systems, deployment rehearsals, compiler warnings as failures, and explicit limits on how much value a contract can hold during early operation.
+
+## Tooling, Builds, And Verification
+
+The core compiler is `solc`. It can emit bytecode, ABI data, metadata, assembly, AST output, gas estimates, and Standard JSON output. Production projects should pin the compiler version, target EVM version, optimizer settings, dependency versions, and deployment scripts, because those inputs affect the deployed bytecode.
+
+Common development environments include Remix for browser-based experiments and learning, Hardhat for JavaScript/TypeScript-centered Solidity projects, and Foundry for Solidity-centered builds, tests, scripts, local nodes, and command-line workflows. Libraries are often consumed through npm packages, git submodules, Foundry dependencies, or vendored source. OpenZeppelin Contracts is a common dependency family, but the exact version and upgrade pattern still need review.
+
+Verification is part of the Solidity workflow, not an afterthought. Block explorers and services such as Etherscan and Sourcify try to reproduce deployed bytecode from source code and compiler settings. Etherscan documents common verification failures caused by compiler-version, optimizer, constructor-argument, library, metadata, and source-layout mismatches. Sourcify emphasizes preserving full compiler input and metadata because flattening or changing sources can break exact matches.
+
+If a team cannot reproduce the bytecode it deployed, users and auditors lose an important trust signal. Store the exact compiler input, output, metadata, dependency lockfiles, deployment transaction data, and verification job details as release artifacts.
+
+## Syntax Example
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.35;
+
+contract Counter {
+    address public owner;
+    uint256 public value;
+
+    event Incremented(address indexed caller, uint256 newValue);
+
+    error NotOwner(address caller);
+
+    constructor(uint256 initialValue) {
+        owner = msg.sender;
+        value = initialValue;
+    }
+
+    function increment() external {
+        value += 1;
+        emit Incremented(msg.sender, value);
+    }
+
+    function reset(uint256 newValue) external {
+        if (msg.sender != owner) {
+            revert NotOwner(msg.sender);
+        }
+
+        value = newValue;
+    }
+}
+```
+
+This example shows a contract, persistent state variables, an event, a custom error, a constructor, an externally callable function, and a simple authorization check. It is intentionally small. Real contracts should add tests, threat modeling, deployment scripts, verification settings, and documentation for who may call each entry point.
+
+## Best-Fit Use Cases
+
+Solidity is a strong fit when:
+
+- The target is Ethereum, an Ethereum layer 2, or an EVM-compatible chain.
+- Existing wallets, block explorers, indexers, auditors, templates, and libraries assume Solidity or Solidity-compatible ABI behavior.
+- The contract needs to compose with ERC standards, DeFi protocols, governance systems, multisigs, bridges, or other deployed EVM contracts.
+- The team can build a serious release process around tests, audits, verification, monitoring, and emergency response.
+- Transparency and independent source verification are part of the user trust model.
+
+## Poor-Fit Or Risky Use Cases
+
+Solidity can be a poor fit when:
+
+- The application does not need on-chain execution or user-verifiable contract state.
+- A normal backend, database, queue, or signed service protocol can solve the problem with lower cost and easier updates.
+- The team cannot afford security review for contracts that hold meaningful value.
+- The design depends on secrets, reliable randomness, cheap unbounded computation, or private mutable state.
+- The target chain's native contract environment is not EVM-centered.
+- The project is mainly an off-chain application whose only blockchain need is wallet signing or transaction submission.
+
+## Governance, Releases, And Evolution
+
+Solidity is open source and governed by a core team. The project began inside the Ethereum Foundation and is now part of the Argot Collective. Development happens in the public repository, with language design discussion through the Solidity forum, issues, surveys, and project planning.
+
+The language is still on the 0.x version line. The official site says Solidity aims for a regular non-breaking release every month and approximately one breaking release per year. As of this page's verification date, the current release was Solidity 0.8.35, published on April 29, 2026. That release added an `erc7201` compile-time builtin, formalized experimental features behind `--experimental`, and continued deprecation warnings ahead of Solidity 0.9.0.
+
+For production, treat compiler upgrades as security-sensitive maintenance. Read release notes, pin versions, compile with warnings visible, run the full test and verification pipeline, and check whether optimizer, IR pipeline, metadata, target EVM, or experimental-feature changes affect deployed contracts or upgrade plans.
+
+## Comparison Notes
+
+[Solidity vs Rust for smart contracts](/comparisons/solidity-vs-rust-for-smart-contracts) is the precise adjacent comparison. Choose Solidity when the target is the EVM and compatibility with Ethereum tooling, standards, auditors, and deployed contracts is the central requirement. Choose Rust when the target chain or VM is Rust-native, such as Solana programs, CosmWasm contracts, ink! contracts, or Arbitrum Stylus contracts.
+
+See [Choosing A Smart Contract Language](/guides/choosing-a-smart-contract-language) for the broader blockchain-language decision. The important first question is not syntax preference; it is which runtime will execute the contract and which ecosystem will verify, audit, deploy, upgrade, and monitor it.
