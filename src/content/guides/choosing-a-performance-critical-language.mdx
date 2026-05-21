@@ -1,13 +1,14 @@
 ---
 title: Choosing A Performance-Critical Language
 slug: choosing-a-performance-critical-language
-summary: A practical guide for choosing C++, Rust, C, Fortran, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
+summary: A practical guide for choosing C++, Rust, C, Fortran, Julia, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
 audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
 candidates:
   - cpp
   - rust
   - c
   - fortran
+  - julia
   - go
   - java
   - csharp
@@ -24,6 +25,15 @@ sources:
   - title: Fortran 2023
     url: https://wg5-fortran.org/f2023.html
     publisher: ISO/IEC JTC1/SC22/WG5
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Performance Tips
+    url: https://docs.julialang.org/en/v1/manual/performance-tips/
+    publisher: Julia
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
@@ -42,7 +52,7 @@ sources:
   - title: Introduction to .NET
     url: https://learn.microsoft.com/en-us/dotnet/core/introduction
     publisher: Microsoft Learn
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Define Performance Before Choosing
@@ -74,6 +84,12 @@ C++ works best when the team can define a disciplined subset: RAII, containers, 
 Choose Fortran when the performance-critical work is scientific or engineering computation: dense arrays, solvers, simulations, weather and climate models, computational physics, numerical libraries, or long-lived HPC applications.
 
 Fortran is strongest when the team already has validated Fortran code, domain scientists who can review it, and a supported compiler/MPI/OpenMP/math-library environment. It is usually a poor owner for the surrounding product, but it can be the right owner for numerical kernels behind Python, R, Julia, C, or C++ interfaces.
+
+## When Julia Fits
+
+Choose Julia when the performance-critical work is scientific or numerical and the team wants high-level code, multiple dispatch, generic mathematical abstractions, and specialized compiled performance in the same language. It is a natural fit for solvers, simulation, optimization, differential equations, scientific machine learning, automatic differentiation, and research packages where rewriting prototypes into C++, Fortran, or C extensions would slow iteration.
+
+Julia works best when the team can profile, keep hot code type-stable, manage allocations, pin `Project.toml` and `Manifest.toml`, and test compilation latency or sysimage decisions. It is usually a poor fit when the product mainly needs tiny binaries, fast cold starts, hard real-time behavior, or broad general application frameworks.
 
 ## When Rust Fits
 
@@ -115,4 +131,4 @@ Start with the highest-level language and runtime that meet the measured constra
 
 Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
 
-Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.
+Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.

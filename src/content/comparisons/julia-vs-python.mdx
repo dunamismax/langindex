@@ -1,0 +1,113 @@
+---
+title: Julia vs Python
+slug: julia-vs-python
+summary: Julia and Python both serve scientific computing, data workflows, notebooks, and automation, but Python is the broader general-purpose ecosystem while Julia is designed around multiple dispatch and high-performance numerical code in one language.
+languages:
+  - julia
+  - python
+useCases:
+  - scientific computing
+  - numerical computing
+  - data analysis
+  - machine learning
+  - research software
+  - automation
+sources:
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Methods
+    url: https://docs.julialang.org/en/v1/manual/methods/
+    publisher: Julia
+  - title: Performance Tips
+    url: https://docs.julialang.org/en/v1/manual/performance-tips/
+    publisher: Julia
+  - title: Pkg.jl Documentation
+    url: https://pkgdocs.julialang.org/v1/
+    publisher: Julia
+  - title: PackageCompiler
+    url: https://julialang.github.io/PackageCompiler.jl/stable/
+    publisher: Julia
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+  - title: PyTorch Documentation
+    url: https://docs.pytorch.org/docs/stable/index.html
+    publisher: PyTorch
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Julia and Python for scientific computing, numerical software, data analysis, notebooks, machine learning workflows, research software, and automation. It is not a general popularity comparison, and it is not asking whether every Python workflow should be rewritten in Julia.
+
+The practical question is where the hard part lives. Choose Python when ecosystem breadth, application integration, ML tooling, notebooks, services, packaging familiarity, and cross-team accessibility dominate. Choose Julia when the hard part is custom numerical code, generic mathematical abstractions, multiple dispatch, or avoiding a two-language split between prototype and performance kernel.
+
+## Shared Territory
+
+Both languages are dynamic, interactive, package-driven, notebook-friendly, and common around technical computing. Both can call native libraries, both can work with data frames and arrays, and both can participate in mixed systems through files, databases, APIs, and language bridges.
+
+They often work best together. Python can own orchestration, services, ML infrastructure, and broad package integration, while Julia owns a numerical model, solver, optimizer, simulation, or specialized scientific library.
+
+## Key Differences
+
+| Dimension         | Julia                                                         | Python                                                            |
+| ----------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Center of gravity | Scientific computing, multiple dispatch, numerical kernels    | General-purpose programming, automation, data, web, ML ecosystem  |
+| Runtime model     | LLVM-based JIT specialization with precompilation/sysimages    | Interpreted bytecode on CPython and other implementations         |
+| Performance model | Write type-stable functions that specialize for concrete types | Keep hot paths in NumPy, native extensions, frameworks, or tools  |
+| Polymorphism      | Multiple dispatch across all argument types                   | Object model, functions, protocols, decorators, optional typing    |
+| Package workflow  | Pkg environments, Project.toml, Manifest.toml, registries      | pip, PyPI, virtual environments, pyproject.toml, ecosystem tools   |
+| Deployment risk   | Compilation latency, sysimage/app bundling, smaller ecosystem | Native wheels, interpreter/dependency management, slow Python loops |
+| Best users        | Scientific programmers owning algorithms and performance      | Developers, analysts, researchers, ML engineers, operations teams  |
+
+## Choose Julia When
+
+- The core project is a numerical algorithm, solver, simulation, optimizer, scientific model, or performance-sensitive research library.
+- Multiple dispatch would let the same generic algorithm work across arrays, number types, automatic differentiation, GPU arrays, units, sparse structures, or domain-specific problem types.
+- The team wants one high-level language for both experimentation and optimized kernels.
+- Python-level loops, Cython, Numba, C++ extensions, or Fortran wrappers would create a maintenance split the team wants to avoid.
+- The team can standardize Julia versions, manifests, package precompilation, profiling, and deployment artifacts.
+
+## Choose Python When
+
+- The project needs the broadest data, ML, automation, web, cloud, API, packaging, and operations ecosystem.
+- Most expensive work already runs inside NumPy, SciPy, PyTorch, TensorFlow, JAX, pandas, vendor libraries, databases, or other native implementations.
+- The same codebase must own services, CLIs, pipelines, cloud SDKs, notebooks, dashboards, or application integration.
+- The organization needs broad hiring, onboarding, tutorials, examples, and cross-role familiarity.
+- Deployment can control Python versions, wheels, native dependencies, virtual environments, and containers.
+
+## Watch Points
+
+Julia can feel deceptively simple at the REPL while still requiring performance discipline. Type instability, abstract containers, untyped globals, unnecessary allocations, and package load latency can matter. Measure with realistic workloads and use Julia's performance tooling before concluding that the language or package is slow.
+
+Python can look slower than it is when judged by pure Python loops. Many scientific Python workflows are fast because Python orchestrates native code. Before moving to Julia, check whether vectorization, compiled libraries, Numba, Cython, multiprocessing, or a narrower native extension solves the measured bottleneck with less organizational change.
+
+Ecosystem maturity is domain-specific. Python is much broader overall. Julia can be deeper for some scientific-programming domains, but package maintenance, documentation, binary artifacts, and long-term support should be checked package by package.
+
+## Migration Or Interoperability Notes
+
+Avoid full rewrites as the default. If a Python workflow is productive but one numerical kernel is difficult to maintain or optimize, isolate that kernel first. Julia can expose a service, command-line tool, shared library, package API, or Python-callable boundary through JuliaCall/PythonCall-style workflows.
+
+For reproducibility, pin both sides. Record Python environment files, Julia `Project.toml` and `Manifest.toml`, data versions, native libraries, and execution commands. Language interop is useful only if a clean machine can rebuild the bridge.
+
+## Practical Default
+
+Start with Python when the problem is broad software plus data: notebooks, services, ML workflows, automation, APIs, and general integration.
+
+Start with Julia when the problem is scientific software whose core logic is custom numerical computation and where multiple dispatch or type-specialized generic algorithms are central to the design.

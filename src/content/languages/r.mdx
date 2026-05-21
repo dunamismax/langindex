@@ -94,7 +94,13 @@ sources:
   - title: Project Environments
     url: https://rstudio.github.io/renv/
     publisher: renv
-lastVerified: 2026-05-16
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+lastVerified: 2026-05-21
 ---
 
 ## Origin And Design Goals
@@ -216,4 +222,6 @@ Python is R's closest data-analysis comparison. R is usually the better starting
 
 SQL is the right home for relational filtering, joining, aggregation, constraints, and database-side work. R can query databases and analyze results, but large relational reductions should often stay near storage before entering an R session.
 
-Julia is nearby for numerical and scientific computing when multiple dispatch, native-performance-oriented code, and scientific programming are central. Fortran remains relevant when long-lived numerical libraries or high-performance scientific kernels are already written in it.
+[Julia vs R](/comparisons/julia-vs-r) is the nearby scientific-computing comparison. Julia is stronger when multiple dispatch, native-performance-oriented code, custom numerical kernels, and scientific programming abstractions are central. R is stronger when statistics, data frames, graphics, reports, CRAN/Bioconductor packages, and analyst-facing workflows are the center.
+
+Fortran remains relevant when long-lived numerical libraries or high-performance scientific kernels are already written in it.

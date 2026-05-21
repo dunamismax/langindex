@@ -1,0 +1,110 @@
+---
+title: Julia vs R
+slug: julia-vs-r
+summary: Julia and R both serve technical computing, but R is centered on statistics, data analysis, graphics, and reporting, while Julia is centered on multiple dispatch and high-performance scientific and numerical programming.
+languages:
+  - julia
+  - r
+useCases:
+  - scientific computing
+  - numerical computing
+  - statistics
+  - data analysis
+  - research workflows
+  - reporting
+sources:
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Methods
+    url: https://docs.julialang.org/en/v1/manual/methods/
+    publisher: Julia
+  - title: Pkg.jl Documentation
+    url: https://pkgdocs.julialang.org/v1/
+    publisher: Julia
+  - title: RCall.jl
+    url: https://juliainterop.github.io/RCall.jl/latest/gettingstarted.html
+    publisher: JuliaInterop
+  - title: What is R?
+    url: https://www.r-project.org/about.html
+    publisher: The R Foundation
+  - title: The R Language Definition
+    url: https://cran.r-project.org/doc/manuals/r-release/R-lang.html
+    publisher: R Core Team
+  - title: Data Frames
+    url: https://search.r-project.org/R/refmans/base/html/data.frame.html
+    publisher: R Core Team
+  - title: Tidyverse packages
+    url: https://tidyverse.org/packages/
+    publisher: tidyverse
+  - title: Bioconductor About
+    url: https://bioconductor.org/about/index.html
+    publisher: Bioconductor
+  - title: Project Environments
+    url: https://rstudio.github.io/renv/
+    publisher: renv
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Julia and R for statistics, data analysis, scientific computing, research workflows, reports, dashboards, and numerical software. It is not a claim that either language should own every layer of a data system.
+
+R is strongest when the deliverable is statistical analysis, graphics, data frames, reports, or domain packages written for statisticians and analysts. Julia is strongest when the deliverable is scientific software, simulation, optimization, custom numerical kernels, or generic mathematical code that should run efficiently without leaving the high-level language.
+
+## Shared Territory
+
+Both languages are used interactively by researchers and analysts. Both support packages, notebooks, data frames, plotting, numerical libraries, native-code boundaries, and reproducible project environments. Both can call into C, C++, Fortran, Python, and other systems through packages or native interfaces.
+
+The overlap is strongest in research groups where a result needs data cleaning, statistical analysis, modeling, visualization, and numerical computation. The clean answer may be to use both: R for statistical reporting and Julia for a scientific model or solver.
+
+## Key Differences
+
+| Dimension          | Julia                                                        | R                                                                 |
+| ------------------ | ------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Center of gravity  | Scientific programming, numerical kernels, multiple dispatch | Statistics, data frames, graphics, reports, research methods      |
+| Runtime model      | LLVM-based JIT specialization                                | Interpreted statistical computing environment with native extensions |
+| Type model         | Dynamic with parametric types and method specialization      | Dynamic runtime objects, vectors, lists, data frames, S3/S4/R6     |
+| Everyday workflow  | REPL, scripts, packages, Pkg environments, notebooks         | RStudio/Posit tools, scripts, packages, R Markdown/Quarto, Shiny  |
+| Performance model  | Type-stable Julia functions can compile to efficient code    | Use vectorized R, packages, databases, or native extensions       |
+| Package center     | General registry and scientific Julia packages               | CRAN, Bioconductor, tidyverse, data.table, statistical packages   |
+| Main risk          | Latency, smaller ecosystem, deployment and type-stability discipline | Reproducibility, scalar-loop speed, application-platform fit       |
+
+## Choose Julia When
+
+- The core work is custom numerical computation, simulation, optimization, differential equations, scientific machine learning, or high-performance research software.
+- Multiple dispatch helps express algorithms across problem types, arrays, numeric types, automatic differentiation, or hardware backends.
+- The team wants to avoid rewriting prototypes in C, C++, or Fortran only to get acceptable kernel performance.
+- The output is a package, model, solver, or computational engine rather than mainly a statistical report.
+- The team can manage Julia versions, package manifests, precompilation, native libraries, and deployment artifacts.
+
+## Choose R When
+
+- The core work is statistical modeling, inference, survey analysis, epidemiology, bioinformatics, econometrics, visualization, or analyst-facing reporting.
+- CRAN, Bioconductor, tidyverse, data.table, Shiny, R Markdown, Quarto, or Posit tooling is central to the workflow.
+- Domain experts need to inspect model objects, plots, tables, diagnostics, and prose together.
+- The deliverable is a report, paper, dashboard, package vignette, or statistical analysis product.
+- The organization already has R-fluent analysts, statisticians, and reproducibility conventions.
+
+## Watch Points
+
+Julia is not automatically the better choice for all quantitative work. If the main risk is statistical method correctness, reviewer familiarity, graphics, or analyst workflow, R may be the better owner even when Julia could run some computations faster.
+
+R is not automatically too slow for data work. Many R workflows are fast because vectorized operations, data.table, databases, and compiled package code do the expensive work. Move a workload to Julia only after profiling shows that custom numerical code is the real constraint.
+
+Both ecosystems need environment control. R projects need R versions, package repositories, lockfiles or snapshots, compiled system dependencies, and render commands. Julia projects need Julia versions, manifests, artifacts, sysimage or PackageCompiler decisions, and cold-start testing.
+
+## Migration Or Interoperability Notes
+
+RCall.jl lets Julia initialize and interact with R, while R workflows can call Julia through packages such as JuliaCall. Use these bridges to preserve working statistical code while moving only the measured numerical core, or to let a Julia model feed an R report.
+
+Keep the boundary boring. Exchange plain arrays, tables, files, database tables, or narrow function calls. Document which runtime owns dependencies and random seeds, and test that the same result can be rebuilt from a clean checkout.
+
+## Practical Default
+
+Start with R when the work is statistics-first: data frames, models, graphics, reports, Shiny apps, Bioconductor workflows, or domain methods that statisticians will review directly.
+
+Start with Julia when the work is scientific-computing-first: custom numerical algorithms, solvers, simulations, generic mathematical packages, or high-performance code that should remain readable to researchers.

@@ -40,6 +40,15 @@ sources:
   - title: Project Environments
     url: https://rstudio.github.io/renv/
     publisher: renv
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Pkg.jl Documentation
+    url: https://pkgdocs.julialang.org/v1/
+    publisher: Julia
   - title: Python Documentation
     url: https://docs.python.org/3/
     publisher: Python Software Foundation
@@ -55,7 +64,7 @@ sources:
   - title: Fortran 2023
     url: https://wg5-fortran.org/f2023.html
     publisher: ISO/IEC JTC1/SC22/WG5
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Deliverable
@@ -94,6 +103,12 @@ Do not make R own the whole system only because one step is statistical.
 Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
 
 R can still participate. The cleaner design is often to let R own the analysis or reporting layer while another language owns storage, services, scheduling, or production APIs.
+
+## Use Julia For Scientific Kernels
+
+Julia is nearby when an R workflow becomes a scientific-computing project rather than mainly a statistical analysis or report. It is a strong candidate for simulations, optimization, differential equations, custom numerical methods, scientific machine learning, and generic mathematical packages where multiple dispatch and compiled specialization help keep high-level code close to the hot path.
+
+This split is useful when R owns the statistical report, plots, analyst review, or domain package, while Julia owns the computational model or solver. It is risky when the project cannot pin Julia versions, manifests, artifacts, precompilation behavior, and data-conversion boundaries between R and Julia.
 
 ## Use Fortran At The Numerical Boundary
 
@@ -137,9 +152,10 @@ Before rewriting, check whether the workload can be changed:
 - Can production control R versions, package binaries, compiled dependencies, and package repositories?
 - How will results be reproduced six months after publication or delivery?
 - Which parts of the system should stay in SQL, Python, or another runtime instead of entering R?
+- Which numerical kernels belong in Julia because they need high-level scientific programming and specialized compiled performance?
 
 ## Practical Default
 
 Start with R when statistical analysis, graphics, data frames, reports, Shiny apps, or research workflows are the center of the work.
 
-Start with Python when the data work must live inside a broader software system. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.
+Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.

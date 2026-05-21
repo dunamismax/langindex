@@ -55,6 +55,7 @@ Observed on 2026-05-16:
   - Elixir
   - Erlang
   - Clojure
+  - Julia
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -89,6 +90,8 @@ Observed on 2026-05-16:
   - Elixir vs Ruby comparison
   - Clojure vs Java comparison
   - Clojure vs Scala comparison
+  - Julia vs Python comparison
+  - Julia vs R comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -588,12 +591,12 @@ continue with Phase 17.
 
 ### Phase 28 - Julia
 
-- [ ] Add a complete Julia page.
-- [ ] Cover multiple dispatch, JIT compilation, package manager,
+- [x] Add a complete Julia page.
+- [x] Cover multiple dispatch, JIT compilation, package manager,
       scientific/numerical computing, performance model, Python/R/C
       interoperability, and deployment constraints.
-- [ ] Add Julia vs Python and Julia vs R comparisons.
-- [ ] Add Julia to scientific computing and data guides.
+- [x] Add Julia vs Python and Julia vs R comparisons.
+- [x] Add Julia to scientific computing and data guides.
 
 ### Phase 29 - Zig
 

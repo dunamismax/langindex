@@ -703,8 +703,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 27);
-        assert_eq!(content.comparisons.len(), 37);
+        assert_eq!(content.languages.len(), 28);
+        assert_eq!(content.comparisons.len(), 39);
         assert_eq!(content.guides.len(), 20);
         assert!(content.language("clojure").is_some());
         assert!(content.language("erlang").is_some());
@@ -715,6 +715,7 @@ mod tests {
         assert!(content.language("objective-c").is_some());
         assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
+        assert!(content.language("julia").is_some());
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
         assert!(content.language("rust").is_some());
@@ -727,6 +728,8 @@ mod tests {
         assert!(content.comparison("elixir-vs-ruby").is_some());
         assert!(content.comparison("clojure-vs-java").is_some());
         assert!(content.comparison("clojure-vs-scala").is_some());
+        assert!(content.comparison("julia-vs-python").is_some());
+        assert!(content.comparison("julia-vs-r").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
