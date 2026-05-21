@@ -622,12 +622,12 @@ continue with Phase 17.
 
 ### Phase 31 - F#
 
-- [ ] Add a complete F# page.
-- [ ] Cover .NET target, functional-first design, type providers, async
+- [x] Add a complete F# page.
+- [x] Cover .NET target, functional-first design, type providers, async
       workflows, package/tooling story, C# interoperability, and ecosystem
       fit.
-- [ ] Add F# vs C# and F# vs OCaml comparisons.
-- [ ] Add F# to .NET and functional programming guides.
+- [x] Add F# vs C# and F# vs OCaml comparisons.
+- [x] Add F# to .NET and functional programming guides.
 
 ### Phase 32 - Nim
 

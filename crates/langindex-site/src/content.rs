@@ -703,9 +703,10 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 30);
-        assert_eq!(content.comparisons.len(), 41);
+        assert_eq!(content.languages.len(), 31);
+        assert_eq!(content.comparisons.len(), 43);
         assert_eq!(content.guides.len(), 20);
+        assert!(content.language("fsharp").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -735,6 +736,8 @@ mod tests {
         assert!(content.comparison("zig-vs-c").is_some());
         assert!(content.comparison("rust-vs-zig").is_some());
         assert!(content.comparison("ocaml-vs-rust").is_some());
+        assert!(content.comparison("fsharp-vs-csharp").is_some());
+        assert!(content.comparison("fsharp-vs-ocaml").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -790,7 +793,10 @@ mod tests {
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
+        assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
+        assert!(routes.contains("/comparisons/fsharp-vs-csharp"));
+        assert!(routes.contains("/comparisons/fsharp-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));

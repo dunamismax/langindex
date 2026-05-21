@@ -1,10 +1,11 @@
 ---
 title: "Choosing C# For .NET, Desktop, Games, And Enterprise Work"
 slug: choosing-csharp-for-dotnet-desktop-games-and-enterprise
-summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, .NET-centered tooling, and Delphi-adjacent modernization decisions."
-audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, Microsoft-centered platforms, or modernization work near existing Delphi systems.
+summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, .NET-centered tooling, F# domain cores, and Delphi-adjacent modernization decisions."
+audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, Microsoft-centered platforms, mixed C#/F# systems, or modernization work near existing Delphi systems.
 candidates:
   - csharp
+  - fsharp
   - java
   - typescript
   - go
@@ -23,6 +24,12 @@ sources:
     publisher: Microsoft .NET
   - title: An introduction to NuGet
     url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+  - title: F# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/
+    publisher: Microsoft Learn
+  - title: What is F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/what-is-fsharp
     publisher: Microsoft Learn
   - title: Asynchronous programming with async and await
     url: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
@@ -48,7 +55,7 @@ sources:
   - title: FireMonkey
     url: https://docwiki.embarcadero.com/RADStudio/Florence/en/FireMonkey
     publisher: Embarcadero DocWiki
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Platform
@@ -121,6 +128,12 @@ C# can be a useful internal tooling language when a company already runs .NET. C
 
 For small shell-adjacent automation, compare C# against Python, Bash, PowerShell, and TypeScript. The .NET SDK is a good toolchain, but the fastest safe solution may be a shorter script in the language already used by operations.
 
+## Consider F# For Functional .NET Cores
+
+Consider [F#](/languages/fsharp) when the platform should remain .NET but the hardest code is domain modeling, validation, calculations, rules, data transformation, or workflow composition. F# brings records, discriminated unions, option/result-oriented modeling, pattern matching, pipelines, type inference, scripts, and F# Interactive while still using NuGet, .NET deployment, and C# interoperability.
+
+This does not make F# a replacement for C# across every .NET surface. C# is usually the smoother default for ASP.NET Core templates, desktop UI, Unity, vendor samples, broad hiring, Roslyn analyzers, and framework-heavy glue. A mixed solution can work well when C# owns framework boundaries and F# owns typed domain cores, but the team must standardize project references, async/task interop, nullable boundaries, formatting, and testing.
+
 ## Runtime And Operations Questions
 
 Before choosing C#, answer these:
@@ -138,6 +151,8 @@ These questions are the work that turns C# from a productive language into a mai
 ## Practical Default
 
 Start with C# when the center of gravity is .NET: ASP.NET Core services, Microsoft enterprise platforms, Windows desktop applications, Unity games, Azure-heavy systems, and teams already skilled in .NET operations.
+
+Use F# alongside C# when the same .NET platform needs a more functional domain layer or data-transformation layer.
 
 Start with TypeScript when the center of gravity is the browser, Node.js, npm, front-end frameworks, or full-stack JavaScript.
 

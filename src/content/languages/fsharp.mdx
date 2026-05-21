@@ -1,0 +1,230 @@
+---
+title: "F#"
+slug: fsharp
+status: active
+summary: "F# is a functional-first .NET language for domain modeling, data-rich applications, backend services, scripting, and tooling where ML-family types, pattern matching, type inference, and C# interoperability fit the platform."
+firstReleased: 2005
+creators:
+  - Don Syme
+  - Microsoft Research
+paradigms:
+  - functional
+  - object-oriented
+  - imperative
+  - concurrent
+  - scripting
+typing:
+  discipline: static
+  strength: strong static typing with type inference, automatic generalization, records, discriminated unions, option types, units of measure, generics, object types, and .NET interop
+memory:
+  model: managed .NET heap with garbage collection, immutable-by-default values, explicit mutation, disposable resources, and the same native interop escape hatches available through .NET
+runtime:
+  model: compiled to .NET assemblies for the .NET runtime, with F# Interactive for scripts and exploration, plus community JavaScript targets such as Fable when selected deliberately
+officialSite: https://learn.microsoft.com/en-us/dotnet/fsharp/
+repository: https://github.com/dotnet/fsharp
+packageManagers:
+  - NuGet
+  - dotnet CLI
+  - MSBuild
+  - F# Interactive
+  - Fantomas
+  - Ionide
+  - Paket
+comparedWith:
+  - csharp
+  - ocaml
+  - haskell
+  - scala
+  - clojure
+bestFor:
+  - .NET teams that want functional-first domain modeling while keeping access to C#, NuGet, ASP.NET Core, Azure, Microsoft tooling, and existing .NET libraries.
+  - Data-rich, rules-heavy, financial, analytical, compiler-like, validation-heavy, and workflow-heavy systems where records, discriminated unions, options, pattern matching, and pipelines reduce accidental complexity.
+  - Backend services, internal tools, command-line utilities, scripts, notebooks, and automation owned by teams that already operate .NET.
+  - Mixed C# and F# codebases where C# owns framework-heavy boundaries and F# owns typed domain cores or transformation pipelines.
+poorFit:
+  - Teams that need the broadest .NET hiring pool, vendor examples, UI designers, framework templates, or Microsoft samples before they need F#'s functional model.
+  - Browser-first, npm-first, mobile-first, or game-engine-centered products where another language owns the primary ecosystem.
+  - Low-level systems, hard real-time targets, kernel code, tiny embedded firmware, or allocator-sensitive components where the .NET runtime and garbage collector are unacceptable.
+  - Codebases where unfamiliar ML syntax, indentation sensitivity, type inference, computation expressions, or mixed C#/F# conventions would become maintenance friction without a clear payoff.
+sources:
+  - title: F# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/
+    publisher: Microsoft Learn
+  - title: What is F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/what-is-fsharp
+    publisher: Microsoft Learn
+  - title: F# Language Reference
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/
+    publisher: Microsoft Learn
+  - title: F# Types
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/fsharp-types
+    publisher: Microsoft Learn
+  - title: Functions
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/functions/
+    publisher: Microsoft Learn
+  - title: Type Providers
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/type-providers/
+    publisher: Microsoft Learn
+  - title: Async programming in F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async
+    publisher: Microsoft Learn
+  - title: F# Interactive Reference
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tools/fsharp-interactive/
+    publisher: Microsoft Learn
+  - title: F# Development Tools
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tools/development-tools
+    publisher: Microsoft Learn
+  - title: Annotated F# strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/strategy
+    publisher: Microsoft Learn
+  - title: What's new in F# 10
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-10
+    publisher: Microsoft Learn
+  - title: Introducing F# 10
+    url: https://devblogs.microsoft.com/dotnet/introducing-fsharp-10/
+    publisher: .NET Blog
+  - title: The F# compiler, F# core library, and F# editor tools
+    url: https://github.com/dotnet/fsharp
+    publisher: .NET Foundation
+  - title: The F# Language Specification
+    url: https://fsharp.org/specs/language-spec/
+    publisher: F# Community
+  - title: About the F# Software Foundation
+    url: https://foundation.fsharp.org/about
+    publisher: F# Software Foundation
+  - title: The Early History of F#
+    url: https://fsharp.org/history/hopl-final/hopl-fsharp.pdf
+    publisher: Proceedings of the ACM on Programming Languages
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+F# was created by Don Syme at Microsoft Research as an ML-family language for .NET. Syme's history paper describes a pre-release of F# 1.0 being declared on January 5, 2005, and the language being demonstrated internally at Microsoft Research TechFest in March 2005. The first officially supported Visual F# 2.0 release shipped with Visual Studio 2010 on April 12, 2010.
+
+The design center is typed functional programming on a mainstream managed platform. F# keeps the ML ideas of type inference, functions, immutable values, algebraic-style data modeling, pattern matching, option types, and concise expression-oriented code, but it also embraces .NET objects, interfaces, generics, exceptions, attributes, async/task APIs, NuGet packages, and C# interoperability.
+
+That makes F# different from both nearby choices. Compared with [C#](/languages/csharp), F# is more functional-first and better at concise domain modeling with discriminated unions and pattern matching. Compared with [OCaml](/languages/ocaml), F# gives up OCaml's native/opam/Dune platform in exchange for .NET libraries, tooling, deployment, and organizational fit.
+
+## Runtime, .NET, And Targets
+
+F# normally compiles to .NET assemblies and runs on the .NET runtime. The practical runtime story is therefore the same broad platform used by C# and Visual Basic: the .NET SDK, CLR behavior, garbage collection, NuGet packages, MSBuild project files, framework-dependent or self-contained deployment, containers, native AOT cases where supported, and cross-platform operation on supported Windows, Linux, and macOS environments.
+
+F# Interactive, available as `dotnet fsi`, supports interactive exploration and script execution. It is useful for learning, data exploration, build helpers, one-off automation, and trying library APIs. Treat it as a development and scripting tool, not a replacement for a tested application boundary when the code becomes durable.
+
+F# can also reach browser and full-stack scenarios through community projects such as Fable and WebSharper, but that is a deliberate ecosystem choice rather than the default .NET path. For browser-first applications, compare F# targets with TypeScript and the surrounding JavaScript toolchain before deciding.
+
+## Type System And Language Model
+
+F# is statically typed with strong inference. Developers often write fewer type annotations than in C#, Java, or Rust, but the compiler still checks the program before runtime. F# functions are values, can be composed, partially applied, curried, and passed to higher-order functions. Function bodies are expressions, and the final expression determines the result when no explicit return type is written.
+
+The everyday modeling tools are records, discriminated unions, tuples, options, results, lists, arrays, sequences, maps, sets, pattern matching, modules, namespaces, classes, interfaces, object expressions, generics, computation expressions, and units of measure. Values are immutable by default, while explicit mutation is available through `mutable`, reference cells, arrays, object state, and .NET APIs.
+
+F# is not a pure language. Effects, exceptions, mutation, file I/O, HTTP calls, database access, and .NET framework behavior are ordinary parts of the language. The engineering value comes from making the domain core mostly functional while keeping platform integration at the edges.
+
+## Type Providers And Data-Rich Code
+
+Type providers are one of F#'s distinctive features. A type provider supplies types, properties, and methods to a program based on an external data source. Microsoft documentation describes examples such as SQL, JSON, XML, CSV, HTML, Azure Storage, and GraphQL providers.
+
+This can make data access feel unusually direct: a schema, sample file, connection string, or URL can produce strongly typed access in editor tooling and compiled code. The watch point is reproducibility. Teams should pin schemas, sample data, provider versions, connection behavior, CI access, generated metadata, and failure modes so builds do not depend on a fragile live service or an implicit local environment.
+
+## Syntax Example
+
+```fsharp
+open System
+
+type CheckTarget =
+    { Name: string
+      Url: Uri
+      Critical: bool }
+
+type CheckResult =
+    | Healthy of CheckTarget
+    | Degraded of CheckTarget * reason: string
+
+let classify target statusCode =
+    match statusCode with
+    | code when code >= 200 && code < 400 -> Healthy target
+    | code when target.Critical -> Degraded(target, $"critical endpoint returned {code}")
+    | code -> Degraded(target, $"endpoint returned {code}")
+
+let summarize result =
+    match result with
+    | Healthy target -> $"{target.Name}: ok"
+    | Degraded(target, reason) -> $"{target.Name}: attention - {reason}"
+
+let targets =
+    [ { Name = "F#"
+        Url = Uri "https://learn.microsoft.com/dotnet/fsharp/"
+        Critical = true }
+      { Name = ".NET"
+        Url = Uri "https://learn.microsoft.com/dotnet/core/"
+        Critical = true } ]
+
+targets
+|> List.map (fun target -> classify target 200)
+|> List.map summarize
+|> List.iter (printfn "%s")
+```
+
+This example uses records, discriminated unions, pattern matching, guard clauses, pipelines, list transformations, .NET's `Uri` type, and side-effecting output. In production F#, the same shape often appears in validation, workflows, compilers, financial logic, rules engines, and service-domain cores.
+
+## Async, Tasks, And Concurrency
+
+F# has its own asynchronous workflow model through `Async<'T>` and `async { }`, and it also works with .NET `Task<'T>` through task expressions and interop helpers. Microsoft's async documentation draws an important distinction: F# async computations are specifications of work that must be explicitly started, while .NET tasks represent executing work.
+
+This gives F# good tools for composing asynchronous workflows, sequencing operations, running computations in parallel, converting between `Async` and `Task`, and working with cancellation. It does not remove normal concurrency design. Services still need timeouts, backpressure, bounded concurrency, cancellation propagation, error handling, resource cleanup, and care around shared mutable state.
+
+When a project interacts heavily with C# libraries that expose tasks, use task expressions or explicit async/task interop where it keeps boundaries simple. When the code benefits from compositional F# async workflows, keep the choice local and documented.
+
+## Tooling, Packages, And Builds
+
+Modern F# development is usually part of the .NET SDK workflow. Typical projects use `dotnet new`, `dotnet build`, `dotnet test`, `dotnet publish`, NuGet packages, MSBuild project files, and the same runtime version planning as other .NET applications. FSharp.Core ships with the SDK and can also be pinned through package references when a project needs that control.
+
+Editor support commonly comes from Visual Studio, Visual Studio Code with Ionide, JetBrains Rider, the F# language service, and the compiler service. Fantomas is the standard formatter listed by Microsoft development-tool docs. F# Interactive supports scripts and REPL-style exploration, including NuGet references from scripts.
+
+The package and tooling story is capable, but it is less template-driven than C# for many workloads. Teams should standardize SDK versions, FSharp.Core policy, formatter settings, warning levels, NuGet source policy, test framework, script usage, mixed-language solution layout, and CI caches. In mixed C#/F# solutions, decide which language owns which layer so the boundary stays intentional.
+
+## Ecosystem And Fit
+
+F# is strongest when the .NET platform is already a good answer and the code itself benefits from functional-first modeling. It fits domain-heavy services, financial systems, data workflows, validation pipelines, rule engines, internal tools, parsers, compilers, notebooks, and scripts where a concise typed model matters.
+
+It is weaker where framework defaults and vendor examples matter more than language expressiveness. ASP.NET Core, Azure SDKs, Entity Framework, desktop UI stacks, Unity, and many Microsoft samples generally center C#. F# can use the same .NET libraries, but teams should expect to translate examples, adapt object-oriented APIs, and sometimes accept thinner first-party guidance.
+
+For many organizations, the best architecture is mixed: C# for framework-heavy APIs, UI surfaces, generated clients, and team-wide platform code; F# for domain modeling, calculations, transformations, rules, and workflows. That division is useful only if the team can maintain both languages deliberately.
+
+## Best-Fit Use Cases
+
+F# is a strong fit when:
+
+- .NET is already the operational platform and functional-first code would improve the domain core.
+- Discriminated unions, records, options, results, pattern matching, and pipelines express the problem more clearly than class hierarchies or nullable object graphs.
+- The system is data-rich, rules-heavy, validation-heavy, financial, analytical, compiler-like, or workflow-oriented.
+- Scripts, notebooks, internal tools, or automation should share .NET libraries with production systems.
+- C# interoperability is useful, and the team can draw a clear mixed-language boundary.
+
+## Poor-Fit Or Risky Use Cases
+
+F# can be a poor fit when:
+
+- The main constraint is broad hiring, Microsoft samples, vendor SDK examples, UI designers, Unity documentation, or framework templates.
+- The team wants .NET but not a second language in the codebase.
+- The target is browser-first, npm-first, mobile-first, game-engine-centered, or low-level enough that another ecosystem owns the work.
+- The codebase would turn computation expressions, point-free style, custom operators, or implicit inference into review friction.
+- Build, editor, CI, and formatting conventions are not standardized.
+
+## Governance, Releases, And Stewardship
+
+F# is open source and part of the .NET developer platform. Microsoft describes itself as a leading contributor, and the independent F# Software Foundation provides a community center for the language. The compiler, core library, compiler service, and Visual Studio tooling integration live in the public `dotnet/fsharp` repository.
+
+Language and core-library evolution runs through F# suggestions, F# language-design RFCs, implementation in `dotnet/fsharp`, and .NET SDK releases. The F# strategy says the language should support .NET platform improvements and maintain interoperability with new C# features. F# 10 shipped with .NET 10 and Visual Studio 2026.
+
+For production planning, track the selected .NET SDK/runtime line, F# language version, FSharp.Core version, compiler changes, Visual Studio or Ionide support, package constraints, and any preview features. F# is stable enough for serious .NET work, but the operational unit is still a pinned .NET platform, not an abstract language version.
+
+## Comparison Notes
+
+[F# vs C#](/comparisons/fsharp-vs-csharp) is the primary comparison when the platform is .NET. Choose C# when the dominant need is broad .NET familiarity, framework examples, object-oriented APIs, UI/game tooling, and mainstream enterprise staffing. Choose F# when the dominant need is a functional-first domain core inside .NET.
+
+[F# vs OCaml](/comparisons/fsharp-vs-ocaml) is the closest ML-family comparison. Choose F# when .NET libraries, C# interop, NuGet, Visual Studio tooling, and organizational platform fit are the point. Choose OCaml when opam, Dune, native compilation, compiler-like tooling, and a smaller ML-centered ecosystem fit better.
+
+Haskell is nearby when purity, laziness, type classes, and explicit effects are the core design goal. Scala is nearby when the JVM is the required platform. Clojure is nearby when Lisp syntax, persistent data, dynamic typing, and REPL-driven JVM work matter more than static ML-style modeling.

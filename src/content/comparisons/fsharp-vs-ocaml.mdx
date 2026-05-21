@@ -1,0 +1,107 @@
+---
+title: "F# vs OCaml"
+slug: fsharp-vs-ocaml
+summary: "F# and OCaml are strict ML-family languages with type inference and algebraic-style modeling, but F# centers on .NET interoperability while OCaml centers on its own native and bytecode toolchain, opam, Dune, and ML ecosystem."
+languages:
+  - fsharp
+  - ocaml
+useCases:
+  - functional programming
+  - domain modeling
+  - compilers and language tooling
+  - backend services
+  - data-rich applications
+sources:
+  - title: F# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/
+    publisher: Microsoft Learn
+  - title: What is F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/what-is-fsharp
+    publisher: Microsoft Learn
+  - title: F# Language Reference
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/
+    publisher: Microsoft Learn
+  - title: The F# Language Specification
+    url: https://fsharp.org/specs/language-spec/
+    publisher: F# Community
+  - title: Annotated F# strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/strategy
+    publisher: Microsoft Learn
+  - title: The Early History of F#
+    url: https://fsharp.org/history/hopl-final/hopl-fsharp.pdf
+    publisher: Proceedings of the ACM on Programming Languages
+  - title: Welcome to a World of OCaml
+    url: https://ocaml.org/
+    publisher: OCaml
+  - title: Why OCaml?
+    url: https://ocaml.org/about
+    publisher: OCaml
+  - title: The OCaml Manual
+    url: https://ocaml.org/manual/
+    publisher: OCaml
+  - title: OCaml Platform
+    url: https://ocaml.org/platform
+    publisher: OCaml
+  - title: Dune Documentation
+    url: https://dune.readthedocs.io/en/stable/
+    publisher: Dune
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between two strict ML-family languages for domain modeling, compilers, analyzers, internal tools, backend services, or data-rich code. It is mostly a platform comparison: F# means .NET; OCaml means the OCaml compiler, opam, Dune, and OCaml ecosystem.
+
+For the full F# profile, see [F#](/languages/fsharp). For the full OCaml profile, see [OCaml](/languages/ocaml).
+
+## Shared Territory
+
+F# and OCaml both descend from the ML tradition. Both are strict by default, statically typed, inference-heavy, expression-oriented, functional-first, and practical about effects. Both support records, variants or discriminated unions, pattern matching, modules, functions as values, immutable defaults, explicit mutation, exceptions, and garbage collection.
+
+Both are good candidates for compiler-like code, parsers, analyzers, symbolic transformations, validation-heavy domains, and typed workflow code. Both are usually easier to operate than Haskell for teams that want strict evaluation and ordinary effects rather than purity and laziness as language-wide defaults.
+
+## Key Differences
+
+| Dimension       | F#                                                       | OCaml                                                    |
+| --------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| Platform        | .NET runtime, NuGet, C# interop, .NET deployment         | OCaml runtime, native/bytecode compiler, opam, Dune      |
+| Origin          | Microsoft Research language for ML-style .NET work      | Objective Caml line from INRIA and the ML tradition      |
+| Interop         | Strong with C#, CLR types, .NET libraries, Azure tooling | Stronger with C and OCaml libraries; .NET is not central |
+| Data access     | Type providers and .NET data libraries                  | OCaml libraries, PPX, C bindings, and typed APIs         |
+| Modules         | Modules and signatures, but .NET shapes many boundaries  | Deep module/signature/functor culture                    |
+| Deployment      | .NET apps, containers, self-contained builds, AOT cases  | Native or bytecode executables through OCaml tooling     |
+| Ecosystem risk  | Smaller than C# inside .NET                              | Smaller than mainstream app ecosystems overall           |
+
+## Choose F# When
+
+- .NET is the required or preferred production platform.
+- The organization already uses C#, ASP.NET Core, Azure, Visual Studio, NuGet, or .NET operations.
+- F# will sit next to C# and use existing .NET libraries rather than create a separate platform.
+- Type providers, scripts, notebooks, or .NET data workflows are part of the value.
+- The team wants ML-family modeling without leaving Microsoft-centered infrastructure.
+
+## Choose OCaml When
+
+- The project benefits from OCaml's native compiler, bytecode compiler, opam, Dune, and ML-centered ecosystem.
+- The work is compiler-like, analyzer-heavy, proof-adjacent, symbolic, or DSL-heavy, and .NET is not the desired platform.
+- Functors, signatures, first-class modules, and OCaml library conventions are a better fit than CLR interop.
+- Native deployment and C interop matter more than C# and NuGet interop.
+- The team wants a language community centered on OCaml rather than on the broader .NET platform.
+
+## Domain Modeling
+
+Both languages are strong for typed domain models. F# records and discriminated unions are especially attractive inside .NET systems because they give C#-adjacent teams a concise way to represent cases, invalid states, and transformations. OCaml variants, records, modules, and functors are especially strong when the whole application can be shaped around ML conventions.
+
+The practical difference is the surrounding code. In F#, the domain model often meets C# libraries, nullable CLR APIs, object-oriented frameworks, and NuGet dependencies. In OCaml, the domain model more often meets opam packages, Dune libraries, C bindings, PPX extensions, and OCaml module boundaries.
+
+## Tooling And Ecosystem
+
+F# rides the .NET SDK. The upside is access to mature runtime operations, NuGet packages, C# libraries, and Microsoft tooling. The downside is that F# is not the dominant .NET language, so examples, templates, and package documentation often start from C#.
+
+OCaml has a more self-contained language ecosystem. opam manages compiler switches and packages; Dune structures builds; OCaml-LSP, Merlin, utop, odoc, and OCamlFormat support editing and development. The upside is a coherent ML-centered workflow. The downside is a smaller general-purpose package and hiring ecosystem than .NET.
+
+## Migration Or Interoperability Notes
+
+F# and OCaml are similar enough that design ideas transfer, but code does not move mechanically. F# code often depends on .NET object models, generics, attributes, tasks, and NuGet libraries. OCaml code often depends on modules, functors, PPX, opam packages, and native runtime behavior.
+
+Use protocols, files, services, generated code, or C ABI boundaries when the two ecosystems must cooperate. Choose one language as the owner of a domain rather than trying to keep parallel implementations in sync.

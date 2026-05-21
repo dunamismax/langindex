@@ -1,0 +1,104 @@
+---
+title: "F# vs C#"
+slug: fsharp-vs-csharp
+summary: "F# and C# both target .NET, but C# is the mainstream object-oriented .NET default while F# is the functional-first .NET language for typed domain modeling, pipelines, pattern matching, and mixed-language solutions."
+languages:
+  - fsharp
+  - csharp
+useCases:
+  - dotnet applications
+  - backend services
+  - enterprise applications
+  - domain modeling
+  - internal tooling
+sources:
+  - title: F# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/
+    publisher: Microsoft Learn
+  - title: What is F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/what-is-fsharp
+    publisher: Microsoft Learn
+  - title: F# Language Reference
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/
+    publisher: Microsoft Learn
+  - title: Type Providers
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/type-providers/
+    publisher: Microsoft Learn
+  - title: Async programming in F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async
+    publisher: Microsoft Learn
+  - title: Annotated F# strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/strategy
+    publisher: Microsoft Learn
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: Common Language Runtime overview
+    url: https://learn.microsoft.com/en-us/dotnet/standard/clr
+    publisher: Microsoft Learn
+  - title: An introduction to NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing a primary .NET language or deciding how to split a mixed C#/F# solution. It is not a general comparison between functional and object-oriented programming. Both languages use the .NET runtime, NuGet packages, the .NET SDK, managed memory, async libraries, and CLR interop. The question is which language should own which part of the system.
+
+For the full F# profile, see [F#](/languages/fsharp). For the full C# profile, see [C#](/languages/csharp).
+
+## Shared Territory
+
+F# and C# both compile to .NET assemblies, call .NET libraries, use NuGet, run on the .NET runtime, work with Visual Studio and Visual Studio Code, and can live in the same solution. Both support static typing, generics, object programming, functions, async work, exceptions, attributes, testing frameworks, build pipelines, and deployment through the .NET SDK.
+
+The overlap is strongest in backend services, enterprise applications, internal tools, command-line utilities, libraries, scripts, and data workflows where .NET is already a good platform.
+
+## Key Differences
+
+| Dimension       | F#                                                       | C#                                                       |
+| --------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| Default style   | Functional-first, expression-oriented, pipeline-heavy    | Object-oriented and imperative with functional features  |
+| Modeling        | Records, discriminated unions, options, pattern matching | Classes, records, interfaces, enums, nullable analysis   |
+| Type inference  | Broad ML-family inference in ordinary code               | Local inference through `var` and target typing          |
+| Ecosystem path  | Uses .NET libraries, but many examples require translation | Mainstream .NET examples, templates, SDKs, and samples |
+| Async style     | `async { }`, task expressions, and task interop          | `async`/`await` over `Task` as the mainstream default    |
+| Tooling gravity | Ionide, F# tooling, Fantomas, F# Interactive             | Roslyn, Visual Studio, analyzers, source generators      |
+| Team risk       | Smaller hiring pool and less framework-first guidance    | More boilerplate for some domain models                  |
+
+## Choose F# When
+
+- The core code is domain-heavy, rules-heavy, validation-heavy, data-rich, or transformation-heavy.
+- Records, discriminated unions, options, results, pattern matching, and pipelines express the system more directly than nullable classes and object graphs.
+- The team wants mostly functional code while keeping .NET libraries, NuGet, deployment, and C# interop.
+- F# Interactive, scripts, notebooks, or data exploration are useful alongside compiled application code.
+- C# can still own framework-heavy boundaries while F# owns the domain core.
+
+## Choose C# When
+
+- The main priority is mainstream .NET support, framework examples, hiring, onboarding, and vendor documentation.
+- The application is mostly ASP.NET Core framework code, desktop UI, Unity, source generators, analyzers, or object-oriented API integration.
+- The team wants one .NET language across services, tools, UI, and libraries.
+- The codebase needs the broadest C# IDE, Roslyn, nullable reference type, and ecosystem support.
+- Functional style is useful but does not justify adding a second language.
+
+## Mixed-Language Solutions
+
+A common practical shape is C# at the framework edge and F# in the domain core. C# can own controllers, dependency injection, generated clients, UI code, framework templates, source generators, and integration code. F# can own calculations, parsers, validation, decision logic, data transformations, rules, and workflows.
+
+That split needs real boundaries. Keep shared DTOs, project references, naming conventions, nullable behavior, exceptions, async/task interop, package versions, and test ownership explicit. A mixed solution is a platform decision, not a way to avoid choosing.
+
+## Tooling And Operations
+
+C# has the smoother mainstream .NET path. Most Microsoft documentation, tutorials, cloud examples, Unity material, desktop examples, and third-party package snippets start in C#. F# can use the same platform, but teams should budget for translation and local conventions.
+
+F# tooling is capable when standardized: .NET SDK, FSharp.Core, F# compiler service, Ionide or Visual Studio/Rider support, Fantomas formatting, and CI checks. The risk is uneven local setup. Pin SDK versions, formatter configuration, package sources, and warnings before the team grows.
+
+## Migration Or Interoperability Notes
+
+Do not translate C# into F# line by line. Move code only where the F# shape pays for itself: union types, pattern matching, pipelines, pure functions, data transformations, or type providers. Keep object-heavy framework code in C# unless there is a specific reason to move it.
+
+When consuming F# from C#, design the public API deliberately. Some F# constructs are pleasant inside F# but awkward from C#. Provide C#-friendly wrappers when a library is shared broadly across a .NET organization.
