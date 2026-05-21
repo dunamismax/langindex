@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, Delphi, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -14,6 +14,7 @@ candidates:
   - python
   - objective-c
   - fortran
+  - cobol
   - delphi
 sources:
   - title: The Perl Programming Language
@@ -70,6 +71,15 @@ sources:
   - title: ISO/IEC 1539-1:2023 - Fortran
     url: https://www.iso.org/standard/82170.html
     publisher: International Organization for Standardization
+  - title: ISO/IEC 1989:2023 - Programming Language COBOL
+    url: https://www.iso.org/standard/74527.html
+    publisher: International Organization for Standardization
+  - title: What Is COBOL?
+    url: https://www.ibm.com/think/topics/cobol
+    publisher: IBM
+  - title: Enterprise COBOL for z/OS Documentation Library
+    url: https://www.ibm.com/support/pages/enterprise-cobol-zos-documentation-library
+    publisher: IBM
   - title: Delphi Product Page
     url: https://www.embarcadero.com/products/delphi
     publisher: Embarcadero
@@ -79,7 +89,7 @@ sources:
   - title: VCL Overview
     url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
     publisher: Embarcadero DocWiki
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Start With Ownership, Not Preference
@@ -158,6 +168,8 @@ Python is often the migration target for automation, data, and glue code, but it
 Objective-C systems usually exist because they sit near Apple platform APIs, Objective-C runtime behavior, Objective-C++ bridges, or long-lived Cocoa code. Start by pinning Xcode and SDK versions, enabling or documenting ARC settings, adding nullability to headers, isolating dynamic selectors or swizzles, and writing tests around Swift/Objective-C boundaries before migrating behavior to Swift.
 
 Fortran systems usually exist because they sit near numerical code or long-lived scientific domain libraries. Preserve tested boundaries before moving behavior to C++, Python, Julia, Rust, or another platform.
+
+COBOL systems usually exist because they sit near business records, decimal arithmetic, batch jobs, reports, mainframe transactions, copybooks, and long-lived operational runbooks. Start by preserving file layouts, database effects, scheduler behavior, return codes, and decimal-data semantics before wrapping behavior with Java, .NET, queues, APIs, or service boundaries.
 
 Delphi systems usually exist because they sit near Windows desktop workflows, VCL forms, RAD Studio projects, database components, reports, COM integrations, or long-lived Object Pascal business logic. Start by making the Delphi build reproducible, pinning RAD Studio and component versions, checking 32-bit versus 64-bit assumptions, preserving `.dfm` resources, and adding tests around user-visible behavior before moving features to C#, web front ends, or services.
 

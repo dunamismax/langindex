@@ -14,6 +14,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "bash",
     "c",
     "clojure",
+    "cobol",
     "cpp",
     "crystal",
     "csharp",
@@ -707,8 +708,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 38);
-        assert_eq!(content.comparisons.len(), 54);
+        assert_eq!(content.languages.len(), 39);
+        assert_eq!(content.comparisons.len(), 55);
         assert_eq!(content.guides.len(), 21);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("solidity").is_some());

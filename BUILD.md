@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 38 language profiles.
-  - 54 comparisons.
+  - 39 language profiles.
+  - 55 comparisons.
   - 21 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -172,11 +172,11 @@ the same explanations inside every language page.
 
 ### Phase 46 - COBOL
 
-- [ ] Add a complete COBOL page.
-- [ ] Cover business data processing, mainframe environments, standards,
+- [x] Add a complete COBOL page.
+- [x] Cover business data processing, mainframe environments, standards,
       file and decimal-data models, modernization paths, and maintenance fit.
-- [ ] Add COBOL vs Java for enterprise modernization comparison.
-- [ ] Update legacy-maintenance guides.
+- [x] Add COBOL vs Java for enterprise modernization comparison.
+- [x] Update legacy-maintenance guides.
 
 ### Phase 47 - Ada
 

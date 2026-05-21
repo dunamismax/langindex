@@ -1,0 +1,203 @@
+---
+title: COBOL
+slug: cobol
+status: active
+summary: COBOL is a standardized compiled language for business data processing, high-volume records, decimal arithmetic, reports, batch jobs, and long-lived mainframe systems where correctness and continuity matter more than novelty.
+firstReleased: 1960
+creators:
+  - CODASYL
+paradigms:
+  - procedural
+  - imperative
+  - business-oriented
+  - object-oriented
+typing:
+  discipline: static
+  strength: strong record-oriented typing with detailed data descriptions, numeric classes, and implementation-specific extensions
+memory:
+  model: statically described records, working storage, linkage data, files, tables, and implementation-managed runtime storage rather than a garbage-collected object heap
+runtime:
+  model: compiled to target-specific native code, managed COBOL runtimes, or intermediate forms depending on compiler, platform, and deployment target
+officialSite: https://www.iso.org/standard/74527.html
+repository: https://gnucobol.sourceforge.io/
+packageManagers:
+  - IBM Enterprise COBOL
+  - GnuCOBOL
+  - OpenText Visual COBOL
+  - JCL
+  - Make
+comparedWith:
+  - java
+  - csharp
+  - fortran
+  - delphi
+  - sql
+bestFor:
+  - Maintaining high-volume business systems where COBOL programs, record layouts, batch schedules, reports, files, transactions, and operational runbooks are already trusted.
+  - Mainframe applications on z/OS, CICS, IMS, Db2, VSAM, JCL, and related enterprise infrastructure.
+  - Fixed-point decimal accounting, policy, billing, payroll, claims, settlement, and other workflows where data representation is part of the business contract.
+  - Incremental modernization that preserves tested business behavior while exposing safer boundaries to Java, .NET, services, queues, files, or databases.
+poorFit:
+  - Greenfield web, mobile, cloud-native service, CLI, data-science, game, or general application work where broader ecosystems and hiring pools matter more than COBOL continuity.
+  - Systems whose main risk is architecture, unsupported infrastructure, missing tests, or unknown data contracts rather than the COBOL language itself.
+  - Rewrites that assume source translation to Java, C#, or another language will preserve behavior without understanding mainframe files, transactions, encoding, decimal formats, and batch operations.
+  - Teams without access to COBOL, mainframe, database, scheduler, testing, and production operations expertise.
+sources:
+  - title: ISO/IEC 1989:2023 - Programming Language COBOL
+    url: https://www.iso.org/standard/74527.html
+    publisher: International Organization for Standardization
+  - title: What Is COBOL?
+    url: https://www.ibm.com/think/topics/cobol
+    publisher: IBM
+  - title: Enterprise COBOL for z/OS Documentation Library
+    url: https://www.ibm.com/support/pages/enterprise-cobol-zos-documentation-library
+    publisher: IBM
+  - title: File Organization and Input-Output Devices
+    url: https://www.ibm.com/docs/en/cobol-zos/6.5.0?topic=files-file-organization-input-output-devices
+    publisher: IBM
+  - title: Working With Numbers and Arithmetic
+    url: https://www.ibm.com/docs/en/cobol-zos/6.5.0?topic=program-working-numbers-arithmetic
+    publisher: IBM
+  - title: Classes and Categories of Data
+    url: https://www.ibm.com/docs/en/cobol-zos/6.5.0?topic=relationships-classes-categories-data
+    publisher: IBM
+  - title: Using Java-Compatible Array Types in COBOL
+    url: https://www.ibm.com/docs/en/cobol-zos/6.5.0?topic=framework-using-java-compatible-array-types-in-cobol
+    publisher: IBM
+  - title: GnuCOBOL
+    url: https://gnucobol.sourceforge.io/
+    publisher: GNU Project
+  - title: GnuCOBOL Manual
+    url: https://gnucobol.sourceforge.io/doc/gnucobol.html
+    publisher: GNU Project
+  - title: Visual COBOL Features
+    url: https://dlm.microfocus.com/products/visual-cobol/features/
+    publisher: OpenText Micro Focus
+  - title: COBOL Training Course
+    url: https://openmainframeproject.org/our-projects/working-groups/
+    publisher: Open Mainframe Project
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+COBOL means Common Business-Oriented Language. IBM describes it as a high-level, English-like, compiled programming language developed for business data processing. Its early design came from CODASYL, a consortium formed in 1959, with influence from Grace Hopper's FLOW-MATIC and a United States Department of Defense push for a business language that could work across hardware and operating environments.
+
+That origin still defines the language. COBOL was not designed around expression-level terseness, academic minimalism, or systems programming. It was designed around business records, reports, decimal arithmetic, files, batch jobs, and programs that non-specialist business organizations could maintain over long periods.
+
+The practical question is therefore not whether COBOL is old. It is whether the system depends on COBOL's existing business behavior, data formats, platform contracts, and operational continuity enough that maintenance or incremental modernization is safer than replacement.
+
+## Standards And Current Status
+
+COBOL is standardized. ISO lists ISO/IEC 1989:2023 as the current published COBOL standard, edition 3, with a January 2023 publication date. The standard specifies COBOL syntax and semantics, the form and effect of compilation groups, run unit execution, implementation-required definitions, undefined language elements, and processor-dependent elements.
+
+The standards story matters because production COBOL is rarely just "standard COBOL." A real codebase may use COBOL 74 or COBOL 85 idioms, IBM Enterprise COBOL extensions, Micro Focus/OpenText extensions, embedded SQL, CICS commands, IMS access, copybooks, JCL contracts, VSAM assumptions, EBCDIC data, or compiler options that are as important as the source syntax.
+
+Good COBOL maintenance starts by naming the compiler, dialect, source format, standard level, extensions, database preprocessor, transaction environment, operating system, file formats, and job scheduler. Without that inventory, modernization estimates are mostly guesses.
+
+## Mainframe And Enterprise Environments
+
+COBOL is most visible in long-lived enterprise systems, especially mainframe environments. On IBM Z and z/OS, COBOL applications often sit near CICS transactions, IMS applications, Db2 databases, VSAM files, JCL batch jobs, schedulers, reports, copybooks, and operational procedures that have accumulated business meaning over decades.
+
+The language is only one layer of that system. A COBOL program may be correct because it participates in a job stream, reads a fixed record layout, uses a specific collating sequence, writes a report consumed by another batch step, updates a database under transaction control, and runs inside a platform with mature backup, security, audit, and operations practices.
+
+This is why "replace COBOL with Java" is usually incomplete. The actual replacement scope is business behavior plus files, databases, transactions, encodings, restartability, schedules, operators, audit expectations, and integration contracts.
+
+## Data Model And Decimal Arithmetic
+
+COBOL is unusually explicit about business data. Data descriptions use levels, names, `PIC` clauses, `USAGE`, signs, implied decimal points, group items, redefinitions, tables, and copybooks to describe how records are stored and interpreted.
+
+IBM Enterprise COBOL documentation divides data into classes and categories such as alphanumeric, numeric, national, UTF-8, packed decimal, binary, internal floating-point, and external floating-point. Numeric data is not just "an integer" or "a float." A `PIC S9(7)V99 COMP-3` field, a zoned decimal display field, and a binary counter have different storage, validation, arithmetic, and interoperability consequences.
+
+That fixed-point decimal model is one of COBOL's enduring strengths. Financial and administrative systems often need exact decimal behavior, record compatibility, and stable field layouts more than they need general-purpose numeric abstraction. The same strength becomes a modernization risk when translated code treats packed decimals, signed overpunch, implied decimals, or display fields as ordinary strings or floating-point values.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing), [Compilation Targets](/concepts/compilation-targets), and [ABI Stability](/concepts/abi-stability).
+
+## Files, Records, And Batch Work
+
+COBOL's file model is central to many applications. IBM documents sequential, line-sequential, indexed, and relative file organizations for Enterprise COBOL on z/OS. Indexed files use record keys and can allow sequential, random, or dynamic access. Relative files identify records by relative record number. On z/OS, COBOL file I/O may be backed by QSAM, VSAM, or the z/OS UNIX file system.
+
+This is not incidental library behavior. File organization, record length, key layout, encoding, sorting, restart points, error handling, and job ordering can be part of the application contract. A batch job that reads yesterday's file, applies accounting rules, writes an output file, updates a database, and emits an audit report may be more like an operational process than a single program.
+
+Modernization should preserve those boundaries before changing code. Build characterization tests around records, reports, database effects, return codes, restart cases, and downstream files. A new service endpoint is not equivalent to an old batch job unless it proves the same business outcomes under the same data constraints.
+
+## Syntax Example
+
+```cobol
+       identification division.
+       program-id. invoice-total.
+
+       data division.
+       working-storage section.
+       01  invoice-amount        pic s9(7)v99 comp-3 value 149995.
+       01  tax-rate              pic v999 value .082.
+       01  tax-amount            pic s9(7)v99 comp-3 value zero.
+       01  total-amount          pic s9(7)v99 comp-3 value zero.
+       01  display-total         pic $$$,$$9.99.
+
+       procedure division.
+           compute tax-amount rounded = invoice-amount * tax-rate
+           add invoice-amount to tax-amount giving total-amount
+           move total-amount to display-total
+           display "TOTAL DUE " display-total
+           goback.
+```
+
+The example shows the shape that matters: divisions, working storage, fixed-point decimal fields, an implied decimal point, rounded arithmetic, an edited display field, and procedural control flow. Production COBOL would usually include copybooks, file sections, database or transaction integration, compiler options, and operational job control around the program.
+
+## Implementations And Tooling
+
+COBOL implementations vary by platform and target. IBM Enterprise COBOL for z/OS is a major production compiler for IBM Z environments, with current documentation and migration material for modern Enterprise COBOL releases. GnuCOBOL is a free compiler that produces native executables from COBOL source and documents its `cobc` build modes, including preprocessing, translating to C, compiling objects, building modules, and creating executable images. OpenText/Micro Focus Visual COBOL targets modernization workflows including native, .NET, JVM, IDE, and cloud-oriented deployment paths.
+
+There is no single COBOL package-manager culture comparable to Cargo, npm, Maven, or NuGet. Existing systems commonly rely on compiler installations, copybook libraries, mainframe datasets, JCL, build scripts, IDE project files, vendor tools, database preprocessors, scheduler configuration, and deployment procedures.
+
+That tooling shape is why reproducibility matters. A maintainable COBOL system should document compiler version, dialect flags, source format, copybook paths, database preprocessors, runtime libraries, file definitions, JCL or equivalent job definitions, and the exact test data used for validation.
+
+## Modernization Paths
+
+COBOL modernization has several different meanings:
+
+- Upgrade the compiler and keep the same platform.
+- Refactor COBOL in place around tested modules, clearer copybooks, and stricter compiler options.
+- Wrap stable COBOL transactions or batch outputs behind APIs, queues, files, or database views.
+- Move presentation, workflow, reporting, or integration code into Java, C#, Python, TypeScript, or another platform while leaving core COBOL behavior intact.
+- Rehost COBOL on another runtime or operating environment.
+- Translate or rewrite COBOL behavior into Java, C#, or another language.
+
+These paths have different risks. Compiler upgrades and in-place cleanup can reduce operational risk without changing the business platform. Wrapping can expose safer interfaces while preserving trusted behavior. Rehosting changes platform assumptions. Translation and rewrite are the highest-risk options because they must preserve hidden behavior in data formats, decimal arithmetic, transactions, files, schedules, and exception cases.
+
+Java interop is real but should be designed, not assumed. IBM documents Java-compatible COBOL array patterns and conversions between COBOL decimal formats and Java `BigDecimal` in specific tooling contexts. OpenText/Micro Focus documents JVM and .NET COBOL deployment options. Those are useful bridges, but they do not make broad source migration automatic.
+
+## Best-Fit Use Cases
+
+COBOL is a strong fit for:
+
+- Maintaining mission-critical business systems already written in COBOL.
+- Mainframe batch and transaction systems where z/OS, CICS, IMS, Db2, VSAM, JCL, and existing operations are durable assets.
+- Fixed-record, fixed-decimal financial, insurance, government, payroll, claims, settlement, and administrative workloads.
+- Teams that can staff COBOL and mainframe expertise and value incremental modernization over speculative rewrites.
+- Systems where tested behavior, auditability, and operational continuity are more valuable than language fashion.
+
+## Poor-Fit Or Risky Use Cases
+
+COBOL is a poor default for:
+
+- New web services, mobile apps, data platforms, cloud-native applications, command-line tools, or general product software.
+- Teams without COBOL, mainframe, or enterprise operations expertise.
+- Systems where the real need is a broad package ecosystem, rapid hiring, commodity cloud examples, or developer tooling outside mainframe and COBOL vendors.
+- Modernization efforts that treat COBOL as text to translate instead of behavior to preserve.
+- Projects whose data model can be represented more simply in SQL, Java, C#, Python, Go, TypeScript, or another mainstream application platform.
+
+## Governance, Compatibility, And Community
+
+COBOL evolves through standards work and vendor implementations rather than one language foundation or open-source core repository. ISO/IEC 1989:2023 is the current standard, but production compatibility is often defined by compiler vendors, platform owners, and installed application portfolios.
+
+Community and education are more fragmented than in newer ecosystems. The Open Mainframe Project lists a COBOL Working Group and a COBOL Training Course aimed at introducing mainframe COBOL with modern tooling. GnuCOBOL provides an open compiler path for learning, testing, and non-mainframe programs. Production mainframe work, however, still depends heavily on vendor documentation, internal standards, institutional knowledge, and access to representative environments.
+
+Compatibility is COBOL's advantage and burden. Old programs can remain valuable because they encode tested business rules. They can also be difficult to change because source code, copybooks, files, job streams, databases, and operators may all share responsibility for the observed behavior.
+
+## Comparison Notes
+
+[COBOL vs Java For Enterprise Modernization](/comparisons/cobol-vs-java-for-enterprise-modernization) is the main comparison for teams deciding whether to keep COBOL, wrap it, modernize it in place, or move behavior to the JVM. Java is usually the better owner for new enterprise services; COBOL may remain the better owner for existing mainframe business rules until the system is understood well enough to move safely.
+
+SQL is adjacent because many COBOL systems are data-processing systems, but SQL is not a replacement for procedural business workflow. C# is adjacent in Microsoft-centered modernization paths. Fortran is an age-adjacent comparison only in the sense that both languages preserve long-lived domain code; their domains are different: COBOL centers business records, while Fortran centers numerical and scientific computation.
