@@ -13,6 +13,8 @@ use crate::content::{ComparisonPage, ConceptPage, GuidePage, LanguagePage, SiteC
 
 const SITE_URL: &str = "https://langindex.dev";
 
+const FEATURED_LANGUAGE_SLUGS: &[&str] = &["rust", "python", "typescript", "go", "java", "c"];
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum NavSection {
     Home,
@@ -69,9 +71,11 @@ pub async fn home(State(state): State<AppState>) -> Response {
     ));
     body.push_str("</div></section>");
 
-    body.push_str(r#"<section class="section"><div class="container section-head"><div><p class="eyebrow">Language shelf</p><h2>Verified profiles</h2><p>Each page surfaces the high-value facts first: fit, runtime, typing, memory model, tooling, sources, and last verification date.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
-    for language in &content.languages {
-        body.push_str(&language_card(language));
+    body.push_str(r#"<section class="section"><div class="container section-head"><div><p class="eyebrow">Language shelf</p><h2>Featured languages</h2><p>A short cross-section of the reference. Each profile surfaces the high-value facts first: fit, runtime, typing, memory model, tooling, sources, and last verification date.</p></div><a href="/languages/">Browse all languages</a></div><div class="container card-grid">"#);
+    for slug in FEATURED_LANGUAGE_SLUGS {
+        if let Some(language) = content.language(slug) {
+            body.push_str(&language_card(language));
+        }
     }
     body.push_str(r#"</div></section>"#);
     body.push_str(r#"<section class="section"><div class="container section-head"><div><p class="eyebrow">Reference paths</p><h2>Compare, decide, and define terms</h2><p>Use the supporting collections when the language choice depends on adjacent ecosystems or shared concepts.</p></div></div><div class="container browse-grid">"#);
@@ -339,24 +343,61 @@ pub async fn language_detail(State(state): State<AppState>, Path(slug): Path<Str
     )
 }
 
-pub async fn comparisons_index(State(state): State<AppState>) -> Response {
-    render_collection_index(
-        "Comparisons",
-        "Dimensional, tradeoff-first comparisons between related languages.",
-        NavSection::Comparisons,
+pub async fn comparisons_index(
+    State(state): State<AppState>,
+    Query(filters): Query<CollectionFilters>,
+) -> Response {
+    let total = state.content.comparisons.len();
+    let query = filters.q.as_deref().unwrap_or_default();
+    let language = filters.language.as_deref().unwrap_or_default();
+    let content_ref: &SiteContent = &state.content;
+    let language_options = language_filter_options(
+        content_ref,
         state
             .content
             .comparisons
             .iter()
-            .map(|page| {
-                (
-                    &page.data.title,
-                    &page.data.summary,
-                    format!("/comparisons/{}/", page.data.slug),
-                )
-            })
-            .collect(),
-    )
+            .map(|page| page.data.languages.as_slice()),
+    );
+
+    let filtered: Vec<&ComparisonPage> = state
+        .content
+        .comparisons
+        .iter()
+        .filter(|page| {
+            matches_collection_text(
+                &page.data.title,
+                &page.data.summary,
+                &page.body_markdown,
+                query,
+            )
+        })
+        .filter(|page| matches_language(&page.data.languages, language))
+        .collect();
+
+    let items: Vec<(&String, &String, String)> = filtered
+        .iter()
+        .map(|page| {
+            (
+                &page.data.title,
+                &page.data.summary,
+                format!("/comparisons/{}/", page.data.slug),
+            )
+        })
+        .collect();
+
+    render_filtered_collection_index(FilteredCollectionParams {
+        title: "Comparisons",
+        summary: "Dimensional, tradeoff-first comparisons between related languages.",
+        section: NavSection::Comparisons,
+        action_path: "/comparisons/",
+        query,
+        language,
+        language_options: &language_options,
+        item_label: "comparison",
+        total,
+        items,
+    })
 }
 
 pub async fn comparison_detail(
@@ -379,24 +420,61 @@ pub async fn comparison_detail(
     })
 }
 
-pub async fn guides_index(State(state): State<AppState>) -> Response {
-    render_collection_index(
-        "Guides",
-        "Decision guides framed by the problem a developer is solving.",
-        NavSection::Guides,
+pub async fn guides_index(
+    State(state): State<AppState>,
+    Query(filters): Query<CollectionFilters>,
+) -> Response {
+    let total = state.content.guides.len();
+    let query = filters.q.as_deref().unwrap_or_default();
+    let language = filters.language.as_deref().unwrap_or_default();
+    let content_ref: &SiteContent = &state.content;
+    let language_options = language_filter_options(
+        content_ref,
         state
             .content
             .guides
             .iter()
-            .map(|page| {
-                (
-                    &page.data.title,
-                    &page.data.summary,
-                    format!("/guides/{}/", page.data.slug),
-                )
-            })
-            .collect(),
-    )
+            .map(|page| page.data.candidates.as_slice()),
+    );
+
+    let filtered: Vec<&GuidePage> = state
+        .content
+        .guides
+        .iter()
+        .filter(|page| {
+            matches_collection_text(
+                &page.data.title,
+                &page.data.summary,
+                &page.body_markdown,
+                query,
+            )
+        })
+        .filter(|page| matches_language(&page.data.candidates, language))
+        .collect();
+
+    let items: Vec<(&String, &String, String)> = filtered
+        .iter()
+        .map(|page| {
+            (
+                &page.data.title,
+                &page.data.summary,
+                format!("/guides/{}/", page.data.slug),
+            )
+        })
+        .collect();
+
+    render_filtered_collection_index(FilteredCollectionParams {
+        title: "Guides",
+        summary: "Decision guides framed by the problem a developer is solving.",
+        section: NavSection::Guides,
+        action_path: "/guides/",
+        query,
+        language,
+        language_options: &language_options,
+        item_label: "guide",
+        total,
+        items,
+    })
 }
 
 pub async fn guide_detail(State(state): State<AppState>, Path(slug): Path<String>) -> Response {
@@ -679,33 +757,142 @@ fn render_standard_detail(detail: StandardDetail<'_>) -> Response {
     )
 }
 
-fn render_collection_index(
-    title: &str,
-    summary: &str,
+#[derive(Debug, Default, Deserialize)]
+pub struct CollectionFilters {
+    q: Option<String>,
+    language: Option<String>,
+}
+
+struct FilteredCollectionParams<'a> {
+    title: &'a str,
+    summary: &'a str,
     section: NavSection,
-    items: Vec<(&String, &String, String)>,
-) -> Response {
-    let mut body = index_intro(title, summary);
-    body.push_str(r#"<section class="section"><div class="container list-grid">"#);
-    for (item_title, item_summary, href) in items {
+    action_path: &'a str,
+    query: &'a str,
+    language: &'a str,
+    language_options: &'a [(String, String)],
+    item_label: &'a str,
+    total: usize,
+    items: Vec<(&'a String, &'a String, String)>,
+}
+
+fn render_filtered_collection_index(params: FilteredCollectionParams<'_>) -> Response {
+    let mut body = index_intro(params.title, params.summary);
+    let showing = params.items.len();
+    let plural_label = if showing == 1 {
+        params.item_label.to_string()
+    } else {
+        format!("{}s", params.item_label)
+    };
+
+    body.push_str(r#"<section class="section"><div class="container">"#);
+    body.push_str(&format!(
+        r#"<form class="filter-form" action="{}" role="search"><div class="filter-grid filter-grid-compact">"#,
+        escape_attr(params.action_path)
+    ));
+    body.push_str(&format!(
+        r#"<label>Search<input name="q" type="search" value="{}" placeholder="Filter by title or summary..." /></label>"#,
+        escape_attr(params.query)
+    ));
+    let selected_lang = normalize_filter(params.language);
+    body.push_str(
+        r#"<label>Language<select name="language"><option value="">Any language</option>"#,
+    );
+    for (slug, label) in params.language_options {
+        let is_selected = if slug == &selected_lang {
+            " selected"
+        } else {
+            ""
+        };
         body.push_str(&format!(
-            r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h2><a href="{}">{}</a></h2><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
-            escape_attr(&href),
-            escape(item_title),
-            escape(item_summary),
-            escape_attr(&href)
+            r#"<option value="{}"{}>{}</option>"#,
+            escape_attr(slug),
+            is_selected,
+            escape(label)
         ));
     }
-    body.push_str("</div></section>");
+    body.push_str("</select></label>");
+    body.push_str("</div>");
+    body.push_str(&format!(
+        r#"<div class="filter-actions"><p aria-live="polite">Showing {} {} of {}.</p><button type="submit">Apply filters</button><a class="button" href="{}">Reset filters</a></div>"#,
+        showing,
+        plural_label,
+        params.total,
+        escape_attr(params.action_path)
+    ));
+    body.push_str("</form>");
+    body.push_str(r#"<div class="list-grid">"#);
+    for (item_title, item_summary, href) in &params.items {
+        body.push_str(&format!(
+            r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h2><a href="{}">{}</a></h2><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
+            escape_attr(href),
+            escape(item_title),
+            escape(item_summary),
+            escape_attr(href)
+        ));
+    }
+    if showing == 0 {
+        body.push_str(r#"<p class="empty-state">No matches yet. Try resetting filters or broadening the search.</p>"#);
+    }
+    body.push_str("</div></div></section>");
     render_page(
         PageMeta {
-            title: title.to_string(),
-            description: summary.to_string(),
-            section,
+            title: params.title.to_string(),
+            description: params.summary.to_string(),
+            section: params.section,
         },
         body,
         StatusCode::OK,
     )
+}
+
+fn matches_collection_text(title: &str, summary: &str, body: &str, query: &str) -> bool {
+    let normalized = normalize_filter(query);
+    if normalized.is_empty() {
+        return true;
+    }
+    let haystack = format!(
+        "{} {} {}",
+        normalize_filter(title),
+        normalize_filter(summary),
+        normalize_filter(body)
+    );
+    normalized
+        .split_whitespace()
+        .all(|term| haystack.contains(term))
+}
+
+fn matches_language(languages: &[String], selected: &str) -> bool {
+    let selected = normalize_filter(selected);
+    if selected.is_empty() {
+        return true;
+    }
+    languages
+        .iter()
+        .any(|slug| normalize_filter(slug) == selected)
+}
+
+fn language_filter_options<'a>(
+    content: &SiteContent,
+    pages: impl Iterator<Item = &'a [String]>,
+) -> Vec<(String, String)> {
+    let mut seen = std::collections::BTreeMap::new();
+    for slugs in pages {
+        for slug in slugs {
+            let normalized = normalize_filter(slug);
+            if normalized.is_empty() {
+                continue;
+            }
+            let label = content
+                .language(&normalized)
+                .map(|page| page.data.title.clone())
+                .unwrap_or_else(|| normalized.clone());
+            seen.entry(normalized).or_insert(label);
+        }
+    }
+    let mut options: Vec<_> = seen.into_iter().collect();
+    options.sort_by_key(|entry| entry.1.to_lowercase());
+    options
 }
 
 struct ConceptGroupDefinition {

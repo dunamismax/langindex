@@ -712,6 +712,11 @@ input::placeholder {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.filter-form + .card-grid,
+.filter-form + .list-grid {
+  margin-top: 1.5rem;
+}
+
 .browse-grid,
 .need-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));

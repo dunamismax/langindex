@@ -7,7 +7,7 @@ test("homepage exposes search and language discovery", async ({ page }) => {
     /understand programming languages/i,
   );
   await expect(
-    page.getByRole("heading", { name: "Verified profiles" }),
+    page.getByRole("heading", { name: "Featured languages" }),
   ).toBeVisible();
   await expect(page.getByLabel("Search languages and topics")).toBeVisible();
   await expect(

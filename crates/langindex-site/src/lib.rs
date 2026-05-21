@@ -244,6 +244,21 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn comparisons_index_filters_by_language() {
+        let (status, body) = get("/comparisons/?language=rust").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Rust vs Go"));
+        assert!(!body.contains("Java vs Kotlin"));
+    }
+
+    #[tokio::test]
+    async fn guides_index_filters_by_search() {
+        let (status, body) = get("/guides/?q=systems").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Choosing a Systems Language"));
+    }
+
+    #[tokio::test]
     async fn stylesheet_has_expected_content_type() {
         let content = load_site_content(&default_content_root()).expect("content loads");
         let response = build_router(content)
