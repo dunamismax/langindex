@@ -4,6 +4,7 @@ slug: choosing-a-systems-language
 summary: A practical guide for evaluating systems languages by runtime constraints, memory model, concurrency needs, team skill, ecosystem, and deployment target.
 audience: Developers choosing a language for infrastructure, native tooling, embedded work, network services, or performance-sensitive components.
 candidates:
+  - assembly
   - rust
   - go
   - c
@@ -12,6 +13,15 @@ candidates:
   - nim
   - crystal
 sources:
+  - title: GNU assembler manual
+    url: https://sourceware.org/binutils/docs/as/index.html
+    publisher: GNU Binutils
+  - title: "Intel 64 and IA-32 Architectures Software Developer Manuals"
+    url: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+    publisher: Intel
+  - title: x86-64 psABI
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    publisher: x86 psABI maintainers
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
@@ -115,7 +125,7 @@ lastVerified: 2026-05-21
 
 The first question is not which language is more admired. It is what the program is allowed to depend on at runtime.
 
-If the project cannot tolerate a garbage collector, Go is probably the wrong default. That does not make Go slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, and allocator-sensitive libraries often need a no-GC language such as Rust, C, C++, or Zig.
+If the project cannot tolerate a garbage collector, Go is probably the wrong default. That does not make Go slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, and allocator-sensitive libraries often need a no-GC language such as Rust, C, C++, or Zig. Assembly belongs even lower: use it for exact target instructions, startup code, ABI shims, and hardware entry points, not as the default owner for ordinary systems logic.
 
 If a managed runtime is acceptable and the target is a network service, command-line tool, control plane, or deployment helper, Go becomes much more attractive. It gives native binaries, a standard formatter, a standard test workflow, and built-in concurrency without requiring the team to model ownership and lifetimes in every module.
 
@@ -152,6 +162,21 @@ Choose a garbage-collected systems-adjacent language such as Go when:
 Related memory concepts: [Ownership](/concepts/ownership/), [Garbage Collection](/concepts/garbage-collection/), [Manual Memory Management](/concepts/manual-memory-management/), [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
 
 Related runtime concepts: [Compilation Targets](/concepts/compilation-targets/), [Foreign Function Interface](/concepts/foreign-function-interface/), [ABI Stability](/concepts/abi-stability/), and [Build Systems](/concepts/build-systems/).
+
+## Assembly Adoption Constraints
+
+Assembly is the systems choice only when the unit of work is truly instruction-level or ABI-level. It fits boot code, reset handlers, interrupt and exception entry, context switches, syscall stubs, JIT trampolines, CPU feature probes, and measured kernels where source-level code or intrinsics cannot express the requirement.
+
+Before starting new assembly work, answer these questions:
+
+- Which ISA, assembler, syntax dialect, object format, ABI, operating system, privilege level, and CPU feature set are targeted?
+- Which calling convention, callee-saved registers, stack alignment, red-zone or shadow-space rules, and unwind metadata are required?
+- Can a compiler intrinsic, builtin, target attribute, or small C/Rust/Zig/C++ function express the same behavior more safely?
+- How will the assembly be tested from the real caller language and linked artifact?
+- Is there a higher-level reference implementation for correctness tests?
+- How will target-specific variants be maintained for x86-64, AArch64, RISC-V, embedded cores, or vendor ABIs?
+
+If these answers are vague, assembly's closeness to hardware becomes a liability. Keep it narrow and let a systems language own the surrounding logic.
 
 ## Rust Adoption Constraints
 

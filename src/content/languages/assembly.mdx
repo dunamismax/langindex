@@ -1,0 +1,229 @@
+---
+title: Assembly Language
+slug: assembly
+status: active
+summary: Assembly language is a family of target-specific low-level languages that express machine instructions, registers, labels, directives, and ABI contracts close to the processor and object format.
+creators: []
+paradigms:
+  - low-level
+  - imperative
+  - systems
+typing:
+  discipline: target-specific
+  strength: mostly untyped symbolic instructions with operand sizes, registers, encodings, and relocations defined by the ISA and assembler
+memory:
+  model: direct address, register, stack, and memory access according to the processor architecture, privilege level, and ABI
+runtime:
+  model: assembled to machine code and linked or loaded for a specific instruction set, object format, operating system, firmware image, or bare-metal target
+officialSite: https://sourceware.org/binutils/docs/as/index.html
+packageManagers:
+  - GNU Binutils
+  - NASM
+  - MASM
+  - LLVM integrated assembler
+comparedWith:
+  - c
+  - cpp
+  - rust
+  - zig
+bestFor:
+  - Boot code, interrupt or exception entry, context switching, firmware startup, low-level runtime stubs, and target features that a compiler cannot express directly.
+  - Narrow ABI boundaries where register use, stack layout, calling convention, relocation, or unwind metadata must be controlled instruction by instruction.
+  - Reverse engineering, binary analysis, debugging, disassembly review, exploit mitigation work, and compiler or JIT output inspection.
+  - Small performance-critical kernels only after measurement proves generated code cannot meet the constraint and maintainability costs are acceptable.
+poorFit:
+  - General application logic, services, business systems, parsers, protocols, UI code, or large algorithms where C, Rust, Zig, C++, Go, Java, C#, Python, or another language can express intent more safely.
+  - Portable libraries that must span many architectures, operating systems, ABIs, or calling conventions without maintaining separate implementations.
+  - Teams without strong hardware, ABI, debugger, linker, review, test, and documentation discipline.
+  - Work justified only by the assumption that handwritten assembly is automatically faster than optimized compiler output.
+sources:
+  - title: GNU assembler manual
+    url: https://sourceware.org/binutils/docs/as/index.html
+    publisher: GNU Binutils
+  - title: The Assembler language on z/OS
+    url: https://www.ibm.com/docs/en/zos-basic-skills?topic=zos-assembler-language
+    publisher: IBM
+  - title: NASM - The Netwide Assembler
+    url: https://www.nasm.us/doc/nasm01.html
+    publisher: NASM
+  - title: "Intel 64 and IA-32 Architectures Software Developer Manuals"
+    url: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+    publisher: Intel
+  - title: "RISC-V Instruction Set Manual, Volume I: Unprivileged Architecture"
+    url: https://docs.riscv.org/reference/isa/unpriv/unpriv-index.html
+    publisher: RISC-V International
+  - title: "Procedure Call Standard for the Arm 64-bit Architecture"
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
+    publisher: Arm
+  - title: x86-64 psABI
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    publisher: x86 psABI maintainers
+  - title: x64 calling convention
+    url: https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170
+    publisher: Microsoft Learn
+  - title: Extended Asm - Assembler Instructions with C Expression Operands
+    url: https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
+    publisher: GNU Compiler Collection
+  - title: objdump
+    url: https://sourceware.org/binutils/docs/binutils/objdump.html
+    publisher: GNU Binutils
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+Assembly language is not one portable language with one grammar, standard library, package manager, or official specification. It is a family of symbolic languages tied to instruction set architectures, assemblers, object formats, ABIs, operating systems, firmware environments, and toolchains.
+
+An x86-64 NASM file, an x86-64 GNU `as` file, an AArch64 file, a RISC-V file, a WebAssembly text module, and a vendor microcontroller startup file are all "assembly" in ordinary speech, but they do not share one language contract. The useful question is always: assembly for which ISA, assembler, object format, ABI, privilege level, and target?
+
+This page treats Assembly as a practical LangIndex profile for machine-code-adjacent programming. It focuses on where handwritten or reviewed assembly is still useful, where it is risky, and how it differs from C and other systems languages.
+
+The `officialSite` metadata points to the GNU assembler manual as a representative maintained assembler reference. Assembly itself has no central official site or single governing organization.
+
+## Origin And Design Goals
+
+Assembly languages grew out of the need to write machine-level programs with symbols instead of raw numeric machine code. IBM's z/OS documentation describes assembler language as a symbolic programming language for coding instructions instead of machine language and as the symbolic language closest to machine language in form and content.
+
+That design goal remains the same across modern targets: make machine instructions, addresses, labels, storage, and assembler operations readable enough for humans while still producing exact object code for a processor and binary format. Assembly is not meant to hide the machine. It is meant to name it.
+
+## Machine-Code Proximity
+
+Assembly source normally names instructions, registers, labels, constants, sections, alignment, and assembler directives. An assembler turns that source into object code, records symbols and relocations, and leaves final address placement and external references to the linker or loader when the output format supports them.
+
+The closeness to machine code is the value. It lets a developer express a specific instruction sequence, use a specific register, define an interrupt vector, control stack adjustment, emit a known byte pattern, or inspect exactly what a compiler generated. It also means ordinary abstractions are missing. There is no cross-architecture type system, ownership model, module system, portable calling convention, allocator, exceptions, or runtime safety net.
+
+The ISA manual is the first source of truth. Intel's manuals describe the Intel 64 and IA-32 architecture and programming environment. RISC-V International publishes the RISC-V instruction set manual. Arm publishes architecture and ABI documents for its targets. Assemblers then add syntax, macros, directives, relocation forms, object-format behavior, and target-specific options on top of the hardware specification.
+
+## Assemblers, Syntax, And Object Formats
+
+The assembler matters. GNU `as` is part of GNU Binutils and documents a common assembler model plus many machine-dependent chapters. NASM is an x86 and x86-64 assembler with Intel-like syntax and support for formats such as ELF, Mach-O, COFF, and flat binaries. Microsoft MASM, LLVM's integrated assembler, FASM, YASM, vendor embedded assemblers, and architecture-specific tools all have their own syntax and directives.
+
+Syntax differences are not cosmetic. x86 AT&T syntax and Intel syntax reverse operand order and name registers differently. AArch64 and RISC-V have their own mnemonic, immediate, relocation, and pseudo-instruction conventions. A directive such as `.section`, `.global`, `.align`, `.cfi_startproc`, or `section .text` may be assembler-specific or object-format-specific.
+
+Object format also shapes the work. An ELF object for Linux, a Mach-O object for macOS, a COFF object for Windows, a raw boot sector, an Intel HEX firmware image, and a vendor-flashed microcontroller binary have different section, relocation, symbol, debug, and linking rules. "The assembly is correct" is incomplete unless the produced artifact is correct for the loader.
+
+## ABI, Calling Conventions, And Unwind Rules
+
+Most maintained assembly code is not just about opcodes. It is about contracts with compiled code.
+
+An ABI defines how binary components call each other and how object files, linkers, loaders, registers, stacks, argument passing, return values, alignment, symbol visibility, exception unwinding, thread-local storage, and data layout behave on a target. The x86-64 psABI project maintains the System V x86-64 processor-specific ABI. Microsoft documents the Windows x64 calling convention separately. Arm's AAPCS64 document describes the procedure call standard used by the Arm 64-bit ABI.
+
+Assembly that calls C, is called by C, handles exceptions, participates in stack unwinding, or appears in profiler/debugger output must obey the target ABI. That usually means preserving callee-saved registers, aligning the stack, placing arguments and return values correctly, emitting unwind metadata when required, handling red zones or shadow space correctly, and respecting platform-specific symbol naming and relocation rules.
+
+ABI mistakes are often worse than syntax errors. They may compile and run until optimization level, compiler version, operating system, exception path, signal handler, debugger, or caller changes.
+
+Related concepts: [ABI Stability](/concepts/abi-stability/), [Foreign Function Interface](/concepts/foreign-function-interface/), [Compilation Targets](/concepts/compilation-targets/), and [Build Systems](/concepts/build-systems/).
+
+## Runtime, Firmware, And Embedded Work
+
+Assembly remains important where a program begins before a normal language runtime exists. Boot sectors, reset handlers, exception vectors, interrupt trampolines, context-switch code, syscall stubs, JIT trampolines, atomics, CPU feature probes, memory barriers, and highly target-specific runtime entry points often need exact instructions or register protocols.
+
+Firmware and embedded projects may use assembly for startup and a small number of low-level routines, then hand control to C, Rust, C++, Zig, Ada, or generated code. That is usually healthier than writing broad product logic in assembly. The assembly-owned layer should be small, documented, tested on the real target, and reviewed against the relevant architecture manual and ABI.
+
+For bare-metal work, the boundary expands beyond instructions. Linker scripts, vector tables, reset state, memory maps, stack placement, interrupt masking, privilege modes, cache/TLB setup, memory-mapped I/O, volatile access, and board support packages may matter more than the assembly syntax itself.
+
+## Reverse Engineering And Debugging
+
+Assembly literacy is useful even when nobody writes assembly source. Debuggers, crash dumps, profilers, disassemblers, compiler explorers, binary diff tools, and reverse-engineering tools all expose machine instructions.
+
+GNU `objdump` can display assembler mnemonics for machine instructions in object files. GDB and platform debuggers can show disassembly around a program counter. Security, performance, and reliability work often depends on reading generated code to understand call frames, tail calls, vectorization, branch layout, atomic instructions, stack probes, sanitizer instrumentation, or missing symbols.
+
+Reading assembly is usually more broadly useful than writing large assembly systems. A developer who can inspect disassembly can confirm whether a compiler emitted expected instructions, whether an inline assembly block declared the right clobbers, whether a stack trace is plausible, or whether a reverse-engineered function boundary is likely.
+
+## Performance Myths
+
+Handwritten assembly is not automatically faster than compiler output. Modern optimizing compilers understand instruction scheduling, register allocation, vectorization, target features, inlining, profile-guided optimization, link-time optimization, aliasing information, and surrounding code better than a narrow handwritten function often can.
+
+Assembly can still win in narrow cases:
+
+- A target instruction is not exposed well by intrinsics or the source language.
+- A short hot path has been measured and compiler output is demonstrably worse.
+- A runtime, kernel, crypto, codec, math, compression, or context-switch routine needs exact register or instruction behavior.
+- Binary size or startup constraints require a hand-shaped sequence.
+- The code is a stable ABI shim rather than a normal algorithm.
+
+The burden of proof is measurement. Keep a reference implementation in a higher-level language when practical, test the assembly against it, benchmark on the actual CPU families, and re-check after compiler, flags, microarchitecture, and workload changes.
+
+## Inline Assembly
+
+Inline assembly is a special risk because it asks a compiler and handwritten instructions to share one optimization unit. GCC's extended `asm` documentation shows the real contract: inputs, outputs, clobbers, `volatile`, labels, assembler templates, and target-specific constraints tell the compiler what the assembly reads, writes, and changes.
+
+If those constraints are wrong, the compiler can make legal optimizations that break the program. A missing memory clobber, wrong register constraint, hidden control-flow edge, incorrect stack adjustment, undeclared flags change, or assumption about instruction ordering can create bugs that vary by optimization level.
+
+Prefer compiler intrinsics, builtins, target-feature attributes, or small out-of-line assembly files when they express the intent with less risk. Use inline assembly when the boundary with surrounding C/C++/Rust code is genuinely the simplest correct representation.
+
+## Syntax Example
+
+This NASM example targets x86-64 System V style calling conventions on Unix-like systems. It is not portable assembly; it depends on the target ABI and assembler syntax.
+
+```asm
+global sum_i64
+
+section .text
+
+; long sum_i64(const long *values, unsigned long count)
+; rdi = values, rsi = count, rax = return value
+sum_i64:
+    xor rax, rax
+    test rsi, rsi
+    jz .done
+
+.loop:
+    add rax, [rdi]
+    add rdi, 8
+    dec rsi
+    jnz .loop
+
+.done:
+    ret
+```
+
+The example is intentionally small. A production version would still need tests, build rules, debug/unwind expectations where relevant, target documentation, and a C declaration that matches the ABI.
+
+## Best-Fit Use Cases
+
+Assembly is a strong fit for:
+
+- Boot, reset, interrupt, exception, context-switch, syscall, and runtime entry code.
+- Narrow performance kernels where profiling proves source-level code and intrinsics are not enough.
+- CPU feature use before the compiler or standard library exposes the needed operation.
+- ABI shims, trampoline code, calling-convention adapters, and JIT/runtime glue.
+- Reverse engineering, disassembly review, crash analysis, exploit mitigation, and compiler output inspection.
+- Firmware or freestanding targets where exact startup state and binary layout matter.
+
+## Poor-Fit Or Risky Use Cases
+
+Assembly becomes a poor fit when:
+
+- The code is ordinary product logic rather than a hardware, ABI, runtime, or measured hot-path constraint.
+- Portability across CPU families is required.
+- The team cannot maintain separate implementations for x86-64, AArch64, RISC-V, embedded variants, and platform ABIs.
+- Correctness depends on complex data structures, ownership rules, parsing, text processing, networking, or business rules.
+- Debug metadata, unwind behavior, sanitizers, profilers, and test coverage are afterthoughts.
+- The performance claim has not been measured against optimized C, Rust, Zig, C++, or compiler intrinsics.
+
+## Tooling And Maintenance
+
+Good assembly projects treat the assembly as a target-specific artifact with explicit ownership:
+
+- Name the ISA, assembler, syntax dialect, object format, ABI, and supported operating systems.
+- Keep build flags, target features, and linker scripts in version control.
+- Test assembly from the languages and compilers that call it.
+- Preserve a higher-level reference implementation when possible.
+- Run disassembly checks for important generated artifacts.
+- Document register use, clobbers, stack layout, calling conventions, and unwind expectations.
+- Re-test after compiler, assembler, linker, CPU, OS, and toolchain upgrades.
+
+The safest assembly is usually small, boring, and surrounded by tests. Large assembly-only systems can be maintained, but they require rare expertise and should be chosen because the target demands it, not because assembly feels closer to the hardware.
+
+## Governance And Ecosystem
+
+Assembly has no single governing body. Governance lives in the ISA owner or standards body, the ABI maintainers, the assembler and linker projects, the operating system, and the platform vendor. Intel, Arm, RISC-V International, Microsoft, GNU Binutils, LLVM, NASM, platform ABI maintainers, and embedded vendors each own different parts of the practical contract.
+
+That split is why source-backed assembly documentation matters. A page, code comment, or build file should point to the exact ISA manual, assembler manual, ABI document, and target profile used by the code.
+
+## Comparison Notes
+
+C is the closest general comparison. C is still low-level and ABI-friendly, but it gives named types, functions, structured control flow, compiler diagnostics, portable subsets, libraries, and much better maintainability for normal systems code. Assembly should usually sit below C, Rust, Zig, or C++ as a narrow target-specific layer.
+
+Rust, Zig, and C++ are often better owners for new low-level implementation code. They can call out to assembly or intrinsics where exact instructions matter while keeping most logic in a language that has stronger structure, tests, and review ergonomics.

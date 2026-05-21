@@ -3,6 +3,7 @@ title: ABI Stability
 slug: abi-stability
 summary: ABI stability is the ability for compiled components to keep calling each other correctly across compiler, library, language, or operating-system changes without recompilation.
 relatedLanguages:
+  - assembly
   - c
   - cpp
   - swift
@@ -10,6 +11,15 @@ relatedLanguages:
   - go
   - objective-c
 sources:
+  - title: x86-64 psABI
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    publisher: x86 psABI maintainers
+  - title: x64 calling convention
+    url: https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170
+    publisher: Microsoft Learn
+  - title: "Procedure Call Standard for the Arm 64-bit Architecture"
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
+    publisher: Arm
   - title: Swift 5 ABI Stability and More
     url: https://www.swift.org/blog/abi-stability-and-more/
     publisher: Swift.org
@@ -30,6 +40,8 @@ lastVerified: 2026-05-21
 An application binary interface defines how compiled code calls other compiled code. It includes calling conventions, register use, stack layout, symbol names, object layout, exception handling rules, alignment, dynamic linking behavior, and other details below the source-code API.
 
 ABI stability means those details remain compatible enough that compiled clients and compiled libraries can keep working together. Source compatibility is weaker: code may still compile after a change, but already-built binaries might need recompilation.
+
+Assembly code sits directly on this contract. A function written in assembly may be source-compatible with itself for years but still break binary callers if it changes callee-saved register handling, stack alignment, unwind metadata, symbol visibility, or argument layout.
 
 ## Why C Is Common At Boundaries
 

@@ -1,0 +1,113 @@
+---
+title: Assembly vs C
+slug: assembly-vs-c
+summary: Assembly and C both serve low-level native work, but Assembly controls exact target instructions and ABI details while C gives a portable systems language surface that compilers, libraries, and teams can maintain across more targets.
+languages:
+  - assembly
+  - c
+useCases:
+  - systems programming
+  - embedded
+  - firmware
+  - ABI boundaries
+  - reverse engineering
+sources:
+  - title: GNU assembler manual
+    url: https://sourceware.org/binutils/docs/as/index.html
+    publisher: GNU Binutils
+  - title: The Assembler language on z/OS
+    url: https://www.ibm.com/docs/en/zos-basic-skills?topic=zos-assembler-language
+    publisher: IBM
+  - title: NASM - The Netwide Assembler
+    url: https://www.nasm.us/doc/nasm01.html
+    publisher: NASM
+  - title: "Intel 64 and IA-32 Architectures Software Developer Manuals"
+    url: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+    publisher: Intel
+  - title: x86-64 psABI
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    publisher: x86 psABI maintainers
+  - title: x64 calling convention
+    url: https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170
+    publisher: Microsoft Learn
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Extended Asm - Assembler Instructions with C Expression Operands
+    url: https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html
+    publisher: GNU Compiler Collection
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for low-level work where the realistic choices are C or handwritten assembly: firmware startup, runtime stubs, kernels, embedded board support, ABI shims, compiler/runtime internals, reverse engineering, or measured hot paths. It is not a recommendation to write ordinary application logic in either language when a safer or higher-level language fits.
+
+## Practical Difference
+
+C is a systems programming language. It gives functions, types, structs, control flow, translation units, headers, compiler diagnostics, optimizers, and broad toolchain support while still exposing memory, pointers, object representation, and C ABI boundaries. It is close enough to hardware for many systems tasks, but still abstract enough for compilers to retarget and optimize across architectures.
+
+Assembly is a target-specific symbolic form of machine code. It names instructions, registers, labels, sections, directives, and relocations for one assembler and one architecture family. It can express details C cannot or should not express directly: exact instruction sequences, reset vectors, stack switching, privilege transitions, calling-convention adapters, raw binary layout, and CPU features not exposed through the compiler.
+
+The tradeoff is maintainability. C code can often move from x86-64 to AArch64 or RISC-V with compiler and platform work. Assembly usually needs a separate implementation for each ISA, ABI, syntax dialect, and object format.
+
+## ABI And Calling Conventions
+
+Both languages can sit at binary boundaries, but they do so differently.
+
+C is often the public boundary because many platforms and foreign-function interfaces understand C headers and C-compatible ABIs. Other languages can call C functions, load C-compatible shared libraries, and model C structs more easily than they can consume C++ objects or language-specific runtimes.
+
+Assembly is what you use when the C compiler cannot own the boundary: context switches, interrupt entry, syscall veneers, startup before a stack exists, JIT trampolines, or hand-written adapters between calling conventions. At that level, the ABI document is as important as the ISA manual. Register preservation, stack alignment, shadow space, red zones, unwind metadata, symbol names, and relocation models must match the target exactly.
+
+## Performance
+
+C is usually the better starting point for performance-sensitive systems code. Optimizing compilers can inline, schedule instructions, allocate registers, vectorize loops, use profile data, and adapt to target CPUs while preserving a maintainable source language.
+
+Assembly can be faster in narrow, measured cases, especially when the code needs an exact instruction, a special register protocol, a vector sequence the compiler misses, or a binary layout the compiler should not infer. It can also be slower or more fragile when it blocks compiler optimization, misses microarchitecture details, or is tuned for the wrong CPU generation.
+
+Use measurement as the gate. Keep a C reference implementation when practical, benchmark on the real target, and re-check after changing compiler versions, flags, CPUs, and workloads.
+
+## Embedded And Firmware
+
+Embedded systems often use both. Assembly may own the reset handler, vector table glue, stack setup, exception entry, or tiny target-specific routines. C then owns most board support, driver, protocol, control-loop, and application logic because it is easier to test, review, and port across related chips.
+
+When the vendor SDK, RTOS, examples, and debugger are C-first, C is usually the baseline. Add assembly only where the hardware or ABI requires it. The boundary should document registers, stack state, interrupt masking, memory barriers, alignment, and which code is allowed to call into C.
+
+## Reverse Engineering And Debugging
+
+Assembly knowledge is essential for reading disassembly, crash dumps, compiler output, and binary patches. C knowledge is essential for understanding the source-level intent that often produced that machine code.
+
+For reverse engineering, the useful comparison is not "which language should the program be written in?" It is "which representation answers the question?" Assembly answers instruction-level questions: branch targets, register flow, stack frames, calling conventions, and raw memory access. C-like pseudocode or recovered source-level reasoning answers data structure, algorithm, and API questions.
+
+## Choose C When
+
+- The code is ordinary systems logic rather than a required instruction sequence.
+- Portability across compilers, operating systems, chips, or ABI variants matters.
+- The project needs headers, tests, sanitizers, static analysis, fuzzing, and maintainable reviews.
+- The target SDK, RTOS, kernel interface, or library ecosystem is C-centered.
+- The performance constraint can be met with optimized C, intrinsics, compiler flags, or profile-guided optimization.
+- The deliverable is a stable C ABI for other languages to consume.
+
+## Choose Assembly When
+
+- Code must run before C startup assumptions are valid.
+- The target requires exact register, stack, privilege, interrupt, or calling-convention behavior.
+- A CPU instruction or binary encoding is unavailable or poorly represented through C and intrinsics.
+- A small measured hot path cannot meet its constraint through optimized C.
+- The task is disassembly review, reverse engineering, exploit mitigation, or compiler/runtime output inspection.
+- The code is a narrow ABI shim, trampoline, context switch, syscall stub, boot path, or firmware entry.
+
+## Watch Points
+
+C's risks are memory safety, undefined behavior, implicit conversions, weak ownership expression, dependency/build drift, and concurrency mistakes. Its advantage over assembly is that many of those risks can be attacked with compiler diagnostics, sanitizers, analyzers, fuzzers, tests, and clearer APIs.
+
+Assembly's risks are target lock-in, missing metadata, wrong clobbers, ABI drift, poor debug/unwind behavior, accidental non-portability, and reliance on rare expertise. Even correct assembly can become wrong when the caller, compiler, operating system, CPU feature set, or ABI expectation changes.
+
+## Migration Notes
+
+For existing assembly, consider whether the code still needs to be assembly. If it is normal algorithmic logic, move it to C or another systems language and keep only the measured or ABI-required pieces. If it is startup, interrupt, context-switch, or ABI code, keep it small and document the exact target contract.
+
+For existing C, use assembly sparingly. Prefer compiler intrinsics, builtins, target attributes, or inspected compiler output when they solve the same problem with less maintenance cost. When assembly is necessary, test it from C callers so the boundary is exercised exactly as production code will use it.

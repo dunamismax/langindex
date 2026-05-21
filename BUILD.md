@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 37 language profiles.
-  - 53 comparisons.
+  - 38 language profiles.
+  - 54 comparisons.
   - 21 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -163,12 +163,12 @@ the same explanations inside every language page.
 
 ### Phase 45 - Assembly Language
 
-- [ ] Add a complete Assembly page with clear scope across ISA families.
-- [ ] Cover machine-code proximity, assemblers, ABIs, calling conventions,
+- [x] Add a complete Assembly page with clear scope across ISA families.
+- [x] Cover machine-code proximity, assemblers, ABIs, calling conventions,
       embedded/firmware, reverse engineering, performance myths, and
       maintainability constraints.
-- [ ] Add Assembly vs C comparison.
-- [ ] Update systems, embedded, and ABI/FFI concept links.
+- [x] Add Assembly vs C comparison.
+- [x] Update systems, embedded, and ABI/FFI concept links.
 
 ### Phase 46 - COBOL
 

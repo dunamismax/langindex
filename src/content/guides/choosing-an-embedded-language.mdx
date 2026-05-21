@@ -4,11 +4,21 @@ slug: choosing-an-embedded-language
 summary: A practical guide for choosing C, Rust, C++, Zig, or another language for firmware and embedded systems by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
+  - assembly
   - c
   - rust
   - cpp
   - zig
 sources:
+  - title: GNU assembler manual
+    url: https://sourceware.org/binutils/docs/as/index.html
+    publisher: GNU Binutils
+  - title: "Intel 64 and IA-32 Architectures Software Developer Manuals"
+    url: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+    publisher: Intel
+  - title: "Procedure Call Standard for the Arm 64-bit Architecture"
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
+    publisher: Arm
   - title: C language homepage
     url: https://www.c-language.org/
     publisher: C language project
@@ -72,6 +82,19 @@ Choose a language only after identifying:
 - How firmware updates, diagnostics, and field debugging will work.
 
 If the vendor examples, SDK, and debugger are C-first, C may be the practical baseline even when another language is attractive for new logic.
+
+## Where Assembly Belongs
+
+Assembly is part of many embedded systems, but usually as a narrow layer rather than the product language. It fits reset handlers, vector tables, interrupt or exception entry, stack setup, context switching, special register access, memory barriers, bootloaders, and short target routines that a compiler cannot express correctly.
+
+Use Assembly when:
+
+- The chip starts in a state where C, Rust, C++, or Zig runtime assumptions are not valid yet.
+- The code must match exact register, stack, privilege, interrupt, or calling-convention rules.
+- A vendor startup sequence, ABI, or board support package requires specific instruction sequences.
+- A tiny measured routine cannot be expressed safely through compiler intrinsics or source-level code.
+
+Do not let assembly expand by default. Once startup, trap entry, or hardware-specific setup is complete, C, Rust, C++, Zig, or Ada usually give better structure, review, testing, and portability for the rest of the firmware.
 
 ## When C Is The Baseline
 
@@ -146,6 +169,8 @@ Ask these questions before choosing:
 For C, allocation and lifetime policies must be project rules. For Rust, `no_std`, ownership, and type-level peripheral APIs can help, but target integration still has to be proved. For C++, RAII can improve cleanup, but global initialization and runtime feature policies need discipline.
 
 ## Practical Starting Points
+
+Start with Assembly only for the small target-owned layer that must run before or below a normal language runtime.
 
 Start with C when the board, SDK, RTOS, debugger, and examples are C-first and the firmware must match vendor expectations.
 

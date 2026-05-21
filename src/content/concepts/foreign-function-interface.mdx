@@ -3,6 +3,7 @@ title: Foreign Function Interface
 slug: foreign-function-interface
 summary: A foreign function interface lets code in one language call functions, load libraries, exchange data, or expose callable APIs across language and runtime boundaries.
 relatedLanguages:
+  - assembly
   - c
   - cpp
   - rust
@@ -11,6 +12,9 @@ relatedLanguages:
   - java
   - csharp
 sources:
+  - title: x86-64 psABI
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    publisher: x86 psABI maintainers
   - title: The Rust Reference - External blocks
     url: https://doc.rust-lang.org/reference/items/external-blocks.html
     publisher: Rust Project
@@ -34,6 +38,8 @@ lastVerified: 2026-05-21
 Foreign function interfaces let programs cross language boundaries. A Rust library can call C APIs. Go can use cgo to call C code. Python can load shared libraries through `ctypes`. Java can use JNI. .NET exposes native interop features for platform libraries and native components.
 
 FFI is important because real systems rarely live in one language forever. Operating systems, databases, compression libraries, graphics APIs, numerical kernels, device SDKs, and legacy libraries often expose C or C-compatible interfaces even when the application language is higher level.
+
+Handwritten assembly can participate in the same boundary, but it normally does so at the ABI level rather than through a language-level FFI wrapper. An assembly routine called from C, Rust, Python extension code, Java JNI glue, or .NET native interop must obey the target calling convention, stack alignment, register preservation, symbol, relocation, and unwind rules.
 
 ## Boundary Costs
 
