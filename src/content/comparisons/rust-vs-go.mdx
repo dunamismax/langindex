@@ -105,3 +105,5 @@ Go projects usually center on the `go` command. Modules, formatting, testing, do
 Rust and Go are often complementary rather than mutually exclusive. A service-oriented organization might write control planes, APIs, and CLIs in Go while using Rust for latency-sensitive libraries, agents, parsers, WebAssembly modules, or components where memory control is central.
 
 Interoperability is possible through process boundaries, network APIs, C ABI layers, or WebAssembly in some contexts. The cleanest boundary is usually a protocol or file format rather than direct in-process mixing, because direct FFI makes build, ownership, panic, threading, and deployment rules more complicated.
+
+Related concepts: [Ownership](/concepts/ownership), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).

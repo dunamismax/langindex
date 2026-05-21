@@ -1,0 +1,63 @@
+---
+title: Algebraic Data Types and Pattern Matching
+slug: algebraic-data-types-and-pattern-matching
+summary: Algebraic data types model values as products and alternatives, while pattern matching lets code branch by the shape of those values and often check that all cases were handled.
+relatedLanguages:
+  - haskell
+  - ocaml
+  - fsharp
+  - rust
+  - swift
+  - kotlin
+  - scala
+  - typescript
+  - csharp
+sources:
+  - title: Enums and Pattern Matching - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch06-00-enums.html
+    publisher: Rust Project
+  - title: Patterns and Matching - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch19-00-patterns.html
+    publisher: Rust Project
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+  - title: The OCaml Language - Types
+    url: https://ocaml.org/manual/5.4/types.html
+    publisher: OCaml
+  - title: Discriminated Unions - F#
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/discriminated-unions
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## Products And Sums
+
+Algebraic data types give names to combinations of values.
+
+Product types combine fields that exist together: records, structs, tuples, classes, and object shapes can all play this role. A `User` with an id, email, and status is a product shape.
+
+Sum types describe alternatives: a value is one of several variants. Haskell data declarations, OCaml variants, F# discriminated unions, Rust enums, Swift enums with associated values, Kotlin sealed classes or interfaces, and Scala sealed hierarchies all support this style in different forms.
+
+## Pattern Matching
+
+Pattern matching lets code branch by the shape of a value while binding the parts it needs. A match can say: if this is a success, bind the value; if it is an error, bind the reason; if it is a known command, extract the argument; if it is none of the above, use a fallback.
+
+The strongest systems can check exhaustiveness. If a sum type has three variants and a match handles only two, the compiler can warn or reject the code. That is valuable for protocols, parsers, command handlers, UI states, payment flows, job states, and compiler-like programs where forgotten cases become bugs.
+
+## Approximations
+
+Languages without native algebraic data types still approximate the pattern:
+
+- TypeScript commonly uses discriminated unions over object shapes.
+- Java and C# use sealed classes, records, enums, pattern matching features, and visitor-style APIs.
+- Go often uses interfaces plus type switches or explicit tagged structs.
+- Python and Ruby use tagged objects, dataclasses, hashes, classes, and runtime pattern matching or case logic.
+
+The approximation can be good enough, but the checker may not know every possible case unless the language gives it a closed set of variants.
+
+## Watch Points
+
+Algebraic data types are best when the domain really is a fixed set of shapes. They are less natural when new variants must be added by third-party plugins without changing the original definition.
+
+Pattern matching can also become too broad. A large match expression may be clearer as several smaller functions, methods, visitors, or table-driven handlers. Use matching where it makes states explicit; avoid turning every branch in the program into one central switch.

@@ -1,0 +1,68 @@
+---
+title: Strong vs Weak Typing
+slug: strong-vs-weak-typing
+summary: Strong and weak typing describe how readily a language lets operations cross type boundaries through implicit conversions, not whether type checks happen before or during execution.
+relatedLanguages:
+  - python
+  - ruby
+  - javascript
+  - java
+  - csharp
+  - typescript
+  - c
+  - cpp
+sources:
+  - title: Python Data Model
+    url: https://docs.python.org/3/reference/datamodel.html
+    publisher: Python Software Foundation
+  - title: JavaScript Data Types and Data Structures
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures
+    publisher: MDN Web Docs
+  - title: JavaScript Expressions and Operators
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators
+    publisher: MDN Web Docs
+  - title: Java Language Specification - Conversions and Contexts
+    url: https://docs.oracle.com/javase/specs/jls/se23/html/jls-5.html
+    publisher: Oracle
+  - title: Everyday Types - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
+    publisher: Microsoft
+lastVerified: 2026-05-21
+---
+
+## What The Terms Mean
+
+"Strong" and "weak" typing are less precise than "static" and "dynamic." In practice, they describe how willing a language is to reinterpret, coerce, or convert values when an operation sees a type it did not directly ask for.
+
+A strongly typed language tends to reject unsupported operations unless the program performs an explicit conversion or calls a defined protocol. Python is dynamically typed but strong in this ordinary sense: values have runtime types, and unrelated operations usually fail rather than being silently coerced into whatever might work.
+
+A more weakly typed language performs more implicit conversions. JavaScript is the familiar example: operators can convert strings, numbers, booleans, objects, `null`, or `undefined` according to detailed runtime rules. Those conversions are part of the language, not a bug, but they can make simple expressions surprising.
+
+## Not The Same Axis
+
+Strong vs weak is not the same as static vs dynamic.
+
+- Python and Ruby are dynamic but generally strong at runtime.
+- Java and C# are static but still define many numeric, boxing, unboxing, widening, nullable, overload, and conversion rules.
+- JavaScript is dynamic and has broad coercion behavior.
+- TypeScript is static analysis for JavaScript, but the emitted program still follows JavaScript runtime conversion rules.
+- C and C++ are statically typed but allow casts, promotions, pointer conversions, and low-level reinterpretation that must be handled with discipline.
+
+Use the terms carefully. When a decision depends on exact behavior, name the conversion rule rather than relying on a vague label.
+
+## Practical Consequences
+
+Implicit conversion can make small programs concise. It can also hide data-quality problems:
+
+- `"42"` might be treated as a string, a number, or invalid input depending on the language and operator.
+- Empty values may collapse into false-like conditions even when the domain needs to distinguish absent, empty, zero, and invalid.
+- Equality, ordering, and arithmetic can behave differently than a reader expects.
+- Serialization boundaries can turn precise program values into loosely typed text or JSON values.
+
+Strong runtime checks make failures more explicit, but they do not remove validation. A value can have the right language type and still be the wrong domain value.
+
+## Watch Points
+
+Avoid saying "strongly typed" when the real claim is "statically checked," "nominal," "sound," "memory safe," or "has few implicit conversions." These are different properties.
+
+For production code, focus on the boundaries: parse external data deliberately, use explicit conversions where intent matters, avoid clever equality or truthiness rules in core logic, and test edge cases where the language has permissive conversion behavior.

@@ -120,6 +120,8 @@ Nullability is explicit in Kotlin types. A `String` is non-nullable, while `Stri
 
 The main escape hatches are deliberate assertions, initialization mistakes, and interoperability. Java APIs may enter Kotlin as platform types when nullability is not fully known. Java nullability annotations can improve that boundary, and Kotlin supports several annotation families, but mixed Java/Kotlin projects still need API conventions and compiler settings.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Type Inference](/concepts/type-inference), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).
+
 ## Java Interoperability
 
 Kotlin's JVM adoption depends heavily on Java interoperability. Kotlin code can call Java classes, implement Java interfaces, use Java annotations, depend on Maven artifacts, and run in Java-centered frameworks. Java code can also call Kotlin code, but the result depends on API design.

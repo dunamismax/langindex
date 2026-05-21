@@ -138,6 +138,8 @@ Useful type-hinting practice is usually boundary-focused:
 - Keep annotations simple enough that non-specialists can still read the program.
 - Treat gradual typing as a maintenance tool rather than a promise that every runtime state is proven safe.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing), and [Null Safety](/concepts/null-safety).
+
 ## Memory Model And Concurrency
 
 Python is garbage collected. In CPython, object lifetimes are primarily managed through reference counting, with cyclic garbage collection handling reference cycles. This is an implementation detail, not a general guarantee across every Python implementation, but it matters in practice because many libraries, C extensions, and operational expectations are CPython-centered.

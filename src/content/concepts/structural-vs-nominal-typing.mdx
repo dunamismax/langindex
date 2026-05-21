@@ -1,0 +1,55 @@
+---
+title: Structural vs Nominal Typing
+slug: structural-vs-nominal-typing
+summary: Structural typing checks whether a value has the required shape, while nominal typing checks relationships through declared names such as classes, interfaces, traits, protocols, or aliases.
+relatedLanguages:
+  - typescript
+  - go
+  - ocaml
+  - java
+  - csharp
+  - rust
+  - swift
+  - kotlin
+sources:
+  - title: Type Compatibility - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/type-compatibility.html
+    publisher: Microsoft
+  - title: The Go Programming Language Specification - Interface Types
+    url: https://go.dev/ref/spec#Interface_types
+    publisher: Go Project
+  - title: Java Language Specification - Types, Values, and Variables
+    url: https://docs.oracle.com/javase/specs/jls/se23/html/jls-4.html
+    publisher: Oracle
+  - title: Traits - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch10-02-traits.html
+    publisher: Rust Project
+  - title: The OCaml Language - Types
+    url: https://ocaml.org/manual/5.4/types.html
+    publisher: OCaml
+lastVerified: 2026-05-21
+---
+
+## Structural Typing
+
+Structural typing asks whether a value has the members an operation needs. TypeScript's compatibility model is the common modern example: if a value has the right properties and call signatures, it can often be used where that shape is expected. Go interfaces are also structural: a type satisfies an interface by having the required method set, not by declaring that it implements the interface.
+
+This works well for flexible APIs, adapters, tests, callbacks, and consumer-defined interfaces. It lets code depend on capability instead of hierarchy.
+
+## Nominal Typing
+
+Nominal typing asks whether a value has the right declared name or declared relationship. Java and C# classes and interfaces are mostly nominal. A type implements an interface because it says so. Rust traits and Swift protocols also require explicit conformance declarations, even though generic bounds can then work over capabilities rather than inheritance trees.
+
+Nominal systems make API intent explicit. They are useful when identity, domain meaning, access control, versioning, or library ownership matters. A `CustomerId` and an `OrderId` might both wrap strings, but a nominal type can keep them distinct even if their structure is identical.
+
+## Mixed Systems
+
+Most real languages are mixed. TypeScript has structural compatibility but private and protected members create nominal-like constraints for classes. OCaml has nominal algebraic data types and records, plus structural object and polymorphic variant features. Rust uses nominal types and explicit trait implementations, but traits express behavior-oriented constraints that can feel capability-based in generic code.
+
+The right question is not "structural or nominal?" It is "which relationships should be inferred from shape, and which should require an explicit declaration?"
+
+## Watch Points
+
+Structural typing can accept a value accidentally if it has the right shape for the wrong reason. Excess-property checks, branded types, opaque wrappers, or runtime validation may be needed when domain identity matters.
+
+Nominal typing can create ceremony and adapter code when a small capability would have been enough. Interfaces, traits, protocols, extension methods, and wrapper types should describe stable contracts rather than mirror every implementation detail.

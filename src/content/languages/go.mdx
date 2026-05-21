@@ -105,6 +105,8 @@ Common constraints:
 - `nil` remains a real design concern for pointers, maps, slices, channels, functions, and interfaces.
 - Generic code is intentionally more limited than the template or type-level systems in some nearby languages.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), and [Null Safety](/concepts/null-safety).
+
 ## Memory Model
 
 Go is garbage collected. Developers can still work with pointers, choose value or pointer receivers, preallocate slices and maps, reuse buffers, and measure allocations, but reclamation is handled by the runtime rather than by manual `free` calls or compile-time ownership checking.

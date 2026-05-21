@@ -1,0 +1,64 @@
+---
+title: Type Inference
+slug: type-inference
+summary: Type inference lets a compiler or checker determine types from expressions and context, reducing annotations while still preserving static feedback where the language supports it.
+relatedLanguages:
+  - haskell
+  - ocaml
+  - fsharp
+  - rust
+  - typescript
+  - swift
+  - kotlin
+  - csharp
+  - go
+sources:
+  - title: Type Inference - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/type-inference.html
+    publisher: Microsoft
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+  - title: The OCaml Language - Types
+    url: https://ocaml.org/manual/5.4/types.html
+    publisher: OCaml
+  - title: Generic Data Types - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch10-01-syntax.html
+    publisher: Rust Project
+  - title: F# Language Reference
+    url: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## What Inference Does
+
+Type inference fills in type information the programmer did not write explicitly. A checker can infer the type of a local variable from its initializer, a function's return type from its final expression, a generic parameter from a call site, or a callback parameter from the API that receives it.
+
+Inference is not the opposite of static typing. Haskell, OCaml, F#, Rust, Swift, Kotlin, C#, Go, and TypeScript all use static checking with different amounts of inference. The difference is how much the language can infer, where explicit annotations are still required, and how readable the resulting code remains.
+
+## Local vs Broad Inference
+
+Local inference uses nearby expressions. TypeScript infers a variable from an initializer and can use contextual typing for callbacks. Rust infers many local types but requires enough information for trait bounds, lifetimes, and public signatures to stay clear.
+
+ML-family languages such as OCaml and F# infer more aggressively across expressions and functions. Haskell's type system descends from the Hindley-Milner tradition and combines inference with type classes and extensions in practical GHC use. These systems can make code concise while still rejecting many inconsistent programs before runtime.
+
+The broader the inference, the more important error messages and module boundaries become. A mistake far from the visible expression can produce an error at a later use site.
+
+## Annotation Strategy
+
+Good inference does not mean "never write types." Explicit annotations are useful for:
+
+- Public APIs and module boundaries.
+- Functions whose inferred type is too general, too specific, or hard to read.
+- Error messages that need a stable anchor.
+- Serialization, database, network, and foreign-function boundaries.
+- Examples and teaching code where the type is part of the explanation.
+
+Local code can often let inference carry the noise, while exported code should make contracts obvious.
+
+## Watch Points
+
+Inference can hide accidental generality. A helper might infer a wider type than intended, or a callback might infer from a context the reader did not notice. Inference can also hide expensive generic specialization or complex type-level work.
+
+For maintainable code, prefer inference where it removes redundancy. Add explicit types where they document a boundary, constrain an API, or make a compiler error easier to understand.

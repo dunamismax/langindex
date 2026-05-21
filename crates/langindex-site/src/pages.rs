@@ -814,6 +814,7 @@ fn Layout(
                                     var link = document.createElement("a");
                                     link.className = "search-result";
                                     link.href = item.url;
+                                    link.setAttribute("aria-label", item.kind + " " + item.title);
                                     var kind = document.createElement("span");
                                     kind.className = "search-kind";
                                     kind.textContent = item.kind;
@@ -834,10 +835,24 @@ fn Layout(
                                 }
                                 var terms = query.split(/\s+/).filter(Boolean);
                                 var source = searchItems || [];
-                                renderSearch(source.filter(function (item) {
+                                var matches = source.map(function (item, index) {
                                     var haystack = [item.kind, item.title, item.summary, item.text].join(" ").toLowerCase();
-                                    return terms.every(function (term) { return haystack.indexOf(term) !== -1; });
-                                }));
+                                    if (!terms.every(function (term) { return haystack.indexOf(term) !== -1; })) return null;
+                                    var title = (item.title || "").toLowerCase();
+                                    var summary = (item.summary || "").toLowerCase();
+                                    var kind = (item.kind || "").toLowerCase();
+                                    var score = 0;
+                                    terms.forEach(function (term) {
+                                        if (title === term) score += 120;
+                                        if (title.indexOf(term) !== -1) score += 80;
+                                        if (kind.indexOf(term) !== -1) score += 20;
+                                        if (summary.indexOf(term) !== -1) score += 10;
+                                    });
+                                    return { item: item, score: score, index: index };
+                                }).filter(Boolean).sort(function (left, right) {
+                                    return right.score - left.score || left.index - right.index;
+                                }).map(function (match) { return match.item; });
+                                renderSearch(matches);
                             }
 
                             function ensureSearchLoaded() {

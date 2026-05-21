@@ -111,6 +111,8 @@ Common constraints:
 - Unsound or permissive areas exist to support JavaScript compatibility and migration.
 - Over-complex type programming can make library internals harder to maintain even when call-site ergonomics are good.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Type Inference](/concepts/type-inference), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).
+
 ## Gradual Adoption
 
 TypeScript can be adopted in several stages. A team can start by checking JavaScript with editor support and JSDoc, add `allowJs` or `checkJs` in selected projects, rename files to `.ts` or `.tsx`, then tighten compiler options over time. Existing JavaScript can remain valid while the team adds types around module boundaries, shared APIs, and code that changes often.

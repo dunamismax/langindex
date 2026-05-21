@@ -133,6 +133,8 @@ Optionals are central to Swift's safety model. A value of type `String` cannot b
 
 Swift's protocol-oriented style is also important. Protocols describe required behavior, extensions can provide shared implementations, and generics can express reusable algorithms over conforming types. This is useful for app models, networking clients, test doubles, package APIs, and framework boundaries, but advanced generics and associated types can raise API complexity if overused.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Type Inference](/concepts/type-inference), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).
+
 ## Memory Management And Safety
 
 Swift manages memory automatically. Class instances are reference-counted through ARC, while structs and enums are value types whose storage and copying behavior are optimized by the compiler. The language also enforces exclusive access to memory for many ordinary mutations, which helps catch overlapping mutable access that would otherwise be a subtle bug.

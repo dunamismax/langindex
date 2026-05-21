@@ -1,0 +1,72 @@
+---
+title: Generics and Parametric Polymorphism
+slug: generics-and-parametric-polymorphism
+summary: Generics let one definition work over many types while preserving type information, but languages differ in constraints, variance, runtime representation, and code generation strategy.
+relatedLanguages:
+  - java
+  - csharp
+  - typescript
+  - rust
+  - go
+  - kotlin
+  - swift
+  - haskell
+  - ocaml
+  - fsharp
+sources:
+  - title: Generic Data Types - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch10-01-syntax.html
+    publisher: Rust Project
+  - title: Generic Types and Methods - C#
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics
+    publisher: Microsoft Learn
+  - title: Type Erasure - The Java Tutorials
+    url: https://docs.oracle.com/javase/tutorial/java/generics/erasure.html
+    publisher: Oracle
+  - title: Generics - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/2/generics.html
+    publisher: Microsoft
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+lastVerified: 2026-05-21
+---
+
+## What Generics Are For
+
+Generics let a function, type, interface, trait, protocol, class, or module abstract over types. Instead of writing separate versions of a list, map, parser, HTTP response, optional value, or result type for every concrete value, the language lets one definition describe the shared structure.
+
+Parametric polymorphism is the core idea: code is written over a type parameter and should work uniformly for any type that satisfies the required constraints. In practice, languages add bounds, interfaces, traits, type classes, variance rules, runtime metadata, and escape hatches.
+
+## Constraints
+
+Generic code usually needs to say what it assumes about a type parameter:
+
+- Java and C# use generic constraints and interfaces.
+- Rust uses trait bounds.
+- Go uses type parameter constraints and interfaces.
+- TypeScript uses structural constraints with `extends`.
+- Haskell uses type classes.
+- OCaml and F# combine inference with explicit module, object, interface, or member constraints where needed.
+
+The constraint is the contract. A function that only stores and returns values needs little. A function that compares, formats, serializes, clones, awaits, orders, or adds values needs a capability the checker can see.
+
+## Representation Choices
+
+Languages implement generics differently.
+
+Java generics are mostly erased, preserving compatibility with older bytecode while limiting runtime access to parameterized type information. .NET generics are represented in runtime metadata and are central to reflection and framework APIs. Rust often monomorphizes generic code into concrete instantiations, trading larger generated code in some cases for direct static dispatch. TypeScript generics disappear with the rest of the type system when JavaScript is emitted.
+
+These choices affect reflection, binary compatibility, performance, error messages, library APIs, and how much generic information survives at runtime.
+
+## Variance And Higher Abstractions
+
+Variance describes when a generic type can be substituted for another generic type. Collections, callbacks, mutable containers, and inheritance make this subtle. Java wildcards, C# variance annotations, Kotlin declaration-site variance, and TypeScript structural assignability all answer this problem differently.
+
+Some languages also support higher-kinded or type-constructor abstractions directly or through extensions and patterns. Haskell and Scala make this more central. F#, OCaml, Rust, C#, and TypeScript can express some adjacent ideas through modules, traits, interfaces, associated types, or library conventions, but the ergonomics vary widely.
+
+## Watch Points
+
+Generics can remove duplication and make APIs safer. They can also turn simple code into a maze of type parameters, bounds, helper traits, phantom types, and unreadable errors.
+
+Use generics when the caller meaningfully benefits from one reusable abstraction. Prefer concrete types when the domain is concrete. Add type parameters only when the variability is real and the constraint can be explained in ordinary language.

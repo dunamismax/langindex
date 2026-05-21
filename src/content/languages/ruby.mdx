@@ -128,6 +128,8 @@ Ruby is also strongly typed in ordinary runtime use: unsupported operations rais
 
 Modern Ruby has optional type-signature tooling around the language rather than inline static typing as the default programming model. RBS provides a type-signature language, and tools can use signatures for checking, documentation, and editor support. That can help at API boundaries, gem interfaces, and large application seams, but it does not make Ruby a statically typed language at runtime.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing) and [Strong vs Weak Typing](/concepts/strong-vs-weak-typing).
+
 ## Object Model, Metaprogramming, And DSLs
 
 Ruby's object model is one of its defining traits. Classes are objects, modules mix behavior into classes, method lookup is dynamic, blocks and procs are first-class values, and classes can be reopened. Frameworks use those features to build compact APIs for routing, database models, tests, build tasks, validations, configuration, migrations, and command-line interfaces.

@@ -116,6 +116,8 @@ Everyday Haskell includes algebraic data types, records, newtypes, pattern match
 
 GHC extends the practical type-system surface significantly. Depending on project style, Haskell code may use generalized algebraic data types, type families, data kinds, type applications, rank-n types, quantified constraints, deriving strategies, higher-kinded abstractions, and effect-system libraries. These tools can make invalid states and architectural constraints explicit, but they can also raise the review and onboarding bar sharply.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Type Inference](/concepts/type-inference), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), and [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching).
+
 ## Purity, Effects, And Laziness
 
 Haskell is pure by default. Pure functions cannot directly mutate variables, perform I/O, read time, generate random values, or touch hidden global state. Effectful operations are represented in types, most visibly through `IO`, and ordinary pure code can assemble effect descriptions without performing them until the runtime executes `main`.

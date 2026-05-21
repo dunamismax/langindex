@@ -98,3 +98,5 @@ For package authors, the decision affects consumers. JavaScript libraries can pu
 TypeScript and JavaScript interoperate because the boundary is designed around JavaScript compatibility. A migration can start with editor checking and JSDoc, move selected files to `.ts`, and tighten strictness later. Mixed projects should decide how `allowJs`, `checkJs`, generated declaration files, test transforms, and bundler output work before relying on the compiler as a quality gate.
 
 The most common migration risk is confusing static types with runtime validation. Another common risk is stopping halfway: a project can pay TypeScript's configuration cost while keeping enough `any`, unchecked assertions, stale declarations, or untyped generated code that the expected maintenance benefit does not arrive.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Type Inference](/concepts/type-inference), and [Null Safety](/concepts/null-safety).

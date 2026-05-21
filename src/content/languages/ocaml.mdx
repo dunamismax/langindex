@@ -127,6 +127,8 @@ The everyday modeling tools are algebraic data types, records, tuples, options, 
 
 This gives OCaml a different feel from Haskell. Haskell pushes effects into types and is lazy by default. OCaml is strict by default, lets effects happen directly, and relies on code structure, modules, and conventions to separate pure domain logic from effectful edges. That makes OCaml easier for many teams to operationalize, but it also means purity is a discipline rather than a language-wide guarantee.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Type Inference](/concepts/type-inference), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).
+
 ## Modules, Signatures, And Functors
 
 OCaml's module system is one of its core strengths. The official module tutorial describes modules as the basic way to organize OCaml software, and every OCaml source file defines a module. Signatures describe module interfaces, and implementation files can be paired with interface files to control what a module exposes.

@@ -1,0 +1,64 @@
+---
+title: Null Safety
+slug: null-safety
+summary: Null safety is the set of language, type-system, tooling, and library practices that make absence explicit instead of letting every reference silently be missing.
+relatedLanguages:
+  - kotlin
+  - swift
+  - typescript
+  - csharp
+  - rust
+  - java
+  - ocaml
+  - fsharp
+  - python
+sources:
+  - title: Null Safety - Kotlin Documentation
+    url: https://kotlinlang.org/docs/null-safety.html
+    publisher: JetBrains
+  - title: Nullable Reference Types - C#
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references
+    publisher: Microsoft Learn
+  - title: TSConfig strictNullChecks
+    url: https://www.typescriptlang.org/tsconfig/#strictNullChecks
+    publisher: Microsoft
+  - title: The Option Enum and Its Advantages Over Null Values - The Rust Programming Language
+    url: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
+    publisher: Rust Project
+  - title: Option - Rust Standard Library
+    url: https://doc.rust-lang.org/std/option/
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## What Null Safety Means
+
+Null safety tries to prevent accidental use of a missing value as if it were present. The core move is to make absence visible in the type, API, or control flow instead of treating every reference as potentially absent by default.
+
+Different languages make different choices:
+
+- Kotlin distinguishes nullable and non-nullable types with `?`, plus safe calls, Elvis expressions, smart casts, and explicit assertions.
+- Swift uses optionals and forces code to unwrap, bind, chain, coalesce, or explicitly force a value.
+- Rust uses `Option<T>` rather than null references in ordinary safe Rust.
+- OCaml and F# use option types heavily in idiomatic code.
+- TypeScript can distinguish `null` and `undefined` more strictly when `strictNullChecks` is enabled.
+- C# nullable reference types add static analysis over a runtime model that still permits null references.
+- Java relies on conventions, annotations, optional wrappers, static analysis, and API design rather than core non-nullable reference types.
+
+## Retrofit Cost
+
+Null safety is easiest when it is part of a language or ecosystem from the beginning. Retrofitting it onto existing platforms is harder because libraries, reflection, generated code, serialization, foreign calls, and old APIs may already assume nullable references.
+
+Kotlin must handle Java interop and platform types. C# nullable reference types are analysis annotations rather than a new runtime representation. TypeScript must still emit JavaScript, where `null` and `undefined` are runtime values. These designs improve feedback but cannot erase every boundary risk.
+
+## Option Types
+
+Option types make absence a named case. Instead of returning a possibly null value, an API returns `Some(value)` or `None`, `Some` or `None`, `Some` or `null`-like equivalents depending on the language. Callers must map, unwrap, match, default, or propagate the absence.
+
+This is valuable because absence becomes part of the function contract. The watch point is ergonomics: if APIs overuse optional values or force awkward nesting, developers may reach for unsafe unwraps, assertions, or defaults that hide real domain errors.
+
+## Watch Points
+
+Null safety is not the same as validation. A non-null string can still be empty, malformed, unauthorized, expired, or from the wrong tenant. A present database row can still violate a business invariant.
+
+Treat null safety as one layer. Combine it with domain types, validation, schema checks, database constraints, tests, and clear API contracts around external data.

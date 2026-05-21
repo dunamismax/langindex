@@ -1,0 +1,81 @@
+---
+title: Static vs Dynamic Typing
+slug: static-vs-dynamic-typing
+summary: "Static and dynamic typing describe when a language checks type rules: before a program runs, while it runs, or through a deliberately gradual mix of both."
+relatedLanguages:
+  - typescript
+  - java
+  - csharp
+  - kotlin
+  - swift
+  - rust
+  - go
+  - haskell
+  - ocaml
+  - fsharp
+  - python
+  - ruby
+  - javascript
+sources:
+  - title: TypeScript for JavaScript Programmers
+    url: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+    publisher: Microsoft
+  - title: The Basics - TypeScript Handbook
+    url: https://www.typescriptlang.org/docs/handbook/2/basic-types.html
+    publisher: Microsoft
+  - title: typing - Support for Type Hints
+    url: https://docs.python.org/3/library/typing.html
+    publisher: Python Software Foundation
+  - title: Python Data Model
+    url: https://docs.python.org/3/reference/datamodel.html
+    publisher: Python Software Foundation
+  - title: Java Language Specification - Types, Values, and Variables
+    url: https://docs.oracle.com/javase/specs/jls/se23/html/jls-4.html
+    publisher: Oracle
+  - title: Haskell 2010 Language Report - Declarations and Bindings
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch4.html
+    publisher: Haskell.org
+lastVerified: 2026-05-21
+---
+
+## What The Distinction Means
+
+Static typing means the language implementation checks type rules before the program runs. The compiler, checker, or build tool can reject code whose operations do not match the declared or inferred types. Java, C#, Kotlin, Swift, Rust, Go, Haskell, OCaml, F#, and TypeScript all use static checking, though they differ sharply in inference, soundness, nullability, generics, runtime metadata, and escape hatches.
+
+Dynamic typing means type checks happen as values flow through a running program. Python, Ruby, and JavaScript values carry runtime behavior, names can usually be rebound to different shapes, and errors appear when an executed path tries an unsupported operation. This makes exploratory programming and flexible interfaces natural, but more correctness work moves to tests, runtime validation, linters, type hints, and production observability.
+
+The question is not whether one model is universally better. The practical question is where the project wants feedback: edit time, build time, test time, runtime, or a mix.
+
+## Gradual Typing
+
+Gradual typing lets a codebase adopt static information without requiring every value to be fully typed from day one. TypeScript is the common example for JavaScript ecosystems: type annotations and static analysis are added above JavaScript, then erased before runtime. Python type hints serve static analyzers, editors, documentation, and API contracts, but ordinary Python execution remains dynamic unless the program also performs runtime validation.
+
+Gradual systems are useful for migrations and large existing codebases. They are also easy to over-credit. A type hint or TypeScript annotation does not validate JSON, database rows, network messages, command-line arguments, or user input by itself.
+
+## What Static Checking Buys
+
+Static checking is strongest when:
+
+- Public APIs change often and refactoring confidence matters.
+- Domain states can be encoded precisely enough for the compiler to reject impossible combinations.
+- Large teams need editor feedback, rename safety, generated documentation, and clearer contracts.
+- Build-time failures are cheaper than runtime discovery.
+
+The cost is real. Teams must design types, understand compiler errors, manage generic complexity, and sometimes add annotations where inference cannot express the intended contract clearly.
+
+## What Dynamic Checking Buys
+
+Dynamic typing is strongest when:
+
+- The program is exploratory, script-like, interactive, or integration-heavy.
+- Data shapes are discovered from files, users, APIs, notebooks, shells, or live systems.
+- Framework conventions and tests give faster feedback than strict upfront modeling.
+- The team values small source files and flexible object protocols more than compile-time contracts.
+
+The cost is that some errors remain latent until the relevant path runs. Durable dynamic codebases usually compensate with strong tests, runtime validation, linters, type signatures where useful, and disciplined boundaries around untrusted data.
+
+## Watch Points
+
+Static vs dynamic is separate from strong vs weak typing, nominal vs structural typing, and type inference. A language can be statically typed and inferred, dynamically typed and strict at runtime, structurally typed and static, or nominally typed with dynamic escape hatches.
+
+Do not treat "static" as "safe" or "dynamic" as "unsafe." Static type systems prove specific properties. They do not prove business rules, security, authorization, protocol validity, or correct deployment. Dynamic languages can be robust when their boundaries, tests, and runtime checks are designed intentionally.

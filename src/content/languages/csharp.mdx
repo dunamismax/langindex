@@ -129,6 +129,8 @@ The language has continued to evolve from its object-oriented baseline. Modern C
 
 C#'s type system is practical rather than purely strict. Nullable reference types are a static analysis feature, not a runtime guarantee. `dynamic`, reflection, serialization, interop, nullable suppression, unsafe code, and unchecked casts can bypass parts of the type model. Production code should treat those features as explicit boundaries, especially around web requests, JSON, databases, plug-ins, native calls, and generated code.
 
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Generics and Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism), [Algebraic Data Types and Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching), and [Null Safety](/concepts/null-safety).
+
 ## Memory Management
 
 Ordinary C# code runs with automatic memory management. Objects are allocated on a managed heap, and the .NET garbage collector reclaims unreachable objects. The runtime also supports value types, stack allocation, spans, pooling, `IDisposable`, `using`, finalizers, weak references, pinned memory, and unsafe/native interop for cases where lifetime and layout need more control.
