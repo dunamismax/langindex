@@ -1,0 +1,214 @@
+---
+title: PowerShell
+slug: powershell
+status: active
+summary: PowerShell is Microsoft's cross-platform command shell and scripting language for task automation, built around .NET objects, modules, remoting, and administrative tooling.
+firstReleased: 2006
+creators:
+  - Jeffrey Snover
+  - Microsoft
+paradigms:
+  - command language
+  - imperative
+  - object-oriented
+  - scripting
+typing:
+  discipline: dynamic
+  strength: .NET object-based with runtime parameter binding, type accelerators, and optional type annotations
+memory:
+  model: managed by the .NET runtime; scripts normally coordinate objects, commands, files, services, and remote sessions rather than manual allocation
+runtime:
+  model: interpreted and executed by the PowerShell engine on .NET; Windows PowerShell 5.1 remains Windows-bound while modern PowerShell 7 runs cross-platform
+officialSite: https://learn.microsoft.com/en-us/powershell/
+repository: https://github.com/PowerShell/PowerShell
+packageManagers:
+  - PowerShell Gallery
+  - PowerShellGet
+  - PSResourceGet
+comparedWith:
+  - bash
+  - python
+  - csharp
+bestFor:
+  - Windows, Microsoft 365, Azure, Exchange, SQL Server, and Active Directory automation where PowerShell modules expose the supported management surface.
+  - Operational scripts that benefit from object pipelines, named parameters, discovery through Get-Command and Get-Help, and reusable modules.
+  - Cross-platform automation where the team wants one PowerShell language across Windows, Linux, and macOS and accepts the PowerShell runtime dependency.
+  - Remote administration, configuration tasks, CI/CD scripts, and internal tools that sit close to Microsoft infrastructure.
+poorFit:
+  - Tiny POSIX bootstrap scripts, container entrypoints, and Unix package hooks where /bin/sh or Bash is the expected lowest common denominator.
+  - Data-heavy application logic that needs package ecosystems, testing conventions, or deployment patterns better served by Python, Go, C#, or another general-purpose language.
+  - Byte-stream Unix pipelines where native tools, shell quoting, and process composition are the real interface.
+  - Security-sensitive automation that assumes execution policy is a sandbox or permission boundary.
+sources:
+  - title: What is PowerShell?
+    url: https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: PowerShell Support Lifecycle
+    url: https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Differences between Windows PowerShell 5.1 and PowerShell 7.x
+    url: https://learn.microsoft.com/en-us/powershell/scripting/whats-new/differences-from-windows-powershell?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: PowerShell GitHub Repository
+    url: https://github.com/PowerShell/PowerShell
+    publisher: GitHub
+  - title: about_Pipelines
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Modules
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_modules?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Getting Started with the PowerShell Gallery
+    url: https://learn.microsoft.com/en-us/powershell/gallery/getting-started?view=powershellget-3.x
+    publisher: Microsoft Learn
+  - title: Microsoft Graph PowerShell overview
+    url: https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview?view=graph-powershell-1.0
+    publisher: Microsoft Learn
+  - title: about_Execution_Policies
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Using WS-Management Remoting in PowerShell
+    url: https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/wsman-remoting-in-powershell?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: PowerShell Remoting Over SSH
+    url: https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/ssh-remoting-in-powershell?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Approved Verbs for PowerShell Commands
+    url: https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7.6
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+PowerShell is both an interactive shell and a scripting language. It is a good fit when automation works through commands, providers, .NET objects, modules, remote sessions, and administrative APIs. It is not just "Bash for Windows": the design center is object-oriented management automation rather than byte-stream Unix pipelines.
+
+This page covers modern PowerShell 7 and the older Windows PowerShell line where the distinction affects operational decisions. PowerShell 7 is the open-source, cross-platform line built on modern .NET. Windows PowerShell 5.1 is the Windows component built on the .NET Framework and remains relevant because many Windows environments still have it installed by default or because legacy modules target it.
+
+## Origin And Design Goals
+
+PowerShell grew out of Microsoft's Monad project. Jeffrey Snover's Monad Manifesto framed the problem as systems management at scale: administrators needed a shell that could compose commands without forcing every tool boundary through fragile text parsing. Microsoft released Windows PowerShell 1.0 in November 2006.
+
+The core idea is still visible in current PowerShell: commands emit .NET objects, not only formatted text. A pipeline can pass process objects, file objects, service objects, CIM objects, directory objects, Azure resources, or custom module objects to later commands. Formatting is normally a final display step rather than the internal data model.
+
+That design makes PowerShell especially useful where the managed surface already exposes objects and verbs: Windows administration, Active Directory, Exchange, SQL Server, Azure, Microsoft 365, package inventories, configuration, diagnostics, and CI/CD tasks that need structured state.
+
+## Runtime And Platform Status
+
+Modern PowerShell runs as `pwsh` on Windows, Linux, and macOS. The engine is built on .NET, and the PowerShell project is developed in the open in the `PowerShell/PowerShell` repository. PowerShell 7 can be installed side by side with Windows PowerShell 5.1.
+
+The support story matters for production scripts. As of this page's verification date, Microsoft Learn lists PowerShell 7.6.1 as the current LTS release and PowerShell 7.5.6 as the current Stable release. Microsoft supports only the latest update version of a supported release line, and support follows the .NET version underneath the PowerShell release.
+
+Cross-platform support does not make every script platform-neutral. Some modules are Windows-only, some commands expose platform-specific behavior, filesystem and path conventions differ, and remoting configuration is different across WS-Management and SSH. Treat operating system support as part of the script contract.
+
+## Language Model
+
+PowerShell has variables, arrays, hashtables, functions, classes, script blocks, modules, providers, aliases, comments, conditionals, loops, pipelines, splatting, error handling, and access to .NET types. It is dynamically typed in everyday use, but values are .NET objects, parameters can declare types, and command binding uses runtime types and conversion rules.
+
+The command surface is intentionally discoverable. Cmdlets and advanced functions commonly use Verb-Noun names such as `Get-Process`, `Where-Object`, `Select-Object`, `Invoke-Command`, and `Install-Module`. Parameters are named with hyphens, common parameters are shared across many commands, and `Get-Command`, `Get-Help`, and tab completion are part of normal use.
+
+That consistency is a strength for teams building administrative modules. It is also a source of verbosity compared with Unix shell. PowerShell usually favors clear parameter names and structured objects over compact command lines.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), [Modules And Namespacing](/concepts/modules-and-namespacing/), and [Package Managers](/concepts/package-managers/).
+
+## Object Pipelines
+
+PowerShell pipelines connect commands with `|`, but the pipeline normally carries objects. That means later commands can filter, sort, group, select, format, export, or transform properties without first parsing columns from text output.
+
+For example, a PowerShell pipeline can sort file objects by their `Length` property and then convert selected properties to JSON:
+
+```powershell
+param(
+    [string]$Path = "."
+)
+
+Get-ChildItem -Path $Path -File -Recurse |
+    Where-Object { $_.Length -gt 1MB } |
+    Sort-Object -Property Length -Descending |
+    Select-Object -First 10 `
+        @{ Name = "SizeMB"; Expression = { [math]::Round($_.Length / 1MB, 2) } },
+        FullName |
+    ConvertTo-Json -Depth 2
+```
+
+This is not the same model as a traditional shell pipeline. A Bash pipeline usually passes bytes or lines between processes. A PowerShell pipeline can pass rich objects between cmdlets and script blocks, then format only at the end. Native commands still exist in PowerShell, but the cleanest PowerShell code usually keeps object data as objects until it must cross a process or text boundary.
+
+## Shell Language Versus Scripting Language
+
+PowerShell has an interactive shell surface: command history, tab completion, aliases, providers, current location, redirection, environment variables, and native command invocation. It also has enough programming-language surface to build maintainable scripts and modules.
+
+Use it as a shell when the work is exploratory, local, and administrative: discover commands, inspect objects, pipe data, and run one-off fixes. Use it as a scripting language when the work needs parameters, validation, reusable functions, module boundaries, tests, signing policy, and predictable behavior in CI or production.
+
+The boundary matters. A transcript copied from an interactive session often contains aliases, implicit current directories, unpinned modules, and assumptions about local state. Maintained scripts should prefer full command names, explicit parameters, declared requirements, clear error handling, and documented platform assumptions.
+
+## Modules, Packages, And Ecosystem
+
+PowerShell commands are implemented as cmdlets, functions, scripts, providers, aliases, and modules. Modules are reusable units that can contain functions, cmdlets, providers, variables, classes, format data, and manifests. PowerShell can autoload modules from known module paths when a command is first used.
+
+The ecosystem is strongest around administration and operations:
+
+- Microsoft modules for Windows, Azure, Exchange, SQL Server, Microsoft Graph, and related platforms.
+- Community and vendor modules for cloud providers, virtualization, infrastructure, development tools, and SaaS APIs.
+- Script modules and binary modules for internal platform automation.
+- The PowerShell Gallery as the common package repository for modules, scripts, and DSC resources.
+
+Package policy should be explicit. Production teams should decide which repositories are trusted, whether packages are installed per-user or machine-wide, how versions are pinned, how private feeds are authenticated, how modules are scanned, and whether Gallery packages are saved and reviewed before installation.
+
+## Remoting And Configuration
+
+PowerShell remoting is a major part of its operational fit. On Windows, WS-Management remoting can expose PowerShell endpoints for remote command execution and administration. PowerShell also supports remoting over SSH, which is the cross-platform option for Windows, Linux, and macOS.
+
+Remoting should be treated as production infrastructure, not just a convenience. Configure authentication, authorization, endpoint names, logging, network access, firewall rules, Just Enough Administration where appropriate, and version compatibility deliberately. Remote scripts also need timeout, partial-failure, and fan-out behavior that is visible in logs.
+
+PowerShell Desired State Configuration is adjacent to this story: it lets teams express configuration as code for infrastructure management. DSC is useful when the configuration-management model is the right level of abstraction, but it should not be confused with ordinary imperative scripts.
+
+## Security Policy And Signing
+
+Execution policy is often misunderstood. Microsoft documents it as a safety feature controlling when PowerShell loads configuration files and runs scripts, but not as a security system that restricts what users can do. Users can bypass it, and enforcement behavior differs between Windows and non-Windows platforms.
+
+That means execution policy belongs in a wider security model:
+
+- Sign scripts and modules when the environment requires provenance.
+- Keep untrusted input out of command names, dynamic expressions, and shell-invoked strings.
+- Prefer object APIs and parameter binding over text-built commands.
+- Review downloaded Gallery packages before installation.
+- Use least-privilege accounts, constrained endpoints, and logging for remote administration.
+- Treat secrets as sensitive process, environment, log, and transcript data.
+
+Security-sensitive PowerShell should be reviewed like any other privileged automation. Execution policy alone is not a sandbox, package trust model, or access-control boundary.
+
+## Best-Fit Use Cases
+
+PowerShell is a strong fit for:
+
+- Windows, Active Directory, Exchange, Microsoft 365, Azure, SQL Server, and Microsoft Graph automation.
+- Administrative scripts where object pipelines reduce fragile text parsing.
+- CI/CD jobs and release scripts in organizations that already standardize on PowerShell.
+- Cross-platform operational scripts where a PowerShell runtime dependency is acceptable.
+- Remote management, inventory collection, diagnostics, and configuration tasks.
+- Internal modules that expose supported operational workflows to other teams.
+
+## Poor-Fit Or Risky Use Cases
+
+PowerShell can be a poor fit when:
+
+- The script must run in minimal POSIX environments where only `/bin/sh` is dependable.
+- The job is a short Unix pipeline over byte streams, text filters, and standard utilities.
+- The team mainly needs application logic, packages, tests, and deployment conventions from Python, Go, C#, JavaScript, or another general-purpose ecosystem.
+- The target environment cannot install or update PowerShell predictably.
+- The automation handles high-risk writes, deletes, privilege changes, or remoting without explicit review and logging.
+- The script relies on aliases, profile state, interactive prompts, or local modules that CI and production do not share.
+
+## Governance, Releases, And Compatibility
+
+PowerShell is stewarded by Microsoft and developed in the open on GitHub. The documentation, release notes, support lifecycle, and repository issues are the practical sources for current behavior and support status.
+
+Compatibility has two distinct layers. The language and engine are more stable than the ecosystem around them, but module availability can differ sharply between Windows PowerShell 5.1, PowerShell 7, Windows-only APIs, and cross-platform modules. For production, record the required PowerShell version, module versions, operating systems, remoting transport, and privilege model.
+
+## Comparison Notes
+
+Bash and POSIX shell are the closest comparison for command-line automation. Shell is better for tiny Unix bootstrap scripts, byte-stream pipelines, and environments where `/bin/sh` is the only safe assumption. PowerShell is better when the managed objects, Microsoft modules, named parameters, and remoting model are the real interface.
+
+Python is the closest comparison once automation becomes broader software. Python has a larger general-purpose package ecosystem, more common testing conventions, and strong data/file/API libraries. PowerShell remains a strong operational language when the target systems already expose PowerShell modules or when object pipelines and administrative discovery matter more than application packaging.
+
+C# is nearby because PowerShell runs on .NET and can call .NET APIs, but the fit is different. C# is for compiled applications, services, libraries, and long-lived .NET systems. PowerShell is for interactive administration, scripts, modules, and operational glue.

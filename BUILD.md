@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 34 language profiles.
-  - 48 comparisons.
+  - 35 language profiles.
+  - 49 comparisons.
   - 21 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -160,15 +160,6 @@ link-checking code changed broadly enough to justify the network time.
 
 Add these only after the concept backbone is strong enough to avoid repeating
 the same explanations inside every language page.
-
-### Phase 42 - PowerShell
-
-- [ ] Add a complete PowerShell page.
-- [ ] Cover shell language vs scripting language boundaries, .NET object
-      pipelines, modules, remoting, Windows and cross-platform status,
-      security policy, package/module ecosystem, and operations fit.
-- [ ] Add PowerShell vs Bash/Shell comparison.
-- [ ] Update operations and automation guides.
 
 ### Phase 43 - MATLAB
 

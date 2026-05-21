@@ -34,6 +34,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "ocaml",
     "perl",
     "php",
+    "powershell",
     "python",
     "r",
     "ruby",
@@ -703,8 +704,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 34);
-        assert_eq!(content.comparisons.len(), 48);
+        assert_eq!(content.languages.len(), 35);
+        assert_eq!(content.comparisons.len(), 49);
         assert_eq!(content.guides.len(), 21);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("solidity").is_some());
@@ -737,6 +738,7 @@ mod tests {
         assert!(content.language("julia").is_some());
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
+        assert!(content.language("powershell").is_some());
         assert!(content.language("rust").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
@@ -769,6 +771,7 @@ mod tests {
         assert!(content.comparison("lua-vs-python").is_some());
         assert!(content.comparison("dart-vs-typescript").is_some());
         assert!(content.comparison("rust-vs-go").is_some());
+        assert!(content.comparison("powershell-vs-bash").is_some());
         assert!(
             content
                 .guide("choosing-an-embedded-scripting-language")
@@ -818,6 +821,7 @@ mod tests {
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/nim"));
         assert!(routes.contains("/languages/solidity"));
+        assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-ocaml"));
@@ -834,6 +838,7 @@ mod tests {
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
+        assert!(routes.contains("/comparisons/powershell-vs-bash"));
         assert!(routes.contains("/comparisons/solidity-vs-rust-for-smart-contracts"));
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));

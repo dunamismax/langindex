@@ -21,6 +21,7 @@ officialSite: https://www.gnu.org/software/bash/
 repository: https://git.savannah.gnu.org/cgit/bash.git
 packageManagers: []
 comparedWith:
+  - powershell
   - python
   - perl
   - ruby
@@ -207,5 +208,7 @@ Compatibility depends on the chosen scope. POSIX shell code can be portable when
 ## Comparison Notes
 
 Python is the closest comparison for scripts that are becoming programs. Python gives clearer data structures, standard-library parsers, test frameworks, packaging choices, and cross-platform APIs. Shell stays better when the job is mostly a short sequence of commands, a pipeline, or operational glue around tools already installed on the machine.
+
+PowerShell is the closer comparison for Windows and Microsoft-platform operations. Bash usually fits Unix process pipelines and minimal bootstrap scripts better, while PowerShell fits object pipelines, management modules, remoting, and administrative APIs exposed through the PowerShell ecosystem.
 
 Ruby and JavaScript can be good scripting choices when the automation lives beside a Ruby/Rails or Node.js project. Go and Rust are better when an internal tool needs a compiled binary, stronger compile-time checks, or reliable distribution without depending on a target machine's shell environment.

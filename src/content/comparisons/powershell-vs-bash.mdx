@@ -1,0 +1,118 @@
+---
+title: PowerShell vs Bash / Shell
+slug: powershell-vs-bash
+summary: PowerShell and Bash both automate command-line work, but PowerShell centers on .NET object pipelines and management modules while Bash centers on Unix processes, byte streams, files, and portable shell syntax.
+languages:
+  - powershell
+  - bash
+useCases:
+  - scripting
+  - automation
+  - operations
+  - command-line tools
+  - remote administration
+sources:
+  - title: What is PowerShell?
+    url: https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Pipelines
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Modules
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_modules?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Microsoft Graph PowerShell overview
+    url: https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview?view=graph-powershell-1.0
+    publisher: Microsoft Learn
+  - title: PowerShell Support Lifecycle
+    url: https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Execution_Policies
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Using WS-Management Remoting in PowerShell
+    url: https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/wsman-remoting-in-powershell?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: PowerShell Remoting Over SSH
+    url: https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/ssh-remoting-in-powershell?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Bash - GNU Project
+    url: https://www.gnu.org/software/bash/
+    publisher: Free Software Foundation
+  - title: Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/bash.html
+    publisher: GNU Project
+  - title: POSIX.1-2024 Shell Command Language
+    url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+    publisher: IEEE and The Open Group
+  - title: ShellCheck
+    url: https://www.shellcheck.net/
+    publisher: ShellCheck
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is about operational automation: interactive command-line work, scripts, CI jobs, deployment helpers, system administration, remote management, and glue around existing tools. It is not a ranking of shell preferences.
+
+The useful distinction is the boundary. Choose Bash or POSIX shell when the boundary is Unix processes, byte streams, files, exit statuses, and standard utilities. Choose PowerShell when the boundary is PowerShell modules, .NET objects, named parameters, remoting, and management APIs.
+
+## Shared Territory
+
+Both PowerShell and Bash can run commands, compose pipelines, inspect environment variables, redirect output, automate filesystems, call external tools, exit with statuses, and serve as interactive shells. Both can be used well or badly in CI and operations.
+
+Both also become risky when scripts rely on invisible local state. A maintained script should declare its interpreter, version assumptions, command dependencies, environment variables, module or package requirements, platform support, and behavior on failure.
+
+## Key Differences
+
+| Dimension            | PowerShell                                                              | Bash / POSIX shell                                                  |
+| -------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Center of gravity    | .NET objects, cmdlets, modules, remoting, management APIs               | Unix processes, files, byte streams, pipes, redirection             |
+| Pipeline data        | Objects between PowerShell commands, text or bytes at native boundaries | Text or bytes between processes                                     |
+| Command style        | Verb-Noun commands with named parameters and common parameters          | Short commands, flags, utilities, shell builtins                    |
+| Portability target   | PowerShell version, modules, .NET, OS support, remoting transport       | POSIX shell or declared Bash version plus installed utilities       |
+| Ecosystem strength   | Microsoft, Windows, Azure, Exchange, SQL, vendor/admin modules          | Unix systems, containers, package hooks, server scripts, toolchains |
+| Package/module model | PowerShell Gallery, PowerShellGet, PSResourceGet, module manifests      | OS packages, language tools, scripts, commands in `$PATH`           |
+| Security watch point | Execution policy is not a sandbox; remoting and modules need policy     | Quoting, word splitting, globbing, PATH, command injection          |
+
+## Choose PowerShell When
+
+- The target system exposes a supported PowerShell module.
+- The script benefits from object properties rather than parsing text columns.
+- The work is Windows, Active Directory, Exchange, Azure, Microsoft 365, SQL Server, or Microsoft Graph administration.
+- Cross-platform use is useful, but the team can install and pin PowerShell and modules.
+- Remote administration is central and PowerShell remoting over WS-Management or SSH is part of the operating model.
+- The team wants discoverable commands, named parameters, in-console help, and reusable modules for internal operators.
+
+PowerShell is often the right operations language in Microsoft-centered environments because the administrative APIs are already exposed through PowerShell modules.
+
+## Choose Bash Or POSIX Shell When
+
+- The script is a short wrapper around Unix commands an operator already knows.
+- The target environment may only guarantee `/bin/sh`, core utilities, and a few installed commands.
+- The work is a container entrypoint, package hook, bootstrap script, build wrapper, or deployment step where process orchestration is the whole job.
+- The pipeline is naturally byte-stream or line-oriented.
+- Portability across Unix-like systems matters more than objects, modules, or remoting.
+- Startup and dependency footprint must stay minimal.
+
+Bash earns its place when Bash-specific features are useful and the target environment guarantees Bash. POSIX shell is the safer target when the script must run on unknown or minimal Unix-like systems.
+
+## Watch Points
+
+PowerShell's biggest risks are hidden module dependencies, platform-specific cmdlets, implicit profile state, aliases copied from interactive sessions, remoting permissions, and misunderstanding execution policy as a security boundary. Production scripts should use full command names, explicit parameters, module version policy, logging, and clear remoting configuration.
+
+Bash's biggest risks are word splitting, pathname expansion, unquoted variables, hidden `$PATH` dependencies, pipeline status, redirection order, and assuming GNU utility behavior everywhere. Production scripts should use clear shebangs, quote expansions, check important exit statuses, document required commands, and run ShellCheck where appropriate.
+
+Both languages need extra review around deletes, deployments, remote writes, credential handling, package installation, service restarts, and partial failure.
+
+## Mixed Environments
+
+Many teams should use both. A Unix service may keep a tiny POSIX entrypoint and use Python, Go, or Rust for larger tools. A Windows or Microsoft-cloud platform may standardize on PowerShell modules while still using Bash in Linux containers. A CI system may run Bash on Linux runners and PowerShell on Windows runners.
+
+Do not force one shell to impersonate the other. Use PowerShell where the API surface is objects and modules. Use Bash where the API surface is processes and files.
+
+## Practical Default
+
+Start with POSIX shell for the smallest Unix bootstrap wrapper. Use Bash when the script is still command orchestration but needs Bash features and the runtime is guaranteed.
+
+Start with PowerShell when the automation owns Windows or Microsoft infrastructure, needs object pipelines, or should be packaged as a PowerShell module. Move to Python, Go, C#, or another general-purpose language when the script becomes application logic with deeper data modeling, tests, and deployment needs.
