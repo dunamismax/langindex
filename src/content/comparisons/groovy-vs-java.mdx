@@ -1,0 +1,100 @@
+---
+title: Groovy vs Java
+slug: groovy-vs-java
+summary: "Groovy and Java share the JVM, but Java is the conservative statically typed baseline while Groovy adds dynamic scripting, concise syntax, DSLs, metaprogramming, and strong testing/build-tool niches."
+languages:
+  - groovy
+  - java
+useCases:
+  - JVM applications
+  - scripting
+  - build automation
+  - testing
+  - enterprise applications
+  - Java interoperability
+sources:
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Groovy Language Documentation
+    url: https://docs.groovy-lang.org/docs/latest/html/documentation/
+    publisher: Apache Groovy
+  - title: Groovy 2.0 Release Notes
+    url: https://groovy-lang.org/releasenotes/groovy-2.0.html
+    publisher: Apache Groovy
+  - title: Groovy Testing Guide
+    url: https://docs.groovy-lang.org/latest/html/documentation/core-testing-guide.html
+    publisher: Apache Groovy
+  - title: JSR 241 - The Groovy Programming Language
+    url: https://www.jcp.org/en/jsr/detail?id=241
+    publisher: Java Community Process
+  - title: The Java Language Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
+    publisher: Oracle
+  - title: The Java Virtual Machine Specification, Java SE 26 Edition
+    url: https://docs.oracle.com/javase/specs/jvms/se26/html/index.html
+    publisher: Oracle
+  - title: Learn Java
+    url: https://dev.java/learn/
+    publisher: Oracle
+  - title: Build File Basics
+    url: https://docs.gradle.org/current/userguide/build_file_basics.html
+    publisher: Gradle
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Java and Groovy on the JVM, especially for application code, scripts, tests, build automation, internal DSLs, and legacy JVM systems.
+
+It assumes the JVM is already a plausible platform. If the real question is whether to use the JVM at all, compare both against Go, C#, TypeScript, Python, Ruby, Rust, or another runtime.
+
+## Shared Territory
+
+Java and Groovy both run on the JVM, use managed memory, call Java libraries, consume Maven artifacts, and can be built by Gradle or Maven. Groovy can interoperate with Java code in both directions, so it is often added around Java systems rather than used as a replacement for every Java class.
+
+The best split is often layered: Java for broad production APIs and shared platform code, Groovy for scripts, tests, Gradle build logic, DSLs, or extension points where Java's ceremony would get in the way.
+
+## Key Differences
+
+| Dimension       | Java                                                   | Groovy                                                   |
+| --------------- | ------------------------------------------------------ | -------------------------------------------------------- |
+| JVM role        | Baseline language and specification center             | JVM language optimized for dynamic productivity and Java interop |
+| Typing          | Static nominal typing with generics                    | Dynamic by default, with optional static checking/compilation |
+| Syntax          | Explicit, conservative, class-centered                 | Java-like but more concise, scriptable, and DSL-friendly |
+| Runtime behavior | JVM bytecode with Java language rules                | JVM bytecode plus Groovy runtime dispatch and metaprogramming |
+| Build role      | Common production language, Maven/Gradle builds        | Gradle Groovy DSL, scripts, joint Java/Groovy builds     |
+| Testing culture | JUnit, TestNG, AssertJ, Mockito, framework test tools  | JUnit integration plus Spock, power assertions, concise fixtures |
+| Public APIs     | Most natural for broad JVM consumers                   | Better kept behind Java-friendly facades when consumers vary |
+
+## Choose Java When
+
+- The code is long-lived production application code maintained by a broad JVM team.
+- Public APIs must be natural for Java, Kotlin, Scala, tools, frameworks, and generated code.
+- Conservative language evolution, specification stability, static typing, and mainstream IDE refactoring matter.
+- Annotation processors, Java-first frameworks, generated sources, or platform conventions are central.
+- The organization wants the fewest language/runtime moving parts in a JVM service.
+
+## Choose Groovy When
+
+- The code is script-like, test-heavy, configuration-heavy, or DSL-heavy.
+- The team needs Java libraries but wants less ceremony than Java for glue code.
+- Spock specifications, Gradle Groovy DSL, legacy Groovy systems, or existing Groovy extension points already matter.
+- Runtime flexibility, closures, builders, or metaprogramming remove real duplication.
+- The code can be kept behind clear boundaries and tested well.
+
+## Watch Points
+
+Java's risk is ceremony sprawl: frameworks, annotations, generated code, and enterprise patterns can make simple behavior hard to inspect.
+
+Groovy's risk is hidden contracts: dynamic method calls, map-shaped data, metaprogramming, AST transforms, and DSL magic can move errors from compile time to runtime. Use `@TypeChecked` or `@CompileStatic` where Groovy code starts to look like application code, and keep DSL semantics documented.
+
+Neither language removes JVM operations. JDK choice, classpath or module boundaries, dependency governance, heap sizing, GC behavior, logging, observability, containers, and upgrade testing remain production responsibilities.
+
+## Migration Or Interoperability Notes
+
+Java-to-Groovy migration is rarely the right framing for modern systems. Prefer targeted adoption. Add Groovy where it has leverage: tests, scripts, build logic, migrations, data cleanup, or internal DSLs. Keep Java where broad readability, generated code, and public API stability matter.
+
+Groovy-to-Java rewrites are also rarely automatic wins. They can help when dynamic code has grown into core application logic that needs static contracts, but they can make tests and DSLs more verbose. Consider Java, Kotlin, or a narrower Groovy static-checking pass according to the real problem.
+
+For mixed projects, test the boundary from both languages. Java callers should see ordinary classes, methods, interfaces, and documented types. Groovy internals can use maps and closures when they remain local to the Groovy-owned layer.

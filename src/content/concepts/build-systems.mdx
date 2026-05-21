@@ -6,6 +6,7 @@ relatedLanguages:
   - rust
   - go
   - java
+  - groovy
   - cpp
   - c
   - javascript
@@ -26,6 +27,9 @@ sources:
   - title: Gradle User Manual
     url: https://docs.gradle.org/current/userguide/userguide.html
     publisher: Gradle
+  - title: Build File Basics
+    url: https://docs.gradle.org/current/userguide/build_file_basics.html
+    publisher: Gradle
 lastVerified: 2026-05-21
 ---
 
@@ -33,7 +37,7 @@ lastVerified: 2026-05-21
 
 A build system decides how source files become artifacts. It may compile code, run generators, fetch dependencies, invoke linkers, package assets, run tests, generate documentation, produce containers, or publish libraries.
 
-Some languages have standard build tools: Cargo for Rust, the `go` command for Go, Maven and Gradle in much of the Java ecosystem. C and C++ commonly rely on external build systems such as CMake, Make, Meson, Bazel, or platform IDE tooling.
+Some languages have standard build tools: Cargo for Rust, the `go` command for Go, Maven and Gradle in much of the Java ecosystem. Gradle build scripts can be written in Groovy DSL or Kotlin DSL, which means build language choice may be separate from the production language. C and C++ commonly rely on external build systems such as CMake, Make, Meson, Bazel, or platform IDE tooling.
 
 ## Why It Matters
 

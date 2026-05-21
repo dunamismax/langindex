@@ -1,0 +1,109 @@
+---
+title: Groovy vs Kotlin
+slug: groovy-vs-kotlin
+summary: "Groovy and Kotlin are JVM languages with Java interoperability, but Groovy is strongest for dynamic scripts, DSLs, tests, and Gradle history while Kotlin is strongest for statically typed JVM, Android, and multiplatform application code."
+languages:
+  - groovy
+  - kotlin
+useCases:
+  - JVM applications
+  - Gradle builds
+  - scripting
+  - testing
+  - Java modernization
+  - Android
+sources:
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Groovy Language Documentation
+    url: https://docs.groovy-lang.org/docs/latest/html/documentation/
+    publisher: Apache Groovy
+  - title: Groovy 2.0 Release Notes
+    url: https://groovy-lang.org/releasenotes/groovy-2.0.html
+    publisher: Apache Groovy
+  - title: Groovy Testing Guide
+    url: https://docs.groovy-lang.org/latest/html/documentation/core-testing-guide.html
+    publisher: Apache Groovy
+  - title: Kotlin Documentation
+    url: https://kotlinlang.org/docs/home.html
+    publisher: JetBrains
+  - title: Calling Java from Kotlin
+    url: https://kotlinlang.org/docs/java-interop.html
+    publisher: JetBrains
+  - title: Null safety
+    url: https://kotlinlang.org/docs/null-safety.html
+    publisher: JetBrains
+  - title: Coroutines
+    url: https://kotlinlang.org/docs/coroutines-overview.html
+    publisher: JetBrains
+  - title: Kotlin for Android
+    url: https://kotlinlang.org/docs/android-overview.html
+    publisher: JetBrains
+  - title: Build File Basics
+    url: https://docs.gradle.org/current/userguide/build_file_basics.html
+    publisher: Gradle
+  - title: Kotlin DSL is Now the Default for New Gradle Builds
+    url: https://blog.gradle.org/kotlin-dsl-is-now-the-default-for-new-gradle-builds
+    publisher: Gradle
+  - title: Gradle General Best Practices
+    url: https://docs.gradle.org/current/userguide/best_practices_general.html
+    publisher: Gradle
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between Groovy and Kotlin in JVM-adjacent work: Gradle builds, application code, Java modernization, tests, scripts, DSLs, Android, or server-side services.
+
+It is not a general verdict on all JVM languages. Java remains the conservative baseline, Scala and Clojure cover other JVM tradeoffs, and the right answer depends on whether the code is application code, build logic, test code, or an embedded scripting surface.
+
+## Shared Territory
+
+Groovy and Kotlin both run on the JVM, interoperate with Java, use Java libraries, consume Maven artifacts, and appear in Gradle builds. Both can coexist with Java inside a larger JVM repository.
+
+The overlap is most visible in Gradle and Java modernization. A Gradle build may use Groovy DSL or Kotlin DSL. A Java codebase may add Groovy tests or scripts, or add Kotlin application modules. The choice should be made per layer rather than treating one language as a universal JVM replacement.
+
+## Key Differences
+
+| Dimension        | Groovy                                                     | Kotlin                                                    |
+| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------- |
+| Design center    | Dynamic JVM scripting, DSLs, tests, Java-friendly syntax   | Statically typed JVM/Android language with Java interop   |
+| Typing           | Dynamic by default, optional `@TypeChecked` and `@CompileStatic` | Static with nullable and non-nullable types               |
+| Gradle role      | Original and still supported Groovy DSL through `.gradle`  | Default and recommended DSL for new Gradle builds through `.gradle.kts` |
+| Testing culture  | Strong Spock and Groovy assertion culture                  | Uses Kotlin/JVM test libraries, JUnit, kotest, mock tools |
+| Android          | Possible on the JVM edge, not the modern Android default   | Kotlin-first for modern Android development               |
+| DSL style        | Closures, delegates, builders, metaprogramming             | Typed DSLs, receivers, extension functions, compiler help |
+| Main risk        | Dynamic behavior and metaprogramming can hide contracts    | Gradle/plugin/coroutine/multiplatform complexity can grow |
+
+## Choose Groovy When
+
+- The code is a script, Gradle Groovy DSL build, Spock test suite, or DSL layer.
+- Java libraries are useful, but Java or Kotlin setup would be too much ceremony for the task.
+- Runtime flexibility, closures, builders, and dynamic metaprogramming are central to the API being built.
+- Existing Groovy code is stable and a migration would add risk without improving maintainability.
+- The team is mostly writing tests or configuration around Java code, not a large new production application.
+
+## Choose Kotlin When
+
+- The code is new JVM application code and static typing, null-safety features, and Java interop matter.
+- Android is a central platform.
+- Gradle build logic is new and the team wants Gradle's current default and best-practice direction.
+- Coroutines, data classes, sealed types, extension functions, and Kotlin tooling directly support the application model.
+- The team wants incremental Java modernization while keeping public APIs more predictable than dynamic Groovy surfaces.
+
+## Watch Points
+
+Groovy's flexibility can produce elegant DSLs and concise tests, but it can also hide schemas, create runtime-only failures, and make code navigation harder. Use static checking where application-like code grows, and keep dynamic metaprogramming contained.
+
+Kotlin's type system and tooling can make application code easier to maintain, but it introduces Kotlin-specific compiler, plugin, Gradle, annotation-processing, coroutine, and multiplatform concerns. Kotlin is a better default for many new JVM projects, but it is not free.
+
+For Gradle, separate legacy from greenfield. Existing Groovy DSL builds can remain maintainable. New Gradle builds should normally evaluate Kotlin DSL first because Gradle now defaults to it and recommends it for new build logic.
+
+## Migration Or Interoperability Notes
+
+Groovy and Kotlin can share Java bytecode boundaries, but direct Groovy/Kotlin interop should be deliberate. Kotlin callers prefer typed APIs and nullability information. Groovy callers may lean on maps, named arguments, dynamic dispatch, and closures.
+
+For Java applications, a common split is Kotlin or Java in production code and Groovy in Spock tests or build logic. That can work well if the team owns all language versions and avoids letting test-only dynamic behavior become the unreviewed specification for production APIs.
+
+Do not migrate Groovy to Kotlin only because Kotlin is newer. Migrate when the code has become application logic that benefits from stronger compile-time contracts, IDE support, or Kotlin ecosystem APIs. Keep Groovy when its value is DSL ergonomics, tests, or stable build conventions.

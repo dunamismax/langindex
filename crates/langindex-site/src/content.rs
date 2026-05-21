@@ -23,6 +23,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "fortran",
     "fsharp",
     "go",
+    "groovy",
     "haskell",
     "java",
     "javascript",
@@ -705,8 +706,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 36);
-        assert_eq!(content.comparisons.len(), 51);
+        assert_eq!(content.languages.len(), 37);
+        assert_eq!(content.comparisons.len(), 53);
         assert_eq!(content.guides.len(), 21);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("solidity").is_some());
@@ -724,6 +725,9 @@ mod tests {
         assert!(content.comparison("crystal-vs-go").is_some());
         assert!(content.comparison("crystal-vs-ruby").is_some());
         assert!(content.language("fsharp").is_some());
+        assert!(content.language("groovy").is_some());
+        assert!(content.comparison("groovy-vs-java").is_some());
+        assert!(content.comparison("groovy-vs-kotlin").is_some());
         assert!(content.language("nim").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());

@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 36 language profiles.
-  - 51 comparisons.
+  - 37 language profiles.
+  - 53 comparisons.
   - 21 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -160,14 +160,6 @@ link-checking code changed broadly enough to justify the network time.
 
 Add these only after the concept backbone is strong enough to avoid repeating
 the same explanations inside every language page.
-
-### Phase 44 - Groovy
-
-- [ ] Add a complete Groovy page.
-- [ ] Cover JVM dynamic/static modes, Gradle history, scripting, DSLs,
-      Java interop, testing culture, and modern maintenance fit.
-- [ ] Add Groovy vs Kotlin and Groovy vs Java comparisons.
-- [ ] Update JVM and build-tooling guide material.
 
 ### Phase 45 - Assembly Language
 

@@ -28,6 +28,7 @@ packageManagers:
 comparedWith:
   - dart
   - java
+  - groovy
   - swift
   - typescript
   - scala
@@ -93,6 +94,12 @@ sources:
   - title: Kotlin Foundation Structure
     url: https://kotlinfoundation.org/structure/
     publisher: Kotlin Foundation
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Gradle General Best Practices
+    url: https://docs.gradle.org/current/userguide/best_practices_general.html
+    publisher: Gradle
 lastVerified: 2026-05-19
 ---
 
@@ -247,6 +254,8 @@ Kotlin can be a poor fit when:
 ## Comparison Notes
 
 Java is the closest JVM comparison. Kotlin offers null-safety features, less boilerplate, data classes, extension functions, and coroutines. Java remains the conservative JVM baseline with the broadest existing codebase and the least Kotlin-specific interop surface.
+
+Groovy is the dynamic JVM and Gradle-history comparison. Kotlin is usually the stronger choice for new statically typed JVM or Android application code. Groovy remains useful where the code is a script, Spock test suite, Gradle Groovy DSL build, Jenkins-style pipeline, or dynamic DSL layer.
 
 Swift is the closest mobile-platform comparison. Kotlin is strongest for Android, JVM, and shared multiplatform logic. Swift is strongest for Apple-platform applications and first-party Apple frameworks. Kotlin Multiplatform can connect Android and iOS codebases, but it does not replace Swift for native Apple UI and platform integration.
 

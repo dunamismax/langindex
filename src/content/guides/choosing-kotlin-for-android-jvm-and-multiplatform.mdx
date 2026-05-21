@@ -7,6 +7,7 @@ candidates:
   - dart
   - kotlin
   - java
+  - groovy
   - swift
   - typescript
   - csharp
@@ -47,6 +48,15 @@ sources:
   - title: Gradle
     url: https://kotlinlang.org/docs/gradle.html
     publisher: JetBrains
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Build File Basics
+    url: https://docs.gradle.org/current/userguide/build_file_basics.html
+    publisher: Gradle
+  - title: Gradle General Best Practices
+    url: https://docs.gradle.org/current/userguide/best_practices_general.html
+    publisher: Gradle
   - title: Swift About
     url: https://www.swift.org/about/
     publisher: Swift.org
@@ -136,6 +146,8 @@ Kotlin ownership includes build ownership. Decide:
 
 These are not secondary details. Kotlin's language benefits are easiest to keep when the build is boring, reproducible, and understood by the team.
 
+For Gradle specifically, distinguish Kotlin the application language from Kotlin DSL the build language. Gradle supports both Groovy DSL (`build.gradle`) and Kotlin DSL (`build.gradle.kts`). Kotlin DSL is the current default and recommendation for new Gradle builds, while Groovy DSL remains common in older JVM and Android projects. Do not migrate a working Groovy DSL build only for consistency unless the team has time to test plugin behavior, extra properties, script plugins, and shared build logic.
+
 ## Practical Default
 
 Start with Kotlin for new Android work.
@@ -143,6 +155,8 @@ Start with Kotlin for new Android work.
 Start with Kotlin for JVM services when Java ecosystem access matters and the team wants Kotlin's null-safety, concision, data modeling, and coroutines.
 
 Start with Java when the JVM is required but the team values conservative language evolution and broad Java readability more than Kotlin features.
+
+Keep Groovy for existing Gradle Groovy DSL builds, Spock tests, scripts, or DSL layers where dynamic Groovy is already useful and understood.
 
 Start with Swift for Apple-platform UI and platform-specific app code.
 

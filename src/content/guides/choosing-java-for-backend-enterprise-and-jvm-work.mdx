@@ -9,6 +9,7 @@ candidates:
   - go
   - csharp
   - kotlin
+  - groovy
   - scala
   - clojure
   - python
@@ -50,6 +51,15 @@ sources:
   - title: Android's Kotlin-first approach
     url: https://developer.android.com/kotlin/first
     publisher: Android Developers
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Groovy Language Documentation
+    url: https://docs.groovy-lang.org/docs/latest/html/documentation/
+    publisher: Apache Groovy
+  - title: Groovy Testing Guide
+    url: https://docs.groovy-lang.org/latest/html/documentation/core-testing-guide.html
+    publisher: Apache Groovy
   - title: The Scala Programming Language
     url: https://www.scala-lang.org/
     publisher: Scala
@@ -121,7 +131,7 @@ Prefer Java as the JVM default when:
 - Long-term compatibility is more important than source-code concision.
 - A mixed-experience team needs predictable syntax and conservative language features.
 
-Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Scala when functional programming, type classes, Spark, actor systems, streaming libraries, or richer compile-time domain modeling are central enough to justify the learning curve and build complexity. Prefer Clojure when Lisp syntax, immutable persistent data, macros, REPL-driven development, and dynamic data-first modeling are worth the onboarding cost.
+Prefer Kotlin when null-safety features, concise data modeling, coroutines, Android-first tooling, or Kotlin-specific APIs are central. Prefer Groovy when the JVM need is script-heavy, test-heavy, build-logic-heavy, or DSL-heavy rather than a broad application-code rewrite. Prefer Scala when functional programming, type classes, Spark, actor systems, streaming libraries, or richer compile-time domain modeling are central enough to justify the learning curve and build complexity. Prefer Clojure when Lisp syntax, immutable persistent data, macros, REPL-driven development, and dynamic data-first modeling are worth the onboarding cost.
 
 ## Android And Mobile Context
 
@@ -139,6 +149,7 @@ Before choosing Java, answer these:
 - Will deployments use a full JDK, a runtime image, a container, or a platform runtime?
 - How will dependencies be pinned, reviewed, scanned, and upgraded?
 - Which build tool owns the project: Maven or Gradle?
+- If Gradle is the build tool, is build logic new Kotlin DSL, existing Groovy DSL, or mixed during migration?
 - Which database dialect, migration tool, schema rules, transaction isolation assumptions, and generated SQL patterns will production depend on?
 - Are framework defaults understood, or only copied from a starter template?
 
@@ -153,6 +164,8 @@ Start with Go for smaller network services, CLIs, agents, and infrastructure too
 Start with C# when the organization is centered on .NET, Azure, ASP.NET Core, Windows desktop, or Unity.
 
 Start with Kotlin when the JVM is desired but source-code concision, null safety, Android-first development, or coroutines are central.
+
+Start with Groovy when the JVM is desired for scripts, Spock tests, Gradle Groovy DSL build logic, or narrow DSL layers around Java systems.
 
 Start with Scala when the JVM is desired and the system intentionally benefits from functional programming, richer types, Spark-centered data engineering, actor systems, or a Scala-specific backend ecosystem.
 

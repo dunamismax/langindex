@@ -1,0 +1,230 @@
+---
+title: Groovy
+slug: groovy
+status: active
+summary: Groovy is an Apache-hosted JVM language for scripts, tests, DSLs, Gradle build logic, and Java-adjacent applications, combining dynamic typing with optional static checking and compilation.
+firstReleased: 2007
+creators:
+  - James Strachan
+paradigms:
+  - object-oriented
+  - scripting
+  - functional
+  - imperative
+  - metaprogramming
+typing:
+  discipline: dynamic with optional static type checking and static compilation
+  strength: strong runtime typing with optional compile-time checking through @TypeChecked and @CompileStatic
+memory:
+  model: managed by the JVM garbage collector
+runtime:
+  model: Groovy source compiled to JVM bytecode, with scripts, classes, groovyc, groovysh, Gradle, Maven, and Ant integration
+officialSite: https://groovy-lang.org/
+repository: https://github.com/apache/groovy
+packageManagers:
+  - Gradle
+  - Maven
+  - Apache Ivy
+  - Grape
+  - Maven Central
+comparedWith:
+  - java
+  - kotlin
+  - scala
+  - clojure
+  - ruby
+  - python
+bestFor:
+  - JVM scripting, automation, data munging, and operational glue where Java libraries are useful but Java ceremony would dominate.
+  - Gradle Groovy DSL build logic, older Gradle builds, and Java ecosystem tools that already expose Groovy extension points.
+  - Tests, specifications, mocks, and fixtures where Groovy's assertions, closures, and Spock ecosystem make Java code easier to exercise.
+  - Internal DSLs, configuration languages, and application extension points that benefit from closures, builders, AST transforms, and metaprogramming.
+poorFit:
+  - New Android or JVM application code whose main need is static null-aware Java modernization, where Kotlin is usually the better first evaluation.
+  - Broad public JVM libraries that need the most conservative Java API surface and minimal Groovy runtime assumptions.
+  - Teams that cannot maintain dynamic-language conventions, Gradle/Groovy compatibility, dependency alignment, or test-only Groovy code over time.
+  - Low-level systems software, hard real-time code, native binaries, or tiny deployment targets where the JVM and Groovy runtime are the wrong contract.
+sources:
+  - title: Apache Groovy
+    url: https://groovy-lang.org/
+    publisher: Apache Groovy
+  - title: Groovy Language Documentation
+    url: https://docs.groovy-lang.org/docs/latest/html/documentation/
+    publisher: Apache Groovy
+  - title: Download Groovy
+    url: https://groovy.apache.org/download
+    publisher: Apache Groovy
+  - title: Groovy Version Scheme
+    url: https://groovy.apache.org/versioning.html
+    publisher: Apache Groovy
+  - title: Apache Groovy Changelogs
+    url: https://www.groovy-lang.org/changelogs.html
+    publisher: Apache Groovy
+  - title: Groovy 2.0 Release Notes
+    url: https://groovy-lang.org/releasenotes/groovy-2.0.html
+    publisher: Apache Groovy
+  - title: Groovy 5.0 Release Notes
+    url: https://groovy-lang.org/releasenotes/groovy-5.0.html
+    publisher: Apache Groovy
+  - title: JSR 241 - The Groovy Programming Language
+    url: https://www.jcp.org/en/jsr/detail?id=241
+    publisher: Java Community Process
+  - title: Groovy Submitted to Become a Project at The Apache Software Foundation
+    url: https://news.apache.org/foundation/entry/groovy_submitted_to_become_a
+    publisher: The Apache Software Foundation
+  - title: Groovy Testing Guide
+    url: https://docs.groovy-lang.org/latest/html/documentation/core-testing-guide.html
+    publisher: Apache Groovy
+  - title: Build File Basics
+    url: https://docs.gradle.org/current/userguide/build_file_basics.html
+    publisher: Gradle
+  - title: Kotlin DSL is Now the Default for New Gradle Builds
+    url: https://blog.gradle.org/kotlin-dsl-is-now-the-default-for-new-gradle-builds
+    publisher: Gradle
+  - title: Gradle General Best Practices
+    url: https://docs.gradle.org/current/userguide/best_practices_general.html
+    publisher: Gradle
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Groovy began as a Java-platform language for developers who wanted a more concise, dynamic, script-friendly way to use the JVM and Java libraries. The official changelog records Groovy 1.0.0 as released in January 2007, after public beta and JSR-era releases. The JCP page for JSR 241 described Groovy as an agile dynamic language for the JVM, with Python, Ruby, and Smalltalk-influenced features and Java-like syntax.
+
+That origin still explains Groovy's practical role. It is not trying to replace the JVM. It is a JVM-hosted language that makes Java APIs easier to script, test, configure, and compose. Apache Groovy's own site emphasizes Java-like syntax, object-oriented and functional styles, static and dynamic natures, scripts, DSLs, Java interop, metaprogramming, and build or automation work.
+
+Groovy is now an Apache Software Foundation project. It is mature, but its modern fit is narrower than its peak visibility during earlier JVM web-framework and Gradle eras. It is strongest where a JVM system already has Groovy extension points, Gradle Groovy DSL build logic, Spock tests, internal DSLs, or scripts that call Java libraries.
+
+## Runtime, JVM, And Versions
+
+Groovy source compiles to JVM bytecode. A project can run Groovy scripts with the `groovy` command, compile classes with `groovyc`, use Groovy from Gradle, Maven, or Ant, and mix Java and Groovy sources through joint compilation when the build is configured for it.
+
+The runtime decision is therefore a JVM decision. Groovy code uses JVM class loading, Java objects, Java exceptions, Java libraries, managed heap allocation, garbage collection, Maven artifacts, debuggers, profilers, containers, and JDK upgrade constraints. Dynamic method dispatch and metaprogramming are Groovy features layered onto that platform, not a separate runtime that avoids JVM operations.
+
+As of this verification, the Groovy download page lists Groovy 5.0.6 as the latest stable release, with Groovy 5 designed for JDK 11 and newer. The same page lists Groovy 6.0 as an alpha line for JDK 17 and newer, not recommended for production. The Groovy 5.0 release notes say Groovy 5 is compatible with JDK 11 through 25, requires JDK 17 and newer to build, and supports JDK 11 as the minimum supported runtime.
+
+## Dynamic And Static Modes
+
+Groovy is often described as dynamic, but that is only half the model. Ordinary Groovy supports optional typing, duck typing, dynamic dispatch, closures, builders, runtime metaprogramming, and concise script syntax. That makes it comfortable for scripts, tests, DSLs, and Java-adjacent glue where the program shape is small or highly configurable.
+
+Since Groovy 2.0, Groovy has also supported static type checking with `@TypeChecked` and static compilation with `@CompileStatic`. The static checker can catch many name, assignment, and method-resolution errors at compile time. Static compilation can bypass parts of the dynamic runtime path and produce more Java-like bytecode for selected classes or methods.
+
+The useful framing is mixed mode. Use dynamic Groovy where runtime flexibility and DSL ergonomics are the point. Use `@TypeChecked` or `@CompileStatic` where code is application-like, performance-sensitive, or maintained by a larger team. Do not assume the annotation erases every dynamic edge; Groovy's own documentation notes that flow typing and method selection try to approximate dynamic semantics rather than make every dynamic construct statically knowable.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing/), [Type Inference](/concepts/type-inference/), [Metaprogramming And Macros](/concepts/metaprogramming-and-macros/), and [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/).
+
+## Java Interoperability
+
+Java interoperability is Groovy's central production advantage. Groovy can instantiate Java classes, call methods, implement interfaces, extend classes, use annotations, throw and catch Java exceptions, depend on Maven artifacts, and run beside Java code in the same JVM process.
+
+That makes Groovy useful for adding scripts, tests, migrations, build logic, or DSL configuration to an existing Java platform. It also means teams should keep Java-facing boundaries explicit. Public APIs with dynamic maps, Groovy truth behavior, GStrings, closure-heavy callbacks, AST transforms, or runtime-added methods may feel natural to Groovy callers but surprising to Java, Kotlin, or Scala callers.
+
+Prefer Java-friendly facades when broad JVM consumers matter. Keep Groovy's dynamic features inside modules, test suites, scripts, build logic, or DSL layers owned by people who understand the language.
+
+## Scripts, DSLs, And Metaprogramming
+
+Groovy is a strong scripting language because source files can be ordinary classes or scripts with implicit wrapping, default imports, optional semicolons, optional parentheses in many calls, string interpolation, list and map literals, ranges, closures, and direct access to Java APIs.
+
+Its DSL story comes from several language features working together: closures with delegates, builders, command-chain-like call syntax, named arguments, operator overloading, AST transforms, traits, extension methods, and metaprogramming hooks. These features are why Groovy appears in Gradle build scripts, test specifications, configuration layers, and custom business-rule languages.
+
+DSLs are valuable when they make repeated configuration or domain rules inspectable. They are risky when they hide ordinary control flow, make IDE navigation weak, or let untyped maps become the real schema. A durable Groovy DSL needs tests, examples, versioned semantics, and a clear boundary between user-authored scripts and application internals.
+
+## Gradle And Build Tooling
+
+Gradle's historical association with Groovy is one of Groovy's most durable ecosystem roles. Gradle build scripts can be written as `build.gradle` files in Groovy DSL or `build.gradle.kts` files in Kotlin DSL; Gradle's current docs say those are the accepted build-script languages.
+
+That history does not make Groovy the default for new Gradle builds today. Gradle announced in 2023 that Kotlin DSL became the default for new Gradle builds, and the current best-practices documentation recommends Kotlin DSL for new builds and new subprojects. The same Gradle material still documents Groovy DSL, mixed Groovy/Kotlin DSL builds, and migration paths.
+
+The practical guidance is conservative:
+
+- Keep existing Groovy DSL builds when they are stable and the team understands them.
+- Prefer Kotlin DSL for new Gradle builds unless a plugin, convention, or team constraint points clearly to Groovy.
+- Treat build logic as production code: test it, version it, and avoid clever dynamic behavior in shared build conventions.
+- Be careful when migrating large Groovy DSL builds; plugin APIs, extra properties, dynamic method calls, and script compilation behavior can make migration nontrivial.
+
+Related concepts: [Build Systems](/concepts/build-systems/) and [Package Managers](/concepts/package-managers/).
+
+## Testing Culture
+
+Groovy has a strong testing identity in the JVM ecosystem. The official testing guide covers language-specific test features, JUnit integration, Spock specifications, and Geb-style functional testing. It also highlights Groovy's power assertions, concise syntax, and test DSL possibilities.
+
+Spock is the best-known Groovy testing association. It lets teams write specification-style tests for Groovy and Java code, commonly with `given`, `when`, `then`, `expect`, data tables, mocks, stubs, and readable feature names. This is often the strongest reason a Java or Spring team still has Groovy in the repository even when production code is Java or Kotlin.
+
+The tradeoff is dependency and language ownership. Test-only Groovy is still code. Teams need a supported Groovy version, JDK compatibility, Gradle or Maven setup, IDE support, and enough contributors who can debug failures without treating the test layer as magic.
+
+Related concept: [Testing Cultures](/concepts/testing-cultures/).
+
+## Syntax Example
+
+```groovy
+import groovy.transform.CompileStatic
+
+@CompileStatic
+class StatusCheck {
+    static Map<String, Object> parse(String name, Integer status) {
+        [
+            name: name,
+            status: status,
+            healthy: status >= 200 && status < 400
+        ]
+    }
+}
+
+def checks = [
+    StatusCheck.parse('Groovy', 200),
+    StatusCheck.parse('Example', 503),
+    StatusCheck.parse('Archive', 301)
+]
+
+checks
+    .groupBy { it.healthy ? 'ok' : 'attention' }
+    .each { label, entries ->
+        println "${label}: ${entries*.name.join(', ')}"
+    }
+```
+
+Run this as a script with:
+
+```sh
+groovy status_check.groovy
+```
+
+The example mixes a statically compiled class with dynamic script-level collection processing. It uses map literals, closures, grouping, spread-dot access, string interpolation, and Java-compatible static methods.
+
+## Best-Fit Use Cases
+
+Groovy is a strong fit for:
+
+- JVM scripts that need Java libraries, Maven artifacts, filesystem work, HTTP clients, XML/JSON handling, or quick operational glue.
+- Existing Gradle Groovy DSL builds and build conventions that are stable and understood.
+- Spock-heavy test suites for Java, Groovy, or Spring applications.
+- Internal DSLs, configuration languages, and extension points where Groovy's closures and builders genuinely improve readability.
+- Legacy JVM-platform systems where Groovy is already part of the durable architecture.
+- Mixed Java/Groovy repositories where Groovy is isolated to tests, scripts, build logic, or dynamic extension layers.
+
+## Poor-Fit Or Risky Use Cases
+
+Groovy can be a poor fit when:
+
+- The project wants new mainstream JVM application code with static null-safety features and Android or server-side momentum; evaluate Kotlin first.
+- The team wants the conservative, broadly readable JVM default; Java is safer.
+- The codebase would rely on dynamic metaprogramming without tests, schemas, or clear ownership.
+- Startup time, memory footprint, native distribution, or strict runtime predictability dominate.
+- Public APIs must be natural for Java, Kotlin, Scala, and build-tool consumers with minimal runtime assumptions.
+- The organization cannot keep Groovy, JDK, Gradle, Maven, Spock, and plugin versions aligned.
+
+## Governance, Releases, And Maintenance Fit
+
+Groovy is an Apache Software Foundation project, maintained by the Apache Groovy project and community under the Apache License. The versioning page says Groovy has followed semantic versioning since 2.0.0, and that maintenance length for old major versions depends on users and active need.
+
+This means production teams should read "active" as project health, not as an enterprise LTS guarantee. Standardize on a supported Groovy major line, check the JDK requirements of that line, and align Gradle, Maven, Spock, and other Groovy-consuming tools before upgrading.
+
+Modern Groovy earns its place when it is close to one of its strengths: scripting, testing, DSLs, Gradle history, or legacy JVM systems. For broad new JVM application development, compare it directly with Java and Kotlin rather than assuming past Groovy visibility still maps to today's default choice.
+
+## Comparison Notes
+
+[Groovy vs Java](/comparisons/groovy-vs-java/) is the direct JVM baseline comparison. Java is the safer default for broad production code and public APIs; Groovy is better for scripts, tests, DSLs, and dynamic extension points around Java systems.
+
+[Groovy vs Kotlin](/comparisons/groovy-vs-kotlin/) is the modern JVM-language comparison. Kotlin is usually stronger for new Android and JVM application code. Groovy remains relevant where dynamic DSLs, Gradle Groovy DSL, Spock, or runtime scripting are the reason for choosing it.
+
+Scala and Clojure are nearby JVM alternatives when the goal is functional programming, richer types, immutable data, macros, REPL-driven work, or Spark/data ecosystems. Ruby and Python are nearby scripting comparisons when the JVM is not required.
