@@ -1,0 +1,245 @@
+---
+title: Visual Basic
+slug: visual-basic
+status: active
+summary: Visual Basic is Microsoft's approachable BASIC-family language line, now centered on stable .NET application and library maintenance, with classic VB and VBA still important around Windows desktop, COM, and Office automation.
+firstReleased: 1991
+creators:
+  - Microsoft
+paradigms:
+  - object-oriented
+  - imperative
+  - event-driven
+  - procedural
+  - scripting
+typing:
+  discipline: static and dynamic
+  strength: .NET Visual Basic supports strong static typing when Option Strict is used, while classic VB and VBA code often rely on variants, late binding, and runtime conversions
+memory:
+  model: managed by the .NET garbage collector for modern Visual Basic; classic VB and VBA rely on COM reference counting, runtime objects, forms, controls, and host application lifetimes
+runtime:
+  model: compiled to .NET assemblies for modern Visual Basic; classic VB6 compiles to 32-bit Windows applications that use the VB6 runtime; VBA runs inside Office host applications
+officialSite: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+repository: https://github.com/dotnet/vblang
+packageManagers:
+  - NuGet
+  - dotnet CLI
+  - MSBuild
+  - Visual Studio
+  - Office object libraries
+comparedWith:
+  - csharp
+  - fsharp
+  - delphi
+  - powershell
+bestFor:
+  - Maintaining existing Visual Basic .NET applications, Windows Forms tools, class libraries, and mixed .NET solutions where VB code already owns working behavior.
+  - Maintaining classic VB6 Windows desktop applications that depend on forms, ActiveX controls, COM automation, ADO, installers, and 32-bit Windows runtime compatibility.
+  - Office automation and document-bound workflows where VBA macros sit close to Excel, Access, Word, Outlook, or PowerPoint object models.
+  - Incremental modernization toward C#, .NET services, Office Add-ins, PowerShell, or web front ends when behavior has been inventoried and tested.
+poorFit:
+  - New greenfield services, web front ends, mobile apps, games, cloud-native systems, or cross-platform UI applications where C#, TypeScript, Kotlin, Swift, Go, Python, or another ecosystem has stronger workload support.
+  - Classic VB6 development that requires a supported IDE, native 64-bit binaries, modern package management, or broad current Windows UI framework investment.
+  - Office automation that must run outside Office, across non-Office platforms, or under modern web security and deployment models better served by Office Add-ins or Microsoft Graph.
+  - Rewrites that assume automatic translation from VB6 or VBA to C# will preserve form behavior, COM contracts, database side effects, or user workflows without tests.
+sources:
+  - title: Visual Basic Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+    publisher: Microsoft Learn
+  - title: Microsoft .NET Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fundamentals/languages
+    publisher: Microsoft Learn
+  - title: Annotated Visual Basic Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/getting-started/strategy
+    publisher: Microsoft Learn
+  - title: Introduction To Visual Basic
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/reference/language-specification/introduction
+    publisher: Microsoft Learn
+  - title: Visual Basic Language Reference
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/
+    publisher: Microsoft Learn
+  - title: Visual Basic Language Specification
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/reference/language-specification/
+    publisher: Microsoft Learn
+  - title: Select The Visual Basic Language Version
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/configure-language-version
+    publisher: Microsoft Learn
+  - title: How To Invoke The Command-Line Compiler
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/reference/command-line-compiler/how-to-invoke-the-command-line-compiler
+    publisher: Microsoft Learn
+  - title: Introduction To .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: .NET Garbage Collection
+    url: https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/
+    publisher: Microsoft Learn
+  - title: Support Statement For Visual Basic 6.0 On Windows
+    url: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6-support-policy
+    publisher: Microsoft Learn
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: The History Of Microsoft - 1991
+    url: https://learn.microsoft.com/en-us/shows/history/history-of-microsoft-1991
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+Visual Basic is a family name, so scope matters. This page covers three related but different production contexts:
+
+- Modern Visual Basic on .NET, sometimes called VB.NET, which compiles to .NET assemblies and lives beside C# and F#.
+- Classic Visual Basic, especially Visual Basic 6.0, which shaped Windows desktop and COM-era business applications.
+- Visual Basic for Applications, or VBA, which runs inside Office host applications and automates their object models.
+
+Those contexts share BASIC-family syntax, Microsoft tooling, and an emphasis on approachable application development, but they are not interchangeable. A VB.NET class library is a .NET project. A VB6 application is a 32-bit Windows desktop and COM artifact with its own runtime and control dependencies. A VBA macro is tied to its Office host, workbook, document, database, or template.
+
+## Origin And Design Goals
+
+Microsoft's 1991 history page says Microsoft announced Visual BASIC for Windows at Windows World 1991 in Atlanta on May 20, 1991. Classic Visual Basic became important because it combined a BASIC-derived language with a visual form designer, event handlers, controls, database access, and an IDE that made Windows business applications reachable to many teams that were not building C or C++ frameworks by hand.
+
+The design center was practical Windows application development. Developers could place controls on a form, set properties, respond to events such as button clicks, connect to databases or COM components, and ship internal tools or line-of-business applications quickly. That model made Visual Basic one of the defining Windows desktop languages of the 1990s.
+
+Modern Visual Basic moved onto .NET. Microsoft describes Visual Basic as an object-oriented language developed by Microsoft for creating type-safe .NET applications. The .NET language strategy now frames VB as straightforward, approachable, mature, and stable rather than aggressively expanding. That stability is useful for existing VB teams, but it also means new workload coverage usually appears first, and often only, in C#.
+
+## Classic VB, VB.NET, And VBA
+
+Classic VB usually means Visual Basic 1.0 through Visual Basic 6.0. Production VB6 applications often contain `.frm`, `.bas`, `.cls`, `.vbp`, and `.vbw` files, form resources, ActiveX controls, COM references, ADO data access, installer scripts, registry assumptions, and 32-bit runtime dependencies. The code may be readable, but the application contract often lives in forms, controls, COM registration, database side effects, printer behavior, and user workflow.
+
+Visual Basic .NET is different. It runs on .NET, uses assemblies, MSBuild project files, NuGet packages, .NET libraries, Visual Studio tooling, and the same runtime family as C# and F#. It can build Windows Forms applications, console applications, libraries, tests, and other supported .NET project types. It is not binary-compatible with VB6, and a migration from VB6 to VB.NET or C# should be treated as application modernization rather than a syntax upgrade.
+
+VBA is different again. It is hosted inside applications such as Excel, Access, Word, Outlook, and PowerPoint. Microsoft describes VBA in Office as useful for automating repeated tasks, extending user interaction, and making Office applications interact through their object models. That host dependency is the point. A spreadsheet macro, an Access application, and an Outlook automation script are shaped by the Office object model as much as by the language.
+
+## Current .NET Status
+
+Modern Visual Basic remains supported as part of .NET, but its role is narrower than C#'s. Microsoft's .NET language strategy says the core .NET libraries will support VB and runtime/library improvements will often benefit VB automatically. The same strategy says VB generally takes a consumption-only approach for new runtime or C# features that require language syntax, and that VB will not be extended to new workloads.
+
+This is the central planning fact for new work. Visual Basic can remain a reasonable choice for existing VB.NET codebases, Windows Forms applications, libraries, and teams with strong VB ownership. It is a weak default for new platforms where Microsoft samples, third-party packages, framework templates, and community examples primarily use C#.
+
+For production, pin the .NET SDK, target framework, language version, package graph, and Visual Studio requirements. Microsoft documents `dotnet build` as the modern build path for Visual Basic source files, while `vbc.exe` is for older .NET Framework projects. The compiler also supports setting a language version in the `.vbproj` file or compiler options, which matters when keeping older projects stable.
+
+Related concepts: [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode), [Garbage Collection](/concepts/garbage-collection), [Package Managers](/concepts/package-managers), and [Build Systems](/concepts/build-systems).
+
+## Type System And Language Model
+
+Visual Basic's language specification describes it as approachable and easy to learn, with syntax similar to English and an emphasis on clarity and readability. It also documents a dual typing story: Visual Basic can provide strongly typed compile-time semantics, but it can also defer type checking and binding to runtime in looser modes.
+
+That flexibility is useful for legacy code and Office automation, but it is also one of the main maintenance risks. Production VB.NET code should normally use strict compiler settings, explicit types at important boundaries, tests around conversions, and clear handling of `Nothing`. Legacy VB6 and VBA systems often need extra care around `Variant`, implicit conversions, `On Error`, default properties, late-bound COM calls, and host object models.
+
+Modern VB has classes, modules, interfaces, structures, properties, events, delegates, generics, LINQ query syntax, XML literals, attributes, exceptions, `Async` and `Await`, namespaces, and .NET library access. It can interoperate with C# through assemblies, but public APIs should be designed deliberately so nullable behavior, optional parameters, events, exceptions, and naming conventions are clear to both languages.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing), [Structural vs Nominal Typing](/concepts/structural-vs-nominal-typing), [Null Safety](/concepts/null-safety), and [Object-Oriented Programming](/concepts/object-oriented-programming).
+
+## Memory, Runtime, And Interop
+
+Visual Basic on .NET uses the .NET runtime and garbage collector. Ordinary objects are allocated and reclaimed through the managed runtime, while `IDisposable`, `Using`, event subscriptions, native handles, COM interop, file handles, database connections, and UI components still require explicit lifetime thinking. Managed memory is not a substitute for ownership policy around resources.
+
+Classic VB and VBA are closer to COM-era Windows automation. Object lifetimes are commonly shaped by reference counting, form ownership, host application objects, ActiveX controls, COM registration, and runtime libraries. A missing reference release, circular object graph, hidden global, default form instance, or host object retained too long can become a production bug even when the language hides allocation details.
+
+Interop is one of Visual Basic's durable strengths and risks. VB6 and VBA were heavily used around COM automation, ActiveX controls, Office object models, ADO, OLE Automation, and Windows desktop integration. VB.NET can consume COM and .NET libraries, but migration should separate stable boundaries from accidental dependencies. Inventory registered components, bitness, type libraries, Office versions, database drivers, printer behavior, and deployment scripts before moving code.
+
+## Syntax Example
+
+```vbnet
+Imports System
+Imports System.Net
+Imports System.Net.Http
+Imports System.Threading.Tasks
+
+Public Module Program
+    Public Async Function Main() As Task
+        Dim targets = {
+            New LanguageTarget("Visual Basic", "https://learn.microsoft.com/dotnet/visual-basic/"),
+            New LanguageTarget(".NET", "https://learn.microsoft.com/dotnet/core/")
+        }
+
+        Using client As New HttpClient()
+            For Each target In targets
+                Dim status = Await GetStatusAsync(client, target)
+                Console.WriteLine($"{target.Name}: {CInt(status)} {status}")
+            Next
+        End Using
+    End Function
+
+    Private Async Function GetStatusAsync(
+        client As HttpClient,
+        target As LanguageTarget
+    ) As Task(Of HttpStatusCode)
+        Using response = Await client.GetAsync(target.Url)
+            Return response.StatusCode
+        End Using
+    End Function
+End Module
+
+Public Class LanguageTarget
+    Public Sub New(name As String, url As String)
+        Me.Name = name
+        Me.Url = New Uri(url)
+    End Sub
+
+    Public ReadOnly Property Name As String
+    Public ReadOnly Property Url As Uri
+End Class
+```
+
+This example is modern Visual Basic on .NET. It shows imports, a module entry point, classes, read-only properties, `Using` disposal, generics through `Task(Of T)`, string interpolation, and `Async`/`Await`.
+
+## Windows Desktop And Office Automation
+
+Visual Basic's strongest historical association is Windows desktop work. VB6 applications frequently used forms, controls, menus, dialogs, timers, data grids, reports, ActiveX controls, COM components, OLE Automation, installer projects, and Windows-specific APIs. Many still run because the business workflow is valuable and the runtime compatibility story is better than the IDE support story.
+
+Microsoft's VB6 support statement is explicit: VB6 development is no longer supported, the VB6 IDE and Visual Studio 6.0 IDE have been unsupported since April 8, 2008, and Microsoft recommends replacing applications with modern technology. At the same time, key VB6 runtime files ship in supported Windows versions and are supported for the support lifetime of those Windows versions, with a support bar limited to serious regressions and critical security issues for existing applications. On 64-bit Windows, VB6 runtime files remain 32-bit and run under WOW emulation.
+
+That distinction should drive maintenance plans. A working VB6 application may remain supportable as a runtime artifact, but the development environment, controls, installers, source control conventions, and build machines need hard evidence. Reproducibility is usually the first modernization milestone.
+
+VBA remains important where Office itself is the platform. It is effective for repetitive document and spreadsheet work, Access applications, custom forms, and workflows that use Office object models. It is a poor fit when the code needs unattended server execution, cross-platform deployment, modern web security, or independence from Office versions and user macro policy.
+
+## Modernization Paths
+
+Visual Basic modernization has several different endpoints:
+
+- Keep VB.NET and update the .NET SDK, target framework, packages, analyzers, tests, and deployment process.
+- Keep VB6 running while documenting builds, controls, COM references, database drivers, installers, and runtime requirements.
+- Wrap stable VB6 or VBA behavior behind a CLI, COM boundary, file exchange, database view, queue, or service while adding tests.
+- Move new .NET work to C# while leaving existing VB.NET libraries stable.
+- Replace Office macros with Office Add-ins, Microsoft Graph automation, PowerShell, Python, or service-backed workflows when the host dependency has become the risk.
+- Rewrite only after behavior, data, forms, reports, and user workflows are well enough specified to preserve.
+
+Do not confuse source translation with modernization. VB6-to-C# and VBA-to-C# projects often fail when they translate statements but miss form behavior, default properties, COM errors, database cursor semantics, printer settings, macro security, and user habits. Characterization tests, sample files, recorded workflows, database fixtures, and side-effect inventories matter more than syntax conversion.
+
+## Best-Fit Use Cases
+
+Visual Basic is a strong fit when:
+
+- The team already owns a working VB.NET codebase and the .NET platform remains appropriate.
+- The application is an internal Windows Forms or library system whose current risk is maintenance, not language capability.
+- A VB6 application still delivers business value and the near-term goal is controlled maintenance, runtime validation, and reproducible builds.
+- An Office workflow depends directly on Excel, Access, Word, Outlook, or PowerPoint object models and local user automation is acceptable.
+- Modernization can happen incrementally through tests, boundaries, and new C# or service code where it reduces real risk.
+
+## Poor-Fit Or Risky Use Cases
+
+Visual Basic is a poor default when:
+
+- The project is greenfield and needs broad current .NET examples, cloud-native templates, modern web UI, game engines, mobile UI, or cross-platform client work.
+- A team expects VB6 to provide a supported modern IDE, native 64-bit runtime, or contemporary package ecosystem.
+- VBA code needs to become a secure server-side workflow, cross-platform automation system, or unattended integration service.
+- The code relies on undocumented ActiveX controls, abandoned COM components, hidden Access forms, broken installers, or unowned macro-enabled documents.
+- A rewrite is justified only by age rather than by measured runtime, security, staffing, deployment, or integration risk.
+
+## Governance, Releases, And Compatibility
+
+Visual Basic is stewarded by Microsoft as part of the .NET language family. The `dotnet/vblang` repository hosts language design material and specification sources, while current documentation lives on Microsoft Learn. The strategy is conservative: keep Visual Basic approachable and stable, support core .NET libraries, improve Visual Studio experience and C# interop, and focus on core scenarios such as Windows Forms and libraries.
+
+Classic VB is not evolving as a language platform. Its practical governance is Microsoft's Windows compatibility and runtime support statement, plus whatever third-party vendors still support the controls and components an application uses. VBA support follows the Office host application's support policy rather than the VB6 support statement, except where supported VB6 runtime files are used inside a supported VBA environment.
+
+Compatibility is therefore uneven but understandable. VB.NET compatibility lives in .NET SDK, compiler, and library policy. VB6 compatibility lives in Windows runtime support and application testing. VBA compatibility lives in Office host behavior, macro policy, and object model changes. A production plan should name which one it depends on.
+
+## Comparison Notes
+
+[Visual Basic vs C#](/comparisons/visual-basic-vs-csharp) is the main comparison for .NET and Windows modernization decisions. C# is usually the better default for new .NET services, current Microsoft samples, Unity, cloud workloads, and broader hiring. Visual Basic is usually strongest when existing VB.NET, VB6, or VBA code already owns working business behavior.
+
+[F#](/languages/fsharp) is another .NET language, but it solves a different problem: functional-first domain modeling and data-rich code. Visual Basic competes less with F# than with C# as the mainstream target for modern .NET migration.
+
+[Delphi](/languages/delphi) is adjacent for long-lived Windows desktop and RAD business applications. [PowerShell](/languages/powershell) is adjacent for Windows and Microsoft-platform automation, especially when a VBA macro or VBScript-style task should become an operational script rather than an application.

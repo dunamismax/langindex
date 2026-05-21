@@ -1,0 +1,105 @@
+---
+title: Visual Basic vs C#
+slug: visual-basic-vs-csharp
+summary: Visual Basic and C# both live in the Microsoft ecosystem, but C# is the mainstream .NET growth language while Visual Basic is most valuable for existing VB.NET, VB6, VBA, Windows desktop, COM, and Office automation systems.
+languages:
+  - visual-basic
+  - csharp
+useCases:
+  - dotnet applications
+  - Windows desktop applications
+  - legacy modernization
+  - Office automation
+  - enterprise tooling
+sources:
+  - title: Visual Basic Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+    publisher: Microsoft Learn
+  - title: Microsoft .NET Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fundamentals/languages
+    publisher: Microsoft Learn
+  - title: Annotated Visual Basic Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/getting-started/strategy
+    publisher: Microsoft Learn
+  - title: Introduction To Visual Basic
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/reference/language-specification/introduction
+    publisher: Microsoft Learn
+  - title: Support Statement For Visual Basic 6.0 On Windows
+    url: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6-support-policy
+    publisher: Microsoft Learn
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Introduction To .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: An Introduction To NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing a .NET language, maintaining a Visual Basic system, or deciding whether VB6, VBA, or VB.NET behavior should move toward C#. It is not a syntax contest. The practical question is whether the durable asset is existing Visual Basic behavior or the broader modern .NET platform.
+
+For the full profiles, see [Visual Basic](/languages/visual-basic) and [C#](/languages/csharp).
+
+## Shared Territory
+
+Modern Visual Basic and C# both compile to .NET assemblies, use .NET libraries, run on the .NET runtime, use NuGet packages, build through MSBuild and the .NET SDK, and work in Visual Studio. Both support classes, interfaces, generics, events, exceptions, LINQ, async APIs, attributes, and interop with other .NET languages.
+
+The overlap is strongest in Windows desktop applications, internal tools, enterprise libraries, mixed .NET solutions, and long-lived business systems. The overlap is weaker for new web, cloud, mobile, game, and cross-platform UI workloads, where C# receives more Microsoft and ecosystem attention.
+
+## Key Differences
+
+| Dimension       | Visual Basic                                               | C#                                                        |
+| --------------- | ---------------------------------------------------------- | --------------------------------------------------------- |
+| Platform role   | Stable .NET language plus VB6/VBA maintenance contexts     | Mainstream evolving .NET language                         |
+| New workloads   | Not extended to new workloads under Microsoft's strategy   | Broad support across .NET workloads                       |
+| Syntax style    | English-like, approachable, verbose, case-insensitive      | C-family, concise, mainstream across .NET samples         |
+| Legacy gravity  | VB.NET apps, VB6 forms, COM, ActiveX, Office VBA macros    | Existing C#/.NET services, libraries, tools, and teams    |
+| Desktop fit     | Windows Forms, existing VB.NET, VB6 maintenance, VBA hosts | Windows Forms, WPF, WinUI, .NET MAUI, Avalonia, Unity     |
+| Package model   | NuGet for VB.NET; COM/Office references for classic/VBA    | NuGet, .NET SDK, MSBuild, source generators, analyzers    |
+| Team risk       | Smaller current hiring pool and fewer new examples         | Larger .NET hiring pool and more first-party guidance     |
+
+## Choose Visual Basic When
+
+- The working system is already VB.NET and the team can maintain it safely on a supported .NET line.
+- The application is an internal Windows Forms tool where existing VB code, tests, users, and deployment are already stable.
+- The near-term goal is VB6 maintenance, runtime validation, build reproducibility, ActiveX/COM inventory, or controlled wrapping.
+- The automation lives inside Office and depends directly on Excel, Access, Word, Outlook, or PowerPoint object models.
+- Moving to C# would create rewrite risk without reducing a concrete maintenance, security, deployment, or staffing problem.
+
+## Choose C# When
+
+- The project is greenfield and .NET is the platform choice.
+- The team needs current Microsoft examples, ASP.NET Core templates, cloud SDK guidance, source generators, analyzers, Unity, or modern desktop framework samples.
+- New services, workers, APIs, libraries, installers, or tools should align with the broader .NET ecosystem.
+- Hiring, onboarding, IDE tooling, package examples, and vendor documentation matter more than Visual Basic continuity.
+- Existing VB behavior has been captured well enough that migration can happen behind tests and rollback boundaries.
+
+## VB6 And VBA Are Different Decisions
+
+Do not treat VB6, VBA, and VB.NET as one migration problem. VB6 applications often depend on forms, ActiveX controls, COM references, ADO, installers, registry entries, printers, and 32-bit Windows runtime behavior. VBA macros depend on Office host object models, documents, workbooks, Access databases, templates, and macro policy. VB.NET applications depend on .NET project files, assemblies, packages, and runtime support.
+
+C# can be a good destination for new .NET code, but it is not a magic preservation layer for VB6 or VBA behavior. A migration plan should inventory files, forms, controls, COM registration, database effects, reports, host applications, bitness, user workflows, and deployment. Then move one boundary at a time.
+
+## Modernization Notes
+
+Start by stabilizing the Visual Basic side:
+
+- Reproduce the build from a clean machine or documented image.
+- Put source files, form resources, project files, installers, and scripts under version control.
+- Pin Visual Studio, .NET SDK, Office, Windows, controls, COM components, database drivers, and package versions.
+- Add characterization tests around files, database writes, reports, UI workflows, and Office documents.
+- Decide which behavior is stable enough to wrap and which must be rewritten.
+
+After that, C# often becomes the right place for new services, APIs, libraries, tests, migration tooling, and UI replacement. The safest endpoint may still include Visual Basic where it owns stable behavior and C# where the platform is moving.
+
+## Practical Default
+
+Use C# as the default for new .NET work unless there is a clear Visual Basic continuity reason. Keep Visual Basic when the existing codebase is valuable, supportable, and better stabilized than rewritten. Treat VB6 and VBA modernization as application and workflow migration, not just language migration.

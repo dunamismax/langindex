@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -16,6 +16,7 @@ candidates:
   - fortran
   - cobol
   - delphi
+  - visual-basic
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -89,6 +90,18 @@ sources:
   - title: VCL Overview
     url: https://docwiki.embarcadero.com/RADStudio/Florence/en/VCL_Overview
     publisher: Embarcadero DocWiki
+  - title: Visual Basic Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+    publisher: Microsoft Learn
+  - title: Annotated Visual Basic Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/getting-started/strategy
+    publisher: Microsoft Learn
+  - title: Support Statement For Visual Basic 6.0 On Windows
+    url: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6-support-policy
+    publisher: Microsoft Learn
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
 lastVerified: 2026-05-21
 ---
 
@@ -172,6 +185,8 @@ Fortran systems usually exist because they sit near numerical code or long-lived
 COBOL systems usually exist because they sit near business records, decimal arithmetic, batch jobs, reports, mainframe transactions, copybooks, and long-lived operational runbooks. Start by preserving file layouts, database effects, scheduler behavior, return codes, and decimal-data semantics before wrapping behavior with Java, .NET, queues, APIs, or service boundaries.
 
 Delphi systems usually exist because they sit near Windows desktop workflows, VCL forms, RAD Studio projects, database components, reports, COM integrations, or long-lived Object Pascal business logic. Start by making the Delphi build reproducible, pinning RAD Studio and component versions, checking 32-bit versus 64-bit assumptions, preserving `.dfm` resources, and adding tests around user-visible behavior before moving features to C#, web front ends, or services.
+
+Visual Basic systems split into different maintenance shapes. VB.NET code should be treated as a .NET system: pin the SDK or .NET Framework target, packages, project files, Visual Studio requirements, and interop boundaries before moving new work to C#. VB6 systems usually sit near Windows desktop forms, ActiveX controls, COM registration, ADO, installers, 32-bit runtime behavior, and user workflows; start by reproducing the build and testing runtime behavior on supported Windows versions. VBA systems usually sit inside Office documents, Excel workbooks, Access databases, templates, and macro policies; preserve host object-model behavior before replacing macros with C#, Office Add-ins, PowerShell, Python, or services.
 
 ## Practical Default
 

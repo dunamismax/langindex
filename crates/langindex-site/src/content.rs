@@ -49,6 +49,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "sql",
     "swift",
     "typescript",
+    "visual-basic",
     "zig",
 ];
 
@@ -709,8 +710,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 40);
-        assert_eq!(content.comparisons.len(), 57);
+        assert_eq!(content.languages.len(), 41);
+        assert_eq!(content.comparisons.len(), 58);
         assert_eq!(content.guides.len(), 22);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
@@ -756,9 +757,11 @@ mod tests {
         assert!(content.language("dart").is_some());
         assert!(content.language("powershell").is_some());
         assert!(content.language("rust").is_some());
+        assert!(content.language("visual-basic").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
         assert!(content.comparison("delphi-vs-csharp").is_some());
+        assert!(content.comparison("visual-basic-vs-csharp").is_some());
         assert!(content.comparison("haskell-vs-ocaml").is_some());
         assert!(content.comparison("haskell-vs-scala").is_some());
         assert!(content.comparison("elixir-vs-erlang").is_some());
@@ -838,7 +841,9 @@ mod tests {
         assert!(routes.contains("/languages/nim"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
+        assert!(routes.contains("/languages/visual-basic"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
+        assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-ocaml"));
         assert!(routes.contains("/comparisons/nim-vs-zig"));

@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 40 language profiles.
-  - 57 comparisons.
+  - 41 language profiles.
+  - 58 comparisons.
   - 22 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -189,12 +189,12 @@ the same explanations inside every language page.
 
 ### Phase 48 - Visual Basic
 
-- [ ] Add a complete Visual Basic page with scope split between classic VB
+- [x] Add a complete Visual Basic page with scope split between classic VB
       and VB.NET where needed.
-- [ ] Cover Windows desktop heritage, COM/Office automation, .NET status,
+- [x] Cover Windows desktop heritage, COM/Office automation, .NET status,
       modernization pressure, and maintenance fit.
-- [ ] Add Visual Basic vs C# comparison.
-- [ ] Update desktop and legacy-maintenance guides.
+- [x] Add Visual Basic vs C# comparison.
+- [x] Update desktop and legacy-maintenance guides.
 
 ---
 

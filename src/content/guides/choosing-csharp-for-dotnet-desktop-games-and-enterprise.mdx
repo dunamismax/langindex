@@ -1,8 +1,8 @@
 ---
 title: "Choosing C# For .NET, Desktop, Games, And Enterprise Work"
 slug: choosing-csharp-for-dotnet-desktop-games-and-enterprise
-summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, .NET-centered tooling, F# domain cores, and Delphi-adjacent modernization decisions."
-audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, Microsoft-centered platforms, mixed C#/F# systems, or modernization work near existing Delphi systems.
+summary: "A decision guide for teams evaluating C# for backend services, enterprise systems, desktop applications, Unity games, .NET-centered tooling, F# domain cores, and Visual Basic or Delphi modernization decisions."
+audience: Developers and teams deciding whether C# should be their main language for .NET services, business applications, desktop tools, Unity projects, Microsoft-centered platforms, mixed C#/F# systems, or modernization work near existing Visual Basic and Delphi systems.
 candidates:
   - csharp
   - fsharp
@@ -11,6 +11,7 @@ candidates:
   - go
   - kotlin
   - python
+  - visual-basic
   - delphi
 sources:
   - title: C# Documentation
@@ -55,6 +56,15 @@ sources:
   - title: FireMonkey
     url: https://docwiki.embarcadero.com/RADStudio/Florence/en/FireMonkey
     publisher: Embarcadero DocWiki
+  - title: Visual Basic Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+    publisher: Microsoft Learn
+  - title: Annotated Visual Basic Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/getting-started/strategy
+    publisher: Microsoft Learn
+  - title: Support Statement For Visual Basic 6.0 On Windows
+    url: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6-support-policy
+    publisher: Microsoft Learn
 lastVerified: 2026-05-21
 ---
 
@@ -106,7 +116,7 @@ Before choosing C# for desktop, decide:
 
 If the application is mostly a browser application packaged for desktop, compare C# desktop stacks with Electron, Tauri, and web-first frameworks. If the application is deeply native to Apple platforms, Swift may be a better center. If it is Android-first, Kotlin is usually the current default.
 
-If the application is already a Delphi or VCL product, compare C# against modernization in place. C# may be the better destination for new .NET services, Windows tools, or cross-team platform consolidation, but an existing Delphi desktop application often carries form resources, component dependencies, database bindings, reports, installers, and user workflows that should be stabilized before migration. See [Delphi vs C#](/comparisons/delphi-vs-csharp) for the focused comparison.
+If the application is already a Visual Basic, Delphi, or VCL product, compare C# against modernization in place. C# may be the better destination for new .NET services, Windows tools, or cross-team platform consolidation, but existing VB6, VB.NET, VBA, and Delphi desktop applications often carry form resources, component dependencies, COM references, database bindings, reports, installers, documents, and user workflows that should be stabilized before migration. See [Visual Basic vs C#](/comparisons/visual-basic-vs-csharp) and [Delphi vs C#](/comparisons/delphi-vs-csharp) for focused comparisons.
 
 ## Choose C# For Games When
 
@@ -159,3 +169,5 @@ Start with TypeScript when the center of gravity is the browser, Node.js, npm, f
 Start with Java when the durable platform is the JVM. Start with Go when small services, infrastructure tooling, and simple deployment matter more than framework depth. Start with Python when the work is scripting, data, notebooks, or ML orchestration.
 
 Keep Delphi in the decision when the durable asset is an existing VCL, FireMonkey, Object Pascal, or RAD Studio application. A maintained Delphi system can be the right answer when the alternative is an under-specified rewrite.
+
+Keep Visual Basic in the decision when the durable asset is an existing VB.NET, VB6, VBA, Windows Forms, COM, or Office automation system. C# is usually the better home for new .NET work, but Visual Basic behavior should be inventoried and tested before it is replaced.
