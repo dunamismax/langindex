@@ -54,11 +54,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 LangIndex is live at [https://langindex.dev](https://langindex.dev).
 
-The repository implementation is a Rust web stack: a Cargo workspace with
-Axum serving Leptos server-rendered pages, modeled after Stephen's FileFerry
-site architecture. The live self-hosted site may still be running the previous
-static deployment until the Rust service is synced to the Ubuntu host and
-redeployed.
+The v1.0 repository baseline is a Rust web stack: a Cargo workspace with Axum
+serving Leptos server-rendered pages, modeled after Stephen's FileFerry site
+architecture. The production target is the release-built `langindex-site`
+binary running behind Caddy on Stephen's Ubuntu VM.
 
 LangIndex ships four content groups:
 
@@ -71,8 +70,22 @@ LangIndex ships four content groups:
   memory, runtime and execution, concurrency, paradigms, and tooling.
 
 The initial milestone — defining the content model and publishing a
-source-backed seed set — is complete. See [BUILD.md](BUILD.md) for current
-coverage, the Rust rewrite phase, and the later per-language expansion plan.
+source-backed seed set — is complete. Local development, deployment, content
+model, source, and editorial docs live under [docs/](docs/).
+
+## Development
+
+Common entry points:
+
+```sh
+just fmt
+just check
+just test
+just build
+```
+
+See [docs/local-development.md](docs/local-development.md) and
+[docs/deployment.md](docs/deployment.md) for the full runbook.
 
 ## License
 

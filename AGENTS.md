@@ -1,18 +1,17 @@
 # AGENTS.md
 
 Repo-local operating manual for LangIndex. Reading this file plus
-`README.md` and `BUILD.md` is sufficient context to begin work.
+`README.md` is sufficient context to begin work.
 
-`README.md` explains the product. `BUILD.md` is the active build plan.
-This file holds durable operator, engineering, editorial, content, and
-deployment rules.
+`README.md` explains the product. Durable technical, content, editorial, and
+deployment material lives under `docs/`. This file holds durable operator and
+engineering rules.
 
 ## Read Order
 
 1. `AGENTS.md` (this file)
 2. `README.md`
-3. `BUILD.md`
-4. Task-relevant code, content, or docs
+3. Task-relevant code, content, or docs
 
 Do not create additional prompt, profile, continuity, bootstrap, setup,
 or scheduler files. If durable repo behavior matters, put it here.
@@ -92,13 +91,6 @@ overstate authority, or bury the lede.
   service.
 - A single release binary is the preferred production artifact unless a later
   phase proves a static export is better for LangIndex.
-
-Transitional rule:
-
-- The current checked-in site may still be Astro/TypeScript while Phase 16.5
-  is active. Do not expand the old stack except to preserve behavior during
-  migration. New architecture work should move LangIndex toward
-  Rust/Leptos/Axum.
 
 Default against:
 
@@ -295,7 +287,7 @@ just build
 Broader checks the project supports:
 
 - Rust formatting, clippy, tests, and content validation via `just check`
-  after Phase 16.5 replaces the Astro stack.
+  for normal Rust/site changes.
 - Frontmatter source validation via `just validate-sources`.
 - Search index generation or search fixture validation as part of `just build`.
 - Internal link auditing via `just check-links-internal`.
@@ -322,10 +314,7 @@ This file is the only persistent local prompt for this repo.
   this file in the same session.
 - If Stephen says "remember this" and it should shape this repo, update
   this file directly.
-- Keep `README.md` for product current state, `BUILD.md` for active
-  build plan, durable `docs/` for stable technical material, and this
-  file for operator rules.
-- Once the build plan is complete, retire `BUILD.md` instead of keeping
-  stale planning text.
+- Keep `README.md` for product current state, durable `docs/` for stable
+  technical material, and this file for operator rules.
 - Keep wording portable across agents and vendors. Every line should pay
   rent.
