@@ -1,7 +1,7 @@
 ---
 title: Choosing A Performance-Critical Language
 slug: choosing-a-performance-critical-language
-summary: A practical guide for choosing C++, Rust, C, Fortran, Julia, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
+summary: A practical guide for choosing C++, Rust, C, Fortran, Julia, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
 audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
 candidates:
   - cpp
@@ -9,6 +9,7 @@ candidates:
   - c
   - fortran
   - julia
+  - matlab
   - go
   - java
   - csharp
@@ -34,6 +35,18 @@ sources:
   - title: Performance Tips
     url: https://docs.julialang.org/en/v1/manual/performance-tips/
     publisher: Julia
+  - title: MATLAB Documentation
+    url: https://www.mathworks.com/help/matlab/index.html
+    publisher: MathWorks
+  - title: Parallel Computing Toolbox Documentation
+    url: https://www.mathworks.com/help/parallel-computing/
+    publisher: MathWorks
+  - title: MATLAB Coder
+    url: https://www.mathworks.com/products/matlab-coder.html
+    publisher: MathWorks
+  - title: About MATLAB Runtime
+    url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
+    publisher: MathWorks
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
@@ -91,6 +104,12 @@ Choose Julia when the performance-critical work is scientific or numerical and t
 
 Julia works best when the team can profile, keep hot code type-stable, manage allocations, pin `Project.toml` and `Manifest.toml`, and test compilation latency or sysimage decisions. It is usually a poor fit when the product mainly needs tiny binaries, fast cold starts, hard real-time behavior, or broad general application frameworks.
 
+## When MATLAB Fits
+
+Choose MATLAB when the performance-sensitive work is engineering or scientific computation and the fastest credible path is through MathWorks' matrix language, optimized built-ins, domain toolboxes, Simulink workflows, Parallel Computing Toolbox, or MATLAB Coder for supported generated C/C++ targets.
+
+MATLAB works best when the team can profile real workloads, keep array operations clear, control toolbox and release versions, and accept license-managed deployment. It is usually a poor fit when the measured requirement is a small native binary, open redistribution, hard real-time behavior outside supported generated-code paths, or an application platform unrelated to engineering analysis.
+
 ## When Rust Fits
 
 Choose Rust when the project needs native code without a required garbage collector and the team wants ownership, borrowing, and thread-sharing rules enforced by the compiler. Rust is strong for parsers, protocol implementations, command-line tools, agents, embedded modules, WebAssembly, infrastructure components, and security-sensitive native libraries.
@@ -131,4 +150,4 @@ Start with the highest-level language and runtime that meet the measured constra
 
 Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
 
-Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.
+Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.

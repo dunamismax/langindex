@@ -1,0 +1,113 @@
+---
+title: MATLAB vs Julia
+slug: matlab-vs-julia
+summary: MATLAB and Julia both target scientific and numerical computing, but MATLAB is a mature proprietary engineering environment with Simulink and toolboxes while Julia is an open source language designed for multiple dispatch and high-performance numerical programming in one language.
+languages:
+  - matlab
+  - julia
+useCases:
+  - scientific computing
+  - numerical computing
+  - engineering analysis
+  - simulation
+  - research software
+  - optimization
+sources:
+  - title: MATLAB Documentation
+    url: https://www.mathworks.com/help/matlab/index.html
+    publisher: MathWorks
+  - title: Language Fundamentals
+    url: https://www.mathworks.com/help/matlab/language-fundamentals.html
+    publisher: MathWorks
+  - title: Simulink Documentation
+    url: https://www.mathworks.com/help/simulink/index.html
+    publisher: MathWorks
+  - title: MATLAB Coder
+    url: https://www.mathworks.com/products/matlab-coder.html
+    publisher: MathWorks
+  - title: About MATLAB Runtime
+    url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
+    publisher: MathWorks
+  - title: Pricing and Licensing
+    url: https://www.mathworks.com/pricing-licensing.html
+    publisher: MathWorks
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Methods
+    url: https://docs.julialang.org/en/v1/manual/methods/
+    publisher: Julia
+  - title: Performance Tips
+    url: https://docs.julialang.org/en/v1/manual/performance-tips/
+    publisher: Julia
+  - title: Pkg.jl Documentation
+    url: https://pkgdocs.julialang.org/v1/
+    publisher: Julia
+  - title: PackageCompiler
+    url: https://julialang.github.io/PackageCompiler.jl/stable/
+    publisher: Julia
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between MATLAB and Julia for scientific computing, numerical software, simulation, optimization, engineering analysis, and research code. It is not a generic proprietary-versus-open-source argument, and it is not saying every MATLAB workflow should be rewritten in Julia.
+
+The core distinction is ownership of the workflow. MATLAB is strongest when the value is the MathWorks environment: toolboxes, apps, plotting, Simulink, generated-code products, licensing support, and established engineering practice. Julia is strongest when the value is an open language for custom numerical code, multiple dispatch, generic mathematical abstractions, and specialized compiled performance without moving kernels into another language by default.
+
+## Shared Territory
+
+Both languages are interactive, array-oriented, scientific-computing languages. Both can express mathematical code directly, call native libraries, use packages, run notebooks, plot results, and participate in mixed-language systems.
+
+Both also demand environment discipline. MATLAB projects need release and toolbox control. Julia projects need Julia version, `Project.toml`, `Manifest.toml`, artifacts, package precompilation, and deployment decisions. Neither language makes scientific reproducibility automatic.
+
+## Key Differences
+
+| Dimension          | MATLAB                                                       | Julia                                                         |
+| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------- |
+| Center of gravity  | Proprietary engineering environment, Simulink, toolboxes     | Open source scientific programming language, multiple dispatch |
+| Type model         | Dynamic runtime classes, arrays, tables, structures, classes | Dynamic with parametric types, method specialization, inference |
+| Performance model  | Built-ins, vectorization, toolboxes, Coder where supported   | Type-stable Julia functions compiled through LLVM JIT          |
+| Ecosystem shape    | MathWorks products, Add-On Explorer, File Exchange           | Pkg environments, General registry, community packages         |
+| Deployment shape   | Licensed MATLAB, MATLAB Runtime, MATLAB Coder, Simulink paths | Julia runtime, manifests, sysimages, PackageCompiler          |
+| Strongest workflow | Engineering analysis, controls, Simulink, regulated toolchains | Custom solvers, simulations, optimization, generic numerical packages |
+| Main risk          | Cost and proprietary product coupling                        | Latency, smaller ecosystem, deployment and type-stability discipline |
+
+## Choose MATLAB When
+
+- Existing work depends on MATLAB toolboxes, Simulink models, app workflows, Live Editor documents, generated-code products, or MathWorks support.
+- Engineers need integrated model-based design, simulation, verification, and hardware-oriented workflows more than an open language implementation.
+- The organization already owns the licenses, trains users in MATLAB/Simulink, and has governance around toolbox versions and releases.
+- The fastest path is to use a mature specialized MathWorks product rather than assemble and validate an open source package stack.
+- Deployment can use licensed MATLAB, MATLAB Runtime, generated C/C++, or a controlled MathWorks production path.
+
+## Choose Julia When
+
+- The core work is custom numerical computation, simulation, optimization, differential equations, scientific machine learning, or a research library.
+- Multiple dispatch helps organize algorithms across problem types, arrays, number types, automatic differentiation, GPU arrays, units, or sparse structures.
+- The team wants source-visible, open source language infrastructure and package environments that contributors can run without commercial product licenses.
+- Python, MATLAB, C++, Fortran, or C extension boundaries would split prototype and performance code in a way the team wants to avoid.
+- The team can profile, manage type stability, pin manifests, and test latency or PackageCompiler decisions.
+
+## Watch Points
+
+MATLAB can be the pragmatic choice even when Julia is technically attractive. If a validated workflow depends on Simulink, control-system toolboxes, generated embedded code, or organization-wide MATLAB licenses, replacing that stack may increase risk without improving the real bottleneck.
+
+Julia can be the pragmatic choice when MATLAB's licensing or toolbox coupling blocks collaboration, reproducibility, or redistribution. It can also be clearer when the main asset is a reusable scientific package rather than an interactive engineering project.
+
+Performance should be measured at the algorithm boundary. MATLAB built-ins and toolboxes can be highly optimized. Julia can make custom kernels fast when code is type-stable and allocation-aware. A slow prototype in either language is not enough evidence to choose the other.
+
+## Migration Or Interoperability Notes
+
+For MATLAB-to-Julia migration, start with isolated numerical kernels or package APIs, not a full rewrite of every script, plot, app, and Simulink workflow. Preserve test cases and numerical tolerances first. Then decide which layer owns data import, reporting, visualization, and deployment.
+
+For Julia-to-MATLAB integration, keep the boundary plain: files, arrays, tables, generated reports, C-compatible libraries, services, or explicit process calls. Avoid a design where every run depends on undocumented state in two interactive sessions.
+
+## Practical Default
+
+Start with MATLAB when the value is an engineering environment: toolboxes, Simulink, controls, signal processing, model-based design, generated code, and established organizational license support.
+
+Start with Julia when the value is open scientific software: custom numerical algorithms, reusable packages, multiple dispatch, high-level kernels, and source-visible reproducible environments.

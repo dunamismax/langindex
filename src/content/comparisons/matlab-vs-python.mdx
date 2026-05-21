@@ -1,0 +1,116 @@
+---
+title: MATLAB vs Python
+slug: matlab-vs-python
+summary: MATLAB and Python both serve scientific computing, data analysis, and engineering workflows, but MATLAB is a proprietary matrix-first engineering environment with Simulink and toolboxes while Python is a general-purpose open ecosystem used for data, automation, services, and ML infrastructure.
+languages:
+  - matlab
+  - python
+useCases:
+  - scientific computing
+  - numerical computing
+  - engineering analysis
+  - data analysis
+  - research software
+  - automation
+sources:
+  - title: MATLAB Documentation
+    url: https://www.mathworks.com/help/matlab/index.html
+    publisher: MathWorks
+  - title: Language Fundamentals
+    url: https://www.mathworks.com/help/matlab/language-fundamentals.html
+    publisher: MathWorks
+  - title: Simulink Documentation
+    url: https://www.mathworks.com/help/simulink/index.html
+    publisher: MathWorks
+  - title: About MATLAB Runtime
+    url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
+    publisher: MathWorks
+  - title: Pricing and Licensing
+    url: https://www.mathworks.com/pricing-licensing.html
+    publisher: MathWorks
+  - title: Call Python from MATLAB
+    url: https://www.mathworks.com/help/matlab/call-python-libraries.html
+    publisher: MathWorks
+  - title: Call MATLAB from Python
+    url: https://www.mathworks.com/help/matlab/matlab-engine-for-python.html
+    publisher: MathWorks
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+  - title: PyTorch Documentation
+    url: https://docs.pytorch.org/docs/stable/index.html
+    publisher: PyTorch
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams choosing between MATLAB and Python for scientific computing, numerical analysis, engineering workflows, research software, data analysis, automation, and production-adjacent technical systems. It is not a claim that one should replace the other everywhere.
+
+The practical question is which ecosystem owns the hard part. Choose MATLAB when MathWorks toolboxes, matrix-first interactive workflows, Simulink, model-based engineering, and licensed products are central. Choose Python when the work needs an open general-purpose language, broad package access, services, automation, ML infrastructure, cloud tooling, or cross-team maintainability outside a MathWorks environment.
+
+## Shared Territory
+
+Both languages can load data, manipulate arrays, plot results, call native libraries, work with notebooks or interactive documents, and participate in research workflows. Both can be used by engineers and scientists who care more about results than programming-language theory.
+
+They also interoperate. MATLAB can call Python libraries, run Python statements, and exchange compatible data with Python. Python can call MATLAB through the MATLAB Engine API when MATLAB is installed. In many organizations, Python owns orchestration or services while MATLAB owns an engineering model, toolbox workflow, or Simulink-adjacent analysis.
+
+## Key Differences
+
+| Dimension         | MATLAB                                                       | Python                                                          |
+| ----------------- | ------------------------------------------------------------ | --------------------------------------------------------------- |
+| Center of gravity | Matrix-first engineering environment, toolboxes, Simulink    | General-purpose language with broad data, web, ML, and scripting ecosystem |
+| Licensing         | Proprietary MathWorks licenses and product/toolbox access    | Open source language with open package ecosystem                |
+| Runtime model     | MATLAB desktop/online/batch environment; Runtime for compiled artifacts | CPython bytecode interpreter and other implementations          |
+| Numeric model     | Arrays, matrices, built-in math, plots, apps, toolboxes      | NumPy arrays, SciPy, pandas, PyTorch, native libraries          |
+| Deployment shape  | Licensed MATLAB, MATLAB Runtime, generated C/C++, Simulink paths | Scripts, packages, virtual environments, containers, services   |
+| Strongest fit     | Engineering analysis, controls, simulation, model-based design | Automation, data products, ML infrastructure, web/API integration |
+| Main risk         | Cost, toolbox availability, Runtime/version constraints      | Packaging native dependencies, slow Python-level loops          |
+
+## Choose MATLAB When
+
+- The core workflow depends on MathWorks toolboxes, apps, Live Editor documents, plotting, interactive analysis, or existing MATLAB code.
+- Simulink models, Model-Based Design, generated code, verification, hardware-in-the-loop testing, or control-system workflows are part of the engineering process.
+- The team already has MATLAB licenses, toolbox access, release-management practices, and MATLAB-fluent engineers or researchers.
+- The deliverable is an engineering analysis, simulation, prototype, report, model, or deployed MATLAB artifact rather than a general software platform.
+- Proprietary licensing and MathWorks product administration are acceptable project constraints.
+
+## Choose Python When
+
+- The project needs open source collaboration, low-cost distribution, broad hiring, or a toolchain every contributor can install without a commercial license.
+- Data work sits inside services, CLIs, pipelines, APIs, web applications, ML training or inference infrastructure, cloud SDKs, or operational automation.
+- Most expensive numerical work already runs in NumPy, SciPy, pandas, PyTorch, JAX, TensorFlow, vendor libraries, databases, or native extensions.
+- The organization wants one language for scripts, tests, data tools, application code, infrastructure glue, and production services.
+- Deployment can control Python versions, dependencies, wheels, virtual environments, and containers.
+
+## Watch Points
+
+MATLAB's main hidden cost is product coupling. A script that uses several licensed toolboxes may be easy for one engineer and impossible for a collaborator without those products. Record releases, update levels, toolbox versions, Runtime requirements, Simulink files, generated-code settings, and license assumptions early.
+
+Python's main hidden cost is environment drift. Scientific Python projects can depend on native wheels, compilers, system libraries, GPU stacks, notebook state, or dependency combinations that are hard to rebuild later. Use lockfiles, constraints, containers, or reproducible environment tooling before analysis becomes production.
+
+Performance comparisons need measured workloads. MATLAB often performs well when code uses built-in vectorized functions and toolbox algorithms. Python often performs well when it orchestrates native numeric libraries. Both can be slow when large custom workloads run in interpreted scalar loops without profiling.
+
+## Migration Or Interoperability Notes
+
+Avoid whole-system rewrites as the default. If MATLAB is productive but a product needs Python services, keep MATLAB at a controlled boundary: generated reports, files, databases, compiled MATLAB Runtime artifacts, C/C++ generated code, or an explicitly operated MATLAB engine process.
+
+If Python owns the workflow but one engineering team already has a validated MATLAB model, call that model through a narrow interface rather than translating it casually. Test numerical tolerances, release versions, toolboxes, and data conversion on a clean machine.
+
+## Practical Default
+
+Start with Python when the project is broad software plus technical computing: services, automation, ML infrastructure, data pipelines, notebooks, cloud integration, or open source collaboration.
+
+Start with MATLAB when the project is engineering-analysis-first: matrix-heavy exploration, domain toolboxes, Simulink, controls, signal processing, model-based design, or an organization whose validated workflow already lives in MathWorks products.

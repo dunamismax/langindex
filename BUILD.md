@@ -23,8 +23,8 @@ Observed on 2026-05-21:
 - Deployment target: single Rust site service behind Caddy on Stephen's
   Ubuntu VM. Do not deploy or change production config unless Stephen asks.
 - Content inventory:
-  - 35 language profiles.
-  - 49 comparisons.
+  - 36 language profiles.
+  - 51 comparisons.
   - 21 guides.
   - 40 concepts.
 - Completed architecture work:
@@ -160,15 +160,6 @@ link-checking code changed broadly enough to justify the network time.
 
 Add these only after the concept backbone is strong enough to avoid repeating
 the same explanations inside every language page.
-
-### Phase 43 - MATLAB
-
-- [ ] Add a complete MATLAB page.
-- [ ] Cover numerical computing, matrix-first design, Simulink adjacency,
-      toolboxes, licensing constraints, deployment/runtime story, and
-      research/engineering fit.
-- [ ] Add MATLAB vs Python and MATLAB vs Julia comparisons.
-- [ ] Update scientific and numerical computing guides.
 
 ### Phase 44 - Groovy
 

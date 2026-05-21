@@ -8,6 +8,7 @@ candidates:
   - python
   - sql
   - julia
+  - matlab
   - fortran
 sources:
   - title: The R Project for Statistical Computing
@@ -49,6 +50,18 @@ sources:
   - title: Pkg.jl Documentation
     url: https://pkgdocs.julialang.org/v1/
     publisher: Julia
+  - title: MATLAB Documentation
+    url: https://www.mathworks.com/help/matlab/index.html
+    publisher: MathWorks
+  - title: Simulink Documentation
+    url: https://www.mathworks.com/help/simulink/index.html
+    publisher: MathWorks
+  - title: About MATLAB Runtime
+    url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
+    publisher: MathWorks
+  - title: Pricing and Licensing
+    url: https://www.mathworks.com/pricing-licensing.html
+    publisher: MathWorks
   - title: Python Documentation
     url: https://docs.python.org/3/
     publisher: Python Software Foundation
@@ -100,7 +113,7 @@ Use R when:
 
 Do not make R own the whole system only because one step is statistical.
 
-Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
+Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer MATLAB when the work is engineering-analysis-first and depends on MathWorks toolboxes, Simulink, or licensed product workflows. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
 
 R can still participate. The cleaner design is often to let R own the analysis or reporting layer while another language owns storage, services, scheduling, or production APIs.
 
@@ -109,6 +122,12 @@ R can still participate. The cleaner design is often to let R own the analysis o
 Julia is nearby when an R workflow becomes a scientific-computing project rather than mainly a statistical analysis or report. It is a strong candidate for simulations, optimization, differential equations, custom numerical methods, scientific machine learning, and generic mathematical packages where multiple dispatch and compiled specialization help keep high-level code close to the hot path.
 
 This split is useful when R owns the statistical report, plots, analyst review, or domain package, while Julia owns the computational model or solver. It is risky when the project cannot pin Julia versions, manifests, artifacts, precompilation behavior, and data-conversion boundaries between R and Julia.
+
+## Use MATLAB For Engineering Analysis
+
+MATLAB is nearby when a data or research workflow is centered on engineering computation rather than statistical analysis: matrix-heavy analysis, controls, signal processing, image processing, Simulink models, generated code, or MathWorks toolbox workflows.
+
+This split is useful when R owns the statistical report, plots, model summaries, or analyst-facing method, while MATLAB owns an engineering model or simulation that already exists in a MathWorks environment. It is risky when the project cannot manage MATLAB licenses, toolbox availability, Runtime versions, Simulink files, or release compatibility.
 
 ## Use Fortran At The Numerical Boundary
 
@@ -153,9 +172,10 @@ Before rewriting, check whether the workload can be changed:
 - How will results be reproduced six months after publication or delivery?
 - Which parts of the system should stay in SQL, Python, or another runtime instead of entering R?
 - Which numerical kernels belong in Julia because they need high-level scientific programming and specialized compiled performance?
+- Which engineering models belong in MATLAB because Simulink, toolboxes, or MathWorks product support are the actual constraint?
 
 ## Practical Default
 
 Start with R when statistical analysis, graphics, data frames, reports, Shiny apps, or research workflows are the center of the work.
 
-Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.
+Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with MATLAB when the work is engineering-computing-first and the core value is MathWorks toolboxes, Simulink, and licensed model-based workflows. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.

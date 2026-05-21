@@ -1,0 +1,221 @@
+---
+title: MATLAB
+slug: matlab
+status: active
+summary: MATLAB is a proprietary matrix-first programming and numeric computing environment for engineers, scientists, and researchers, strongest where interactive analysis, numerical algorithms, visualization, toolboxes, and Simulink-based engineering workflows matter more than open runtime distribution.
+firstReleased: 1984
+creators:
+  - Cleve Moler
+  - MathWorks
+paradigms:
+  - numerical
+  - array-oriented
+  - imperative
+  - interactive
+  - object-oriented
+  - model-based design
+typing:
+  discipline: dynamic
+  strength: runtime typing with typed arrays, tables, structures, classes, validation syntax, and object-oriented features
+memory:
+  model: automatic memory management around multidimensional arrays, objects, and workspace values, with performance shaped by allocation, array size, vectorization, and toolbox/native-library boundaries
+runtime:
+  model: proprietary MATLAB execution environment for interactive, script, function, app, and toolbox workflows; deployed artifacts use MATLAB Runtime or generated C/C++ where supported
+officialSite: https://www.mathworks.com/products/matlab.html
+packageManagers:
+  - Add-On Explorer
+  - MATLAB Central File Exchange
+  - Toolboxes
+  - MATLAB Projects
+  - MATLAB Runtime
+comparedWith:
+  - python
+  - julia
+  - r
+  - fortran
+bestFor:
+  - Engineering and scientific computing where matrix operations, numerical methods, plotting, apps, and domain-specific toolboxes are central to the workflow.
+  - Research, controls, signal processing, image processing, robotics, communications, finance, and similar domains where MATLAB and Simulink are already standard tools.
+  - Model-Based Design workflows that pair MATLAB code with Simulink models, simulation, generated code, verification, and hardware-oriented engineering processes.
+  - Teams that can pay for and administer MathWorks licenses, toolbox access, release versions, and runtime deployment requirements.
+poorFit:
+  - Open source public infrastructure, low-cost teaching stacks, or redistributable projects where every contributor must be able to run the full toolchain without proprietary licenses.
+  - General web services, product backends, CLIs, and application platforms where Python, Julia, R, Go, Java, C#, JavaScript, or Rust ecosystems are a better operational fit.
+  - Custom high-performance kernels that must ship as small native binaries without MATLAB Runtime, MATLAB Coder constraints, or commercial deployment review.
+  - Teams expecting toolbox-heavy prototypes to become reproducible production systems without pinning release versions, add-on products, Runtime versions, and generated-code limits.
+sources:
+  - title: MATLAB Documentation
+    url: https://www.mathworks.com/help/matlab/index.html
+    publisher: MathWorks
+  - title: Language Fundamentals
+    url: https://www.mathworks.com/help/matlab/language-fundamentals.html
+    publisher: MathWorks
+  - title: Matrices and Arrays
+    url: https://www.mathworks.com/help/matlab/learn_matlab/matrices-and-arrays.html
+    publisher: MathWorks
+  - title: Programming with MATLAB
+    url: https://www.mathworks.com/products/matlab/programming-with-matlab.html
+    publisher: MathWorks
+  - title: Create Functions in Files
+    url: https://www.mathworks.com/help/matlab/matlab_prog/create-functions-in-files.html
+    publisher: MathWorks
+  - title: Classes
+    url: https://www.mathworks.com/help/matlab/object-oriented-programming.html
+    publisher: MathWorks
+  - title: Create Namespaces
+    url: https://www.mathworks.com/help/matlab/matlab_oop/namespaces.html
+    publisher: MathWorks
+  - title: Add-Ons
+    url: https://www.mathworks.com/help/matlab/add-ons.html
+    publisher: MathWorks
+  - title: Simulink Documentation
+    url: https://www.mathworks.com/help/simulink/index.html
+    publisher: MathWorks
+  - title: Model-Based Design with Simulink
+    url: https://www.mathworks.com/help/simulink/gs/model-based-design.html
+    publisher: MathWorks
+  - title: Parallel Computing Toolbox Documentation
+    url: https://www.mathworks.com/help/parallel-computing/
+    publisher: MathWorks
+  - title: Call Python from MATLAB
+    url: https://www.mathworks.com/help/matlab/call-python-libraries.html
+    publisher: MathWorks
+  - title: Call MATLAB from Python
+    url: https://www.mathworks.com/help/matlab/matlab-engine-for-python.html
+    publisher: MathWorks
+  - title: MATLAB Compiler Documentation
+    url: https://www.mathworks.com/help/compiler/index.html
+    publisher: MathWorks
+  - title: MATLAB Runtime
+    url: https://www.mathworks.com/products/compiler/matlab-runtime.html
+    publisher: MathWorks
+  - title: About MATLAB Runtime
+    url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
+    publisher: MathWorks
+  - title: MATLAB Coder
+    url: https://www.mathworks.com/products/matlab-coder.html
+    publisher: MathWorks
+  - title: Pricing and Licensing
+    url: https://www.mathworks.com/pricing-licensing.html
+    publisher: MathWorks
+  - title: A Brief History of MATLAB
+    url: https://www.mathworks.com/company/technical-articles/a-brief-history-of-matlab.html
+    publisher: MathWorks
+  - title: MathWorks Brings Trusted AI to Embedded Systems Development in MATLAB and Simulink Release 2026a
+    url: https://www.mathworks.com/company/newsroom/matlab-and-simulink-release-2026a-features-new-generative-ai-powered-simulink-copilot-that-enhances-design-and-development-workflows-for-engineered-systems.html
+    publisher: MathWorks
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+MATLAB began as Cleve Moler's interactive matrix calculator for teaching and numerical linear algebra. MathWorks' history describes the first MATLAB as a Fortran program whose only data type was the matrix. The commercial PC-MATLAB product debuted in December 1984, after Jack Little and Steve Bangert helped turn the earlier academic tool into a broader C-based product with functions, toolboxes, and graphics.
+
+That origin still defines MATLAB's center. It is not a general-purpose language that later added arrays. MATLAB is a numeric computing environment where arrays, matrices, plotting, interactive exploration, and engineering libraries are the default vocabulary. MathWorks presents MATLAB as a language and desktop environment for engineers and scientists to analyze data, develop algorithms, visualize results, scale to larger data sets, and integrate code with other systems.
+
+The practical question is therefore not whether MATLAB can write ordinary programs. It can. The question is whether the project benefits enough from MATLAB's matrix-first syntax, toolboxes, apps, Simulink adjacency, and engineering workflow integration to justify a proprietary runtime and license-managed toolchain.
+
+## Matrix-First Language Model
+
+MATLAB stands for Matrix Laboratory, and the current documentation still teaches the language through whole matrices and arrays. All MATLAB variables are multidimensional arrays, regardless of data type. A scalar is an array with one element, a vector is a one-dimensional row or column shape in practice, and a matrix is a two-dimensional array commonly used for linear algebra.
+
+This makes many technical programs compact. Matrix multiplication uses `*`, element-wise multiplication uses `.*`, array slicing and indexing are central, and many built-in functions operate over whole arrays. The upside is direct mathematical expression. The risk is that programmers coming from scalar-first languages can accidentally write slow loops, create unnecessary temporary arrays, or confuse matrix operations with element-wise operations.
+
+MATLAB is dynamically typed. Values have runtime classes such as double arrays, strings, tables, structures, cells, objects, and domain-specific toolbox types. Modern MATLAB also supports function files, local functions in scripts, classes, object-oriented programming, property and method attributes, handle and value classes, events, operator overloading, and namespaces through `+` folders. That gives larger MATLAB systems more structure than a pile of scripts, but the language remains runtime-checked rather than statically typed.
+
+## Runtime, Releases, And Current Status
+
+MATLAB normally runs inside the MathWorks-managed desktop, command-line, online, or batch execution environment. It is interactive by default: users load data, inspect variables, run scripts, call functions, plot results, and iterate. Production-adjacent work must decide when an interactive workflow has become an application, package, report, batch job, generated-code target, or deployed runtime artifact.
+
+MathWorks announced Release 2026a of MATLAB and Simulink on April 27, 2026. When this page was verified, MathWorks' MATLAB Runtime table also listed R2026a as Runtime version 26.1. Teams should not treat "MATLAB" as one stable binary target. Release version, update level, toolbox availability, operating system, Java and Python compatibility, Runtime version, and generated-code support can all matter.
+
+MATLAB manages ordinary memory automatically, but memory behavior still matters. Large arrays, implicit expansion, temporary results, copies at function boundaries, tables, graphics objects, and toolbox objects can dominate runtime and memory footprint. MATLAB rewards vectorized array operations and built-in algorithms, but performance-sensitive projects still need profiling and realistic data sizes.
+
+## Toolboxes, Add-Ons, And Ecosystem Shape
+
+MATLAB's ecosystem is unusually productized. MathWorks ships MATLAB plus many specialized products, apps, toolboxes, blocksets, support packages, and training resources. Add-ons can come from MathWorks or the MATLAB user community, and the Add-On Explorer can install products, apps, toolboxes, and support packages. MATLAB Central File Exchange is the public sharing surface for many community add-ons.
+
+This is one of MATLAB's strongest advantages in engineering organizations. A team can reach for domain-specific products around signal processing, control systems, image processing, optimization, statistics, machine learning, communications, robotics, finance, parallel computing, code generation, verification, and hardware support without assembling an open source stack from scratch.
+
+The same productized model is also the main constraint. A script may depend on a licensed toolbox that not every collaborator, CI runner, customer, university lab, or production host has. Reproducible MATLAB work should record the MATLAB release, update level, installed products, toolbox versions, add-ons, operating system, external libraries, input data, random seeds, and execution command.
+
+## Simulink Adjacency
+
+MATLAB and Simulink should be evaluated together when the work is engineering-system design rather than only numerical analysis. Simulink is MathWorks' block diagram environment for multidomain simulation and Model-Based Design. Its documentation describes support for system-level design, simulation, automatic code generation, and continuous test and verification of embedded systems.
+
+That adjacency changes MATLAB's fit. MATLAB code can prepare parameters, analyze simulation results, automate tests, generate reports, create blocks, and run many simulations. Simulink models can represent control systems, signal processing systems, physical systems, embedded software behavior, and model-based systems engineering workflows. For automotive, aerospace, energy, medical-device, controls, and hardware-adjacent teams, MATLAB often earns its place because it sits next to Simulink, not because it is the cheapest language for arrays.
+
+The cost is workflow complexity. Simulink models, generated code, requirements links, test artifacts, hardware-in-the-loop setups, and toolbox dependencies must be versioned and reviewed with the same care as source code. A model that only runs in one engineer's local MATLAB installation is not a durable engineering artifact.
+
+## Deployment, Runtime, And Interop
+
+MATLAB deployment has several distinct paths:
+
+- Run scripts, functions, live scripts, notebooks, or batch jobs in a licensed MATLAB environment.
+- Package apps or command-line executables with MATLAB Compiler and run them with MATLAB Runtime.
+- Use MATLAB Compiler SDK, MATLAB Production Server, web apps, Excel add-ins, or Spark/MapReduce deployment where those products fit.
+- Generate C or C++ source, libraries, MEX functions, or executables with MATLAB Coder when the code is supported for generation.
+- Keep MATLAB as an analysis environment and expose results through files, databases, generated reports, Python, C/C++, or service boundaries.
+
+MATLAB Runtime is freely downloadable and lets users run compiled MATLAB applications without installing licensed MATLAB, but it is not the same as MATLAB. MathWorks documents important differences: MATLAB requires an active license, Runtime has no desktop graphical interface, Runtime paths are fixed, files are encrypted and immutable, and deployed applications need a Runtime version matching the compiler release and update level or newer where documented.
+
+Interop is broad but should be designed deliberately. MATLAB can call Python libraries through the `py.` interface and can run Python statements through `pyrun` and `pyrunfile`. Python can call MATLAB through the MATLAB Engine API, but engine applications require an installed MATLAB and cannot run from MATLAB Runtime alone. MATLAB can also call C and C++ libraries, expose MEX functions, and generate C/C++ for supported MATLAB code through MATLAB Coder.
+
+## Syntax Example
+
+```matlab
+names = ["MATLAB"; "Python"; "Julia"; "Fortran"];
+
+scores = [
+    9 7 8
+    6 9 8
+    8 8 9
+    10 4 6
+];
+
+average = mean(scores, 2);
+peak = max(scores, [], 2);
+
+summary = table(names, average, peak, ...
+    'VariableNames', ["Language", "Average", "Peak"]);
+
+disp(sortrows(summary, "Average", "descend"))
+```
+
+This example uses MATLAB's array syntax, column-wise operations, dimension arguments, strings, and tables. Real MATLAB code often combines this style with plotting, optimization functions, data import tools, app interfaces, or domain-specific toolbox functions.
+
+## Best-Fit Use Cases
+
+MATLAB is a strong fit for:
+
+- Numerical computing, matrix-heavy engineering analysis, controls, signal processing, image processing, robotics, communications, finance, and scientific prototyping.
+- Teams that already use MathWorks products, licenses, toolboxes, Simulink models, generated code, or MATLAB-based test and analysis workflows.
+- Research groups that need interactive exploration, plots, Live Editor documents, apps, and specialized libraries more than open source runtime distribution.
+- Model-Based Design workflows where Simulink, simulation, verification, code generation, and hardware tests are part of the engineering process.
+- Prototypes that may later be deployed through MATLAB Runtime, MATLAB Coder, C/C++ boundaries, Python orchestration, or a controlled MATLAB batch environment.
+
+## Poor-Fit Or Risky Use Cases
+
+MATLAB can be a poor fit when:
+
+- The project needs an open source language and package ecosystem that any contributor can run without proprietary software access.
+- The deliverable is mostly a web service, mobile app, general backend, CLI, infrastructure tool, or product application.
+- Cost, license administration, toolbox availability, or offline redistribution is a primary constraint.
+- The runtime artifact must be small, native, dependency-light, and independent of MATLAB Runtime or generated-code restrictions.
+- The team cannot pin MATLAB releases, toolbox versions, Runtime versions, generated-code settings, and external data well enough to reproduce results.
+
+## Governance, Licensing, And Stewardship
+
+MATLAB is developed and sold by MathWorks. It is proprietary software, not an open language standard with an independent compiler ecosystem. MathWorks controls the language implementation, release cadence, documentation, product packaging, licensing, and most official toolboxes.
+
+Licensing is therefore part of the technical decision. MathWorks publishes different license options for standard, startup, academic, student, and home use, with different terms and intended uses. Organizations may also use individual, network named user, concurrent, campus-wide, or designated-computer license administration models. Before choosing MATLAB for shared or production work, check who can run the code, which products are licensed, whether CI and deployment hosts are covered, and what redistribution path is allowed.
+
+Compatibility is practical rather than open-ended. MATLAB carries a large installed base and MathWorks documents release notes, but code that depends on specific toolboxes, UI behavior, generated-code support, private functions, Java/Python integrations, or Simulink model behavior still needs upgrade testing. Treat MATLAB release upgrades like dependency upgrades: rerun analyses, regenerate artifacts where needed, compare numerical tolerances, and verify deployed Runtime behavior.
+
+## Comparison Notes
+
+[MATLAB vs Python](/comparisons/matlab-vs-python) is the closest comparison for data analysis, scientific computing, automation, and engineering workflows. Python is usually the better default for open source collaboration, general software, ML infrastructure, services, and broad package access. MATLAB earns its place when MathWorks toolboxes, matrix-first workflows, Simulink, and licensed engineering products are the real productivity center.
+
+[MATLAB vs Julia](/comparisons/matlab-vs-julia) is the scientific-computing comparison. MATLAB is stronger when mature MathWorks products, Simulink, interactive engineering workflows, and organizational licenses matter. Julia is stronger when the team wants open source high-level numerical code, multiple dispatch, and custom kernels without depending on proprietary toolboxes.
+
+R is nearby when statistics, reports, Shiny apps, CRAN, Bioconductor, and analyst-facing workflows dominate. Fortran is nearby when the durable asset is a native numerical kernel, legacy scientific model, or HPC codebase rather than an interactive engineering environment.
