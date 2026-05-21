@@ -160,6 +160,8 @@ Good C APIs make ownership explicit:
 
 Without those contracts, the type signature alone rarely tells enough of the truth.
 
+Related memory concepts: [Manual Memory Management](/concepts/manual-memory-management/), [Ownership](/concepts/ownership/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency And Atomics
 
 C has standardized threads and atomics in modern editions, but production concurrency is usually shaped by the target platform: POSIX threads, Windows threading APIs, RTOS primitives, interrupt handlers, lock-free structures, event loops, or platform-specific atomics. C code that shares mutable data across threads or interrupt contexts must have a synchronization story.

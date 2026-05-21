@@ -1,0 +1,72 @@
+---
+title: Memory Safety
+slug: memory-safety
+summary: Memory safety is the property that code cannot perform invalid memory access such as use-after-free, double-free, out-of-bounds access, or dereferencing invalid pointers.
+relatedLanguages:
+  - rust
+  - c
+  - cpp
+  - zig
+  - swift
+  - java
+  - csharp
+  - go
+sources:
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+  - title: SEI CERT C Coding Standard
+    url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/
+    publisher: Carnegie Mellon University Software Engineering Institute
+  - title: The Swift Programming Language - Memory Safety
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/memorysafety/
+    publisher: Swift Project
+  - title: Zig Language Reference - Undefined Behavior
+    url: https://ziglang.org/documentation/0.16.0/#Undefined-Behavior
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-21
+---
+
+## What Memory Safety Means
+
+Memory safety means a program cannot access memory in ways that violate the language or runtime's validity rules. Common memory-safety failures include use-after-free, double-free, buffer overflows, out-of-bounds indexing, invalid pointer casts, null dereferences where null is not allowed, uninitialized reads, iterator invalidation, and data races that corrupt memory.
+
+Memory safety is not the same as correctness. A memory-safe program can still have authorization bugs, data loss, injection flaws, race conditions at the business-logic level, denial-of-service paths, bad cryptography, or incorrect calculations. Memory safety narrows one important class of failures.
+
+## How Languages Approach It
+
+Managed runtimes such as Java, .NET, Go, Python, Ruby, and JavaScript generally prevent ordinary application code from manually freeing managed objects or performing arbitrary pointer arithmetic. That helps avoid many memory lifetime and bounds errors, though native extensions, unsafe APIs, reflection, serialization, and foreign calls can reopen risk.
+
+Rust aims to provide memory safety in safe Rust through ownership, borrowing, lifetimes, move semantics, and bounds checks. `unsafe` Rust can do operations the compiler cannot fully verify, so projects still need small unsafe boundaries, documented invariants, tests, fuzzing, and review.
+
+Swift combines ARC, value types, optionals, exclusivity rules, and runtime checks, while still exposing unsafe pointers and C/Objective-C interoperability. Zig provides safety checks in many build modes and makes allocation explicit, but it is not a memory-safe language in the same sense as safe Rust or managed runtimes. C and C++ allow direct memory access and undefined behavior, so safety depends heavily on language subsets, ownership discipline, RAII, sanitizers, static analysis, fuzzing, and review.
+
+## Evaluation Questions
+
+When evaluating a language or codebase, ask:
+
+- Can ordinary code create dangling pointers or references?
+- Are bounds checks required, optional, optimized, or absent?
+- How are null, uninitialized memory, and invalid casts handled?
+- Can data races cause undefined behavior or memory corruption?
+- Where are unsafe, native, or foreign-function boundaries?
+- What tools catch mistakes before production?
+- Does the team have conventions for ownership, lifetimes, and cleanup?
+
+These questions matter more than labels. A project can use a memory-safe language and still depend on unsafe native libraries. A C or C++ project can reduce risk substantially with a restricted subset and strong tooling, but it starts from a more demanding baseline.
+
+## Production Consequences
+
+Memory safety affects security, reliability, debugging cost, and maintenance. Memory-corruption bugs can be exploitable, nondeterministic, hard to reproduce, and sensitive to compiler optimization or allocator behavior. They also cross module boundaries: the bug may be introduced in one function and crash much later in unrelated code.
+
+Choosing a memory-safe default can lower the amount of lifetime reasoning required from every contributor. Choosing manual or unsafe memory control can still be justified, but the justification should be concrete: target constraints, ABI requirements, latency, footprint, existing code, hardware access, or ecosystem necessity.
+
+## Related Concepts
+
+Use [ownership](/concepts/ownership/) for responsibility and borrowing, [manual memory management](/concepts/manual-memory-management/) for explicit allocation and release, [RAII and deterministic cleanup](/concepts/raii-and-deterministic-cleanup/) for scoped resource safety, [stack vs heap allocation](/concepts/stack-vs-heap-allocation/) for placement, and [garbage collection](/concepts/garbage-collection/) for runtime-managed reclamation.

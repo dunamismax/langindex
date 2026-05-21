@@ -128,6 +128,8 @@ Java uses automatic memory management. Objects are allocated on a managed heap, 
 
 The practical tradeoff is familiar across managed runtimes. Java removes a large class of manual memory-management errors and gives production teams mature GC choices and observability, but it does not make allocation free. Latency-sensitive services need measurement, heap sizing, GC selection, profiling, and load testing. Systems with strict real-time or tiny memory requirements should not assume Java is a fit without proving the runtime behavior.
 
+Related memory concepts: [Garbage Collection](/concepts/garbage-collection/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency
 
 Java has had built-in threads and synchronization since its early design. The platform includes `Thread`, monitors, `synchronized`, `volatile`, concurrent collections, executors, futures, atomics, locks, parallel streams, and newer virtual-thread support in modern JDKs. This gives Java several levels of concurrency abstraction, from explicit shared-memory synchronization to higher-level task execution.

@@ -142,6 +142,8 @@ Value semantics are just as important. A well-designed C++ type can be copied, m
 
 C++ still permits manual memory management and unsafe operations. Raw pointers, `new`/`delete`, casts, unchecked indexing, dangling references, data races, uninitialized reads, iterator invalidation, lifetime mistakes, allocator mismatches, and undefined behavior remain real risks. Modern C++ reduces those risks through RAII, containers, smart pointers, spans, references, rules, static analysis, sanitizers, and code review; it does not remove them from the language.
 
+Related memory concepts: [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), [Reference Counting](/concepts/reference-counting/), [Manual Memory Management](/concepts/manual-memory-management/), [Ownership](/concepts/ownership/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency And Low-Latency Work
 
 C++ has a standardized memory model, threads, mutexes, condition variables, atomics, futures, parallel algorithms, coroutines, and many library-level concurrency patterns. In practice, concurrency is also shaped by operating-system APIs, thread pools, async I/O frameworks, game-engine task systems, real-time requirements, GPU queues, lock-free structures, and domain-specific runtimes.

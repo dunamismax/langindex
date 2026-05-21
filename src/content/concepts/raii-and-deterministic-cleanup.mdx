@@ -1,0 +1,62 @@
+---
+title: RAII And Deterministic Cleanup
+slug: raii-and-deterministic-cleanup
+summary: RAII ties resource acquisition to object lifetime so cleanup happens automatically when the owner leaves scope or is destroyed.
+relatedLanguages:
+  - cpp
+  - rust
+  - csharp
+  - swift
+  - zig
+sources:
+  - title: C++ Core Guidelines - Use RAII to prevent leaks
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-raii
+    publisher: Standard C++ Foundation
+  - title: The Rust Reference - Destructors
+    url: https://doc.rust-lang.org/reference/destructors.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Drop
+    url: https://doc.rust-lang.org/book/ch15-03-drop.html
+    publisher: Rust Project
+  - title: using statement
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using
+    publisher: Microsoft Learn
+  - title: Zig Language Reference - defer
+    url: https://ziglang.org/documentation/0.16.0/#defer
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-21
+---
+
+## What RAII Means
+
+RAII stands for Resource Acquisition Is Initialization. The core idea is simple: acquire a resource during object construction or initialization, store it in an owner, and release it when that owner is destroyed. The cleanup path is tied to language lifetime rules rather than to every caller remembering a matching cleanup call.
+
+The "resource" can be memory, but RAII is broader than memory. It can manage files, sockets, mutex locks, temporary directories, database transactions, graphics handles, operating-system descriptors, foreign pointers, and embedded peripherals.
+
+## C++ And Rust
+
+C++ made RAII a central idiom. Constructors establish invariants, destructors release resources, containers own their elements, and standard-library types such as `std::unique_ptr`, `std::shared_ptr`, `std::vector`, and lock guards express cleanup through object lifetime. The C++ Core Guidelines recommend RAII because manual release is error-prone, especially around exceptions and early returns.
+
+Rust has a similar deterministic cleanup model through ownership and `Drop`. When initialized variables or temporaries leave their drop scope, destructors run and fields are dropped recursively. Rust does not use C++ constructors in the same way, but ordinary safe Rust still relies heavily on owner types that clean up files, heap allocations, locks, and foreign handles when dropped.
+
+## Deterministic Cleanup Outside RAII Languages
+
+Other languages may offer scoped cleanup without making RAII the dominant ownership model. C# `using` and `using` declarations ensure `IDisposable.Dispose` runs at the end of a scope. Zig's `defer` schedules cleanup code for scope exit. Go uses `defer` for many cleanup paths, though memory reclamation for ordinary heap objects is garbage collected.
+
+These mechanisms are related because they make cleanup structurally visible. They differ in what the language guarantees, whether cleanup is tied to object destruction, whether errors or panics can interrupt it, and whether ordinary memory is part of the same model.
+
+## Why It Matters
+
+Deterministic cleanup is valuable when resources are scarce or externally visible. A file descriptor, lock, GPU object, transaction, temporary directory, or foreign handle may need release at a predictable point. Waiting for tracing garbage collection or finalization may be too late or not guaranteed.
+
+RAII also helps error paths. If every path out of a scope destroys the owner, cleanup remains localized even when a function returns early or throws. That is why RAII-style wrappers are common around C APIs and platform handles.
+
+## Watch Points
+
+RAII does not make every lifetime simple. Shared ownership can delay cleanup. Cycles can leak in reference-counted structures. Destructors must avoid surprising failures. Blocking cleanup can make scope exit expensive. Foreign APIs still need clear ownership and allocator rules.
+
+Treat RAII as a way to encode ownership, not as a substitute for designing ownership. Good RAII types have narrow responsibility, explicit construction failure behavior, and clear rules for move, copy, sharing, and destruction.
+
+## Related Concepts
+
+RAII builds on [ownership](/concepts/ownership/) and is often used to make [manual memory management](/concepts/manual-memory-management/) safer. It contrasts with [garbage collection](/concepts/garbage-collection/), where memory cleanup is runtime-scheduled, and with [reference counting](/concepts/reference-counting/), where cleanup follows the last strong owner.

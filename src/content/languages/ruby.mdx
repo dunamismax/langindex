@@ -140,6 +140,8 @@ Metaprogramming is useful when it removes repetitive structure and gives a team 
 
 Ruby uses automatic garbage collection, so ordinary Ruby code does not manually free memory. That makes scripting and application work straightforward, but it does not remove memory design. Large object graphs, ORM hydration, caches, JSON processing, file uploads, image work, and long-lived workers still need memory budgets and observability.
 
+Related memory concepts: [Garbage Collection](/concepts/garbage-collection/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
+
 Concurrency in CRuby needs careful framing. Threads are useful for I/O, waiting, background coordination, and libraries that release the VM lock in native code. They are not a simple path to CPU-bound parallel Ruby execution inside one ractor. Ruby's Ractor documentation describes Ractors as an actor-like abstraction intended to provide parallel execution by limiting object sharing between ractors.
 
 Common production choices are:

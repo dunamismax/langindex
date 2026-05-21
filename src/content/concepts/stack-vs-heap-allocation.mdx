@@ -1,0 +1,62 @@
+---
+title: Stack Vs Heap Allocation
+slug: stack-vs-heap-allocation
+summary: Stack and heap allocation describe different storage strategies for values, with tradeoffs around lifetime, size, movement, sharing, and runtime management.
+relatedLanguages:
+  - c
+  - cpp
+  - rust
+  - go
+  - java
+  - csharp
+  - python
+  - swift
+  - zig
+sources:
+  - title: A Guide to the Go Garbage Collector - Where Go Values Live
+    url: https://go.dev/doc/gc-guide#Where_Go_Values_Live
+    publisher: Go Project
+  - title: The Rust Standard Library - std::boxed
+    url: https://doc.rust-lang.org/std/boxed/
+    publisher: Rust Project
+  - title: Fundamentals of garbage collection - The managed heap
+    url: https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals#the-managed-heap
+    publisher: Microsoft Learn
+  - title: Zig Language Reference - Memory
+    url: https://ziglang.org/documentation/0.16.0/#Memory
+    publisher: Zig Software Foundation
+  - title: The Java Virtual Machine Specification - Frames
+    url: https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.6
+    publisher: Oracle
+lastVerified: 2026-05-21
+---
+
+## What The Terms Mean
+
+Stack allocation usually means storage tied to a function call, scope, goroutine stack, thread stack, or VM frame. It is generally cheap to allocate and release because it follows structured control flow. When the frame or scope is gone, the storage is gone too.
+
+Heap allocation usually means dynamic storage whose lifetime is not tied directly to one stack frame. Heap objects can be returned from functions, shared between owners, moved through object graphs, stored in collections, captured by closures, or managed by a runtime. The cost is that allocation, reclamation, and locality usually need more machinery.
+
+These are implementation terms, not universal syntax rules. A language may let the compiler decide placement. A value that looks local in source can escape to the heap. A value that is logically owned can still live inside a stack frame. Managed runtimes may expose a conceptual heap while optimizing representation internally.
+
+## Escape And Lifetime
+
+The important question is lifetime: can the compiler or runtime prove that storage dies with the current scope? If so, stack allocation or equivalent optimization may be possible. If the value must outlive the scope, be shared, have dynamic size, be captured by a closure, or be hidden behind an interface, heap allocation may be required.
+
+Go documents this distinction through escape analysis: values whose lifetimes cannot be determined for stack storage escape to the heap. Rust exposes heap ownership directly with types such as `Box<T>`, while most ordinary local values are not heap allocations just because they have names. C and C++ give programmers more direct control through automatic storage, static storage, dynamic allocation, and object lifetimes.
+
+## Managed Runtime Heaps
+
+Java and .NET make heap allocation a central runtime concept for objects. The JVM specification defines per-thread frames and a heap shared among threads, while specific JVM implementations decide many optimization details. .NET documents a managed heap that the garbage collector allocates from and compacts.
+
+Python, Ruby, and JavaScript implementations manage objects through their runtimes. In these ecosystems, developers usually reason less about explicit stack-vs-heap placement and more about object retention, allocation rate, closures, containers, and native-extension boundaries.
+
+## Practical Consequences
+
+Stack-like allocation is attractive for temporary data, bounded buffers, and values that do not escape. It can reduce allocator overhead and make cleanup predictable. Heap allocation is necessary or convenient for dynamic data structures, polymorphic objects, long-lived state, large objects, shared ownership, and runtime-managed object graphs.
+
+The wrong abstraction is treating "stack good, heap bad" as a rule. A large stack allocation can overflow or waste memory. A small heap allocation in a cold path may not matter. A runtime can optimize away allocations. A manual heap allocation can be correct but risky without clear ownership.
+
+## Related Concepts
+
+Stack and heap choices connect directly to [garbage collection](/concepts/garbage-collection/), [manual memory management](/concepts/manual-memory-management/), [ownership](/concepts/ownership/), [RAII and deterministic cleanup](/concepts/raii-and-deterministic-cleanup/), and [memory safety](/concepts/memory-safety/). Use those pages to separate placement, lifetime, cleanup, and safety claims.

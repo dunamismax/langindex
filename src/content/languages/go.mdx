@@ -113,6 +113,8 @@ Go is garbage collected. Developers can still work with pointers, choose value o
 
 The Go memory model is mostly a concurrency contract. It defines when reads in one goroutine are guaranteed to observe writes from another goroutine. In practical terms, programs that read and write shared data concurrently must synchronize that access through channels, mutexes, atomics, or other synchronization primitives. Data races are bugs; avoiding them is a design requirement, not an optimization detail.
 
+Related memory concepts: [Garbage Collection](/concepts/garbage-collection/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency
 
 Go's concurrency model is built around goroutines and channels. A `go` statement starts a function call as an independent goroutine in the same address space. Channels let goroutines send and receive typed values, with unbuffered channels combining communication and synchronization. Effective Go summarizes the preferred style as sharing memory by communicating, while also acknowledging that mutexes are often the clearer tool for shared state.

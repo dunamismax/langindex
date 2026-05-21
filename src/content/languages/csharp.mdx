@@ -139,6 +139,8 @@ This model removes most manual `free`/`delete` mistakes from normal application 
 
 Unity adds another important constraint. Unity integrates .NET and C#, but the exact API surface, compiler support, and runtime behavior depend on the Unity version, selected API compatibility level, target platform, and scripting backend. A C# technique that is idiomatic in server-side .NET may need adjustment inside Unity's frame loop, object model, serialization rules, and platform build pipeline.
 
+Related memory concepts: [Garbage Collection](/concepts/garbage-collection/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency And Async
 
 C# has threads, tasks, thread pools, concurrent collections, locks, channels, timers, cancellation tokens, async streams, and language-level `async`/`await`. The Task-based asynchronous pattern is central to modern .NET I/O: web servers, HTTP clients, database clients, file APIs, queues, and UI applications often expose asynchronous APIs to avoid blocking threads while external work completes.

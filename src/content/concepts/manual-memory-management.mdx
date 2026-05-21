@@ -1,0 +1,63 @@
+---
+title: Manual Memory Management
+slug: manual-memory-management
+summary: Manual memory management makes allocation, deallocation, and ownership transfer explicit in program code, API contracts, or allocator parameters.
+relatedLanguages:
+  - c
+  - cpp
+  - zig
+  - objective-c
+  - rust
+sources:
+  - title: free
+    url: https://en.cppreference.com/w/c/memory/free
+    publisher: cppreference.com
+  - title: C++ Core Guidelines - Resource management
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-resource
+    publisher: Standard C++ Foundation
+  - title: Zig Language Reference - Memory
+    url: https://ziglang.org/documentation/0.16.0/#Memory
+    publisher: Zig Software Foundation
+  - title: Objective-C Automatic Reference Counting
+    url: https://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    publisher: LLVM Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## What Manual Memory Management Means
+
+Manual memory management means program code is responsible for deciding when memory is allocated, who owns it, and when it is released. That responsibility may be expressed through direct calls such as `malloc` and `free`, C++ `new` and `delete`, allocator objects, arena teardown, platform handles, foreign APIs, or documented ownership transfer rules.
+
+The important point is not that every allocation is literally hand-written. It is that the language or runtime does not automatically reclaim all ordinary objects for the developer. The team must make lifetime, allocator, aliasing, and cleanup policies explicit enough that code remains correct across success paths, error paths, callbacks, and foreign boundaries.
+
+## Why Teams Choose It
+
+Manual memory control is useful when memory layout, allocation timing, peak footprint, fragmentation, ABI behavior, embedded constraints, or runtime dependencies are part of the product. Kernels, firmware, game engines, real-time systems, native libraries, language runtimes, allocators, packet processing, multimedia codecs, and high-performance infrastructure often need control that a managed runtime cannot provide.
+
+Zig makes allocator choice a visible API concern. C exposes standard allocation functions and leaves many ownership contracts to libraries and documentation. C++ encourages resource-owning types, RAII, containers, smart pointers, and guidelines rather than raw owning pointers in ordinary modern code. Rust safe code avoids most manual deallocation, but unsafe code and foreign interfaces can still require explicit allocation and cleanup invariants.
+
+## Failure Modes
+
+Manual memory management has sharp failure modes:
+
+- Leaks when allocated memory is never released.
+- Use-after-free when code keeps using storage after release.
+- Double-free when the same allocation is released twice.
+- Invalid free when the pointer was not returned by the right allocator.
+- Allocator mismatch across modules, runtimes, or language boundaries.
+- Dangling references after stack frames, arenas, buffers, or foreign handles go away.
+
+These bugs often appear far from the allocation site. A function may allocate, another may transfer ownership, a third may store a pointer, and a fourth may clean it up during an error path. That is why serious C, C++, Zig, and unsafe Rust projects need ownership documentation, tests, sanitizers, static analysis, fuzzing, and review discipline.
+
+## Safer Patterns
+
+Manual memory does not have to mean scattered `free` calls. Safer patterns include region and arena allocation, caller-provided allocators, single-owner handles, C APIs with clear create/destroy pairs, C++ RAII wrappers, Rust `Drop` wrappers around foreign resources, explicit lifetime comments, and tests that force error cleanup paths.
+
+The best manual-memory APIs make ownership visible at the boundary: who allocates, who frees, which allocator must be used, whether the pointer may be stored, whether the buffer may move, and what happens on partial failure.
+
+## Related Concepts
+
+Use [ownership](/concepts/ownership/) to describe responsibility, [RAII and deterministic cleanup](/concepts/raii-and-deterministic-cleanup/) to tie cleanup to scopes and object lifetimes, [stack vs heap allocation](/concepts/stack-vs-heap-allocation/) to explain placement tradeoffs, and [memory safety](/concepts/memory-safety/) to evaluate the risk profile of low-level memory control.

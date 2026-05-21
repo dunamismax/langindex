@@ -143,6 +143,8 @@ ARC is not the same as tracing garbage collection. Object lifetimes are tied to 
 
 Swift also has unsafe escape hatches. Interop with C and low-level systems APIs can require `UnsafePointer`, `UnsafeMutablePointer`, raw buffers, unmanaged references, or manual lifetime rules. These APIs are part of Swift's power, but they should be isolated behind small, tested boundaries.
 
+Related memory concepts: [Reference Counting](/concepts/reference-counting/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), [Ownership](/concepts/ownership/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Concurrency
 
 Swift concurrency provides `async`/`await`, tasks, task groups, actors, structured concurrency, cancellation, and `Sendable` checking. The model is designed to make asynchronous code easier to read while giving the compiler more information about isolation and data sharing.

@@ -1,0 +1,58 @@
+---
+title: Reference Counting
+slug: reference-counting
+summary: Reference counting tracks how many owners or strong references point at a value and reclaims the value when the count reaches zero.
+relatedLanguages:
+  - swift
+  - objective-c
+  - python
+  - cpp
+  - rust
+sources:
+  - title: The Swift Programming Language - Automatic Reference Counting
+    url: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/
+    publisher: Swift Project
+  - title: Objective-C Automatic Reference Counting
+    url: https://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    publisher: LLVM Project
+  - title: Reference Counting
+    url: https://docs.python.org/3/c-api/refcounting.html
+    publisher: Python Software Foundation
+  - title: std::rc
+    url: https://doc.rust-lang.org/std/rc/
+    publisher: Rust Project
+  - title: std::shared_ptr
+    url: https://en.cppreference.com/w/cpp/memory/shared_ptr
+    publisher: cppreference.com
+lastVerified: 2026-05-21
+---
+
+## What Reference Counting Means
+
+Reference counting is a memory-management technique where an object stays alive while one or more owning references point to it. Creating or copying an owning reference increments a count. Releasing or destroying an owning reference decrements it. When the count reaches zero, the object can be destroyed and its storage reclaimed.
+
+The appeal is local reasoning. If the last strong owner is gone, cleanup can usually happen immediately rather than waiting for a later tracing garbage-collection cycle. This makes reference counting attractive in UI object graphs, native frameworks, resource wrappers, extension APIs, and mixed-language boundaries where deterministic-ish cleanup matters.
+
+## ARC, Smart Pointers, And Runtime Counts
+
+Swift uses Automatic Reference Counting for class instances. Objective-C ARC is implemented by the compiler and runtime for Objective-C object and block pointer types; Clang documents that ARC inserts ownership operations and that it is not a cycle collector.
+
+C++ exposes reference counting through library types such as `std::shared_ptr`, which shares ownership and destroys the object after the last owning `shared_ptr` is gone. Rust offers `Rc<T>` for single-threaded shared ownership and `Arc<T>` for atomically reference-counted shared ownership across threads. These are explicit types, not the default ownership model for all values.
+
+CPython uses reference counts as part of the implementation for Python objects, with a separate cyclic garbage collector to find cycles that pure counting cannot release. Python's C API exposes strong-reference operations such as `Py_INCREF` and `Py_DECREF`, which makes ownership discipline central for extension authors.
+
+## Cycles
+
+The classic reference-counting failure mode is a cycle. If object A strongly owns object B and B strongly owns A, both counts can stay above zero even when no outside code can reach either object. ARC systems address this with weak or unowned references, explicit graph-breaking, delegate conventions, parent/child ownership rules, and careful closure capture.
+
+Cycles are not rare corner cases. They show up in UI trees, observer lists, callbacks, async tasks, caches, doubly linked structures, parent/child references, and object graphs that mix language runtime objects with foreign resources.
+
+## Performance And Concurrency
+
+Reference counting has costs. Count updates are extra work on reference creation and release. Atomic reference counts are more expensive than non-atomic counts but may be required when ownership crosses threads. Optimizing compilers and runtimes can remove or combine some operations, but the costs still depend on object graph shape and hot paths.
+
+Reference counting also does not validate ownership intent by itself. It can keep objects alive too long, release them too early if the API contract is wrong, or hide expensive shared ownership behind a small-looking pointer type.
+
+## Related Concepts
+
+Reference counting sits between [garbage collection](/concepts/garbage-collection/) and [manual memory management](/concepts/manual-memory-management/). It pairs well with [RAII and deterministic cleanup](/concepts/raii-and-deterministic-cleanup/) in C++ and Rust library types, and it depends on clear [ownership](/concepts/ownership/) conventions when shared objects cross API boundaries.

@@ -108,6 +108,8 @@ That convention makes allocation visible in APIs. A command-line tool might use 
 
 The benefit is control. The cost is responsibility. Zig programmers must still design ownership, lifetime, cleanup, and failure paths. Allocation can fail, and Zig code is expected to treat out-of-memory as a real error. `defer` and `errdefer` help structure cleanup, but they are not garbage collection and not Rust's ownership checker.
 
+Related memory concepts: [Manual Memory Management](/concepts/manual-memory-management/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), [Ownership](/concepts/ownership/), and [Memory Safety](/concepts/memory-safety/).
+
 ## Type System, Errors, And Safety Checks
 
 Zig is statically typed with local inference, explicit casts, integer types with precise widths, arrays, slices, pointers, structs, enums, tagged unions, optionals, and error unions. It has no null references in ordinary pointer types; nullable pointers use optional syntax. Error handling is part of the type system through error sets and error unions, and `try` is syntactic support for returning errors.

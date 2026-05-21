@@ -1,0 +1,62 @@
+---
+title: Garbage Collection
+slug: garbage-collection
+summary: Garbage collection is automatic memory reclamation where a runtime or implementation identifies objects that can no longer be reached and makes their storage available again.
+relatedLanguages:
+  - go
+  - java
+  - csharp
+  - python
+  - ruby
+  - javascript
+sources:
+  - title: A Guide to the Go Garbage Collector
+    url: https://go.dev/doc/gc-guide
+    publisher: Go Project
+  - title: The Java Virtual Machine Specification - Run-Time Data Areas
+    url: https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3
+    publisher: Oracle
+  - title: Fundamentals of garbage collection
+    url: https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals
+    publisher: Microsoft Learn
+  - title: "gc - Garbage Collector interface"
+    url: https://docs.python.org/3/library/gc.html
+    publisher: Python Software Foundation
+  - title: GC class
+    url: https://docs.ruby-lang.org/en/4.0/GC.html
+    publisher: Ruby
+lastVerified: 2026-05-21
+---
+
+## What Garbage Collection Means
+
+Garbage collection is automatic reclamation of memory that a program can no longer use. The most common production model is tracing garbage collection: the runtime starts from roots such as stack variables, global/static references, registers, and runtime handles, follows references to reachable objects, and treats unreachable heap objects as reclaimable.
+
+The key distinction is responsibility. In garbage-collected languages, ordinary application code usually does not call `free` or `delete` for managed objects. The implementation decides when to collect and how to return storage to the allocator. That can reduce use-after-free and double-free risk, but it does not remove memory behavior as an engineering concern.
+
+## Common Models
+
+Tracing collectors differ by implementation. A collector may be mark-sweep, copying, compacting, generational, incremental, concurrent, non-moving, or some combination. Go's standard toolchain uses a tracing collector and documents the CPU/memory tradeoff controlled by heap growth targets and memory limits. .NET documents a managed heap with generations, roots, marking, relocation, and compaction. Java specifies that heap storage for objects is managed by an automatic storage management system, while actual collector choices belong to JVM implementations.
+
+Python and Ruby are useful reminders that "garbage collected" does not always mean the same thing. CPython primarily uses reference counting and supplements it with a cycle-detecting garbage collector. Ruby exposes a `GC` interface for its implementation's automatic memory management. The operational effects vary by runtime, version, workload, and object graph.
+
+## What It Solves
+
+Garbage collection is strong when most objects have ordinary application lifetimes and the platform can afford a managed runtime. It helps with:
+
+- Preventing many manual deallocation mistakes.
+- Simplifying ownership transfer through ordinary references.
+- Supporting dynamic object graphs, closures, reflection-heavy frameworks, and long-lived services.
+- Letting runtimes optimize allocation, nursery collection, compaction, and finalization policies centrally.
+
+That is why garbage-collected runtimes are common in backend services, enterprise platforms, scripting languages, browser runtimes, developer tooling, and application frameworks.
+
+## Watch Points
+
+Garbage collection is not the same as "no memory leaks." A program can keep references in caches, globals, queues, closures, listeners, maps, tasks, sessions, or object graphs long after the data is semantically dead. From the collector's perspective, reachable memory is live.
+
+Garbage collection can also affect latency, memory footprint, startup time, container sizing, and observability. Teams should measure allocation rates, live heap size, pause behavior, finalizer/disposal patterns, and object retention rather than assuming the collector is invisible.
+
+## Related Concepts
+
+Compare garbage collection with [reference counting](/concepts/reference-counting/), where objects are reclaimed when reference counts reach zero, and with [manual memory management](/concepts/manual-memory-management/), where code explicitly releases storage. For native languages, [ownership](/concepts/ownership/) and [RAII and deterministic cleanup](/concepts/raii-and-deterministic-cleanup/) explain models that make resource lifetimes more explicit.

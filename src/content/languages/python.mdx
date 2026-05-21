@@ -144,6 +144,8 @@ Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing)
 
 Python is garbage collected. In CPython, object lifetimes are primarily managed through reference counting, with cyclic garbage collection handling reference cycles. This is an implementation detail, not a general guarantee across every Python implementation, but it matters in practice because many libraries, C extensions, and operational expectations are CPython-centered.
 
+Related memory concepts: [Garbage Collection](/concepts/garbage-collection/), [Reference Counting](/concepts/reference-counting/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), and [Memory Safety](/concepts/memory-safety/).
+
 Concurrency depends on the workload and implementation. CPython has historically used a global interpreter lock, commonly called the GIL, which allows only one thread to execute Python bytecode at a time in a process. Threads are still useful for I/O-bound work, blocking system calls, and libraries that release the GIL in native code, but ordinary CPU-bound Python code should not assume thread-level parallel speedup.
 
 Common approaches:

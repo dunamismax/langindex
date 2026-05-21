@@ -26,7 +26,7 @@ Observed on 2026-05-21:
   - 34 language profiles.
   - 48 comparisons.
   - 21 guides.
-  - 9 concepts.
+  - 15 concepts.
 - Completed architecture work:
   - Rust/Leptos/Axum site crate.
   - Route-compatible pages, feeds, sitemap, robots, search JSON, and
@@ -44,6 +44,12 @@ Observed on 2026-05-21:
   - Generics and Parametric Polymorphism.
   - Algebraic Data Types and Pattern Matching.
   - Null Safety.
+  - Garbage Collection.
+  - Reference Counting.
+  - Manual Memory Management.
+  - RAII and Deterministic Cleanup.
+  - Stack vs Heap Allocation.
+  - Memory Safety.
 
 ---
 
@@ -146,19 +152,6 @@ link-checking code changed broadly enough to justify the network time.
 ---
 
 ## Active Phases
-
-### Phase 36 - Memory Management Concepts
-
-- [ ] Expand `ownership` only if a current page exposes a real gap; refresh
-      `lastVerified` only if sources are re-checked.
-- [ ] Add `garbage-collection`.
-- [ ] Add `reference-counting`.
-- [ ] Add `manual-memory-management`.
-- [ ] Add `raii-and-deterministic-cleanup`.
-- [ ] Add `stack-vs-heap-allocation`.
-- [ ] Add `memory-safety`.
-- [ ] Link these concepts from C, C++, Rust, Zig, Go, Swift, Objective-C,
-      Java, C#, Python, Ruby, and the systems-language guide.
 
 ### Phase 37 - Runtime And Execution Concepts
 
