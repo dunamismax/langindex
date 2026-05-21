@@ -307,9 +307,10 @@ Broader checks the project supports:
 Broaden checks as risk grows. If a command cannot run, say why and what
 was verified instead.
 
-For source-heavy content phases, run `just check-links-external` before
-committing. Official documentation sites can have plausible stale URLs; the
-link checker is the fastest way to catch them before publishing.
+`just check-links-external` checks only newly added or changed external links by
+default. That keeps normal agent runs fast enough for source-heavy content
+phases. Use `just check-links-external-all` only when a full site-wide audit is
+explicitly needed.
 
 ---
 

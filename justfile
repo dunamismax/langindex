@@ -24,6 +24,9 @@ check-links-internal:
 check-links-external:
   pnpm check:links:external
 
+check-links-external-all:
+  pnpm check:links:external:all
+
 build:
   cargo build -p langindex-site --release
 

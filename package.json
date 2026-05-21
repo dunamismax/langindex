@@ -8,6 +8,7 @@
   },
   "scripts": {
     "check:links:external": "node scripts/check-external-links.mjs",
+    "check:links:external:all": "node scripts/check-external-links.mjs --all",
     "test:smoke": "playwright test"
   },
   "dependencies": {},
