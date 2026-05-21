@@ -1,0 +1,231 @@
+---
+title: Zig
+slug: zig
+status: active
+summary: Zig is a pre-1.0 systems programming language and toolchain for explicit memory management, C interoperability, cross-compilation, small native binaries, and low-level software that wants more structure than C without Rust-style ownership checking.
+firstReleased: 2016
+creators:
+  - Andrew Kelley
+paradigms:
+  - systems
+  - procedural
+  - imperative
+  - metaprogramming
+typing:
+  discipline: static
+  strength: strong static typing with inference, explicit casts, error unions, optionals, comptime parameters, and generic code through compile-time values
+memory:
+  model: manual memory management with explicit allocator parameters by convention and no default language-level allocator
+runtime:
+  model: ahead-of-time native compilation through the Zig toolchain with no required garbage collector or language runtime
+officialSite: https://ziglang.org/
+repository: https://codeberg.org/ziglang/zig
+packageManagers:
+  - Zig Build System
+  - build.zig.zon
+  - zig fetch
+  - zig build
+comparedWith:
+  - c
+  - rust
+  - cpp
+bestFor:
+  - Native tools, systems components, embedded-adjacent work, C replacement modules, allocators, parsers, game or graphics internals, and libraries where explicit memory and layout control are central.
+  - Projects that need C ABI integration, direct C header import or translation, and a toolchain that can also act as a C/C++ compiler.
+  - Cross-compilation-heavy projects where one compiler invocation should target multiple operating systems, architectures, C libraries, or freestanding environments.
+  - Teams that want manual control and simple language mechanics, and can tolerate pre-1.0 language, standard library, package, and ecosystem churn.
+poorFit:
+  - Products that need a stable 1.0 language contract, a mature package registry, broad hiring availability, and long-term dependency stability today.
+  - Teams expecting memory safety comparable to safe Rust; Zig has safety checks, optionals, error unions, and explicit allocators, but it remains manually managed.
+  - Ordinary web, business, data, or scripting applications where Go, Rust, Python, JavaScript/TypeScript, Java, C#, or another ecosystem already has deeper libraries and deployment conventions.
+  - Projects that cannot pin a Zig version and continually test source, build-system, and standard-library changes during upgrades.
+sources:
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: Overview
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: Download
+    url: https://ziglang.org/download/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+  - title: Zig Software Foundation
+    url: https://ziglang.org/zsf/
+    publisher: Zig Software Foundation
+  - title: Zig source repository
+    url: https://codeberg.org/ziglang/zig
+    publisher: Zig Software Foundation
+  - title: Zig heading toward a self-hosting compiler
+    url: https://lwn.net/Articles/833400/
+    publisher: LWN.net
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Zig was created by Andrew Kelley and emerged publicly in the mid-2010s as a systems programming language shaped around C replacement and C interop. LWN's 2020 history places the project in 2015, when Kelley started the original repository, and points to a 2016 introductory post describing Zig's goals. The current Zig homepage describes the project as both a programming language and a toolchain for robust, optimal, and reusable software.
+
+The design center is not a managed application platform. Zig is for native software where allocation, layout, build configuration, target triples, C ABI boundaries, and generated code matter. It keeps the language surface comparatively small, rejects hidden control flow and hidden allocation as design principles, and uses compile-time execution instead of a separate macro language or preprocessor.
+
+That makes Zig attractive to developers who like C's directness but want stronger defaults around error handling, optional values, slices, tagged unions, explicit casts, compile-time reflection, and a more integrated build and cross-compilation story. It also means Zig deliberately leaves more responsibility with the programmer than Rust does. Lifetimes, aliasing, allocator ownership, and many concurrency properties are project obligations, not borrow-checker obligations.
+
+## Current Status And Release Maturity
+
+Zig is active and moving quickly, but it is still pre-1.0. When this page was verified, the official download page listed Zig 0.16.0 as the latest release, dated April 13, 2026; the release announcement was published April 14, 2026. The 0.16.0 release notes describe eight months of work by 244 contributors across 1,183 commits, with changes across the language, compiler, build system, linker, fuzzer, standard library, and toolchain.
+
+That activity is a strength and a risk. Zig is not frozen. Source code, standard-library APIs, build scripts, package metadata, compiler behavior, and C translation details can change between releases. A serious Zig project should pin the exact Zig version in CI and developer setup, keep upgrade notes, and run examples, tests, and cross-target builds before adopting a new release.
+
+The roadmap in the 0.16.0 notes says the next cycle aims at LLVM 22 and build-system work, with later initiatives including completing and stabilizing the language. For production planning, read "pre-1.0" literally: evaluate Zig on the exact release, target, and dependencies you will use instead of assuming long-term compatibility.
+
+## Runtime, Toolchain, And Cross-Compilation
+
+Zig normally compiles ahead of time to native code. The language has no required garbage collector and, as the language reference puts it, performs no memory management on behalf of the programmer. Programs can be tiny native executables, linked libraries, freestanding artifacts, WebAssembly modules, C ABI exports, or mixed Zig/C/C++ builds depending on target and build configuration.
+
+The toolchain is a major part of the language's appeal. The overview emphasizes cross-compilation as a first-class use case: Zig builds for supported targets independently of the host, without requiring a separate cross toolchain for ordinary cases. The same toolchain can also be invoked as `zig cc` or `zig c++`, using Zig's bundled target and libc knowledge to compile C or C++ code for many environments.
+
+This is especially useful when a project needs:
+
+- Native binaries for several operating systems from one build machine.
+- Static or mostly static Linux binaries with musl.
+- C libraries built as part of a Zig project.
+- Embedded, freestanding, or unusual target experiments.
+- Reproducible build inputs captured in `build.zig` and package metadata.
+
+Target support still has tiers and caveats. Treat a target matrix as something to test, not something inferred from a list. Debugger behavior, linker support, libc support, ABI details, CPU features, and third-party packages can be the real constraint.
+
+## Memory Management And Allocators
+
+Zig's memory model is explicit. The language reference states that Zig does no memory management for the programmer, and the conventional question is "where are the bytes?" Unlike C, Zig does not center the language around a default `malloc`/`free` allocator. Libraries that allocate are expected to accept an `Allocator` parameter so callers can choose the allocation strategy.
+
+That convention makes allocation visible in APIs. A command-line tool might use an arena allocator and release everything at shutdown. A parser might accept a caller-provided arena. An embedded component might use a fixed buffer allocator. A library should usually accept an allocator rather than silently reaching for process-global heap state.
+
+The benefit is control. The cost is responsibility. Zig programmers must still design ownership, lifetime, cleanup, and failure paths. Allocation can fail, and Zig code is expected to treat out-of-memory as a real error. `defer` and `errdefer` help structure cleanup, but they are not garbage collection and not Rust's ownership checker.
+
+## Type System, Errors, And Safety Checks
+
+Zig is statically typed with local inference, explicit casts, integer types with precise widths, arrays, slices, pointers, structs, enums, tagged unions, optionals, and error unions. It has no null references in ordinary pointer types; nullable pointers use optional syntax. Error handling is part of the type system through error sets and error unions, and `try` is syntactic support for returning errors.
+
+Zig also includes runtime safety checks in safe build modes. The language reference documents traps or panics for cases such as integer overflow, invalid casts, incorrect pointer alignment, invalid enum values, wrong union field access, and invalid null pointer casts. These checks make many bugs visible earlier than plain C would, especially in debug and safe builds.
+
+Those checks do not make Zig a fully memory-safe language. Pointer lifetime, buffer ownership, aliasing, data races, unchecked release-mode assumptions, foreign memory, and allocator pairing remain engineering obligations. If the product requirement is "safe code by default with compile-time ownership enforcement," compare Zig with Rust carefully before choosing.
+
+## Comptime And Generic Code
+
+Zig's metaprogramming model is `comptime`: compile-time code execution, compile-time-known values, and types as values. Generic functions commonly take `comptime` type parameters. Build configuration can be surfaced to source code as compile-time values, and the language reference shows compile-time reflection through builtins such as `@typeInfo`.
+
+This gives Zig a powerful way to write reusable low-level code without a C preprocessor or a separate macro system. A function can specialize on a type, a build option can remove unreachable branches, and declarations can be generated or selected at compile time.
+
+The tradeoff is that compile-time code is still code. It can become hard to read, slow to compile, or tightly coupled to compiler details if used carelessly. Good Zig libraries use comptime to make interfaces clearer or eliminate runtime overhead, not to hide ordinary control flow behind clever generation.
+
+## C Interop And ABI Boundaries
+
+C interoperability is one of Zig's defining strengths. Zig can import C headers, translate C code, compile C and C++ source, link libc when needed, and export C ABI functions and data. The overview shows Zig building C code and exporting a library with the C ABI; the language reference documents C translation, `@cImport`, `@cInclude`, C type primitives, C pointers, object-file mixing, and C library export.
+
+This makes Zig a practical fit for:
+
+- Replacing part of a C codebase incrementally.
+- Building a native library with a C ABI.
+- Wrapping platform SDKs or vendor C headers.
+- Using Zig's build system and cross toolchain for existing C projects.
+- Writing low-level code that must still be consumed by C, Python, Rust, or other FFI users.
+
+Interop is still boundary engineering. The project must define who allocates, who frees, which allocator is used, whether callbacks may retain pointers, how errors cross the boundary, which structs are `extern`, and which target triple and C flags were used when translating headers.
+
+## Build System And Package Management
+
+Zig ships an integrated build system. The language reference describes `build.zig` as a cross-platform, dependency-free way to declare build logic using the Zig Build System API. It can build Zig, C, and C++ artifacts, run tests, cache work, expose build configuration to source code, create packages, depend on other projects, run tools, format code, and define custom tasks.
+
+The package story is tied to that build system. Modern Zig projects use `build.zig.zon` metadata, `zig fetch`, package dependencies, and `zig build`. The 0.16.0 release notes include package and build-system changes such as local package overrides and fetching packages into a project-local directory.
+
+This is promising, but less mature than Cargo for Rust, Go modules for Go, npm for JavaScript, Maven/Gradle for JVM work, or NuGet for .NET. Teams should check whether the exact Zig packages they need are maintained, versioned, documented, and compatible with the Zig release they plan to use.
+
+## Syntax Example
+
+```zig
+const std = @import("std");
+
+const Language = struct {
+    name: []const u8,
+    year: u16,
+};
+
+fn collectRecent(
+    allocator: std.mem.Allocator,
+    languages: []const Language,
+    min_year: u16,
+) ![]Language {
+    var matches = std.ArrayList(Language).empty;
+    defer matches.deinit(allocator);
+
+    for (languages) |language| {
+        if (language.year >= min_year) {
+            try matches.append(allocator, language);
+        }
+    }
+
+    return matches.toOwnedSlice(allocator);
+}
+
+pub fn main() !void {
+    var debug_allocator = std.heap.DebugAllocator(.{}){};
+    defer _ = debug_allocator.deinit();
+    const allocator = debug_allocator.allocator();
+
+    const languages = [_]Language{
+        .{ .name = "C", .year = 1972 },
+        .{ .name = "Zig", .year = 2016 },
+        .{ .name = "Rust", .year = 2015 },
+    };
+
+    const recent = try collectRecent(allocator, &languages, 2010);
+    defer allocator.free(recent);
+
+    for (recent) |language| {
+        std.debug.print("{s}: {}\n", .{ language.name, language.year });
+    }
+}
+```
+
+This example keeps allocation explicit. The caller chooses the allocator, the helper returns an owned slice, and the caller frees it. Real Zig APIs should document that ownership transfer rather than relying on convention alone.
+
+## Best-Fit Use Cases
+
+Zig is a strong fit for:
+
+- C replacement modules where manual memory, explicit control flow, C ABI export, and incremental adoption matter.
+- Cross-platform native tools that benefit from Zig's target handling and bundled C toolchain behavior.
+- Embedded, freestanding, kernel-adjacent, runtime, allocator, parser, codec, game, graphics, and systems components where a small language and no required GC are important.
+- Projects that want to make allocation strategy part of the API.
+- Teams already comfortable with C-level reasoning that want Zig's safer checks, optionals, errors, comptime, and build tooling.
+
+## Poor-Fit Or Risky Use Cases
+
+Zig can be a poor fit when:
+
+- The organization needs a stable 1.0 language and library compatibility contract today.
+- Dependency availability matters more than control over the build and runtime model.
+- The team wants compiler-enforced ownership and data-race prevention comparable to Rust.
+- The product is mostly an ordinary backend, web app, data pipeline, mobile app, or business system.
+- The project cannot pin Zig and regularly test upgrades against its target matrix.
+
+## Governance, Standardization, And Ecosystem
+
+Zig is not standardized through ISO, ECMA, or another external standards body. Development happens in the open source Zig project, whose main repository and issue tracker are hosted on Codeberg. The homepage says proposals are discussed there, and contributors are expected to follow Zig's Code of Conduct.
+
+The Zig Software Foundation is a 501(c)(3) nonprofit founded in 2020 by Andrew Kelley, the creator of Zig, to support language development. The ZSF page lists its mission, board members, finances, sponsors, and donation routes. This gives Zig institutional support, but it is not the same thing as a frozen standard or vendor-neutral committee process.
+
+The ecosystem is still younger than C, C++, Rust, Go, or JavaScript. Zig has an active compiler, standard library, build system, package mechanism, community projects, and production users, but teams should evaluate library maintenance and release compatibility directly.
+
+## Comparison Notes
+
+[Zig vs C](/comparisons/zig-vs-c) is the closest comparison for replacement and interop work. C has unmatched platform reach, ABI familiarity, and decades of code. Zig is stronger when explicit allocators, safer optionals/errors, build-system integration, and cross-compilation are worth using a younger toolchain.
+
+[Rust vs Zig](/comparisons/rust-vs-zig) is the practical comparison for new low-level work. Rust is more mature and enforces ownership in safe code. Zig is simpler at the language surface, more C-oriented, and leaves more memory/lifetime responsibility to the programmer.
+
+C++ is the nearby comparison when large native applications need RAII, templates, mature engines, and rich libraries. Zig may be easier to reason about for narrow low-level modules, but it does not replace the breadth of existing C++ ecosystems by default.

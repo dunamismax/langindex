@@ -703,9 +703,10 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 28);
-        assert_eq!(content.comparisons.len(), 39);
+        assert_eq!(content.languages.len(), 29);
+        assert_eq!(content.comparisons.len(), 40);
         assert_eq!(content.guides.len(), 20);
+        assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
         assert!(content.language("erlang").is_some());
         assert!(content.language("elixir").is_some());
@@ -730,6 +731,8 @@ mod tests {
         assert!(content.comparison("clojure-vs-scala").is_some());
         assert!(content.comparison("julia-vs-python").is_some());
         assert!(content.comparison("julia-vs-r").is_some());
+        assert!(content.comparison("zig-vs-c").is_some());
+        assert!(content.comparison("rust-vs-zig").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")

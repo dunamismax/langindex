@@ -42,7 +42,19 @@ sources:
   - title: C++ Standards Support in GCC
     url: https://gcc.gnu.org/projects/cxx-status.html
     publisher: GNU Compiler Collection
-lastVerified: 2026-05-15
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: Overview - Zig Programming Language
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Board And Toolchain
@@ -103,6 +115,20 @@ Be explicit about which C++ features are allowed. Exception handling, dynamic al
 
 C++ is strongest in embedded systems when it is used as a controlled tool, not as an unrestricted language surface. A project might allow `constexpr`, templates, stack-based value types, RAII wrappers for handles and locks, and a fixed standard-library subset while banning exceptions after startup, heap allocation in interrupt paths, RTTI, or dynamic initialization. The exact policy should be written down and enforced in CI.
 
+## When Zig Is Worth Evaluating
+
+Zig is worth evaluating when the target can support the toolchain and the team wants explicit allocation, small runtime assumptions, direct C interop, and cross-compilation from one build workflow. It can be attractive for freestanding experiments, board-support-adjacent modules, firmware tools, host-side build utilities, bootloaders, and embedded application layers where C ABI integration remains important.
+
+Use Zig when:
+
+- The exact chip, architecture, linker path, and debug workflow have been proved with the pinned Zig release.
+- The project benefits from caller-selected allocators, fixed-buffer allocation, arenas, or a strict no-heap policy expressed in APIs.
+- C headers, object files, or vendor libraries must be consumed without writing a large binding layer.
+- Cross-compilation and build reproducibility are major pain points in the current C/C++ workflow.
+- The team accepts pre-1.0 language and standard-library changes and has CI for the target matrix.
+
+Do not assume Zig is ready for every board because it is systems-oriented. Check startup code, linker scripts, panic behavior, atomics, volatile and memory-mapped I/O patterns, interrupt handling, debugger support, package availability, and whether generated artifacts match vendor expectations.
+
 ## Runtime And Allocation Constraints
 
 Firmware often has constraints that ordinary application teams do not face: fixed memory maps, limited RAM, no heap, hard startup timing, interrupt context, watchdogs, power loss, DMA buffers, and strict latency. These constraints usually matter more than language fashion.
@@ -127,6 +153,6 @@ Start with Rust when new firmware needs stronger ownership and type guarantees, 
 
 Start with C++ when the team already has embedded C++ expertise and the codebase benefits from RAII, templates, and richer abstractions under a controlled feature policy.
 
-Consider Zig for explicit allocation and C interop only after checking target maturity, tooling, and ecosystem depth for the exact chip family.
+Consider Zig for explicit allocation, C interop, and cross-compilation only after checking target maturity, tooling, and ecosystem depth for the exact chip family.
 
 For mixed systems, keep boundaries narrow. It is common to use C for startup and vendor SDK layers, Rust for safety-sensitive new modules, and C++ for higher-level device logic or shared libraries. The important part is making ownership, allocation, interrupt safety, and ABI contracts explicit at every boundary.

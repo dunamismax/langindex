@@ -56,6 +56,7 @@ Observed on 2026-05-16:
   - Erlang
   - Clojure
   - Julia
+  - Zig
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -92,6 +93,8 @@ Observed on 2026-05-16:
   - Clojure vs Scala comparison
   - Julia vs Python comparison
   - Julia vs R comparison
+  - Zig vs C comparison
+  - Rust vs Zig comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -600,12 +603,12 @@ continue with Phase 17.
 
 ### Phase 29 - Zig
 
-- [ ] Add a complete Zig page.
-- [ ] Cover explicit memory allocation, C interop, build system,
+- [x] Add a complete Zig page.
+- [x] Cover explicit memory allocation, C interop, build system,
       compile-time execution, cross-compilation, current maturity, package
       manager status, and standardization status.
-- [ ] Add Zig vs C and Zig vs Rust comparisons.
-- [ ] Add Zig to systems and embedded guides.
+- [x] Add Zig vs C and Zig vs Rust comparisons.
+- [x] Add Zig to systems and embedded guides.
 
 ### Phase 30 - OCaml
 

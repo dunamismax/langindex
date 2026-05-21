@@ -70,7 +70,19 @@ sources:
   - title: C++ Support in Clang
     url: https://clang.llvm.org/cxx_status
     publisher: LLVM Project
-lastVerified: 2026-05-15
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: Overview - Zig Programming Language
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-21
 ---
 
 ## Start With Runtime Constraints
@@ -98,7 +110,7 @@ Choose C when existing code, ABI requirements, vendor SDKs, platform conventions
 
 Choose C++ when the project needs native control plus richer abstraction tools such as RAII, templates, constructors/destructors, standard containers, and stronger library modeling. C++ is often a better fit than C for large native applications and performance-sensitive frameworks when the organization has mature C++ practices.
 
-Choose Zig when explicit allocation, simple language mechanics, and C-oriented control are attractive, and the team accepts a younger ecosystem and more manual responsibility.
+Choose Zig when explicit allocation, simple language mechanics, C-oriented control, and integrated cross-compilation are attractive, and the team accepts a younger ecosystem, pre-1.0 release churn, and more manual responsibility.
 
 Choose a garbage-collected systems-adjacent language such as Go when:
 
@@ -151,6 +163,22 @@ Before starting new C++ work, answer these questions:
 
 If these answers are not explicit, "modern C++" can mean too many incompatible things. Define the subset and toolchain before the codebase grows around accidental defaults.
 
+## Zig Adoption Constraints
+
+Zig is the systems choice to evaluate when a project wants C-like control with a clearer allocation story, stronger language constructs than C, and a toolchain that treats cross-compilation and C interop as central features. It is especially relevant for C replacement modules, native tools, allocators, parsers, embedded-adjacent experiments, freestanding targets, and projects where `zig cc` or `zig build` can simplify a messy C/C++ build.
+
+Before starting new Zig work, answer these questions:
+
+- Which Zig version will be pinned, and how will upgrades be tested while the language is still pre-1.0?
+- Does the target platform have the required support tier, linker behavior, libc story, debugger workflow, and CI coverage?
+- Which allocator policy will APIs follow: caller-provided allocator, arena, fixed buffer, page allocator, C allocator, or no dynamic allocation?
+- How will ownership, lifetime, and cleanup rules be documented at every boundary?
+- Will C interop use direct imports, translated C, object-file mixing, a C ABI export, or `zig cc` as a build tool?
+- Are required third-party Zig packages maintained for the chosen release, or will dependencies be vendored or written locally?
+- Which build modes, safety checks, fuzzing, tests, and cross-target builds are required before release?
+
+If these answers are vague, Zig's simpler syntax will not be enough. The language makes allocation and control flow explicit, but it does not enforce Rust-style ownership and it does not yet have C's institutional stability.
+
 ## Concurrency And Services
 
 For services, the concurrency model often matters more than benchmark-oriented language comparisons. Go's goroutines and channels make it straightforward to structure concurrent I/O, background work, cancellation, and request fan-out. The standard library also includes practical building blocks for HTTP, TLS, contexts, synchronization, profiling, and testing.
@@ -177,13 +205,17 @@ For Go, the single-binary path is often a practical advantage for internal tools
 
 C++ can ship native binaries and libraries, but the deployment shape is usually more platform-specific. Linkage, runtime libraries, C++ standard-library versions, compiler flags, symbol visibility, exception boundaries, and ABI policy should be part of the release plan. A C++ build that only works on one developer machine is not a systems-language advantage.
 
+Zig can be unusually practical when cross-compilation is a first-order requirement. It can build Zig code for many targets, act as a C or C++ compiler, and bundle target/libc knowledge that ordinary C projects often have to assemble by hand. Still test the exact target, libc, linker, debugger, and package set instead of treating the target list as a guarantee.
+
 ## Team Skill And Maintenance
 
 The best technical fit can still fail if the team cannot maintain the code. Rust asks more from developers up front, especially around ownership, borrowing, lifetimes, trait design, async runtime choices, compile-time errors, and dependency review. That cost can pay for itself in libraries and systems where correctness and memory behavior are central.
 
 Go usually asks less from the reader. The language is smaller, formatting is uniform, package structure is conventional, and many service patterns are easy to recognize. The tradeoff is that some invariants remain social, test-driven, or operational rather than statically enforced.
 
-C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
+C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify.
+
+Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
 
 ## Questions To Ask
 

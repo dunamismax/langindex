@@ -1,7 +1,7 @@
 ---
 title: Rust vs Zig
 slug: rust-vs-zig
-summary: Rust and Zig both target low-level software without a required garbage collector, but Rust emphasizes ownership-checked safety and a mature crate ecosystem while Zig emphasizes explicit control, simple language mechanics, and C-oriented tooling.
+summary: Rust and Zig both target native low-level software without a required garbage collector, but Rust emphasizes ownership-checked safety, stable releases, and Cargo while Zig emphasizes explicit allocation, C interop, comptime, integrated builds, and cross-compilation in a younger pre-1.0 ecosystem.
 languages:
   - rust
   - zig
@@ -23,18 +23,27 @@ sources:
   - title: rustc book - Platform Support
     url: https://doc.rust-lang.org/rustc/platform-support.html
     publisher: Rust Project
+  - title: The Embedded Rust Book - no_std
+    url: https://doc.rust-lang.org/stable/embedded-book/intro/no-std.html
+    publisher: Rust Project
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
   - title: Overview - Zig Programming Language
     url: https://ziglang.org/learn/overview/
     publisher: Zig Software Foundation
-  - title: Zig Language Reference
-    url: https://ziglang.org/documentation/master/
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
     publisher: Zig Software Foundation
-lastVerified: 2026-05-15
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-21
 ---
 
 ## Scope
 
-This is a prepared comparison for Rust and Zig while the standalone Zig page is still pending. It focuses on low-level native software, embedded work, C interop, cross-compilation, and projects deciding how much safety should be enforced by the language.
+This comparison focuses on low-level native software, embedded and freestanding work, C interop, cross-compilation, native libraries, and teams deciding how much safety should be enforced by the language versus project discipline.
 
 ## Practical Difference
 
@@ -42,7 +51,33 @@ Rust and Zig both appeal to developers who want native code, explicit resource c
 
 Rust pushes many ownership, lifetime, and thread-sharing rules into the type system. That gives stronger compile-time checks for safe Rust, but it also means developers must learn the borrow checker, traits, lifetimes, and sometimes complex async or generic diagnostics.
 
-Zig aims for a smaller, more explicit language surface. Its official overview emphasizes no hidden control flow, no hidden allocations, no preprocessor, and no macros. Memory management is programmer-controlled, with allocator choices passed explicitly by convention. That can feel more direct than Rust, but it leaves more correctness responsibility on the programmer and project practices.
+Zig aims for a smaller, more explicit language surface. Its official overview emphasizes no hidden control flow, no hidden memory allocations, no preprocessor, no macros, and first-class cross-compilation. Memory management is programmer-controlled, with allocator choices passed explicitly by convention. That can feel more direct than Rust, but it leaves more correctness responsibility on the programmer and project practices.
+
+Maturity is also different. Rust 1.0 shipped in 2015 and Rust has stable releases, editions, Cargo, crates.io, rustup, and a large production ecosystem. Zig is active and capable, but still pre-1.0; when this page was verified, 0.16.0 was the current release.
+
+## Memory And Safety Model
+
+Rust's core value is safe code by default. Ownership, borrowing, lifetimes, `Drop`, `Send`, `Sync`, and the safe/unsafe split let libraries expose APIs that mechanically prevent many lifetime, aliasing, and data-race mistakes. Unsafe Rust still exists for FFI, hardware, raw pointers, and low-level abstractions, but the goal is to keep it small and reviewed.
+
+Zig's core value is explicitness. It has safety checks in safe build modes, optionals, error unions, slices, precise casts, `defer`, `errdefer`, tagged unions, and allocator-passing conventions. Those tools are a major improvement over unstructured C code, but they do not create a borrow-checked safe subset like Rust. A Zig project still has to reason manually about ownership, aliasing, lifetimes, allocator pairing, and thread sharing.
+
+Choose Rust when the compiler should enforce many of those rules. Choose Zig when the team prefers manual control and wants the language to make allocation and fallibility visible without adopting Rust's ownership model.
+
+## Tooling And Packages
+
+Rust's tooling is more mature. Cargo provides a standard package, build, test, documentation, and workspace workflow. crates.io is the default public registry. rustup manages toolchains, release channels, components, and target installation. That standard workflow is one of Rust's strongest practical advantages for new projects.
+
+Zig's tooling is more integrated with the compiler and C toolchain. `zig build` uses `build.zig` scripts, package metadata lives in `build.zig.zon`, and the same toolchain can build Zig, C, and C++ artifacts. `zig cc` can simplify cross-compiling C code, and the overview highlights supported-target cross-compilation without separate cross toolchains in ordinary cases.
+
+The package ecosystem is the sharper Rust advantage today. Rust has more crates, more production examples, and a more stable package workflow. Zig's package manager and build system are improving quickly, but teams should check dependency health against the exact Zig release they plan to use.
+
+## C Interop And Migration
+
+Both languages can call C and expose C ABI surfaces. Rust FFI is mature, but crossing the boundary means writing `unsafe` declarations and clearly documenting ownership, allocation, panics, layout, and threading. Rust is often strongest when unsafe FFI is kept behind a safe Rust wrapper.
+
+Zig is more C-shaped. It can import C headers, translate C, compile C and C++ code, link libc, mix object files, export C ABI functions, and act as a C compiler. That makes it attractive for incremental C replacement, cross-compilation, and build-system modernization.
+
+If the project is mostly "make this C estate easier to build and replace one module at a time," Zig may be a lower-friction first move. If the project is "create a new safe API where lifetime errors would be expensive," Rust often earns its complexity.
 
 ## Choose Rust When
 
@@ -51,6 +86,7 @@ Zig aims for a smaller, more explicit language surface. Its official overview em
 - Safe library APIs are a major part of the project value.
 - Concurrency safety and shared-state rules should be represented in the type system.
 - WebAssembly, embedded, CLIs, or infrastructure libraries need a stable production language today.
+- The organization can absorb Rust's learning curve and compile-time feedback to reduce runtime memory and concurrency defects.
 
 ## Choose Zig When
 
@@ -59,13 +95,18 @@ Zig aims for a smaller, more explicit language surface. Its official overview em
 - The project can tolerate a younger language and ecosystem.
 - Developers prefer manual reasoning over a borrow-checker-centered workflow.
 - The code is close to C replacement work where a simpler language surface is a priority.
+- Comptime and build-time configuration can replace preprocessor-heavy or generator-heavy native build patterns.
 
 ## Watch Points
 
-Rust is more mature, but that maturity comes with more concepts. Zig is simpler in surface area, but simplicity does not remove the need to reason about lifetime, allocation, aliasing, initialization, and concurrency.
+Rust is more mature, but that maturity comes with more concepts. Borrowing, lifetimes, traits, async runtime choices, compile times, and generic-heavy dependencies can all affect delivery.
+
+Zig is simpler in surface area, but simplicity does not remove the need to reason about lifetime, allocation, aliasing, initialization, and concurrency. It also adds pre-1.0 upgrade risk.
 
 For production choices, compare actual target support, dependency availability, debugger behavior, build reproducibility, release stability, and team experience. Both languages can be excellent for narrow low-level components; neither should be chosen on slogan alone.
 
-## Prepared Follow-Up
+## Migration Notes
 
-When the Zig page lands, this comparison should add Zig release status, package-management details, allocator examples, build-system examples, and a more direct comparison of Rust `unsafe` boundaries with Zig safety-checked build modes.
+For an existing C or C++ estate, Rust and Zig can both be introduced at boundaries. Zig may fit better when the first goal is C build integration, header translation, or allocator-explicit replacement code behind a C ABI. Rust may fit better when the first goal is a safe wrapper, a new parser, a security-sensitive component, or an API where ownership should be enforced by types.
+
+For greenfield low-level work, prototype the hardest part before choosing: target support, allocator model, FFI boundary, package dependencies, compile/test feedback loop, debugging, and cross-compilation. The right answer usually shows up in those constraints.

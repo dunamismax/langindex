@@ -1,0 +1,109 @@
+---
+title: Zig vs C
+slug: zig-vs-c
+summary: Zig and C both serve low-level native software with manual memory control, but C is the stable, universal systems baseline while Zig adds explicit allocators, safer language constructs, comptime, integrated builds, C interop, and first-class cross-compilation in a younger pre-1.0 ecosystem.
+languages:
+  - zig
+  - c
+useCases:
+  - systems programming
+  - embedded
+  - C replacement
+  - native libraries
+  - cross-compilation
+sources:
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: Overview
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison focuses on systems programming, native libraries, embedded and freestanding work, C ABI boundaries, and projects considering Zig as a partial or full C replacement. It assumes the project genuinely needs explicit memory control and native compilation.
+
+## Practical Difference
+
+C is the long-standing systems baseline. It has standards, mature compilers, vendor SDKs, operating-system interfaces, embedded toolchains, certification paths, and a simple ABI story that almost every other language can consume. If the task is "meet this platform exactly as the platform expects," C often remains the least surprising choice.
+
+Zig targets much of the same territory but makes different tradeoffs. It keeps manual memory management, native compilation, and C ABI friendliness, while adding explicit allocator conventions, slices, optionals, error unions, tagged unions, compile-time execution, safety checks in safe build modes, and a build system that can also orchestrate C and C++ artifacts.
+
+The biggest product difference is maturity. C is standardized and deeply embedded in toolchains. Zig is active, capable, and improving, but still pre-1.0. Zig can be a better engineering experience for some new low-level code; C is still the safer institutional default when platform reach, long-term stability, or vendor support dominates.
+
+## Memory And Safety
+
+Both languages ask programmers to reason about memory. C commonly uses stack storage, static storage, `malloc`/`free`, custom allocators, pools, arenas, or platform APIs. Those ownership rules are usually encoded in documentation and naming conventions.
+
+Zig makes allocation strategy more visible by convention. Functions that allocate usually take an `Allocator`, and the caller decides whether memory comes from an arena, fixed buffer, debug allocator, C allocator, page allocator, or another strategy. That makes ownership easier to audit at API boundaries, especially in libraries.
+
+Zig also provides language-level tools C lacks: optional pointers instead of ordinary nullable pointers, error unions for fallibility, slices that carry length, tagged unions, precise integer casts, `defer` and `errdefer`, and safety checks for many illegal behaviors in debug or safe modes. These are meaningful improvements, but they do not make Zig fully memory-safe. Use-after-free, aliasing mistakes, data races, allocator mismatches, and unsafe foreign memory can still happen.
+
+## Build, Toolchain, And Cross-Compilation
+
+C has no single build or package workflow. A C project might use Make, CMake, Meson, Autotools, Bazel, an embedded IDE, a vendor SDK, system packages, pkg-config, Conan, vcpkg, vendored source, or custom scripts. This is flexible and historically durable, but it puts more burden on the project to define reproducible builds.
+
+Zig ships a build system and package metadata format as part of the toolchain. `build.zig` is executable Zig code using the Zig Build System API; `build.zig.zon` holds package metadata and dependencies. `zig build` can compile Zig, C, and C++ code, run tests, cache work, expose build options to code, and define custom steps.
+
+Cross-compilation is one of Zig's clearest advantages over ordinary C workflows. The official overview describes it as first-class: Zig can build for supported targets independently of the host and can also act as a C compiler through `zig cc`. That can reduce the pile of separate cross compilers, sysroots, linker flags, and libc setup normally needed for C.
+
+## C Interop
+
+C is the integration language itself. Operating systems, language runtimes, plugin systems, embedded SDKs, database extensions, and dynamic loaders often speak C headers and C ABI. When the deliverable is a stable boundary for many consumers, C remains a natural public interface.
+
+Zig is unusually C-friendly for a newer language. It can import C headers, translate C, compile C code, link libc, mix object files, and export C ABI functions and types. That makes Zig practical for incremental adoption: keep the public C surface and write a new implementation module in Zig, or use Zig's build system to compile existing C dependencies.
+
+The boundary rules still need to be explicit. Decide which side allocates, who frees, whether callbacks can retain pointers, how errors are represented, which structs are `extern`, and which target and C flags were used for translation.
+
+## Choose C When
+
+- The target SDK, RTOS, kernel, compiler, debugger, or certification process is C-first.
+- The code is primarily a stable public ABI or platform interface.
+- Toolchain availability and long-term language stability matter more than Zig's ergonomics.
+- The organization already has strong C review, static analysis, sanitizer, fuzzing, and release practices.
+- Dependencies, examples, vendor support, or hiring are much stronger in C.
+- The project cannot accept pre-1.0 language and standard-library churn.
+
+## Choose Zig When
+
+- New low-level code wants explicit memory control with safer constructs than plain C.
+- Allocation strategy should be visible in APIs instead of hidden behind global heap behavior.
+- Cross-compilation, bundled libc knowledge, or `zig cc` would simplify the build.
+- The project needs strong C interop but can implement internals in Zig.
+- Comptime and build-time configuration can replace preprocessor-heavy C patterns.
+- The team can pin Zig, track release changes, and test the exact target matrix.
+
+## Watch Points
+
+C's danger is familiar risk: undefined behavior, buffer mistakes, nulls, lifetime bugs, implicit conversions, macro complexity, and dependency/build drift. Its maturity does not remove the need for project discipline.
+
+Zig's danger is younger-language risk: source churn, standard-library changes, evolving package management, fewer domain libraries, fewer experienced developers, and a smaller base of production patterns. It improves many C pain points, but it does not provide Rust's ownership model or C's institutional stability.
+
+## Migration Notes
+
+A practical path is narrow adoption. Use Zig for a new tool, a leaf library, a parser, an allocator-sensitive module, or a C ABI implementation behind an existing header. Keep the C boundary stable, document ownership and error rules, and compare the build, test, debugging, and upgrade experience before expanding.
+
+For greenfield systems work, choose Zig when the team explicitly values its build system, allocator discipline, comptime model, and cross-compilation enough to accept pre-1.0 risk. Choose C when platform expectation and stability are the higher-order requirements.
