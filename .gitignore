@@ -8,6 +8,7 @@ public/search/
 # test output
 test-results/
 playwright-report/
+.playwright-mcp/
 
 # generated types
 .astro/

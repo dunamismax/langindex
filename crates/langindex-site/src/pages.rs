@@ -1021,7 +1021,9 @@ fn markdown_body(markdown: &str) -> String {
     let parser = Parser::new_ext(body, options);
     let mut output = String::new();
     html::push_html(&mut output, parser);
-    let output = output.replace("<pre>", r#"<pre tabindex="0">"#);
+    let output = output
+        .replace("<pre>", r#"<pre tabindex="0">"#)
+        .replace(r#"src="public/"#, r#"src="/"#);
     ammonia::Builder::default()
         .add_generic_attributes(["class", "tabindex"])
         .clean(&output)
@@ -1064,8 +1066,12 @@ fn Layout(
                 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
                 <meta name="description" content=description />
                 <link rel="icon" type="image/png" href="/favicon.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+                <link rel="manifest" href="/site.webmanifest" />
                 <link rel="alternate" type="application/rss+xml" title="LangIndex RSS" href="/rss.xml" />
-                <link rel="stylesheet" href="/assets/style.css" />
+                <link rel="stylesheet" href="/assets/style.css?v=1.0.0" />
                 <title>{full_title}</title>
                 <script>{r#"(function(){try{var t=localStorage.getItem("langindex-theme");if(t!=="light"&&t!=="dark"){t="dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();"#}</script>
             </head>
@@ -1205,7 +1211,9 @@ fn SiteHeader(section: NavSection) -> impl IntoView {
         <header class="site-header">
             <div class="container header-inner">
                 <a class="brand" href="/">
-                    <span class="brand-mark" aria-hidden="true">"LI"</span>
+                    <span class="brand-mark" aria-hidden="true">
+                        <img src="/brand/langindex-logo-64.png" alt="" width="28" height="28" />
+                    </span>
                     <span class="brand-name">"LangIndex"</span>
                 </a>
                 <nav class="primary-nav" aria-label="Primary">

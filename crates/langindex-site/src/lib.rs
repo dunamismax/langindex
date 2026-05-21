@@ -64,7 +64,14 @@ pub fn build_router(content: SiteContent) -> Router {
         .route("/robots.txt", get(pages::robots))
         .route("/healthz", get(pages::healthz))
         .route("/assets/style.css", get(assets::style_css))
+        .route("/apple-touch-icon.png", get(assets::apple_touch_icon))
+        .route("/favicon.ico", get(assets::favicon_ico))
+        .route("/favicon-16x16.png", get(assets::favicon_16))
+        .route("/favicon-32x32.png", get(assets::favicon_32))
         .route("/favicon.png", get(assets::favicon_png))
+        .route("/site.webmanifest", get(assets::site_webmanifest))
+        .route("/brand/{file}", get(assets::brand_asset))
+        .route("/public/brand/{file}", get(assets::brand_asset))
         .fallback(pages::not_found)
         .with_state(state)
         .layer(
@@ -275,5 +282,49 @@ mod tests {
             response.headers().get(header::CONTENT_TYPE).unwrap(),
             "text/css; charset=utf-8"
         );
+    }
+
+    #[tokio::test]
+    async fn public_brand_assets_are_served() {
+        let content = load_site_content(&default_content_root()).expect("content loads");
+        let app = build_router(content);
+        for (path, content_type) in [
+            ("/brand/langindex-logo-64.png", "image/png"),
+            ("/brand/langindex-banner-dark.png", "image/png"),
+            ("/public/brand/langindex-banner-dark.png", "image/png"),
+            (
+                "/site.webmanifest",
+                "application/manifest+json; charset=utf-8",
+            ),
+            ("/apple-touch-icon.png", "image/png"),
+            ("/favicon.ico", "image/x-icon"),
+            ("/favicon-16x16.png", "image/png"),
+            ("/favicon-32x32.png", "image/png"),
+        ] {
+            let response = app
+                .clone()
+                .oneshot(
+                    Request::builder()
+                        .uri(path)
+                        .body(Body::empty())
+                        .expect("request"),
+                )
+                .await
+                .expect("router call");
+            assert_eq!(response.status(), StatusCode::OK, "{path}");
+            assert_eq!(
+                response.headers().get(header::CONTENT_TYPE).unwrap(),
+                content_type,
+                "{path}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn about_page_rewrites_readme_public_images_to_site_assets() {
+        let (status, body) = get("/about/").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains(r#"src="/brand/langindex-banner-dark.png""#));
+        assert!(!body.contains(r#"src="public/brand/langindex-banner-dark.png""#));
     }
 }
