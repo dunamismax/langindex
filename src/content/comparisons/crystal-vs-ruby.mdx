@@ -1,0 +1,105 @@
+---
+title: Crystal vs Ruby
+slug: crystal-vs-ruby
+summary: Crystal and Ruby share Ruby-inspired syntax and object-oriented ergonomics, but Crystal is statically typed and compiled to native code while Ruby is dynamically typed and centered on CRuby, RubyGems, Bundler, and Rails.
+languages:
+  - crystal
+  - ruby
+useCases:
+  - web applications
+  - backend services
+  - command-line tools
+  - scripting
+  - C interoperability
+sources:
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: Crystal API Documentation
+    url: https://crystal-lang.org/api/latest/
+    publisher: Crystal
+  - title: Type inference
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/type_inference.html
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
+  - title: C bindings
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/c_bindings/index.html
+    publisher: Crystal
+  - title: About Ruby
+    url: https://www.ruby-lang.org/en/about/
+    publisher: Ruby
+  - title: Ruby Documentation
+    url: https://www.ruby-lang.org/en/documentation/
+    publisher: Ruby
+  - title: Ruby Syntax Documentation
+    url: https://docs.ruby-lang.org/en/4.0/syntax_rdoc.html
+    publisher: Ruby
+  - title: Ruby Releases
+    url: https://www.ruby-lang.org/en/downloads/releases/
+    publisher: Ruby
+  - title: Getting Started - RubyGems Guides
+    url: https://guides.rubygems.org/getting_started/
+    publisher: RubyGems
+  - title: How to manage application dependencies with Bundler
+    url: https://guides.rubygems.org/using_bundler_in_applications/
+    publisher: RubyGems
+  - title: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/index.html
+    publisher: Ruby on Rails
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for teams deciding whether Ruby-like syntax should mean Ruby itself or Crystal. It focuses on web backends, scripts that become tools, internal services, command-line applications, and C-adjacent code. It is not a claim that Crystal can run Ruby applications or that Ruby projects should be mechanically rewritten.
+
+For the full Crystal profile, see [Crystal](/languages/crystal). For the full Ruby profile, see [Ruby](/languages/ruby).
+
+## Shared Territory
+
+Crystal and Ruby both value expressive object-oriented code, blocks, readable method calls, string interpolation, compact collection handling, and APIs that can feel close to a scripting language. Both can be used for web applications, command-line tools, internal automation, HTTP clients and servers, background jobs, and database-backed systems.
+
+The practical difference is the contract. Ruby trusts runtime flexibility, tests, framework conventions, and the Ruby ecosystem. Crystal asks the compiler to understand the program before it emits native code, and it trades away parts of Ruby's dynamic surface to get static checking and native artifacts.
+
+## Key Differences
+
+| Dimension       | Crystal                                                        | Ruby                                                        |
+| --------------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
+| Language model  | Ruby-inspired, statically typed, compiled language             | Dynamic object-oriented language with runtime flexibility   |
+| Runtime shape   | Native executables with Crystal runtime services               | CRuby/MRI bytecode VM and other Ruby implementations        |
+| Type system     | Static inference, unions, nil tracking, generics, overloads    | Dynamic runtime typing with optional external type tooling  |
+| Package tooling | Shards, `shard.yml`, `shard.lock`, `crystal build/spec`        | RubyGems, Bundler, `Gemfile`, `Gemfile.lock`                |
+| Web center      | Smaller Crystal framework and shard ecosystem                  | Rails, Rack, RubyGems, and mature hosting/deployment paths  |
+| Interop         | C bindings written in Crystal                                  | Native gems, C extensions, FFI, subprocess/service borders  |
+| Main strength   | Ruby-like source with compiler checks and native binaries      | Ecosystem depth, Rails productivity, dynamic expressiveness |
+| Main risk       | Smaller ecosystem and Ruby incompatibility assumptions         | Runtime errors, dependency sprawl, and concurrency limits   |
+
+## Choose Crystal When
+
+- Ruby-like syntax is attractive, but static type checking is a project requirement.
+- The application should ship as a native executable or small container image rather than as a Ruby runtime plus gems.
+- The code is a service, CLI, worker, crawler, proxy, or internal tool where Crystal's standard library and available shards cover the domain.
+- C libraries are central, and typed Crystal bindings can keep most application code away from C.
+- The team is willing to evaluate a smaller ecosystem and pin compiler, Shards, and target-platform behavior.
+
+## Choose Ruby When
+
+- Ruby on Rails is the desired product platform.
+- The project depends on RubyGems, Bundler, Rails conventions, Rack middleware, Ruby-hosting practices, or existing Ruby code.
+- Runtime metaprogramming, internal DSLs, open classes, and dynamic library behavior are part of the productivity model.
+- Hiring, community examples, framework maturity, and package depth are stronger constraints than native compilation.
+- The code is mainly a Rails app, script, static-site generator, test tool, operational task, or library where Ruby's ecosystem already solves the problem.
+
+## Watch Points
+
+Crystal is not Ruby with a compiler flag. Its syntax is intentionally Ruby-inspired, but compatibility with Ruby is not the goal. Code that relies on Ruby's dynamic lookup, monkey patching, `method_missing` conventions, gems, Rails internals, or runtime type assumptions needs redesign, not translation.
+
+Ruby is not automatically the safer choice just because the ecosystem is larger. A long-lived Ruby app needs Ruby version policy, Bundler locks, native gem support, dependency review, framework upgrades, runtime validation, tests, and deployment discipline. Crystal moves some errors earlier, but it also moves the project onto a smaller package and hiring surface.
+
+## Migration Or Interoperability Notes
+
+Moving from Ruby to Crystal is usually a rewrite around stable boundaries. Preserve behavior with tests, extract protocol or process boundaries, and port narrow services or tools before attempting a full application migration.
+
+Ruby and Crystal can cooperate through HTTP, gRPC, message queues, files, databases, C ABI boundaries, or subprocesses. That is often cleaner than trying to share in-process assumptions. Use Crystal for a native tool, worker, or C-boundary service when that solves a concrete deployment or type-safety problem; keep Ruby where Rails, RubyGems, and runtime flexibility carry the product.

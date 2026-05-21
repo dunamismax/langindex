@@ -58,6 +58,9 @@ Observed on 2026-05-16:
   - Julia
   - Zig
   - OCaml
+  - F#
+  - Nim
+  - Crystal
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -97,6 +100,12 @@ Observed on 2026-05-16:
   - Zig vs C comparison
   - Rust vs Zig comparison
   - OCaml vs Rust comparison
+  - F# vs C# comparison
+  - F# vs OCaml comparison
+  - Nim vs Zig comparison
+  - Nim vs Rust comparison
+  - Crystal vs Ruby comparison
+  - Crystal vs Go comparison
   - Choosing C# for .NET, desktop, games, and enterprise work guide
   - Choosing a systems language guide
   - Choosing an embedded language guide
@@ -639,11 +648,11 @@ continue with Phase 17.
 
 ### Phase 33 - Crystal
 
-- [ ] Add a complete Crystal page.
-- [ ] Cover Ruby-like syntax, static typing, native compilation, shards,
+- [x] Add a complete Crystal page.
+- [x] Cover Ruby-like syntax, static typing, native compilation, shards,
       concurrency model, C bindings, and ecosystem maturity.
-- [ ] Add Crystal vs Ruby and Crystal vs Go comparisons.
-- [ ] Add Crystal to web/backend and compiled-scripting guides.
+- [x] Add Crystal vs Ruby and Crystal vs Go comparisons.
+- [x] Add Crystal to web/backend and compiled-scripting guides.
 
 ### Phase 34 - Solidity
 

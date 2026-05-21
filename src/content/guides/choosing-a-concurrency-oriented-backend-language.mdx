@@ -1,12 +1,13 @@
 ---
 title: Choosing A Concurrency-Oriented Backend Language
 slug: choosing-a-concurrency-oriented-backend-language
-summary: A decision guide for choosing Elixir, Erlang, Go, Java, C#, Kotlin, Scala, Rust, JavaScript, or Python when concurrent services, realtime systems, background work, and operational reliability drive the backend language decision.
+summary: A decision guide for choosing Elixir, Erlang, Go, Crystal, Java, C#, Kotlin, Scala, Rust, JavaScript, or Python when concurrent services, realtime systems, background work, and operational reliability drive the backend language decision.
 audience: Teams choosing a backend language for realtime applications, high-concurrency services, workers, event-driven systems, distributed systems, or long-running infrastructure.
 candidates:
   - elixir
   - erlang
   - go
+  - crystal
   - java
   - csharp
   - kotlin
@@ -49,6 +50,15 @@ sources:
   - title: The Go Memory Model
     url: https://go.dev/ref/mem
     publisher: Go Project
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: Crystal Concurrency
+    url: https://crystal-lang.org/reference/latest/guides/concurrency.html
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
   - title: Java Platform, Standard Edition Documentation
     url: https://docs.oracle.com/en/java/javase/26/
     publisher: Oracle
@@ -111,6 +121,12 @@ Choose Go when the backend is a network service, infrastructure tool, control pl
 
 Go is usually easier to hire for and operate than Elixir or Erlang in mainstream infrastructure teams. It is a weaker fit when the system's core value is supervised runtime process state, actor-style recovery, or Phoenix-style realtime product development.
 
+## Choose Crystal For Ruby-Like Native Services
+
+Choose [Crystal](/languages/crystal) when the backend would benefit from Ruby-like syntax, static type checking, native executables, fibers, channels, Shards, and direct C bindings. It can fit HTTP APIs, workers, crawlers, proxies, internal services, and command-line-adjacent backends when the required shards and target platforms are verified early.
+
+Crystal is not a Rails replacement by default and it does not have Go's ecosystem depth or hiring surface. It earns a backend slot when syntax fit, compiler checks, native deployment, and C-adjacent integration matter more than the larger Go, Java, C#, Python, JavaScript, or Ruby ecosystems.
+
 ## Choose Java, C#, Kotlin, Or Scala For Managed Platform Depth
 
 Choose Java or C# when mature enterprise libraries, long support windows, runtime observability, thread pools, async APIs, database integrations, identity systems, and platform operations matter more than language novelty.
@@ -149,6 +165,8 @@ Start with Elixir when Phoenix and OTP supervision are real advantages for realt
 Start with Erlang when the system is already Erlang/OTP-centered or close to mature Erlang infrastructure.
 
 Start with Go for network services, infrastructure components, and workers where deployment simplicity and goroutines are enough.
+
+Start with Crystal when Ruby-like source, native executables, fibers, and static checking are the reason for a backend service or worker, and the dependency set is small enough to verify directly.
 
 Start with Java or C# for long-lived enterprise backends where managed-runtime depth, static typing, and ecosystem coverage matter.
 

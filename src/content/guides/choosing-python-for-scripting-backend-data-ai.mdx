@@ -17,6 +17,7 @@ candidates:
   - scala
   - rust
   - nim
+  - crystal
 sources:
   - title: Python Documentation
     url: https://docs.python.org/3/
@@ -138,6 +139,15 @@ sources:
   - title: Nimble User Guide
     url: https://nim-lang.github.io/nimble/
     publisher: Nimble
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
+  - title: Using the compiler
+    url: https://crystal-lang.org/reference/latest/man/crystal/index.html
+    publisher: Crystal
 lastVerified: 2026-05-21
 ---
 
@@ -158,7 +168,7 @@ Prefer Python over shell when:
 - Several teams will maintain the script and readability matters more than terseness.
 - The script may grow into a packaged tool or service.
 
-Prefer Perl when the system is already Perl, the task is regex-heavy text processing, or CPAN modules and Unix glue are the natural fit. Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands, and prefer Bash only when the target environment can guarantee Bash-specific behavior. Prefer Nim when the script has become a native tool, wrapper, generator, or systems-adjacent utility where Python-like readability, static typing, macros, and C interop are useful. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, stronger compile-time guarantees, or a larger production ecosystem.
+Prefer Perl when the system is already Perl, the task is regex-heavy text processing, or CPAN modules and Unix glue are the natural fit. Prefer JavaScript when the script lives inside a Node.js or web project, needs npm packages directly, manipulates `package.json`, drives build tooling, or shares code with browser/server JavaScript. Prefer Ruby when the script lives near a Ruby or Rails application, the team already uses RubyGems and Bundler, or a small internal DSL would make the tool clearer. Prefer shell when the job is mostly a short pipeline around existing Unix commands, and prefer Bash only when the target environment can guarantee Bash-specific behavior. Prefer Nim when the script has become a native tool, wrapper, generator, or systems-adjacent utility where Python-like readability, static typing, macros, and C interop are useful. Prefer Crystal when Ruby-like readability, static typing, native compilation, Shards, and C bindings are useful and direct Ruby/Rails compatibility is not required. Prefer Go or Rust when the tool needs static binary distribution, faster startup under heavy repeated invocation, stronger compile-time guarantees, or a larger production ecosystem.
 
 ## Choose Python For Backend Services When
 
@@ -220,7 +230,7 @@ Keep the architecture honest:
 - Does the workload need CPU parallelism, and if so, will it use processes, native libraries, free-threaded builds, or another runtime?
 - Will the project need a package, a container, a service, a notebook, or a one-file script?
 - Which parts of the system need Python, and which parts only need a stable protocol boundary?
-- Which scripts have become native tools or C-adjacent wrappers where Nim's compiled model would reduce runtime packaging cost?
+- Which scripts have become native tools or C-adjacent wrappers where Nim or Crystal would reduce runtime packaging cost?
 - Which work should stay in SQL because it belongs to the database's schema, constraints, indexes, transactions, or query optimizer?
 - Which work should stay in R because statisticians, analysts, or domain packages need to own the method and report directly?
 - Which numerical kernels belong in Julia because the team needs high-level scientific code and compiled performance in the same language?
@@ -232,7 +242,7 @@ Start with Python for scripts that are more than shell glue, data workflows, not
 
 Start with Perl when maintaining existing Perl software, extending a CPAN-backed operational system, or doing text-heavy Unix automation where Perl is already the team's supported scripting language.
 
-Start with Nim when a script-like tool needs native compilation, static typing, macros, and C-family interop more than Python's package ecosystem.
+Start with Nim when a script-like tool needs native compilation, static typing, macros, and C-family interop more than Python's package ecosystem. Start with Crystal when the team wants that compiled-tool shape with Ruby-like syntax, Shards, and direct C bindings.
 
 Start with Go for network services, CLIs, platform tools, and infrastructure components where deployment as a static binary and simple concurrency matter more than data ecosystem reach.
 

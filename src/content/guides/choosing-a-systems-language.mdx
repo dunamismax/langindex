@@ -10,6 +10,7 @@ candidates:
   - cpp
   - zig
   - nim
+  - crystal
 sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
@@ -95,6 +96,18 @@ sources:
   - title: Nimble User Guide
     url: https://nim-lang.github.io/nimble/
     publisher: Nimble
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: Crystal Platform Support
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/platform_support.html
+    publisher: Crystal
+  - title: Crystal C bindings
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/c_bindings/index.html
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
 lastVerified: 2026-05-21
 ---
 
@@ -126,6 +139,8 @@ Choose C++ when the project needs native control plus richer abstraction tools s
 Choose Zig when explicit allocation, simple language mechanics, C-oriented control, and integrated cross-compilation are attractive, and the team accepts a younger ecosystem, pre-1.0 release churn, and more manual responsibility.
 
 Choose Nim when native compilation, Python-like readability, macros, C-family backends, and configurable memory management are attractive, and the project is closer to native tooling, systems scripting, wrappers, or application-level C interop than to allocator-centered core systems work.
+
+Choose Crystal when native compilation, Ruby-like readability, static type inference, fibers, Shards, and C bindings are attractive, and the project is closer to backend tools, workers, CLIs, wrappers, or application-level C interop than to allocator-centered core systems work.
 
 Choose a garbage-collected systems-adjacent language such as Go when:
 
@@ -210,6 +225,21 @@ Before starting new Nim work, answer these questions:
 
 If these answers are vague, Nim's concise syntax can hide native-build complexity. Treat backend, memory mode, FFI, generated code, and package policy as first-class production decisions.
 
+## Crystal Adoption Constraints
+
+Crystal is the systems-adjacent choice to evaluate when a project wants native binaries, Ruby-like source code, static checking, fibers, and direct C bindings without adopting Ruby's runtime model. It is especially relevant for command-line tools, workers, HTTP services, C-library wrappers, crawlers, internal tools, and scripts that have outgrown Ruby or shell but still benefit from a Ruby-shaped language.
+
+Before starting new Crystal work, answer these questions:
+
+- Which Crystal version will be pinned, and are the needed features stable on the 1.x release line?
+- Which target platforms are in scope, and do they fall into Crystal's stronger support tiers?
+- Which shards are required, and are they maintained for the selected compiler release?
+- Does the application depend on fibers and channels, and has the team tested blocking calls, backpressure, and CPU-bound work?
+- Which C bindings, foreign resources, callbacks, and cleanup rules need explicit ownership documentation?
+- Is Ruby-like syntax a material advantage, or would Go's larger ecosystem and standard toolchain be cheaper to operate?
+
+If these answers are vague, Crystal's readable syntax can hide platform and ecosystem risk. Treat target support, Shards, C bindings, runtime behavior, and deployment shape as production decisions.
+
 ## Concurrency And Services
 
 For services, the concurrency model often matters more than benchmark-oriented language comparisons. Go's goroutines and channels make it straightforward to structure concurrent I/O, background work, cancellation, and request fan-out. The standard library also includes practical building blocks for HTTP, TLS, contexts, synchronization, profiling, and testing.
@@ -250,7 +280,7 @@ C and C++ depend heavily on local standards. A mature C++ organization with RAII
 
 Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership.
 
-Nim fits teams that want to move faster than C in native tools or systems-adjacent application code, especially when macros and C wrappers reduce boilerplate. It is less attractive when the team needs Rust's safety guarantees, a large mainstream ecosystem, or a platform where another language owns the standard deployment story. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
+Nim fits teams that want to move faster than C in native tools or systems-adjacent application code, especially when macros and C wrappers reduce boilerplate. Crystal fits a related but more Ruby-shaped lane: native tools, workers, web backends, and C-bound wrappers where static typing and readable application code matter more than allocator-level control. Both are less attractive when the team needs Rust's safety guarantees, Go's ecosystem and operations depth, or a platform where another language owns the standard deployment story. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
 
 ## Questions To Ask
 
@@ -277,4 +307,6 @@ Start with Zig when explicit control, cross-compilation, and C replacement work 
 
 Start with Nim when native compilation, C-family interop, macros, and Python-like readability are the draw, and the project can absorb a smaller ecosystem plus backend and memory-mode decisions.
 
-Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Nim for native tools or wrapper layers, and C or C++ at legacy or ABI edges.
+Start with Crystal when native compilation, Ruby-like readability, fibers, Shards, and C bindings are the draw, and the project can absorb a smaller ecosystem plus platform-support checks.
+
+Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Nim or Crystal for native tools or wrapper layers, and C or C++ at legacy or ABI edges.

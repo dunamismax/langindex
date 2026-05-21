@@ -703,9 +703,12 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 32);
-        assert_eq!(content.comparisons.len(), 45);
+        assert_eq!(content.languages.len(), 33);
+        assert_eq!(content.comparisons.len(), 47);
         assert_eq!(content.guides.len(), 20);
+        assert!(content.language("crystal").is_some());
+        assert!(content.comparison("crystal-vs-go").is_some());
+        assert!(content.comparison("crystal-vs-ruby").is_some());
         assert!(content.language("fsharp").is_some());
         assert!(content.language("nim").is_some());
         assert!(content.language("ocaml").is_some());

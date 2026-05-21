@@ -1,0 +1,202 @@
+---
+title: Crystal
+slug: crystal
+status: active
+summary: Crystal is a statically typed, Ruby-inspired compiled language for native tools, web backends, C-adjacent applications, and scripts that benefit from Ruby-like syntax, type inference, native executables, fibers, channels, macros, and Shards.
+firstReleased: 2021
+creators:
+  - Ary Borenszweig
+  - Juan Wajnerman
+  - Brian Cardiff
+paradigms:
+  - object-oriented
+  - imperative
+  - concurrent
+  - metaprogramming
+  - scripting
+typing:
+  discipline: static
+  strength: strong static typing with global and local inference, union types, nil tracking, generics, overloads, and flow-sensitive narrowing
+memory:
+  model: automatic garbage collection for heap-allocated reference types, with explicit care still required for C-managed resources and finalizers
+runtime:
+  model: ahead-of-time native compilation through the Crystal compiler and LLVM, with a runtime for garbage collection, fibers, channels, I/O scheduling, and standard-library services
+officialSite: https://crystal-lang.org/
+repository: https://github.com/crystal-lang/crystal
+packageManagers:
+  - Shards
+  - crystal build
+  - crystal run
+  - crystal spec
+comparedWith:
+  - ruby
+  - go
+  - nim
+  - rust
+  - c
+bestFor:
+  - Ruby-fluent teams that want Ruby-like syntax with static type checking and native executables for services, internal tools, and command-line applications.
+  - Web backends, HTTP APIs, workers, and network tools where fibers, channels, a capable standard library, and simple deployment artifacts are attractive.
+  - C-adjacent applications that can use Crystal bindings around existing C libraries while keeping most application code higher level.
+  - Scripts or Ruby-like tools that have become important enough to deserve compile-time checks, release builds, and dependency locking.
+poorFit:
+  - Teams that need the hiring pool, package depth, hosting conventions, and framework defaults of Ruby, Go, Python, JavaScript, Java, or C#.
+  - Low-level systems software that needs allocator-explicit APIs, freestanding targets, or Rust-style compile-time ownership guarantees.
+  - Projects that depend heavily on Ruby's dynamic metaprogramming, runtime monkey patching, or direct RubyGems/Rails compatibility.
+  - Platforms outside Crystal's better-supported targets, especially when Windows, unusual architectures, or fully static linking are hard production requirements.
+sources:
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: Crystal API Documentation
+    url: https://crystal-lang.org/api/latest/
+    publisher: Crystal
+  - title: Crystal Reference
+    url: https://crystal-lang.org/reference/latest/
+    publisher: Crystal
+  - title: Type inference
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/type_inference.html
+    publisher: Crystal
+  - title: Concurrency
+    url: https://crystal-lang.org/reference/latest/guides/concurrency.html
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
+  - title: Using the compiler
+    url: https://crystal-lang.org/reference/latest/man/crystal/index.html
+    publisher: Crystal
+  - title: C bindings
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/c_bindings/index.html
+    publisher: Crystal
+  - title: C bindings fun declarations
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/c_bindings/fun.html
+    publisher: Crystal
+  - title: Platform Support
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/platform_support.html
+    publisher: Crystal
+  - title: Release Policy
+    url: https://crystal-lang.org/reference/latest/project/release-policy.html
+    publisher: Crystal
+  - title: Releases
+    url: https://crystal-lang.org/releases/
+    publisher: Crystal
+  - title: Crystal governance
+    url: https://crystal-lang.org/community/governance/
+    publisher: Crystal
+  - title: crystal-lang/crystal Repository
+    url: https://github.com/crystal-lang/crystal
+    publisher: Crystal
+  - title: The story behind CrystalLang
+    url: https://manas.tech/blog/2016/04/01/the-story-behind-crystal/
+    publisher: Manas.Tech
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Crystal began at Manas as an experiment in a compiled Ruby-like language. The Manas history page dates the start to June 2011 and names Ary Borenszweig, Juan Wajnerman, Brian Cardiff, and the Manas team as the early center of the work. Crystal 1.0.0 was released on March 22, 2021, and the current public site lists Crystal 1.20.2 as the latest release as of this page's verification date.
+
+The official project description is concise: Crystal is a general-purpose, object-oriented programming language with Ruby-inspired syntax, static type checking, type inference, C bindings, compile-time code generation, and native-code compilation. The goal is not Ruby compatibility. The goal is a language that keeps much of Ruby's source-level ergonomics while moving type errors and many performance decisions into the compiler.
+
+That puts Crystal in a narrow but useful space. It is not a drop-in replacement for Rails, RubyGems, or runtime-heavy Ruby metaprogramming. It is a compiled language for teams that like Ruby's readability but want static modeling, native artifacts, and direct C-library reach.
+
+## Runtime, Compilation, And Platform Support
+
+Crystal source is compiled ahead of time to native executables through the Crystal compiler and LLVM. The compiler manual documents `crystal run` for compile-and-run development, `crystal build` for executable output, `--release` for optimized builds, and `--static` for statically linked executables where the platform supports them.
+
+The generated executable is native, but it is not a bare C-style artifact. Crystal programs normally rely on a language runtime for garbage collection, fibers, channel scheduling, I/O integration, exception handling, standard-library behavior, and other services. That makes Crystal operationally closer to Go than to C or Rust: deployment can be a binary-centered workflow, but runtime behavior still needs measurement and platform testing.
+
+Platform support is tiered. The platform-support document lists tier 1 platforms such as aarch64 macOS, x86_64 macOS, x86_64 Linux GNU, and x86_64 Linux musl, with lower support tiers for additional Linux, BSD, Windows, Android, WASI, and other targets. Treat that tiering as part of production planning. A service on mainstream Linux is a different risk than a desktop app on Windows preview support or a cross-compiled binary for an unusual target.
+
+## Type System And Language Model
+
+Crystal is statically typed, but everyday code often omits explicit type annotations. The compiler infers local variables and method return types, tracks union types, narrows values through flow-sensitive checks such as `nil?` and `is_a?`, and requires enough information to understand instance and class variables in a way that remains readable and compilable.
+
+The result feels more dynamic than many static languages but remains a compile-time model. A variable can have a union type such as `String | Nil`, and the compiler can narrow that type after a nil check. Generics, overloads, classes, structs, modules, enums, blocks, procs, and macros are part of the language surface. Nil is explicit in types instead of being silently accepted everywhere.
+
+This is one of Crystal's strongest traits for Ruby-fluent teams. It supports concise code and object-oriented APIs without making runtime duck typing the only contract. The tradeoff is that some Ruby habits do not transfer. Open-ended runtime reflection, monkey patching, method-missing-heavy DSLs, and dynamic dependency behavior can run against the compiler's need to know what a program means before it emits native code.
+
+## Memory Model And C Boundaries
+
+Crystal uses automatic garbage collection for ordinary reference objects. Heap-allocated instances of reference types are reclaimed when no longer reachable, and ordinary application code does not manually free those objects.
+
+C interop changes the contract. Crystal can bind to existing C libraries through `lib` and `fun` declarations, and the C binding docs emphasize explicit C types, pointers, structs, unions, enums, callbacks, and exact argument types. Resources allocated by external libraries are not automatically understood by Crystal's garbage collector, so wrappers need clear ownership and cleanup rules. Finalizers can help release non-managed resources, but they should not replace deterministic boundary design where handles, buffers, callbacks, or foreign lifetimes are important.
+
+Use Crystal's C bindings when a small, typed wrapper around an existing C library lets the rest of the application stay higher level. Be more cautious when the main product is a low-level library whose public API must expose allocator policy, stable ABI rules, or hard realtime behavior.
+
+## Concurrency Model
+
+Crystal's concurrency model is built around fibers and channels. Fibers are lightweight execution units managed by the Crystal runtime, and channels let fibers communicate values without reaching first for shared-memory locks. The standard library also includes HTTP and socket support that integrates with this model.
+
+The concurrency guide frames Crystal as supporting concurrency, with parallelism available but still something to evaluate carefully. A default Crystal program executes on a single operating-system thread apart from runtime services such as garbage collection, while newer parallelism work should be tested against the exact Crystal version and runtime flags a production service will use.
+
+That makes Crystal attractive for I/O-heavy servers, workers, clients, and tools where many tasks wait on network or file operations. It is not automatic CPU-bound parallelism. CPU-heavy work, unbounded fiber creation, blocking foreign calls, and shared mutable state still need explicit architecture, measurement, and backpressure.
+
+## Shards, Builds, And Ecosystem
+
+Crystal projects are typically accompanied by Shards, the dependency manager. A project declares dependencies in `shard.yml`; `shards install` resolves them into `lib`; and a `shard.lock` can pin exact dependency versions for reproducible application installs. The compiler also provides `crystal init`, `crystal spec`, `crystal docs`, formatting tools, dependency analysis, and command-line build workflows.
+
+The standard library is useful for HTTP servers and clients, JSON, files, processes, specs, time, collections, networking, and common application needs. Database access usually uses shards; the official database guide points to `crystal-db` and driver shards for SQLite, MySQL/MariaDB, PostgreSQL, and related systems.
+
+The ecosystem is capable but smaller than RubyGems, npm, PyPI, Go modules, Cargo, Maven, or NuGet. That is not a failure; it is an adoption constraint. Before choosing Crystal for a production app, verify the exact web framework, database driver, authentication approach, queue library, observability stack, editor support, deployment examples, and maintainer activity that the project will rely on.
+
+## Syntax Example
+
+```crystal
+record Language, name : String, domains : Array(String) do
+  def fits?(domain : String) : Bool
+    domains.includes?(domain)
+  end
+end
+
+languages = [
+  Language.new("Crystal", ["web", "native tools"]),
+  Language.new("Ruby", ["web", "scripts"]),
+  Language.new("Go", ["services", "infrastructure"]),
+]
+
+web_languages = languages.select { |language| language.fits?("web") }
+
+web_languages.each do |language|
+  puts "#{language.name}: #{language.domains.join(", ")}"
+end
+```
+
+This example uses a `record`, explicit field types, inferred local variables, array literals, blocks, a predicate method, and string interpolation. Larger Crystal applications usually add `shard.yml`, specs, a pinned Crystal version, release builds, and CI on the production target platform.
+
+## Best-Fit Use Cases
+
+Crystal is a strong fit when:
+
+- A Ruby-fluent team wants native executables and static type checking without moving to a C-family or ML-family syntax.
+- A service, worker, crawler, webhook processor, or internal API is mostly I/O-bound and benefits from fibers, channels, and a compact deployment shape.
+- A command-line tool or script has grown beyond one-off automation and now needs dependency locking, compiler checks, and release builds.
+- A project needs to wrap C libraries but wants most application code in a higher-level object-oriented language.
+- The team can verify the needed shards and production targets early instead of assuming mainstream ecosystem depth.
+
+## Poor-Fit Or Risky Use Cases
+
+Crystal can be a poor fit when:
+
+- The project depends on Ruby/Rails compatibility, RubyGems, runtime monkey patching, or dynamic metaprogramming as a core feature.
+- Broad hiring, vendor examples, framework defaults, and package availability matter more than syntax fit or binary-centered deployment.
+- The main requirement is allocator-explicit systems programming, freestanding firmware, kernel work, or Rust-style compile-time ownership.
+- The workload is CPU-bound parallel computation and the team has not validated Crystal's current parallelism story for that exact use case.
+- The target platform sits outside Crystal's stronger support tiers, or fully static linking is a hard cross-platform requirement.
+
+## Governance, Releases, And Stewardship
+
+Crystal is open source under the Apache 2.0 license, with development centered on the `crystal-lang/crystal` repository and related project infrastructure. The governance document defines a steering council and core team process, and describes responsibilities around language, compiler, standard library, infrastructure, contribution process, and project stewardship.
+
+The release policy says Crystal is on major branch 1, adds features through scheduled minor releases, uses patch releases for important fixes, and aims for backwards compatibility across minor and patch releases within the same major branch, with explicit reservations for security, bugs, compiler-front-end improvements, feature additions, and experimental features.
+
+For production, pin the Crystal version and Shards lockfile, test the selected OS and architecture, watch release notes, and treat compiler upgrades as normal maintenance. Crystal is active and post-1.0, but it remains a smaller ecosystem than the languages it is most often compared with.
+
+## Comparison Notes
+
+[Crystal vs Ruby](/comparisons/crystal-vs-ruby) is the core syntax comparison. Choose Crystal when Ruby-like source code, static typing, native executables, C bindings, and fibers are the reason for the choice. Choose Ruby when Rails, RubyGems, Bundler, runtime flexibility, and the existing Ruby ecosystem are the main value.
+
+[Crystal vs Go](/comparisons/crystal-vs-go) is the service-and-tooling comparison. Choose Crystal when Ruby-like ergonomics and C bindings matter more than Go's ecosystem and uniform toolchain. Choose Go when operational convention, hiring, package depth, and standard-library-first services are stronger constraints.
+
+Nim is nearby for a compact compiled language with high-level syntax, macros, C-family interop, and systems-scripting appeal. Rust is nearby when the hard requirement is memory safety without a required garbage collector. C is nearby when ABI, platform SDKs, and low-level integration dominate the decision.

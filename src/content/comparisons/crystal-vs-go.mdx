@@ -1,0 +1,105 @@
+---
+title: Crystal vs Go
+slug: crystal-vs-go
+summary: Crystal and Go both compile to native executables and can serve backend and tooling work, but Crystal prioritizes Ruby-like ergonomics and type inference while Go prioritizes a small language, standard tooling, goroutines, and a larger service ecosystem.
+languages:
+  - crystal
+  - go
+useCases:
+  - backend services
+  - command-line tools
+  - network software
+  - infrastructure
+  - C interoperability
+sources:
+  - title: The Crystal Programming Language
+    url: https://crystal-lang.org/
+    publisher: Crystal
+  - title: Crystal API Documentation
+    url: https://crystal-lang.org/api/latest/
+    publisher: Crystal
+  - title: Concurrency
+    url: https://crystal-lang.org/reference/latest/guides/concurrency.html
+    publisher: Crystal
+  - title: The Shards command
+    url: https://crystal-lang.org/reference/latest/man/shards/index.html
+    publisher: Crystal
+  - title: Using the compiler
+    url: https://crystal-lang.org/reference/latest/man/crystal/index.html
+    publisher: Crystal
+  - title: Platform Support
+    url: https://crystal-lang.org/reference/latest/syntax_and_semantics/platform_support.html
+    publisher: Crystal
+  - title: Frequently Asked Questions
+    url: https://go.dev/doc/faq
+    publisher: Go Project
+  - title: The Go Programming Language Specification
+    url: https://go.dev/ref/spec
+    publisher: Go Project
+  - title: Effective Go
+    url: https://go.dev/doc/effective_go
+    publisher: Go Project
+  - title: How to Write Go Code
+    url: https://go.dev/doc/code
+    publisher: Go Project
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+  - title: Standard library
+    url: https://pkg.go.dev/std
+    publisher: Go Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison is for backend services, network tools, CLIs, workers, internal infrastructure, and teams choosing between a Ruby-like compiled language and Go's conventional service toolchain. It is not a low-level systems comparison; neither language replaces Rust, C, C++, or Zig when no-GC memory control is the core requirement.
+
+For the full Crystal profile, see [Crystal](/languages/crystal). For the full Go profile, see [Go](/languages/go).
+
+## Shared Territory
+
+Crystal and Go both produce target-specific native executables, support garbage-collected application code, include standard-library support for network programming, and can be practical for HTTP APIs, workers, command-line tools, crawlers, proxies, automation, and internal services.
+
+Both also have runtime behavior inside the binary. Crystal has runtime services for garbage collection, fibers, channels, I/O scheduling, exceptions, and standard-library behavior. Go executables include the Go runtime for goroutines, garbage collection, stack management, maps, channels, reflection, panic handling, and related services. Native compilation does not remove the need to measure memory, latency, concurrency, and deployment behavior.
+
+## Key Differences
+
+| Dimension       | Crystal                                                   | Go                                                       |
+| --------------- | --------------------------------------------------------- | -------------------------------------------------------- |
+| Language feel   | Ruby-inspired, expressive, inference-heavy OO language    | Small procedural language with structural interfaces     |
+| Type system     | Static inference, unions, nil tracking, overloads         | Static typing, interfaces, type parameters               |
+| Concurrency     | Fibers and channels; parallelism needs explicit checking  | Goroutines, channels, contexts, runtime scheduler        |
+| Package tooling | Shards, `shard.yml`, `shard.lock`                         | Go modules, `go.mod`, `go.sum`, `go` command            |
+| Standard path   | Smaller ecosystem, more project-specific choices          | Broad standard-library and ecosystem conventions         |
+| C interop       | C bindings written directly in Crystal                    | cgo when needed, but pure Go is preferred when possible  |
+| Hiring surface  | Smaller community and package pool                        | Much larger mainstream backend and infrastructure pool   |
+| Best fit        | Ruby-like native services, CLIs, wrappers, C-bound tools  | Network services, infrastructure, CLIs, control planes   |
+
+## Choose Crystal When
+
+- The team wants Ruby-like syntax and object-oriented APIs but also wants compiler checks and native builds.
+- The service or tool is small enough that Crystal's package ecosystem covers the real dependencies.
+- C bindings are a central feature, and writing those bindings in Crystal is more valuable than Go's cgo conventions.
+- Expressive source code, macros, union types, and nil tracking matter more than Go's language minimalism.
+- The production target is inside Crystal's better-supported platform tiers and can be verified in CI.
+
+## Choose Go When
+
+- The work is a network service, control plane, agent, CLI, infrastructure tool, or worker where Go's default toolchain and conventions are valuable.
+- Hiring, framework examples, cloud SDKs, observability packages, and operational familiarity are major constraints.
+- The team wants `go fmt`, `go test`, Go modules, standard HTTP packages, contexts, profiling, and a large service ecosystem as the ordinary path.
+- Concurrency should use well-known goroutine and channel patterns with extensive community documentation.
+- The project would be harmed by a smaller ecosystem more than helped by Ruby-like syntax.
+
+## Watch Points
+
+Crystal's risk is underestimating ecosystem and platform verification. A Crystal prototype can be elegant, but production still needs maintained shards, database drivers, TLS behavior, logging, metrics, deployment docs, target-platform support, and an upgrade plan.
+
+Go's risk is assuming simplicity means every model is easy. Goroutines need cancellation, bounds, backpressure, synchronization, and leak detection. Go's type system is intentionally conservative; code that benefits from union types, overloads, or more expressive object APIs may feel more repetitive.
+
+## Migration Or Interoperability Notes
+
+Crystal and Go usually interoperate through service boundaries, subprocesses, files, databases, message queues, or C ABI boundaries. A platform can reasonably use Go for broad infrastructure services and Crystal for a Ruby-like native tool or C-boundary worker.
+
+Prefer a narrow pilot before changing a service platform. Prototype the exact HTTP stack, database shard or Go module, observability path, deployment target, and concurrency load. The decision should come from operational fit, not from syntax preference alone.
