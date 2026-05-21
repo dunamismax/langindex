@@ -1,0 +1,103 @@
+---
+title: Nim vs Rust
+slug: nim-vs-rust
+summary: Nim and Rust both compile to native code and can replace C-family components, but Nim prioritizes concise syntax, macros, C-family backends, and configurable memory management while Rust prioritizes ownership-checked safety, Cargo, and a larger production ecosystem.
+languages:
+  - nim
+  - rust
+useCases:
+  - native tools
+  - systems programming
+  - C interoperability
+  - memory management
+  - command-line tools
+sources:
+  - title: Nim Programming Language
+    url: https://nim-lang.org/
+    publisher: Nim
+  - title: Nim Manual
+    url: https://nim-lang.org/docs/manual.html
+    publisher: Nim
+  - title: Nim Backend Integration
+    url: https://nim-lang.org/docs/backends.html
+    publisher: Nim
+  - title: Nim's Memory Management
+    url: https://nim-lang.org/docs/mm.html
+    publisher: Nim
+  - title: Nimble User Guide
+    url: https://nim-lang.github.io/nimble/
+    publisher: Nimble
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+lastVerified: 2026-05-21
+---
+
+## Scope
+
+This comparison focuses on native tools, systems-adjacent applications, C interop, libraries, performance-sensitive components, and teams deciding whether they need Rust's compile-time ownership model or Nim's lighter, more scriptable compiled model.
+
+For the full Nim profile, see [Nim](/languages/nim). For the full Rust profile, see [Rust](/languages/rust).
+
+## Shared Territory
+
+Nim and Rust both compile ahead of time to native code for common production targets. Both can produce command-line tools, libraries, services, WebAssembly-adjacent components, and C ABI boundaries. Both are more structured than C for new application code.
+
+The difference is the contract. Rust asks the type system to enforce ownership, borrowing, lifetime, and thread-sharing rules in safe code. Nim gives static typing, macros, high-level syntax, C-family backends, and selectable memory-management modes, but it does not make ownership checking the center of the language.
+
+## Key Differences
+
+| Dimension       | Nim                                                        | Rust                                                       |
+| --------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| Main appeal     | Concise compiled language with macros and C-family reach   | Safe-by-default systems language with ownership checking   |
+| Memory model    | ORC default in Nim 2.x; ARC, GC, Boehm, Go, none options   | Ownership, borrowing, lifetimes, RAII, no required GC      |
+| Learning curve  | Smaller syntax, macros and FFI can still be advanced       | Steeper ownership, lifetime, trait, and async concepts     |
+| Package tooling | Nimble and Atlas in a smaller ecosystem                    | Cargo, crates.io, rustup, workspaces, mature workflows     |
+| C interop       | Pragmas and generated C/C++/Objective-C code               | Mature FFI through explicit `unsafe` boundaries            |
+| Safety boundary | Build mode, memory mode, static checks, review discipline  | Safe/unsafe split with many invariants enforced by compiler |
+| Ecosystem       | Capable but comparatively small                            | Broad production ecosystem and stronger hiring signal      |
+
+## Choose Nim When
+
+- The work feels like native scripting, generators, wrappers, small services, or internal tools.
+- Python-like readability plus static compilation is more valuable than ownership modeling.
+- Macros, templates, and compile-time code generation are central.
+- C/C++/Objective-C or JavaScript backend integration is a practical advantage.
+- The team can accept a smaller ecosystem and own FFI/build details carefully.
+
+## Choose Rust When
+
+- Memory safety, lifetime correctness, and concurrency safety should be enforced in safe code.
+- The project is a library, parser, protocol implementation, embedded component, security-sensitive component, WebAssembly module, or low-level service where ownership mistakes would be expensive.
+- Cargo, crates.io, rustup, stable releases, and a larger package ecosystem materially reduce risk.
+- The team can absorb Rust's learning curve and compile-time feedback.
+- Unsafe code can be kept narrow, reviewed, and wrapped behind safe APIs.
+
+## Memory And Safety
+
+Nim can be deterministic and efficient, especially with ORC or ARC, but the programmer and project still decide memory mode, interop cleanup, pointer use, thread behavior, and build configuration. The language gives useful tools, but it does not prevent entire classes of lifetime and aliasing mistakes the way safe Rust tries to.
+
+Rust's ownership model is stricter. Values move, borrows are checked, references have lifetimes, and safe APIs can encode sharing and mutation rules. Unsafe Rust remains necessary for some FFI and low-level work, but its purpose is to isolate proof obligations instead of making them the default for ordinary code.
+
+If the core risk is memory unsafety, Rust usually deserves the first prototype. If the core value is concise compiled application code with C-family reach and macros, Nim may be the more direct fit.
+
+## Tooling And Ecosystem
+
+Rust's tooling advantage is significant. Cargo gives a standard package, build, test, documentation, and workspace workflow; rustup manages toolchains and targets; crates.io is the default registry. That lowers coordination cost for many teams.
+
+Nim's tooling is coherent but smaller. Nimble is the default package manager, Atlas exists as an alternative, and the compiler ships with useful documentation, formatting, idetools, and generated-code workflows. The tradeoff is dependency availability and ecosystem familiarity. A Nim project should verify package health, wrappers, target support, editor support, and upgrade behavior earlier than a comparable Rust project might need to.
+
+## Migration Or Interoperability Notes
+
+Nim and Rust can interoperate through C ABI boundaries, subprocesses, generated files, or shared libraries. That boundary should define allocator ownership, string and buffer formats, error representation, panics or exceptions, callbacks, and threading rules.
+
+Use Nim when the native layer is mostly application logic, wrappers, or code generation. Use Rust when the native layer owns memory-sensitive APIs, untrusted input, concurrency-heavy internals, or a public library surface where safety guarantees are part of the product.

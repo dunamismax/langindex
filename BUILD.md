@@ -631,11 +631,11 @@ continue with Phase 17.
 
 ### Phase 32 - Nim
 
-- [ ] Add a complete Nim page.
-- [ ] Cover native compilation, Python-like syntax, macros, memory
+- [x] Add a complete Nim page.
+- [x] Cover native compilation, Python-like syntax, macros, memory
       management options, package tooling, C interop, and ecosystem maturity.
-- [ ] Add Nim vs Zig and Nim vs Rust comparisons.
-- [ ] Add Nim to systems and scripting-adjacent guides.
+- [x] Add Nim vs Zig and Nim vs Rust comparisons.
+- [x] Add Nim to systems and scripting-adjacent guides.
 
 ### Phase 33 - Crystal
 

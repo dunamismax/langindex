@@ -9,6 +9,7 @@ candidates:
   - c
   - cpp
   - zig
+  - nim
 sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
@@ -82,6 +83,18 @@ sources:
   - title: 0.16.0 Release Notes
     url: https://ziglang.org/download/0.16.0/release-notes.html
     publisher: Zig Software Foundation
+  - title: Nim Programming Language
+    url: https://nim-lang.org/
+    publisher: Nim
+  - title: Nim Backend Integration
+    url: https://nim-lang.org/docs/backends.html
+    publisher: Nim
+  - title: Nim's Memory Management
+    url: https://nim-lang.org/docs/mm.html
+    publisher: Nim
+  - title: Nimble User Guide
+    url: https://nim-lang.github.io/nimble/
+    publisher: Nimble
 lastVerified: 2026-05-21
 ---
 
@@ -111,6 +124,8 @@ Choose C when existing code, ABI requirements, vendor SDKs, platform conventions
 Choose C++ when the project needs native control plus richer abstraction tools such as RAII, templates, constructors/destructors, standard containers, and stronger library modeling. C++ is often a better fit than C for large native applications and performance-sensitive frameworks when the organization has mature C++ practices.
 
 Choose Zig when explicit allocation, simple language mechanics, C-oriented control, and integrated cross-compilation are attractive, and the team accepts a younger ecosystem, pre-1.0 release churn, and more manual responsibility.
+
+Choose Nim when native compilation, Python-like readability, macros, C-family backends, and configurable memory management are attractive, and the project is closer to native tooling, systems scripting, wrappers, or application-level C interop than to allocator-centered core systems work.
 
 Choose a garbage-collected systems-adjacent language such as Go when:
 
@@ -179,6 +194,22 @@ Before starting new Zig work, answer these questions:
 
 If these answers are vague, Zig's simpler syntax will not be enough. The language makes allocation and control flow explicit, but it does not enforce Rust-style ownership and it does not yet have C's institutional stability.
 
+## Nim Adoption Constraints
+
+Nim is the systems-adjacent choice to evaluate when a project wants native binaries and C interop but also wants compact, Python-like source code, macros, templates, and selectable memory-management modes. It is especially relevant for command-line tools, generators, wrappers around C libraries, native application code, embedded-adjacent experiments, and scripts that have become important enough to deserve static compilation.
+
+Before starting new Nim work, answer these questions:
+
+- Which Nim version will be pinned, and are you relying only on stable language features?
+- Which backend is production: C, C++, Objective-C, or JavaScript?
+- Which memory-management mode will be used: ORC, ARC, refc, Boehm, Go GC, or a specialized embedded configuration?
+- Which C compiler, C library, linker flags, and target platforms are part of the support matrix?
+- How will C/C++ ownership, allocation, cleanup, callbacks, and exceptions be represented at the boundary?
+- Are required Nimble or Atlas packages maintained for the selected Nim release?
+- Will macros and generated bindings remain reviewable by developers who are not Nim experts?
+
+If these answers are vague, Nim's concise syntax can hide native-build complexity. Treat backend, memory mode, FFI, generated code, and package policy as first-class production decisions.
+
 ## Concurrency And Services
 
 For services, the concurrency model often matters more than benchmark-oriented language comparisons. Go's goroutines and channels make it straightforward to structure concurrent I/O, background work, cancellation, and request fan-out. The standard library also includes practical building blocks for HTTP, TLS, contexts, synchronization, profiling, and testing.
@@ -207,6 +238,8 @@ C++ can ship native binaries and libraries, but the deployment shape is usually 
 
 Zig can be unusually practical when cross-compilation is a first-order requirement. It can build Zig code for many targets, act as a C or C++ compiler, and bundle target/libc knowledge that ordinary C projects often have to assemble by hand. Still test the exact target, libc, linker, debugger, and package set instead of treating the target list as a guarantee.
 
+Nim can be practical when the team wants a native executable from code that reads closer to a scripting language. Its generated C-family backends make C interop and platform compilers part of the deployment story. Test the selected backend, memory-management mode, C compiler, Nimble packages, and target operating systems together.
+
 ## Team Skill And Maintenance
 
 The best technical fit can still fail if the team cannot maintain the code. Rust asks more from developers up front, especially around ownership, borrowing, lifetimes, trait design, async runtime choices, compile-time errors, and dependency review. That cost can pay for itself in libraries and systems where correctness and memory behavior are central.
@@ -215,7 +248,9 @@ Go usually asks less from the reader. The language is smaller, formatting is uni
 
 C and C++ depend heavily on local standards. A mature C++ organization with RAII, sanitizers, static analysis, fuzzing, and disciplined review may have a safer path modernizing existing code than introducing Rust immediately. A C codebase with weak ownership documentation may benefit from Rust at new boundaries, but the migration plan must be narrow enough to verify.
 
-Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
+Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership.
+
+Nim fits teams that want to move faster than C in native tools or systems-adjacent application code, especially when macros and C wrappers reduce boilerplate. It is less attractive when the team needs Rust's safety guarantees, a large mainstream ecosystem, or a platform where another language owns the standard deployment story. A new C project should be chosen for concrete platform, ABI, freestanding, or ecosystem reasons, not because it feels simple on paper.
 
 ## Questions To Ask
 
@@ -240,4 +275,6 @@ Start with C++ when the domain already depends on C++ engines, frameworks, libra
 
 Start with Zig when explicit control, cross-compilation, and C replacement work are the draw, and the project can absorb a younger language and ecosystem.
 
-Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, and C or C++ at legacy or ABI edges.
+Start with Nim when native compilation, C-family interop, macros, and Python-like readability are the draw, and the project can absorb a smaller ecosystem plus backend and memory-mode decisions.
+
+Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Nim for native tools or wrapper layers, and C or C++ at legacy or ABI edges.

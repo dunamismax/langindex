@@ -1,0 +1,221 @@
+---
+title: Nim
+slug: nim
+status: active
+summary: Nim is a statically typed compiled language with Python-like indentation, native C/C++/Objective-C and JavaScript backends, macros, configurable memory management, and a systems-scripting feel for native tools, libraries, and C-adjacent applications.
+firstReleased: 2019
+creators:
+  - Andreas Rumpf
+paradigms:
+  - systems
+  - imperative
+  - procedural
+  - object-oriented
+  - functional
+  - metaprogramming
+  - scripting
+typing:
+  discipline: static
+  strength: strong static typing with local type inference, generics, distinct types, object variants, tuples, enums, ranges, effect tracking, and structural type equivalence for most non-object types
+memory:
+  model: deterministic and configurable memory management, with ORC as the default in Nim 2.x plus ARC, refc, mark-and-sweep, Boehm, Go GC, and manual/no-management modes for specialized targets
+runtime:
+  model: ahead-of-time compilation through generated C, C++, Objective-C, or JavaScript, normally producing native binaries through a platform C toolchain and no required virtual machine
+officialSite: https://nim-lang.org/
+repository: https://github.com/nim-lang/Nim
+packageManagers:
+  - Nimble
+  - Atlas
+  - choosenim
+  - nim c
+  - nimble build
+comparedWith:
+  - zig
+  - rust
+  - python
+  - c
+  - cpp
+bestFor:
+  - Native command-line tools, scripts that have outgrown Python or shell, build helpers, generators, small services, and utilities where concise syntax plus native compilation is attractive.
+  - C and C++ adjacent work where Nim can call existing libraries, generate C-family code, export a C ABI, or package a native component behind a smaller high-level surface.
+  - Systems-adjacent applications that want deterministic memory management choices, value types, generics, templates, macros, and compile-time execution without adopting Rust's ownership model.
+  - Teams willing to evaluate a smaller ecosystem carefully in exchange for a compact language with strong metaprogramming and a flexible backend story.
+poorFit:
+  - Products that need Rust-style compile-time ownership guarantees, a borrow checker, or a large memory-safety-centered ecosystem.
+  - Teams that need the package depth, hiring pool, tutorials, framework defaults, and deployment conventions of Python, Go, Rust, JavaScript, Java, or C#.
+  - Hard platform or ABI work where the generated C/C++ layer, selected memory-management mode, target compiler, and foreign-library cleanup rules cannot be tested directly.
+  - Browser-first applications where TypeScript and the JavaScript ecosystem own the primary development, package, and runtime story.
+sources:
+  - title: Nim Programming Language
+    url: https://nim-lang.org/
+    publisher: Nim
+  - title: Features
+    url: https://nim-lang.org/features.html
+    publisher: Nim
+  - title: Nim Manual
+    url: https://nim-lang.org/docs/manual.html
+    publisher: Nim
+  - title: Nim Compiler User Guide
+    url: https://nim-lang.org/docs/nimc.html
+    publisher: Nim
+  - title: Nim Backend Integration
+    url: https://nim-lang.org/docs/backends.html
+    publisher: Nim
+  - title: Nim's Memory Management
+    url: https://nim-lang.org/docs/mm.html
+    publisher: Nim
+  - title: Nimble User Guide
+    url: https://nim-lang.github.io/nimble/
+    publisher: Nimble
+  - title: Nim v2.0 released
+    url: https://nim-lang.org/blog/2023/08/01/nim-v20-released.html
+    publisher: Nim
+  - title: Nim version 2.2.10 released
+    url: https://nim-lang.org/blog/2026/04/24/nim-2210.html
+    publisher: Nim
+  - title: Version 1.0 released
+    url: https://nim-lang.org/blog/2019/09/23/version-100-released.html
+    publisher: Nim
+  - title: Nim source repository
+    url: https://github.com/nim-lang/Nim
+    publisher: Nim
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Nim was designed and originally implemented by Andreas Rumpf. The current official description calls Nim a statically typed compiled systems programming language that combines ideas from Python, Ada, and Modula, with design priorities around efficiency, expressiveness, and elegance. Nim 1.0 shipped on September 23, 2019, and the project described that release as the start of a stable base for the language's stable fragment.
+
+The design center is unusual: Nim wants to feel compact and scriptable while still compiling to native code and exposing low-level details when needed. Its indentation-sensitive syntax, command invocation style, traceback format, and concise standard-library examples make it approachable to Python users. Its type system, C-family backends, FFI pragmas, compile-time evaluation, value-oriented data model, and memory-management switches put it closer to systems and native-tool work than to ordinary dynamic scripting.
+
+That combination is the reason Nim should be evaluated on constraints rather than category labels. It is not Python with static types, not Rust without lifetimes, and not a C preprocessor replacement. It is a small compiled language whose strongest cases are native tools, C-adjacent applications, libraries, generators, systems scripting, and projects that benefit from macros without giving up static compilation.
+
+## Runtime, Backends, And Compilation
+
+Nim normally compiles ahead of time through a backend. The common native path uses `nim c` to generate C files and then invoke the platform C compiler to produce an executable. The compiler also supports C++, Objective-C, and JavaScript backends. Generated C-family code can become a final executable, a library, or source files integrated into another native project.
+
+This backend model gives Nim practical reach. A project can use mature C compilers, link native libraries, target mainstream operating systems, generate JavaScript for browser or Node.js cases, and cross-compile through target compiler configuration. The cost is that the backend is part of the engineering surface. Teams must know which C compiler, C library, target flags, linker behavior, generated-code directory, and Nim runtime initialization rules apply to their deployment.
+
+Nim can generate small native binaries and does not require a virtual machine in the ordinary native path. It is still not a pure "compile once anywhere" model. Generated C code is target-specific, foreign libraries need correct headers and linking, and unusual platforms should be tested with the exact Nim version, memory-management mode, C compiler, and target configuration.
+
+## Type System And Language Model
+
+Nim is statically typed. The manual says expressions have types known during semantic analysis, and the language supports ordinal types, floats, strings, structured types, references and pointers, procedural types, and generics. Nim uses local type inference heavily, so programs can often remain concise without becoming dynamically typed.
+
+Everyday Nim code uses `let` and `var`, procedures, iterators, templates, modules, objects, enums, tuples, ranges, sequences, arrays, strings, distinct types, object variants, generics, exception handling, and method-call syntax. The language groups statements by indentation and lets statements span multiple lines. It also supports command invocation syntax, which can make DSL-like APIs and small scripts read naturally.
+
+Nim has both safe-feeling high-level facilities and explicit low-level tools. `ref` values, strings, and sequences interact with the chosen memory manager. `ptr`, C interop, casts, pragmas, generated code, foreign callbacks, and manual cleanup require the same care as other native boundaries. Treat Nim's type system as a useful static model, not as a substitute for Rust's ownership checker.
+
+## Memory Management
+
+Memory management is configurable. In current Nim 2.x, ORC is the default memory-management mode. The official memory-management page also documents ARC, atomic ARC, refc, mark-and-sweep, Boehm, Go GC, and `none`. ARC and ORC are deterministic reference-counting systems with compiler optimizations and move semantics; ORC adds cycle collection. Older refc is a deferred reference-counting collector with a mark-and-sweep backup for cycles.
+
+This flexibility is one of Nim's strongest differentiators. A desktop tool, a native library, an embedded-adjacent program, and a JavaScript target may choose different constraints. The compiler guide documents embedded-oriented options such as `--os:any`, `--mm:arc`, and `-d:useMalloc`, while the memory-management docs warn that `--mm:none` means no memory-management strategy and should generally not be the first answer for ordinary code.
+
+The tradeoff is operational complexity. Memory mode is part of the build contract. Libraries, C boundaries, threads, callbacks, and generated artifacts should be tested under the same mode used in production. When wrapping a C library, the Nim backend docs explicitly call out the need to expose and call the matching foreign cleanup functions for allocated structures.
+
+## Macros And Compile-Time Code
+
+Nim has templates, generics, `static` parameters, compile-time execution, and macros. A Nim macro is a special function executed at compile time that receives syntax trees and returns transformed syntax trees. The manual frames macros as powerful tools for custom language features and domain-specific languages, while also advising developers to use ordinary procedures, generics, or templates when they are expressive enough.
+
+This makes Nim attractive for boilerplate-heavy native work: bindings, parsers, serializers, DSLs, generated tables, testing helpers, build tasks, and application-specific declarations can often be expressed in Nim rather than through a separate generator language. The danger is the same as in any macro-capable language. Excessive metaprogramming can hide control flow, complicate debugging, and make code hard for new maintainers to review.
+
+Use macros when they make an interface smaller and more checked. Avoid using them to create private dialects unless the team owns the training and maintenance cost.
+
+## C, C++, Objective-C, And JavaScript Interop
+
+Interop is central to Nim's design. The backend integration docs describe bidirectional interfacing: Nim can call backend code, and backend code can call Nim. The main FFI tools include `importc`, `exportc`, `importcpp`, `importobjc`, `importjs`, `dynlib`, `compile`, `passc`, `passl`, `emit`, and related pragmas.
+
+That makes Nim practical for:
+
+- Calling C libraries from a higher-level static language.
+- Writing a native component that exports a C ABI.
+- Wrapping C++ or Objective-C APIs when the backend and pragmas fit.
+- Incrementally replacing or supplementing C-family code.
+- Generating JavaScript for narrow frontend or Node.js cases.
+
+Interop still needs boundary discipline. Define ownership, initialization, shutdown, allocator, callback, exception, thread, and cleanup rules explicitly. If a foreign library allocates memory, Nim code needs the correct corresponding free function. If Nim is embedded in another application or mobile project, runtime initialization such as `NimMain` may be part of the integration.
+
+## Syntax Example
+
+```nim
+import std/[sequtils, strformat]
+
+type
+  Language = object
+    name: string
+    year: int
+    domains: seq[string]
+
+proc isRecent(language: Language; since: int): bool =
+  language.year >= since
+
+proc describe(language: Language): string =
+  fmt"{language.name} ({language.year}): {language.domains.join(\", \")}"
+
+let languages = @[
+  Language(name: "Nim", year: 2019, domains: @["native tools", "systems scripting"]),
+  Language(name: "Rust", year: 2015, domains: @["systems", "libraries"]),
+  Language(name: "Python", year: 1991, domains: @["scripting", "data"])
+]
+
+for language in languages.filterIt(it.isRecent(2010)):
+  echo language.describe()
+```
+
+This example uses objects, sequences, modules from `std`, type inference, procedures, method-call syntax, `filterIt`, string interpolation, and an indentation-sensitive block structure. A larger Nim program would usually add Nimble metadata, tests, formatting policy, compiler flags, and a pinned toolchain version.
+
+## Tooling And Ecosystem
+
+Nimble is Nim's default package manager. The Nimble guide describes it as a tool for searching packages, installing dependencies, creating packages, and uploading them to the official package list. Nim 2.0 also shipped Atlas as an alternative package manager. `choosenim` is commonly used to install and update Nim toolchains.
+
+Typical commands include:
+
+```sh
+choosenim update stable
+nim c -r app.nim
+nim c -d:release app.nim
+nimble init
+nimble build
+nimble test
+```
+
+The ecosystem is capable but smaller than the ecosystems around Python, JavaScript, Rust, Go, Java, or C#. Nim has a standard library, package index, C/C++ wrapper tools and conventions, editor integrations, documentation generators, `nimsuggest`, `nimpretty`, and compiler test tooling. The practical question is whether the exact packages, wrappers, platform examples, and maintainers you need exist for your domain.
+
+For production use, pin the Nim version, Nimble or Atlas behavior, package versions, compiler backend, memory mode, C compiler, target platforms, and CI matrix. Treat generated bindings and metaprogramming-heavy dependencies as code that must be reviewed, tested, and upgraded intentionally.
+
+## Best-Fit Use Cases
+
+Nim is a strong fit when:
+
+- A script or internal tool wants Python-like readability but native compilation and static checking.
+- C or C++ libraries are central, and a smaller high-level language can own glue, wrappers, generators, or application logic.
+- The project benefits from templates, macros, and compile-time code generation.
+- Memory-management mode is a feature to choose deliberately rather than a fixed language-wide runtime.
+- A team can evaluate a smaller ecosystem and is comfortable debugging native build and FFI boundaries.
+
+## Poor-Fit Or Risky Use Cases
+
+Nim can be a poor fit when:
+
+- The project needs Rust's safe-by-default ownership, borrowing, and thread-sharing guarantees.
+- Broad hiring, tutorials, vendor examples, package depth, and framework defaults matter more than language compactness.
+- The main target is ordinary web UI, where TypeScript and JavaScript tooling are the real platform.
+- The team cannot own C compiler behavior, generated code, linker flags, memory mode, or FFI cleanup rules.
+- Heavy macro usage would create a private language that only a small group can maintain.
+
+## Governance, Releases, And Stewardship
+
+Nim is open source under the MIT license. The main repository contains the compiler, standard library, tools, and documentation, and most development happens in the public `nim-lang/Nim` GitHub repository. The project is developed globally by contributors and supported by donations and sponsors rather than by a single large vendor platform.
+
+Nim 1.0 established a stable language base for the stable fragment of the language. Nim 2.0 was an evolutionary release that made ORC the default memory-management mode and added language, standard-library, tooling, and interop improvements. When this page was verified, the official site listed Nim 2.2.10 as the latest stable release, published April 24, 2026.
+
+For production planning, track stable versus experimental features, selected Nim version, compiler switches, backend, package-manager behavior, memory manager, and C toolchain. The language is active and post-1.0, but its ecosystem and institutional footprint are much smaller than the largest mainstream choices.
+
+## Comparison Notes
+
+[Nim vs Zig](/comparisons/nim-vs-zig) is the closest comparison when the project wants native code, C interop, explicit control, and a smaller language than C++. Choose Nim when concise syntax, macros, GC/RC options, and application-level ergonomics matter more. Choose Zig when allocator-explicit low-level code, cross-compilation, and a C replacement shape are the center.
+
+[Nim vs Rust](/comparisons/nim-vs-rust) is the memory-and-safety comparison. Choose Nim when native scripting feel, macros, C-family backends, and configurable memory management are the point. Choose Rust when compile-time ownership, safe library APIs, Cargo maturity, and stronger ecosystem depth matter more.
+
+Python is nearby when the work is scripting, automation, data, or glue. Nim can be attractive when that code needs native compilation or static modeling, but Python remains the larger ecosystem. C and C++ are nearby when ABI, platform SDKs, and native libraries dominate; Nim often fits as a higher-level layer around those boundaries.
