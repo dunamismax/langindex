@@ -703,9 +703,10 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 25);
+        assert_eq!(content.languages.len(), 26);
         assert_eq!(content.comparisons.len(), 35);
-        assert_eq!(content.guides.len(), 18);
+        assert_eq!(content.guides.len(), 19);
+        assert!(content.language("erlang").is_some());
         assert!(content.language("elixir").is_some());
         assert!(content.language("haskell").is_some());
         assert!(content.language("delphi").is_some());
@@ -756,6 +757,11 @@ mod tests {
                 .guide("choosing-a-concurrency-oriented-backend-language")
                 .is_some()
         );
+        assert!(
+            content
+                .guide("choosing-a-distributed-systems-language")
+                .is_some()
+        );
         assert!(content.guide("choosing-a-systems-language").is_some());
         assert!(content.concept("functional-programming").is_some());
         assert!(content.concept("ownership").is_some());
@@ -776,11 +782,13 @@ mod tests {
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));
         assert!(routes.contains("/comparisons/elixir-vs-ruby"));
+        assert!(routes.contains("/languages/erlang"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
+        assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));

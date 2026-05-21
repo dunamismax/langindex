@@ -1,11 +1,12 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, Scala, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, Scala, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
   - elixir
+  - erlang
   - scala
   - kotlin
   - rust
@@ -36,6 +37,12 @@ sources:
   - title: Phoenix Framework
     url: https://www.phoenixframework.org/
     publisher: Phoenix
+  - title: Erlang/OTP
+    url: https://www.erlang.org/
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
   - title: Welcome to a World of OCaml
     url: https://ocaml.org/
     publisher: OCaml
@@ -60,7 +67,7 @@ sources:
   - title: MDN JavaScript Guide - Functions
     url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
     publisher: MDN Web Docs
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Reason
@@ -105,6 +112,19 @@ when BEAM processes and OTP supervision are part of the reason. If the main goal
 is static type modeling, Haskell, OCaml, F#, Scala, Rust, or Kotlin may fit
 better.
 
+## Choose Erlang When
+
+Choose [Erlang](/languages/erlang) when functional programming should live close
+to original OTP conventions, mature Erlang infrastructure, telecom-style
+systems, protocol servers, messaging platforms, or existing Erlang code. Erlang
+is functional in service of concurrency and reliability: immutable data,
+pattern matching, recursion, message passing, and supervision are most valuable
+when they clarify long-running process behavior.
+
+Do not choose Erlang only to adopt functional programming. Choose it when the
+BEAM and OTP are the platform you want, and when the team accepts Erlang syntax,
+Rebar3, releases, Dialyzer-style analysis, and OTP operations.
+
 ## Choose OCaml Or F# When They Fit The Platform
 
 OCaml and F# are important strict ML-family options even when a LangIndex page for each is not yet complete.
@@ -145,6 +165,8 @@ Start with functional style inside an existing mainstream platform when the proj
 Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions.
 
 Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
+
+Start with Erlang when existing OTP depth, direct Erlang libraries, or long-running infrastructure are stronger constraints than modern syntax.
 
 Start with Haskell when purity, laziness, type classes, and explicit effects are the core advantage and the team can own the GHC ecosystem.
 

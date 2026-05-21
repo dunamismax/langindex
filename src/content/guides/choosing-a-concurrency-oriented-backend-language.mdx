@@ -37,6 +37,12 @@ sources:
   - title: Erlang Processes
     url: https://www.erlang.org/doc/system/ref_man_processes.html
     publisher: Erlang/OTP
+  - title: Distributed Erlang
+    url: https://www.erlang.org/doc/system/distributed.html
+    publisher: Erlang/OTP
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
   - title: The Go Programming Language Specification
     url: https://go.dev/ref/spec
     publisher: Go Project
@@ -67,7 +73,7 @@ sources:
   - title: asyncio - Asynchronous I/O
     url: https://docs.python.org/3/library/asyncio.html
     publisher: Python Software Foundation
-lastVerified: 2026-05-20
+lastVerified: 2026-05-21
 ---
 
 ## Start With The Concurrency Shape
@@ -95,9 +101,9 @@ Elixir is not the fastest answer for every backend. It earns its place when the 
 
 ## Choose Erlang When Existing OTP Depth Matters
 
-Choose Erlang when the organization already owns Erlang systems, the problem sits close to mature Erlang libraries, or the team wants direct OTP conventions and Erlang syntax. Erlang remains highly relevant for telecom-style systems, messaging infrastructure, protocol servers, soft realtime coordination, and long-lived BEAM services.
+Choose [Erlang](/languages/erlang) when the organization already owns Erlang systems, the problem sits close to mature Erlang libraries, or the team wants direct OTP conventions and Erlang syntax. Erlang remains highly relevant for telecom-style systems, messaging infrastructure, protocol servers, soft realtime coordination, trusted distributed BEAM nodes, and long-lived BEAM services.
 
-For new product web applications, Elixir usually offers a smoother path through Phoenix and Mix. For existing Erlang infrastructure, keep Erlang where it is stable and introduce Elixir only where the language and tooling improve delivery.
+For new product web applications, Elixir usually offers a smoother path through Phoenix and Mix. For existing Erlang infrastructure, keep Erlang where it is stable and introduce Elixir only where the language and tooling improve delivery. For distributed Erlang, treat node security, cookies, TLS distribution, version compatibility, and partition behavior as design requirements rather than runtime defaults.
 
 ## Choose Go For Network Services And Operational Simplicity
 

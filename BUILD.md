@@ -53,6 +53,7 @@ Observed on 2026-05-16:
   - Delphi / Object Pascal
   - Haskell
   - Elixir
+  - Erlang
 - Current supporting content:
   - Rust vs Go comparison
   - Rust vs C comparison
@@ -100,6 +101,7 @@ Observed on 2026-05-16:
   - Choosing a legacy maintenance language guide
   - Choosing a functional programming language guide
   - Choosing a concurrency-oriented backend language guide
+  - Choosing a distributed systems language guide
   - Ownership concept page
   - Functional programming concept page
 - Current local baseline:
@@ -565,11 +567,11 @@ continue with Phase 17.
 
 ### Phase 26 - Erlang
 
-- [ ] Add a complete Erlang page.
-- [ ] Cover BEAM, OTP, actor-style processes, fault tolerance, hot code
+- [x] Add a complete Erlang page.
+- [x] Cover BEAM, OTP, actor-style processes, fault tolerance, hot code
       loading, telecom origins, syntax tradeoffs, and long-running systems.
-- [ ] Add Erlang vs Elixir comparison.
-- [ ] Add Erlang to concurrency and distributed systems guides.
+- [x] Add Erlang vs Elixir comparison.
+- [x] Add Erlang to concurrency and distributed systems guides.
 
 ### Phase 27 - Clojure
 

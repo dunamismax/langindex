@@ -1,0 +1,136 @@
+---
+title: Choosing A Distributed Systems Language
+slug: choosing-a-distributed-systems-language
+summary: A practical guide for choosing Erlang, Elixir, Go, Java, C#, Scala, Rust, TypeScript, or Python when distributed services, node coordination, message passing, reliability, and operations shape the language decision.
+audience: Teams choosing a language for distributed services, clustered systems, messaging infrastructure, control planes, realtime coordination, workers, or service platforms that run across multiple machines.
+candidates:
+  - erlang
+  - elixir
+  - go
+  - java
+  - csharp
+  - scala
+  - rust
+  - typescript
+  - python
+sources:
+  - title: Erlang/OTP
+    url: https://www.erlang.org/
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: Distributed Erlang
+    url: https://www.erlang.org/doc/system/distributed.html
+    publisher: Erlang/OTP
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+  - title: Go Modules Reference
+    url: https://go.dev/ref/mod
+    publisher: Go Project
+  - title: Java Platform, Standard Edition Documentation
+    url: https://docs.oracle.com/en/java/javase/26/
+    publisher: Oracle
+  - title: C# Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: The Scala Programming Language
+    url: https://www.scala-lang.org/
+    publisher: Scala
+  - title: Fearless Concurrency
+    url: https://doc.rust-lang.org/book/ch16-00-concurrency.html
+    publisher: Rust Project
+  - title: About Node.js
+    url: https://nodejs.org/en/about
+    publisher: OpenJS Foundation
+  - title: asyncio - Asynchronous I/O
+    url: https://docs.python.org/3/library/asyncio.html
+    publisher: Python Software Foundation
+lastVerified: 2026-05-21
+---
+
+## Start With The Boundary
+
+"Distributed system" is too broad to choose a language by itself. First name the boundary the language must own:
+
+- A cluster of runtime nodes that communicate directly.
+- A fleet of stateless HTTP or RPC services.
+- Message consumers and workers around queues or streams.
+- A control plane coordinating many agents.
+- Realtime presence, collaboration, or fan-out.
+- Data pipelines, batch jobs, or distributed compute.
+- A product backend that happens to deploy across many instances.
+
+The language decision changes depending on whether distribution belongs inside the runtime, inside a framework, inside a service mesh or orchestrator, inside a queue, or inside a database.
+
+## Choose Erlang When The Runtime Cluster Matters
+
+Choose [Erlang](/languages/erlang) when distributed BEAM behavior is part of the architecture: named nodes, process messaging, links, monitors, supervision trees, releases, soft realtime coordination, and long-running infrastructure that must recover from partial failures.
+
+Erlang is strongest for mature OTP systems, telecom-style infrastructure, protocol servers, messaging platforms, trusted node clusters, and codebases where direct Erlang/OTP conventions matter more than modern syntax. It is a poor fit when the team only wants "distributed" as a deployment label while Kubernetes, HTTP, queues, or a cloud control plane will own the actual coordination model.
+
+## Choose Elixir When BEAM Plus Product Delivery Matters
+
+Choose [Elixir](/languages/elixir) when the system wants BEAM processes and OTP supervision but also benefits from Elixir syntax, Mix, Hex, macros, Phoenix, LiveView, channels, PubSub, and the modern Elixir web ecosystem.
+
+Elixir is often the better BEAM default for new product backends, realtime web applications, websocket-heavy systems, event-driven services, and teams new to OTP. Erlang is often the better default for existing Erlang estates, lower-level OTP infrastructure, or teams already fluent in Erlang conventions.
+
+## Choose Go For Service Fleets And Control Planes
+
+Choose Go when the distributed system is mostly a fleet of network services, CLIs, daemons, agents, controllers, proxies, workers, or infrastructure tools. Go's strengths are static binaries, standard formatting, simple deployment, goroutines, channels, `context`, and a strong standard library for networking and HTTP.
+
+Go does not provide Erlang-style supervision trees or transparent process messaging across nodes. It works best when distribution is expressed through explicit protocols, APIs, queues, databases, orchestration, and operational tooling.
+
+## Choose JVM Or .NET Languages For Platform Depth
+
+Choose Java or C# when the distributed system depends on mature managed runtimes, enterprise integrations, static typing, observability agents, database and queue libraries, identity platforms, long support windows, and large-team maintenance.
+
+Choose Kotlin when JVM platform depth is required but Kotlin's syntax, null-safety features, coroutines, or Android/JVM alignment matter. Choose Scala when Spark, typed functional effects, actor libraries, streaming systems, or expressive domain modeling justify the language and ecosystem cost.
+
+These stacks are often better than Erlang or Elixir when vendor SDK coverage, static typing, enterprise conventions, or organization familiarity are the dominant constraints.
+
+## Choose Rust For Native Distributed Components
+
+Choose Rust when distributed software needs native performance, memory safety without a required garbage collector, protocol implementation, embedded agents, storage components, data-plane services, WebAssembly modules, or tight resource control.
+
+Rust can be excellent for narrow high-value distributed components. It is usually not the fastest route for ordinary product services unless its safety, performance, binary, or dependency properties are explicit requirements.
+
+## Choose TypeScript Or Python When Ecosystem Wins
+
+Choose TypeScript when the distributed application is close to frontend code, npm packages, full-stack JavaScript teams, serverless functions, edge runtimes, or product teams that benefit from shared types and tooling. Use queues, explicit APIs, background workers, and service boundaries for distributed behavior.
+
+Choose Python when the distributed work is close to data processing, ML orchestration, automation, notebooks, internal services, or a Python-heavy organization. Python can coordinate distributed systems well through frameworks and services, but CPU-bound parallelism and long-running process state need explicit architecture.
+
+## Questions To Answer
+
+- Does the language own node-to-node communication, or does the platform own it?
+- Are failures handled by OTP supervision, process managers, orchestration, queues, retries, transactions, or all of them?
+- What happens during a network partition, node restart, rolling deploy, and schema migration?
+- Which parts require static typing, native performance, realtime coordination, or runtime introspection?
+- Is the system mostly I/O-bound service coordination, CPU-bound data work, or stateful actor-style processing?
+- Which dependency, packaging, deployment, and observability story will the operations team support for years?
+- Can the team debug message buildup, backpressure, retry storms, cancellation, timeouts, and partial failure in the chosen stack?
+
+## Practical Default
+
+Start with Erlang when direct BEAM node behavior, OTP infrastructure, and existing Erlang knowledge are central.
+
+Start with Elixir when BEAM concurrency and supervision are valuable but Phoenix, Mix, and modern product delivery matter.
+
+Start with Go for service fleets, agents, controllers, proxies, workers, and infrastructure tools where explicit network protocols and simple deployment are enough.
+
+Start with Java or C# for large distributed backends where managed-runtime maturity, static typing, vendor libraries, and operational depth matter most.
+
+Start with Scala, Kotlin, Rust, TypeScript, or Python only when their specific ecosystem or runtime properties match the hard part of the system.
+
+Do not choose a language because distributed systems are fashionable. Choose the runtime whose failure model, deployment model, dependency ecosystem, and team knowledge make the hard production behavior easier to see and control.

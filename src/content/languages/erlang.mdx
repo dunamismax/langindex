@@ -1,0 +1,258 @@
+---
+title: Erlang
+slug: erlang
+status: active
+summary: Erlang is a dynamically typed, functional language and runtime platform for long-running concurrent systems, centered on lightweight BEAM processes, message passing, OTP supervision, distribution, hot code loading, and telecom-grade fault tolerance.
+firstReleased: 1986
+creators:
+  - Joe Armstrong
+  - Robert Virding
+  - Mike Williams
+  - Ericsson Computer Science Laboratory
+paradigms:
+  - functional
+  - concurrent
+  - distributed
+  - actor-style
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with pattern matching, guards, typespecs, and Dialyzer-oriented success typing
+memory:
+  model: automatic memory management on the BEAM, with lightweight isolated Erlang processes and per-process garbage collection behavior
+runtime:
+  model: compiled to BEAM bytecode and run on Erlang/OTP
+officialSite: https://www.erlang.org/
+repository: https://github.com/erlang/otp
+packageManagers:
+  - Rebar3
+  - Hex
+comparedWith:
+  - elixir
+  - go
+  - java
+  - scala
+  - haskell
+bestFor:
+  - Long-running concurrent services where isolated processes, message passing, links, monitors, and supervision trees are core architecture.
+  - Telecom-style systems, messaging infrastructure, protocol servers, soft realtime coordination, and systems that must keep serving while parts fail.
+  - Existing Erlang/OTP estates where direct OTP conventions, mature Erlang libraries, and compatibility with older BEAM systems matter.
+  - Distributed BEAM applications that can benefit from nodes, transparent process messaging, releases, observability, and hot code replacement.
+poorFit:
+  - CPU-bound numeric kernels, graphics, machine learning, embedded firmware, or native libraries that need manual memory layout, SIMD, or GPU-first ecosystems.
+  - Teams that want a mainstream syntax, broad hiring pool, or framework ecosystem before they need OTP's process architecture.
+  - Systems whose main correctness boundary must be compile-time static typing rather than runtime checks, tests, Dialyzer, supervision, and protocol design.
+  - Simple CRUD services or scripts where OTP applications, releases, supervision, and node operations would add more platform than benefit.
+sources:
+  - title: Erlang/OTP
+    url: https://www.erlang.org/
+    publisher: Erlang/OTP
+  - title: About Erlang/OTP
+    url: https://www.erlang.org/about
+    publisher: Erlang/OTP
+  - title: Erlang FAQ - What is Erlang
+    url: https://www.erlang.org/faq/introduction
+    publisher: Erlang/OTP
+  - title: Erlang FAQ - Academic and Historical Questions
+    url: https://www.erlang.org/faq/academic.html
+    publisher: Erlang/OTP
+  - title: A Brief History of the BEAM Compiler
+    url: https://www.erlang.org/blog/beam-compiler-history/
+    publisher: Erlang/OTP
+  - title: Erlang/OTP 29.0
+    url: https://www.erlang.org/doc/readme.html
+    publisher: Erlang/OTP
+  - title: Erlang/OTP 29.0 Release
+    url: https://www.erlang.org/news/188
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
+  - title: Compilation and Code Loading
+    url: https://www.erlang.org/doc/system/code_loading.html
+    publisher: Erlang/OTP
+  - title: Distributed Erlang
+    url: https://www.erlang.org/doc/system/distributed.html
+    publisher: Erlang/OTP
+  - title: Erlang Data Types
+    url: https://www.erlang.org/doc/system/data_types.html
+    publisher: Erlang/OTP
+  - title: Types and Function Specifications
+    url: https://www.erlang.org/doc/system/typespec.html
+    publisher: Erlang/OTP
+  - title: Erlang Enhancement Process
+    url: https://www.erlang.org/eep
+    publisher: Erlang/OTP
+  - title: Rebar3 Getting Started
+    url: https://rebar3.org/docs/getting-started/
+    publisher: Rebar3
+  - title: Rebar3 Dependencies
+    url: https://rebar3.org/docs/configuration/dependencies/
+    publisher: Rebar3
+  - title: Rebar3 Releases
+    url: https://rebar3.org/docs/deployment/releases/
+    publisher: Rebar3
+  - title: Hex
+    url: https://hex.pm/
+    publisher: Hex
+lastVerified: 2026-05-21
+---
+
+## Origin And Design Goals
+
+Erlang emerged from Ericsson Computer Science Laboratory work in the 1980s on better ways to build telecommunications systems. The official historical FAQ names Joe Armstrong, Robert Virding, and Mike Williams as the people involved at the start, with distribution and OTP added later. An Erlang/OTP compiler history post says the first version was implemented in Prolog in 1986, then the JAM implementation followed in 1989, with Mike Williams writing the runtime system in C, Joe Armstrong writing the compiler, and Robert Virding writing the libraries.
+
+The design center was not general application scripting. Erlang was shaped for systems that need concurrency, distribution, fault tolerance, soft realtime behavior, and continuous operation. Its syntax reflects its Prolog heritage, but its production identity is the BEAM and OTP: many isolated processes, asynchronous messages, explicit failure handling, supervision trees, releases, and runtime tools for long-lived systems.
+
+That makes Erlang most compelling when the system architecture naturally looks like many independent workers, sessions, connections, protocol handlers, queues, or state machines that can fail and recover without taking the whole service down.
+
+## Runtime, BEAM, And Erlang/OTP
+
+Modern Erlang code normally compiles to BEAM bytecode and runs on Erlang/OTP. The current documentation describes Erlang/OTP as a complete development environment for concurrent programming. Erlang/OTP 29.0 was released on May 13, 2026, as a new major release with new features, improvements, and some incompatibilities.
+
+Erlang/OTP is more than the language. It includes the Erlang runtime system, standard libraries, compiler, shell, tools, applications, OTP behaviours, design principles, release tooling, distribution mechanisms, observability tools, and documentation. Most production systems should be understood as Erlang/OTP systems rather than just Erlang source files.
+
+BEAM is optimized for running many lightweight Erlang processes. These are not operating-system processes. The reference manual describes Erlang processes as lightweight, fast to create and terminate, dynamically sized, and scheduled with low overhead. This runtime shape is the reason Erlang can model a service as many independent activities instead of a smaller number of shared-memory threads.
+
+## Processes, Messages, And Fault Tolerance
+
+All communication between Erlang processes and Erlang ports is expressed as asynchronous signals. The most common signal is a message, sent with `!` and consumed with a `receive` expression. Processes have their own state, mailbox, stack, heap, and failure path. They can link, monitor, register names, and send exit or down signals when failures happen.
+
+OTP turns that low-level model into application structure. The OTP design principles define code in terms of processes, modules, and directories. A supervision tree arranges worker processes and supervisor processes hierarchically; supervisors monitor children and restart them according to a strategy when something goes wrong.
+
+This is where Erlang earns its reputation. Fault tolerance is not a slogan attached to every Erlang program. It comes from explicit process boundaries, failure semantics, supervision strategies, timeout decisions, restart limits, state ownership, and operational visibility. Erlang is strong when a team is willing to design those boundaries deliberately.
+
+## Type System And Language Model
+
+Erlang is dynamically typed. Values are Erlang terms, and the runtime checks whether operations, pattern matches, function clauses, guards, and message protocols receive values of the expected shape. The standard data model includes atoms, integers, floats, tuples, lists, maps, binaries, bitstrings, pids, ports, references, funs, records, and the atoms `true` and `false` for Boolean values.
+
+The language is functional and single-assignment within a scope: variables are bound by pattern matching rather than reassigned. Everyday Erlang code uses modules, exported functions, recursion, pattern matching, guards, tuples, tagged tuples such as `{ok, Value}` and `{error, Reason}`, lists, maps, binaries, records, `case`, `receive`, and higher-order functions.
+
+Typespecs document sets of Erlang terms for functions and record fields. They are useful for generated documentation and tools such as Dialyzer, but they are not the same as compile-time static typing in Java, Go, Rust, Haskell, or Scala. Treat typespecs as valuable interface documentation and analysis input, not as a substitute for tested message protocols and supervised runtime behavior.
+
+## Syntax Example
+
+```erlang
+-module(health_registry).
+-export([start/0, loop/1, record/3, ok/2, demo/0]).
+
+start() ->
+    spawn(?MODULE, loop, [#{}]).
+
+record(Pid, Name, Status) when is_list(Name), is_integer(Status) ->
+    Pid ! {record, self(), Name, Status},
+    receive
+        {Pid, Reply} -> Reply
+    after 5000 ->
+        timeout
+    end.
+
+ok(Pid, Name) ->
+    Pid ! {ok, self(), Name},
+    receive
+        {Pid, Reply} -> Reply
+    after 5000 ->
+        timeout
+    end.
+
+loop(Checks) ->
+    receive
+        {record, From, Name, Status} ->
+            From ! {self(), ok},
+            loop(maps:put(Name, Status, Checks));
+        {ok, From, Name} ->
+            Reply =
+                case maps:find(Name, Checks) of
+                    {ok, Status} when Status >= 200, Status < 400 ->
+                        {ok, Status};
+                    {ok, Status} ->
+                        {error, {unexpected_status, Status}};
+                    error ->
+                        {error, missing}
+                end,
+            From ! {self(), Reply},
+            loop(Checks);
+        stop ->
+            ok
+    end.
+
+demo() ->
+    Registry = start(),
+    ok = record(Registry, "Erlang", 200),
+    ok = record(Registry, "Example", 503),
+    io:format("~p~n", [ok(Registry, "Erlang")]),
+    io:format("~p~n", [ok(Registry, "Example")]),
+    io:format("~p~n", [ok(Registry, "Archive")]),
+    Registry ! stop.
+```
+
+Save this as `health_registry.erl`, then run:
+
+```sh
+erlc health_registry.erl
+erl -noshell -s health_registry demo -s init stop
+```
+
+The example shows a small process with private state, message passing, pattern matching, guards, maps, tagged tuples, receive timeouts, and tail-recursive looping. Production Erlang usually wraps this kind of pattern in OTP behaviours such as `gen_server` rather than hand-writing every loop.
+
+## Hot Code Loading And Releases
+
+Erlang supports changing code in a running system at the module level. The code-loading documentation explains that a module can have current and old code loaded at the same time; fully qualified function calls go to current code, while processes still executing old code can continue until they switch or the old code is purged.
+
+This is powerful and easy to overstate. Hot code loading is not magic deployment. Long-running upgrades require application design, release handling, state transformation, operational discipline, and testing of upgrade and downgrade paths. For many modern teams, rolling restarts, blue-green deploys, or container orchestration may be simpler than live code replacement. Erlang is unusual because it gives teams the runtime machinery when they truly need it.
+
+Rebar3 can build releases for Erlang applications, and release artifacts define the set of applications needed to boot an Erlang VM and start the project. Serious Erlang deployment therefore includes the OTP application graph, release configuration, runtime environment, logs, distribution settings, and version pinning, not only compiled `.beam` files.
+
+## Distributed Erlang
+
+A distributed Erlang system consists of multiple Erlang runtime systems, called nodes, communicating with each other. The official documentation says message passing between processes at different nodes, as well as links and monitors, is transparent when pids are used. Nodes are named with `-name` or `-sname`, and distribution uses TCP/IP sockets by default.
+
+Distributed Erlang is useful for trusted clusters, operational tooling, telecom-style node coordination, and systems that intentionally want BEAM-to-BEAM process communication. It is not a free replacement for careful distributed-systems design. Node naming, cookies, topology, network partitions, version compatibility, supervision boundaries, and security settings matter. The documentation explicitly warns that starting a distributed node without TLS distribution can expose the node and cluster to attack.
+
+Use distributed Erlang when the runtime-level node model is part of the architecture. Use ordinary service boundaries, queues, databases, RPC, Kubernetes, or cloud control planes when those are the actual operational boundary.
+
+## Tooling, Packages, And Builds
+
+The Erlang shell, compiler, standard tools, EUnit, Common Test, Dialyzer, Observer, runtime tools, and OTP applications are part of the broader Erlang/OTP environment. Rebar3 is the standard build tool in the Erlang community and is the practical center for creating projects, compiling, testing, managing dependencies, and building releases.
+
+Package management commonly goes through Hex. Rebar3 uses Hex for package dependencies, and Hex describes itself as the package manager for the Erlang ecosystem, usable with Erlang through Rebar3 and with Elixir through Mix. Erlang projects often keep dependencies in `rebar.config` and lock resolved dependencies in `rebar.lock`.
+
+The operational cost is version alignment. Teams should pin Erlang/OTP, Rebar3, dependencies, release configuration, CI images, and production runtime expectations together. Erlang is durable, but a BEAM service is still a complete platform.
+
+## Best-Fit Use Cases
+
+Erlang is a strong fit when:
+
+- The system is a long-running service built from many independent concurrent activities.
+- Message passing, supervision, process isolation, and restart behavior are central to the design.
+- Existing Erlang/OTP infrastructure, libraries, or operational knowledge carry real value.
+- The domain is telecom, messaging, protocol handling, presence, coordination, soft realtime work, or reliable service infrastructure.
+- Distribution, hot code replacement, runtime introspection, and OTP releases are concrete requirements rather than checklist items.
+
+## Poor-Fit Or Risky Use Cases
+
+Erlang can be a poor fit when:
+
+- The main work is CPU-bound numeric computation, ML, graphics, mobile UI, browser code, or native systems programming.
+- The team needs static types as the primary correctness mechanism.
+- A mainstream web framework, vendor SDK ecosystem, or large hiring pool is the main constraint.
+- The service is ordinary CRUD and does not benefit from OTP process architecture.
+- The team is unwilling to learn OTP behaviours, supervision trees, releases, node distribution, message protocol design, and BEAM observability.
+
+## Governance, Releases, And Compatibility
+
+Erlang/OTP is developed and maintained primarily by the Erlang/OTP unit at Ericsson. The source is in the `erlang/otp` repository, and the current Erlang/OTP website says OTP 18.0 and later are released under Apache License 2.0.
+
+Significant language or runtime changes are documented through the Erlang Enhancement Process. The EEP page says significant changes should be described in an Erlang Extension Proposal, with rationale, specification, implementation overview, and community feedback. In practice, Erlang evolves conservatively because existing systems are long-lived and compatibility matters.
+
+Release notes matter. Erlang/OTP 29.0 introduced new language features such as experimental native records, multi-valued comprehensions, and a new `is_integer/3` guard BIF, along with compiler warnings and security-related runtime changes. Production teams should read the release notes before moving major OTP versions and should test BEAM dependencies against the chosen runtime.
+
+## Nearby Comparisons
+
+[Elixir](/languages/elixir) is the closest language comparison because both run on Erlang/OTP and share the BEAM foundation. Erlang keeps the original syntax, OTP conventions, and mature infrastructure roots. Elixir adds modern syntax, Mix, macros, Hex-first workflows, and Phoenix.
+
+Go is nearby for network services and infrastructure. Go offers static binaries, static typing, goroutines, channels, and a broad mainstream operations story. Erlang offers OTP supervision, isolated BEAM processes, transparent message passing, runtime introspection, and long-running system patterns.
+
+Java, C#, Kotlin, and Scala are nearby when managed runtimes, static typing, enterprise ecosystems, and backend operations matter. They are often easier for large organizations to hire for and integrate with vendor stacks. Erlang is the more focused choice when the runtime process model and OTP reliability patterns are the reason for the language choice.

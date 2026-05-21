@@ -1,7 +1,7 @@
 ---
 title: Elixir vs Erlang
 slug: elixir-vs-erlang
-summary: Elixir and Erlang share the BEAM and OTP foundation, but Elixir emphasizes modern syntax, Mix, Hex, macros, and Phoenix while Erlang remains the original OTP language with deeper legacy and telecom-era ecosystem roots.
+summary: Elixir and Erlang share the BEAM and OTP foundation, but Elixir emphasizes modern syntax, Mix, Hex, macros, and Phoenix while Erlang remains the original OTP language with direct OTP conventions, telecom roots, and mature infrastructure libraries.
 languages:
   - elixir
   - erlang
@@ -39,7 +39,16 @@ sources:
   - title: Erlang Processes
     url: https://www.erlang.org/doc/system/ref_man_processes.html
     publisher: Erlang/OTP
-lastVerified: 2026-05-20
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
+  - title: Compilation and Code Loading
+    url: https://www.erlang.org/doc/system/code_loading.html
+    publisher: Erlang/OTP
+  - title: Rebar3 Getting Started
+    url: https://rebar3.org/docs/getting-started/
+    publisher: Rebar3
+lastVerified: 2026-05-21
 ---
 
 ## Scope
@@ -48,7 +57,7 @@ This comparison is for teams choosing a BEAM language for long-running services,
 
 ## Shared Territory
 
-Elixir and Erlang run on Erlang/OTP and share the BEAM's process model, message passing, supervision trees, distribution story, garbage-collected runtime, and OTP application structure. Elixir can call Erlang modules directly, and serious Elixir systems commonly rely on Erlang standard libraries or Erlang dependencies.
+Elixir and [Erlang](/languages/erlang) run on Erlang/OTP and share the BEAM's process model, message passing, supervision trees, distribution story, garbage-collected runtime, code-loading behavior, and OTP application structure. Elixir can call Erlang modules directly, and serious Elixir systems commonly rely on Erlang standard libraries or Erlang dependencies.
 
 That means the core architecture question is often the same: can the system be decomposed into isolated processes that communicate through messages, fail independently, and are restarted or coordinated by supervisors?
 
@@ -78,13 +87,15 @@ That means the core architecture question is often the same: can the system be d
 - The codebase, team, or operational platform is already Erlang.
 - The system is close to mature Erlang libraries, telecom infrastructure, RabbitMQ-style messaging, ejabberd-style services, or OTP internals.
 - The team wants the original language and documentation for BEAM primitives without an additional language layer.
-- Long-running infrastructure, protocol work, embedded OTP knowledge, or legacy Erlang maintenance is the main constraint.
+- Long-running infrastructure, protocol work, hot code replacement, embedded OTP knowledge, or legacy Erlang maintenance is the main constraint.
 
 ## Watch Points
 
 Elixir does not replace OTP knowledge. A production Elixir team still needs to understand applications, supervisors, GenServers, process registries, message queues, monitoring, releases, node distribution, and Erlang/OTP compatibility.
 
 Erlang can be simpler close to the metal of OTP, but its syntax and ecosystem conventions are less familiar to many modern web and application teams. Elixir can make adoption easier, but teams should avoid hiding every Erlang concept behind wrappers; direct interop is a strength.
+
+Distributed Erlang and hot code loading are powerful but easy to overvalue. They are strongest when the team is deliberately building BEAM nodes, releases, upgrade paths, and trusted runtime clusters. For ordinary product web applications, Phoenix and conventional deployment may matter more than direct Erlang node mechanics.
 
 ## Migration Or Interoperability Notes
 
