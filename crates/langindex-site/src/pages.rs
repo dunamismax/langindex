@@ -1071,7 +1071,7 @@ fn Layout(
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/site.webmanifest" />
                 <link rel="alternate" type="application/rss+xml" title="LangIndex RSS" href="/rss.xml" />
-                <link rel="stylesheet" href="/assets/style.css?v=1.0.0" />
+                <link rel="stylesheet" href="/assets/style.css?v=1.1.0" />
                 <title>{full_title}</title>
                 <script>{r#"(function(){try{var t=localStorage.getItem("langindex-theme");if(t!=="light"&&t!=="dark"){t="dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();"#}</script>
             </head>
@@ -1084,12 +1084,47 @@ fn Layout(
                     (function () {
                         var toggle = document.querySelector("[data-mobile-nav-toggle]");
                         var nav = document.querySelector("[data-mobile-nav]");
+                        var backdrop = document.querySelector("[data-mobile-nav-backdrop]");
+                        var body = document.body;
+                        var desktopQuery = window.matchMedia("(min-width: 881px)");
+
+                        function setNav(open) {
+                            if (!toggle || !nav) return;
+                            toggle.setAttribute("aria-expanded", String(open));
+                            toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+                            nav.hidden = !open;
+                            if (backdrop) backdrop.hidden = !open;
+                            if (body) body.classList.toggle("nav-open", open);
+                        }
+
                         if (toggle && nav) {
                             toggle.addEventListener("click", function () {
-                                var expanded = toggle.getAttribute("aria-expanded") === "true";
-                                toggle.setAttribute("aria-expanded", String(!expanded));
-                                nav.hidden = expanded;
+                                var open = toggle.getAttribute("aria-expanded") !== "true";
+                                setNav(open);
                             });
+                            nav.addEventListener("click", function (event) {
+                                var target = event.target;
+                                if (target && target.closest && target.closest("a")) {
+                                    setNav(false);
+                                }
+                            });
+                            document.addEventListener("keydown", function (event) {
+                                if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+                                    setNav(false);
+                                    toggle.focus();
+                                }
+                            });
+                            if (backdrop) {
+                                backdrop.addEventListener("click", function () { setNav(false); });
+                            }
+                            function syncDesktop(event) {
+                                if (event.matches) setNav(false);
+                            }
+                            if (desktopQuery.addEventListener) {
+                                desktopQuery.addEventListener("change", syncDesktop);
+                            } else if (desktopQuery.addListener) {
+                                desktopQuery.addListener(syncDesktop);
+                            }
                         }
 
                         var themeButton = document.querySelector("[data-theme-toggle]");
@@ -1226,7 +1261,7 @@ fn SiteHeader(section: NavSection) -> impl IntoView {
                     <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
                 </nav>
                 <div class="header-actions">
-                    <a class="icon-button" href="https://github.com/dunamismax/langindex" aria-label="Source on GitHub" title="Source on GitHub" rel="noopener" target="_blank">
+                    <a class="icon-button header-github" href="https://github.com/dunamismax/langindex" aria-label="Source on GitHub" title="Source on GitHub" rel="noopener" target="_blank">
                         <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
                     </a>
                     <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Toggle color theme" title="Toggle color theme">
@@ -1234,19 +1269,30 @@ fn SiteHeader(section: NavSection) -> impl IntoView {
                         <svg class="theme-icon-moon" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Z"/></svg>
                         <svg class="theme-icon-sun" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm8-5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm10.657-5.657a.75.75 0 0 1 0 1.061l-1.06 1.06a.749.749 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0Zm-7.95 7.95a.75.75 0 0 1 0 1.061L4.646 12.41a.751.751 0 0 1-1.225-.244.751.751 0 0 1 .165-.817l1.06-1.06a.75.75 0 0 1 1.061 0Zm7.95 1.06a.749.749 0 1 1-1.06 1.061l-1.061-1.06a.749.749 0 1 1 1.06-1.061l1.061 1.06ZM5.708 5.707a.749.749 0 1 1-1.06 1.061L3.585 5.708a.749.749 0 1 1 1.061-1.06l1.06 1.06Z"/></svg>
                     </button>
-                    <button type="button" class="icon-button mobile-nav-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle navigation">
-                        <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z"/></svg>
+                    <button type="button" class="icon-button mobile-nav-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation menu">
+                        <svg class="icon-open" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z"/></svg>
+                        <svg class="icon-close" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>
                     </button>
                 </div>
             </div>
-            <nav id="mobile-nav" class="mobile-nav container" aria-label="Mobile" data-mobile-nav hidden>
-                <NavLink href="/" active=section == NavSection::Home>"Home"</NavLink>
-                <NavLink href="/languages/" active=section == NavSection::Languages>"Languages"</NavLink>
-                <NavLink href="/comparisons/" active=section == NavSection::Comparisons>"Comparisons"</NavLink>
-                <NavLink href="/guides/" active=section == NavSection::Guides>"Guides"</NavLink>
-                <NavLink href="/concepts/" active=section == NavSection::Concepts>"Concepts"</NavLink>
-                <NavLink href="/about" active=section == NavSection::About>"About"</NavLink>
-                <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
+            <div class="mobile-nav-backdrop" data-mobile-nav-backdrop hidden></div>
+            <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" data-mobile-nav hidden>
+                <div class="mobile-nav-inner">
+                    <p class="mobile-nav-eyebrow">"Navigate"</p>
+                    <NavLink href="/" active=section == NavSection::Home>"Home"</NavLink>
+                    <NavLink href="/languages/" active=section == NavSection::Languages>"Languages"</NavLink>
+                    <NavLink href="/comparisons/" active=section == NavSection::Comparisons>"Comparisons"</NavLink>
+                    <NavLink href="/guides/" active=section == NavSection::Guides>"Guides"</NavLink>
+                    <NavLink href="/concepts/" active=section == NavSection::Concepts>"Concepts"</NavLink>
+                    <NavLink href="/about" active=section == NavSection::About>"About"</NavLink>
+                    <NavLink href="/contribute" active=section == NavSection::Contribute>"Contribute"</NavLink>
+                    <div class="mobile-nav-footer">
+                        <a class="mobile-nav-link-external" href="https://github.com/dunamismax/langindex" rel="noopener" target="_blank">
+                            <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                            <span>"Source on GitHub"</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </header>
     }

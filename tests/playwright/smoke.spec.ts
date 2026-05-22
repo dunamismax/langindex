@@ -33,9 +33,12 @@ test("mobile navigation opens and exposes primary links", async ({ page }) => {
 
   await page.goto("/");
 
-  const toggle = page.getByRole("button", { name: /toggle navigation/i });
+  const toggle = page.getByRole("button", { name: /navigation menu/i });
   await expect(toggle).toBeVisible();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(
+    page.getByRole("navigation", { name: "Primary" }),
+  ).toBeHidden();
 
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
@@ -45,6 +48,10 @@ test("mobile navigation opens and exposes primary links", async ({ page }) => {
       name: "Languages",
     }),
   ).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByRole("navigation", { name: "Mobile" })).toBeHidden();
 });
 
 test("language filters narrow results and stay visible", async ({ page }) => {
