@@ -1,8 +1,6 @@
-.astro
 .claude
 .git
 .github
-dist
 node_modules
 playwright-report
 target

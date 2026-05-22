@@ -77,24 +77,23 @@ overstate authority, or bury the lede.
   at `/Users/sawyer/github/fileferry`: a dedicated site crate, shared layout
   components, embedded or explicitly served assets, route-level tests, and a
   simple localhost listener behind Caddy.
-- Markdown/MDX-equivalent source content may remain the authoring format only
-  if the Rust build validates and renders it deterministically. Prefer
-  structured Rust-side parsing and validation over unchecked string handling.
-- Rust schemas and tests replace Astro Content Collection and Zod validation.
+- Markdown/MDX source content is the authoring format only because the Rust
+  build validates and renders it deterministically. Prefer structured
+  Rust-side parsing and validation over unchecked string handling.
+- Rust schemas and tests validate the content model and route contracts.
 - Static or server-side search must remain privacy-preserving and
   self-hostable. Do not add a hosted search service.
 - CSS should be plain, content-focused, and served by the Rust site crate
   unless a Rust-native asset pipeline is deliberately added.
-- Cargo and `just` are the default developer entry points after the rewrite.
+- Cargo and `just` are the default developer entry points.
 - Docker Compose for deployment on Stephen's Ubuntu VM.
 - Caddy terminates TLS and reverse-proxies `langindex.dev` to the local Axum
   service.
-- A single release binary is the preferred production artifact unless a later
-  phase proves a static export is better for LangIndex.
+- A single release binary is the production artifact.
 
 Default against:
 
-- Next.js or SPA routing before evidence earns it.
+- SPA routing before evidence earns it.
 - Runtime JavaScript for content pages unless interaction needs it.
 - Database-backed CMS or admin panels before the contribution model is
   proven.

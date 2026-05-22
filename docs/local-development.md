@@ -1,7 +1,7 @@
 # Local Development
 
-LangIndex now runs as a Rust workspace with an Axum site service and Leptos
-server-rendered HTML. Git-authored Markdown/MDX content remains in
+LangIndex runs as a Rust workspace with an Axum site service and Leptos
+server-rendered HTML. Git-authored Markdown/MDX content lives in
 `src/content/**` and is parsed and validated by Rust before the service starts.
 
 ## Requirements

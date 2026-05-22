@@ -1,17 +1,10 @@
 # build output
-dist/
 target/
-
-# static search output
-public/search/
 
 # test output
 test-results/
 playwright-report/
 .playwright-mcp/
-
-# generated types
-.astro/
 
 # dependencies
 node_modules/

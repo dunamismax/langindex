@@ -54,10 +54,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the initial contribution rules.
 
 LangIndex is live at [https://langindex.dev](https://langindex.dev).
 
-The v1.0 repository baseline is a Rust web stack: a Cargo workspace with Axum
-serving Leptos server-rendered pages, modeled after Stephen's FileFerry site
-architecture. The production target is the release-built `langindex-site`
-binary running behind Caddy on Stephen's Ubuntu VM.
+The v1.0 repository baseline is the current production stack: a Rust Cargo
+workspace with Axum serving Leptos server-rendered pages, modeled after
+Stephen's FileFerry site architecture. Production runs the release-built
+`langindex-site` binary behind Caddy on Stephen's Ubuntu VM.
 
 LangIndex ships four content groups:
 
