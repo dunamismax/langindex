@@ -494,17 +494,67 @@ pub async fn guide_detail(State(state): State<AppState>, Path(slug): Path<String
     })
 }
 
-pub async fn concepts_index(State(state): State<AppState>) -> Response {
+pub async fn concepts_index(
+    State(state): State<AppState>,
+    Query(filters): Query<CollectionFilters>,
+) -> Response {
+    let total = state.content.concepts.len();
+    let query = filters.q.as_deref().unwrap_or_default();
+    let language = filters.language.as_deref().unwrap_or_default();
+    let content_ref: &SiteContent = &state.content;
+    let language_options = language_filter_options(
+        content_ref,
+        state
+            .content
+            .concepts
+            .iter()
+            .map(|page| page.data.related_languages.as_slice()),
+    );
+    let visible_concepts = state
+        .content
+        .concepts
+        .iter()
+        .filter(|page| {
+            matches_collection_text(
+                &page.data.title,
+                &page.data.summary,
+                &page.body_markdown,
+                query,
+            )
+        })
+        .filter(|page| matches_language(&page.data.related_languages, language))
+        .count();
+
     let mut body = index_intro(
         "Concepts",
         "Cross-language ideas grouped by type systems, memory, runtime, concurrency, paradigms, and tooling.",
     );
+    body.push_str(r#"<section class="section"><div class="container">"#);
+    body.push_str(&collection_filter_form(CollectionFilterForm {
+        action_path: "/concepts/",
+        query,
+        language,
+        language_options: &language_options,
+        item_label: "concept",
+        showing: visible_concepts,
+        total,
+    }));
+    body.push_str("</div></section>");
     body.push_str(r#"<section class="section"><div class="container concept-groups">"#);
     for group in concept_group_definitions() {
         let pages: Vec<_> = group
             .slugs
             .iter()
             .filter_map(|slug| state.content.concept(slug))
+            .filter(|page| {
+                matches_collection_text(
+                    &page.data.title,
+                    &page.data.summary,
+                    &page.body_markdown,
+                    query,
+                )
+            })
+            .filter(|page| matches_language(&page.data.related_languages, language))
             .collect();
         if pages.is_empty() {
             continue;
@@ -523,6 +573,9 @@ pub async fn concepts_index(State(state): State<AppState>) -> Response {
             body.push_str(&concept_card(page));
         }
         body.push_str("</div></section>");
+    }
+    if visible_concepts == 0 {
+        body.push_str(r#"<p class="empty-state">No matches yet. Try resetting filters or broadening the search.</p>"#);
     }
     body.push_str("</div></section>");
     render_page(
@@ -776,16 +829,63 @@ struct FilteredCollectionParams<'a> {
     items: Vec<(&'a String, &'a String, String)>,
 }
 
+struct CollectionFilterForm<'a> {
+    action_path: &'a str,
+    query: &'a str,
+    language: &'a str,
+    language_options: &'a [(String, String)],
+    item_label: &'a str,
+    showing: usize,
+    total: usize,
+}
+
 fn render_filtered_collection_index(params: FilteredCollectionParams<'_>) -> Response {
     let mut body = index_intro(params.title, params.summary);
     let showing = params.items.len();
-    let plural_label = if showing == 1 {
+
+    body.push_str(r#"<section class="section"><div class="container">"#);
+    body.push_str(&collection_filter_form(CollectionFilterForm {
+        action_path: params.action_path,
+        query: params.query,
+        language: params.language,
+        language_options: params.language_options,
+        item_label: params.item_label,
+        showing,
+        total: params.total,
+    }));
+    body.push_str(r#"<div class="list-grid">"#);
+    for (item_title, item_summary, href) in &params.items {
+        body.push_str(&format!(
+            r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h2><a href="{}">{}</a></h2><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
+            escape_attr(href),
+            escape(item_title),
+            escape(item_summary),
+            escape_attr(href)
+        ));
+    }
+    if showing == 0 {
+        body.push_str(r#"<p class="empty-state">No matches yet. Try resetting filters or broadening the search.</p>"#);
+    }
+    body.push_str("</div></div></section>");
+    render_page(
+        PageMeta {
+            title: params.title.to_string(),
+            description: params.summary.to_string(),
+            section: params.section,
+        },
+        body,
+        StatusCode::OK,
+    )
+}
+
+fn collection_filter_form(params: CollectionFilterForm<'_>) -> String {
+    let plural_label = if params.showing == 1 {
         params.item_label.to_string()
     } else {
         format!("{}s", params.item_label)
     };
 
-    body.push_str(r#"<section class="section"><div class="container">"#);
+    let mut body = String::new();
     body.push_str(&format!(
         r#"<form class="filter-form" action="{}" role="search"><div class="filter-grid filter-grid-compact">"#,
         escape_attr(params.action_path)
@@ -815,35 +915,13 @@ fn render_filtered_collection_index(params: FilteredCollectionParams<'_>) -> Res
     body.push_str("</div>");
     body.push_str(&format!(
         r#"<div class="filter-actions"><p aria-live="polite">Showing {} {} of {}.</p><button type="submit">Apply filters</button><a class="button" href="{}">Reset filters</a></div>"#,
-        showing,
+        params.showing,
         plural_label,
         params.total,
         escape_attr(params.action_path)
     ));
     body.push_str("</form>");
-    body.push_str(r#"<div class="list-grid">"#);
-    for (item_title, item_summary, href) in &params.items {
-        body.push_str(&format!(
-            r#"<article class="card collection-card"><p class="eyebrow">Reference page</p><h2><a href="{}">{}</a></h2><p>{}</p><p class="card-footer"><a class="card-action" href="{}">Open page</a></p></article>"#,
-            escape_attr(href),
-            escape(item_title),
-            escape(item_summary),
-            escape_attr(href)
-        ));
-    }
-    if showing == 0 {
-        body.push_str(r#"<p class="empty-state">No matches yet. Try resetting filters or broadening the search.</p>"#);
-    }
-    body.push_str("</div></div></section>");
-    render_page(
-        PageMeta {
-            title: params.title.to_string(),
-            description: params.summary.to_string(),
-            section: params.section,
-        },
-        body,
-        StatusCode::OK,
-    )
+    body
 }
 
 fn matches_collection_text(title: &str, summary: &str, body: &str, query: &str) -> bool {

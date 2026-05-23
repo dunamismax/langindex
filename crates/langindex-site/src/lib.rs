@@ -266,6 +266,23 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn concepts_index_filters_by_search() {
+        let (status, body) = get("/concepts/?q=package%20managers").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Package Managers"));
+        assert!(!body.contains("Ownership"));
+    }
+
+    #[tokio::test]
+    async fn concepts_index_filters_by_related_language() {
+        let (status, body) = get("/concepts/?language=zig").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(body.contains("Ownership"));
+        assert!(body.contains("Manual Memory Management"));
+        assert!(!body.contains("Object-Oriented Programming"));
+    }
+
+    #[tokio::test]
     async fn stylesheet_has_expected_content_type() {
         let content = load_site_content(&default_content_root()).expect("content loads");
         let response = build_router(content)
