@@ -36,6 +36,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "matlab",
     "nim",
     "objective-c",
+    "odin",
     "ocaml",
     "perl",
     "php",
@@ -710,8 +711,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 41);
-        assert_eq!(content.comparisons.len(), 58);
+        assert_eq!(content.languages.len(), 42);
+        assert_eq!(content.comparisons.len(), 61);
         assert_eq!(content.guides.len(), 22);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
@@ -741,6 +742,7 @@ mod tests {
         assert!(content.comparison("groovy-vs-java").is_some());
         assert!(content.comparison("groovy-vs-kotlin").is_some());
         assert!(content.language("nim").is_some());
+        assert!(content.language("odin").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -777,6 +779,9 @@ mod tests {
         assert!(content.comparison("fsharp-vs-ocaml").is_some());
         assert!(content.comparison("nim-vs-zig").is_some());
         assert!(content.comparison("nim-vs-rust").is_some());
+        assert!(content.comparison("odin-vs-c").is_some());
+        assert!(content.comparison("odin-vs-rust").is_some());
+        assert!(content.comparison("odin-vs-zig").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -839,6 +844,7 @@ mod tests {
         assert!(routes.contains("/languages/rust"));
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/nim"));
+        assert!(routes.contains("/languages/odin"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/visual-basic"));
@@ -848,6 +854,9 @@ mod tests {
         assert!(routes.contains("/comparisons/fsharp-vs-ocaml"));
         assert!(routes.contains("/comparisons/nim-vs-zig"));
         assert!(routes.contains("/comparisons/nim-vs-rust"));
+        assert!(routes.contains("/comparisons/odin-vs-c"));
+        assert!(routes.contains("/comparisons/odin-vs-rust"));
+        assert!(routes.contains("/comparisons/odin-vs-zig"));
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));

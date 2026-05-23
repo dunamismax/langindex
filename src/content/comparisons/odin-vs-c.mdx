@@ -1,0 +1,113 @@
+---
+title: Odin vs C
+slug: odin-vs-c
+summary: Odin and C both target native software with explicit memory and ABI control, but C is the mature portable systems baseline while Odin adds stronger typing, array programming, explicit data-oriented features, allocator-aware built-ins, packages, and a younger compiler and ecosystem.
+languages:
+  - odin
+  - c
+useCases:
+  - systems programming
+  - C replacement
+  - native libraries
+  - game development
+  - graphics tools
+sources:
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: Odin source repository
+    url: https://github.com/odin-lang/Odin
+    publisher: Odin
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: C - Project status and milestones
+    url: https://www.open-std.org/jtc1/sc22/wg14/www/projects.html
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
+lastVerified: 2026-05-23
+---
+
+## Scope
+
+This comparison focuses on native systems work, C replacement modules, game and graphics code, manually managed libraries, and projects deciding whether Odin's ergonomics are worth leaving the C baseline.
+
+## Practical Difference
+
+C is the institutional systems language. It has standards, mature compilers, broad embedded support, platform headers, operating-system APIs, vendor SDKs, ABI familiarity, and decades of production practice. When a target says "bring C," that often means the compiler, debugger, build system, documentation, examples, certification material, and support organization are already C-shaped.
+
+Odin is a younger language designed for many of the same low-level realities, but with a more modern source-level experience. It keeps manual memory management, native code, pointers, explicit data layout, and C ABI interop while adding distinct types, slices, dynamic arrays, maps, `defer`, `using`, procedure groups, array programming, `#soa`, SIMD/vector support, and a package system.
+
+C is the safer default when maximum reach and stability dominate. Odin is worth evaluating when the team controls the toolchain and wants native C-like control with clearer data-oriented language features.
+
+## Memory And Cleanup
+
+C exposes storage and pointers but leaves most ownership contracts outside the type system. A good C project documents who allocates, who frees, which allocator owns the memory, whether buffers carry lengths, whether null is allowed, and whether callbacks can retain pointers.
+
+Odin is still manually managed, but it makes allocator policy more prominent. Built-ins such as `new` and `make` use the current context allocator unless given another allocator, and dynamic arrays and maps carry allocator information. `defer` lets cleanup sit near setup, which is useful for native code with many early exits.
+
+That is an improvement in ergonomics, not a safety guarantee. Odin can still leak, double-free, misuse foreign memory, race, or hold stale pointers. If the project needs memory safety by default, compare Rust rather than expecting Odin to provide that property.
+
+## Data Layout And Numeric Code
+
+C can express almost any layout, but many higher-level data-oriented patterns are local conventions or library code. SIMD may be reached through compiler intrinsics, vector extensions, assembly, libraries, or target-specific headers. Structure-of-arrays layouts are ordinary C arrays and structs, but the language does not give them dedicated syntax.
+
+Odin makes several of those patterns more direct. Distinct array types can model vectors without becoming interchangeable with arbitrary arrays. Fixed arrays support array programming and swizzling. `#soa` gives structure-of-arrays layout a language surface. SIMD vectors are exposed as special array-like types, and matrices/quaternions are part of the language's numeric vocabulary.
+
+For game, graphics, simulation, or engine code, those conveniences can reduce local boilerplate. For vendor SDKs, firmware headers, and existing C APIs, C's universality may matter more.
+
+## Packages And Dependencies
+
+C has no one package or build workflow. Projects use Make, CMake, Meson, Autotools, Bazel, IDE projects, vendor SDKs, system packages, pkg-config, vcpkg, Conan, vendored source, submodules, or custom scripts.
+
+Odin also avoids an official package manager, but for a different reason. The FAQ says Odin will not officially support one and recommends manual dependency management through copying or vendoring packages and fixing specific versions. Odin does provide `core` and `vendor` library collections, which gives new projects a useful official base, especially for graphics and multimedia bindings.
+
+The practical result is that both ecosystems require explicit dependency policy. C's challenge is fragmentation across many build/package systems. Odin's challenge is fewer mature third-party packages and an intentionally manual dependency model.
+
+## C Interop And Migration
+
+C is the ABI baseline itself. Public headers, platform interfaces, embedded SDKs, language extensions, plugin systems, and dynamic libraries often define their boundary in C.
+
+Odin can call C APIs and export C ABI surfaces through its foreign system, calling conventions, C vararg support, pointer-passing directives, and export attributes. This makes incremental adoption plausible: keep a C boundary, write a new Odin implementation behind it, or use Odin for a tool or leaf module before expanding.
+
+That migration path should be narrow. Keep the public C surface stable, document allocator ownership, pin Odin, build tests from both sides of the boundary, and make sure debuggers and release artifacts are acceptable on the target platforms.
+
+## Choose C When
+
+- The target SDK, RTOS, kernel, compiler, debugger, certification path, or vendor support is C-first.
+- The code is a public ABI or platform interface consumed by many languages.
+- Long-term stability and toolchain reach matter more than source-level ergonomics.
+- The organization already has disciplined C review, sanitizers, static analysis, fuzzing, and release practice.
+- Dependency and build systems are already solved in a C estate.
+- The project cannot accept a younger compiler and smaller ecosystem.
+
+## Choose Odin When
+
+- New native code wants C-like control with stronger typing and clearer syntax.
+- Data-oriented layout, array programming, SIMD/vector code, or graphics/game ergonomics are important.
+- `defer`, distinct types, dynamic arrays, maps, and procedure groups reduce local boilerplate.
+- The project can vendor dependencies and keep the dependency graph small.
+- C interop is needed, but the implementation can live in Odin.
+- The team can pin compiler releases and test target support directly.
+
+## Watch Points
+
+C's risks are familiar: undefined behavior, buffer mistakes, nulls, lifetime bugs, implicit conversions, macro complexity, weak package conventions, and build drift.
+
+Odin's risks are younger-language risks: compiler changes, fewer production patterns, smaller ecosystem, no official package manager, limited hiring pool, and manual memory responsibility without Rust-style ownership checks.
+
+For greenfield work, compare the real cost of writing and maintaining the code, not just the first prototype. For existing C systems, start with a narrow Odin boundary and keep the C ABI contract explicit.

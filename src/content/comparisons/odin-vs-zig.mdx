@@ -1,0 +1,115 @@
+---
+title: Odin vs Zig
+slug: odin-vs-zig
+summary: Odin and Zig are young C-adjacent systems languages with manual memory management and native compilation, but Odin emphasizes data-oriented programming, array/vector ergonomics, and official graphics-oriented vendor packages while Zig emphasizes cross-compilation, build-system integration, comptime, and explicit allocator-passing conventions.
+languages:
+  - odin
+  - zig
+useCases:
+  - systems programming
+  - game development
+  - C replacement
+  - native libraries
+  - graphics tools
+sources:
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: package simd
+    url: https://pkg.odin-lang.org/core/simd/
+    publisher: Odin
+  - title: Odin source repository
+    url: https://github.com/odin-lang/Odin
+    publisher: Odin
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Overview - Zig Programming Language
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-23
+---
+
+## Scope
+
+This comparison focuses on new native code, C replacement modules, graphics/game-adjacent tools, low-level libraries, and teams evaluating younger systems languages. Both languages are best judged by a prototype against the real target, dependency set, and release workflow.
+
+## Practical Difference
+
+Odin and Zig both reject a large managed runtime and both ask programmers to reason explicitly about memory. Both are C-friendly and both are much younger than C, C++, Rust, or Go.
+
+The center of gravity is different. Odin is built around procedural, data-oriented native programming. Its value shows up in distinct types, array programming, swizzling, `#soa` layouts, matrices, quaternions, procedure groups, `using`, `defer`, allocator-aware built-ins, and official `core` and `vendor` library collections that include graphics and multimedia bindings.
+
+Zig is built around explicit low-level control, a small language surface, compile-time execution, integrated builds, C interop, and cross-compilation. Its value shows up in `build.zig`, `build.zig.zon`, `zig build`, `zig cc`, `comptime`, error unions, optionals, safety-checked build modes, and allocator parameters passed by convention.
+
+## Memory And Safety
+
+Both languages are manually managed. Neither gives the compiler-enforced ownership and borrowing model of Rust. The programmer still owns lifetime, aliasing, cleanup, allocator pairing, thread sharing, and foreign-memory rules.
+
+Odin routes many ordinary allocations through the implicit `context`, including `new`, `make`, dynamic arrays, and maps unless an allocator is provided explicitly. This makes subsystem and temporary allocator policy convenient, especially for game loops, arenas, scratch memory, and data-oriented code.
+
+Zig generally makes allocation visible in function signatures by accepting an `Allocator` parameter. That is easier to audit at API boundaries and avoids the hidden context concern, but it can be noisier in APIs that allocate often.
+
+Choose Odin when context-driven allocator policy and data-oriented ergonomics fit the codebase. Choose Zig when allocator ownership should be explicit at each allocation-capable API boundary.
+
+## Data-Oriented And Numeric Code
+
+Odin has more built-in affordances for data-oriented and vector-like source code. Fixed arrays can use array programming operations and swizzling. `#soa` directly represents structure-of-arrays data. Matrices and quaternions are language-level types, and SIMD vectors are exposed through `#simd [N]T` and the `core:simd` package.
+
+Zig can absolutely write fast numeric and data-oriented code, but it usually expresses those patterns through structs, arrays, slices, `comptime`, vector types, intrinsics, libraries, and explicit layout choices. That can be clearer for general systems programming, but it is less specialized for game/graphics style code at the language surface.
+
+If the core work is engine internals, transforms, renderer-adjacent code, entity storage, and data layout experiments, Odin deserves a close look. If the core work is a portable allocator, parser, codec, freestanding module, or cross-compiled toolchain component, Zig may fit better.
+
+## Tooling, Builds, And Dependencies
+
+Zig has the stronger integrated build and cross-compilation story today. The toolchain includes a build system, package metadata, package fetching, C/C++ compilation modes, and first-class cross-compilation goals. That is a major practical advantage when the project needs to build native artifacts across operating systems, architectures, C libraries, or freestanding targets.
+
+Odin is deliberately lighter on package automation. It has official `core` and `vendor` library collections, but the FAQ says there will not be an official package manager. Odin projects commonly use manual vendoring, copied source, submodules, or unofficial tools. That can be simple and auditable, but it puts more responsibility on the repository and team process.
+
+For reproducibility, Zig tends to centralize more in toolchain metadata. Odin tends to make the project own vendoring and version pins directly.
+
+## C Interop
+
+Both languages are credible C interop candidates. Zig can import C headers, translate C, compile C and C++ code, link libc, export C ABI functions, and act as a C compiler. That makes it unusually strong when the build itself is a C/C++ migration problem.
+
+Odin has a foreign system, calling conventions, C vararg support, pointer-passing directives, export attributes, and a `vendor` library collection with maintained bindings to common native libraries. That makes it attractive when the problem is "write native code against existing C APIs" rather than "make C cross-compilation less painful."
+
+For either language, write down the ABI contract: allocation, deallocation, strings, callbacks, struct layout, threading, errors, target triples, and library versions.
+
+## Choose Odin When
+
+- Data-oriented programming is central to the project.
+- Array programming, swizzling, matrices, quaternions, SIMD vectors, or `#soa` layouts materially improve the code.
+- Game, graphics, multimedia, tooling, or simulation work can benefit from Odin's `vendor` packages.
+- The team likes procedural C-like code but wants stronger typing and cleaner ergonomics.
+- Manual vendoring is acceptable or preferred.
+- The project can pin Odin and tolerate a young compiler and ecosystem.
+
+## Choose Zig When
+
+- Cross-compilation and build reproducibility are central.
+- The project needs `zig cc`, C/C++ build integration, or a toolchain that can simplify C dependencies.
+- API-level allocator explicitness is preferred over context-based allocator defaults.
+- `comptime` and a small language surface fit the team better than Odin's data-oriented conveniences.
+- The project is closer to allocators, parsers, codecs, bootstrapping, freestanding targets, or C replacement libraries than to game/graphics ergonomics.
+- The team can tolerate Zig's pre-1.0 churn and package ecosystem maturity limits.
+
+## Watch Points
+
+Odin's watch points are compiler maturity, dependency workflow, fewer production examples, manual memory responsibility, and a package strategy that intentionally avoids an official registry.
+
+Zig's watch points are pre-1.0 churn, evolving standard-library and package APIs, fewer mature domain libraries than Rust/C++/Go, and manual memory responsibility.
+
+Neither language should be selected because it is a fashionable C alternative. Prototype the hardest part: target support, allocator model, foreign libraries, release builds, package policy, debugging, and team readability.

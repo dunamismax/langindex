@@ -1,7 +1,7 @@
 ---
 title: Choosing an Embedded Language
 slug: choosing-an-embedded-language
-summary: A practical guide for choosing C, Rust, Ada, C++, Zig, or another language for firmware and embedded systems by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
+summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, or another language for firmware and embedded systems by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
   - assembly
@@ -10,6 +10,7 @@ candidates:
   - ada
   - cpp
   - zig
+  - odin
 sources:
   - title: GNU assembler manual
     url: https://sourceware.org/binutils/docs/as/index.html
@@ -77,7 +78,19 @@ sources:
   - title: 0.16.0 Release Notes
     url: https://ziglang.org/download/0.16.0/release-notes.html
     publisher: Zig Software Foundation
-lastVerified: 2026-05-21
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: Getting Started
+    url: https://odin-lang.org/docs/install/
+    publisher: Odin
+lastVerified: 2026-05-23
 ---
 
 ## Start With The Board And Toolchain
@@ -102,12 +115,12 @@ Assembly is part of many embedded systems, but usually as a narrow layer rather 
 
 Use Assembly when:
 
-- The chip starts in a state where C, Rust, C++, or Zig runtime assumptions are not valid yet.
+- The chip starts in a state where C, Rust, C++, Zig, or Odin runtime assumptions are not valid yet.
 - The code must match exact register, stack, privilege, interrupt, or calling-convention rules.
 - A vendor startup sequence, ABI, or board support package requires specific instruction sequences.
 - A tiny measured routine cannot be expressed safely through compiler intrinsics or source-level code.
 
-Do not let assembly expand by default. Once startup, trap entry, or hardware-specific setup is complete, C, Rust, C++, Zig, or Ada usually give better structure, review, testing, and portability for the rest of the firmware.
+Do not let assembly expand by default. Once startup, trap entry, or hardware-specific setup is complete, C, Rust, C++, Zig, Odin, or Ada usually give better structure, review, testing, and portability for the rest of the firmware.
 
 ## When C Is The Baseline
 
@@ -179,6 +192,20 @@ Use Zig when:
 
 Do not assume Zig is ready for every board because it is systems-oriented. Check startup code, linker scripts, panic behavior, atomics, volatile and memory-mapped I/O patterns, interrupt handling, debugger support, package availability, and whether generated artifacts match vendor expectations.
 
+## When Odin Is Worth Evaluating
+
+Odin is worth evaluating for embedded-adjacent native tools, host utilities, board-support experiments, application layers, and constrained systems where the exact target has already been proved. Its explicit allocation model, distinct types, data layout controls, C interop, and array/vector features can be useful when firmware logic resembles data-oriented native code.
+
+Use Odin when:
+
+- The exact chip, architecture, linker path, flashing path, and debugger workflow have been proved with the pinned Odin release.
+- The project benefits from manual allocator policy, fixed-buffer allocation, arenas, or a strict no-heap rule expressed in project APIs.
+- C headers, object files, or vendor libraries must be consumed through Odin's foreign system.
+- Data layout, packed representations, SIMD/vector code, or host-side tooling are important enough to justify a younger language.
+- The team accepts manual vendoring, no official package manager, and fewer embedded production examples than C, C++, Rust, Ada, or Zig.
+
+Do not assume Odin is embedded-ready for a board because it is C-adjacent. Check startup code, linker scripts, panic/error policy, volatile and memory-mapped I/O patterns, interrupt behavior, atomics, debugger support, and whether the compiler output fits the vendor workflow.
+
 ## Runtime And Allocation Constraints
 
 Firmware often has constraints that ordinary application teams do not face: fixed memory maps, limited RAM, no heap, hard startup timing, interrupt context, watchdogs, power loss, DMA buffers, and strict latency. These constraints usually matter more than language fashion.
@@ -193,7 +220,7 @@ Ask these questions before choosing:
 - Can tests run on host, emulator, and hardware?
 - Does the language make peripheral ownership clearer or blur it?
 
-For C, allocation and lifetime policies must be project rules. For Rust, `no_std`, ownership, and type-level peripheral APIs can help, but target integration still has to be proved. For Ada, restrictions, runtime profiles, tasking policy, and stack analysis are first-order design choices. For C++, RAII can improve cleanup, but global initialization and runtime feature policies need discipline.
+For C, allocation and lifetime policies must be project rules. For Rust, `no_std`, ownership, and type-level peripheral APIs can help, but target integration still has to be proved. For Ada, restrictions, runtime profiles, tasking policy, and stack analysis are first-order design choices. For C++, RAII can improve cleanup, but global initialization and runtime feature policies need discipline. For Zig and Odin, explicit allocation and small runtime assumptions are useful only after the exact target and tooling have been proved.
 
 ## Practical Starting Points
 
@@ -209,4 +236,6 @@ Start with C++ when the team already has embedded C++ expertise and the codebase
 
 Consider Zig for explicit allocation, C interop, and cross-compilation only after checking target maturity, tooling, and ecosystem depth for the exact chip family.
 
-For mixed systems, keep boundaries narrow. It is common to use C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. The important part is making ownership, allocation, interrupt safety, tasking, and ABI contracts explicit at every boundary.
+Consider Odin for data-oriented embedded-adjacent code, host tools, and application layers only after checking target maturity, foreign-library access, debugging, and the manual dependency model for the exact chip family.
+
+For mixed systems, keep boundaries narrow. It is common to use C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, and ABI contracts explicit at every boundary.

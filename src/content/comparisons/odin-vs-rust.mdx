@@ -1,0 +1,112 @@
+---
+title: Odin vs Rust
+slug: odin-vs-rust
+summary: Odin and Rust both target native software without a required garbage collector, but Rust emphasizes stable releases, Cargo, and ownership-checked safety while Odin emphasizes simpler procedural data-oriented code, manual memory management, allocator control, array/vector ergonomics, and C-friendly graphics work in a younger ecosystem.
+languages:
+  - odin
+  - rust
+useCases:
+  - systems programming
+  - native libraries
+  - game development
+  - performance-critical components
+  - C interop
+sources:
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: Odin source repository
+    url: https://github.com/odin-lang/Odin
+    publisher: Odin
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+  - title: rustc book - Platform Support
+    url: https://doc.rust-lang.org/rustc/platform-support.html
+    publisher: Rust Project
+lastVerified: 2026-05-23
+---
+
+## Scope
+
+This comparison focuses on native software, systems components, game and graphics work, C interop, and teams deciding between compiler-enforced safety and simpler manual-control code.
+
+## Practical Difference
+
+Rust and Odin both avoid a required garbage collector and both can produce native code. Both are relevant when C or C++ would otherwise be considered.
+
+Rust's core value is safety through the type system. Ownership, borrowing, lifetimes, `Drop`, `Send`, `Sync`, and the safe/unsafe split let Rust libraries enforce many memory and thread-sharing rules at compile time. Cargo, crates.io, rustup, stable releases, editions, and a large ecosystem make Rust a mature production choice.
+
+Odin's core value is direct procedural data-oriented programming. It keeps manual memory management and C-like control, but adds stronger typing, explicit conversions, built-in dynamic arrays and maps, `defer`, `using`, procedure groups, array programming, `#soa`, SIMD/vector support, and official graphics-oriented vendor packages. It is younger and asks more of project discipline.
+
+## Memory And Safety Model
+
+Rust makes ownership part of ordinary APIs. A safe Rust function can often express who owns a value, who borrows it, when it is dropped, and whether it can cross thread boundaries. Unsafe Rust exists for FFI, hardware, raw pointers, and low-level abstractions, but the goal is to keep unsafe code small and reviewed.
+
+Odin is manually managed. Its allocator and context model helps make allocation policy visible, and `defer` helps structure cleanup, but the compiler does not enforce borrowing or prevent use-after-free through ownership analysis. The programmer must design lifetime, aliasing, thread sharing, and allocator rules.
+
+Choose Rust when memory safety and concurrency safety are product requirements. Choose Odin when the team prefers manual reasoning and wants a simpler data-oriented language surface more than compile-time ownership guarantees.
+
+## Ergonomics And Code Shape
+
+Rust code often models invariants through types, traits, enums, `Result`, `Option`, lifetimes, ownership, and modules. That can be excellent for libraries and security-sensitive code, but it can also make early development slower for teams new to Rust.
+
+Odin code is usually more procedural. It separates data and procedures, avoids methods and inheritance, uses distinct types for stronger domain boundaries, and includes features that make math and data layout concise. Game and graphics code that manipulates arrays, vectors, matrices, and structure-of-arrays data may feel closer to the problem domain in Odin.
+
+The tradeoff is that Rust's explicit type modeling can prevent classes of defects that Odin leaves to tests and review. Odin's simpler local code can be easier to read for C-minded teams, but fewer invariants are mechanically enforced.
+
+## Packages And Ecosystem
+
+Rust's package workflow is a major advantage. Cargo builds, tests, formats, documents, resolves dependencies, manages workspaces, packages crates, and publishes to crates.io. The ecosystem is broad enough that many projects can start with production-quality libraries.
+
+Odin intentionally has no official package manager. It provides official `core` and `vendor` library collections, but third-party dependencies are commonly copied, vendored, submoduled, or managed through unofficial tools. That keeps dependency policy explicit but makes library discovery, updates, compatibility, and security review more project-specific.
+
+If dependency maturity is central, Rust is usually the safer bet. If the dependency graph is small and the project values vendored source control over registry automation, Odin's model may be acceptable.
+
+## C Interop, Games, And Graphics
+
+Both languages can cross C boundaries. Rust FFI is mature, but it marks foreign calls and raw-pointer operations as unsafe, pushing teams to wrap C APIs behind safe Rust interfaces. That is valuable when the wrapper's safety model is part of the product.
+
+Odin is more directly C-shaped. Its foreign system, calling conventions, pointer-passing directives, C vararg support, export attributes, and official vendor bindings make it attractive for code that spends a lot of time near C APIs. Its homepage emphasizes official graphics API libraries and maintained bindings for common game and multimedia libraries.
+
+For a custom engine, renderer tool, or simulation, Odin may have lower friction if the team wants direct data-oriented code and manual memory control. For a security-sensitive parser, networking library, infrastructure agent, or shared API used by many teams, Rust's safety model and package maturity often matter more.
+
+## Choose Rust When
+
+- Safe APIs and compiler-enforced ownership are central to the project.
+- Concurrency correctness and data-race prevention should be represented in types.
+- Cargo, crates.io, rustup, stable releases, and mature package workflows are important.
+- The project is a parser, protocol implementation, infrastructure component, CLI, embedded module, WebAssembly module, or security-sensitive native library.
+- The organization can absorb Rust's learning curve and compile-time feedback.
+
+## Choose Odin When
+
+- The team wants procedural data-oriented native code with explicit memory control.
+- Game, graphics, simulation, tools, or math-heavy code benefits from array programming, `#soa`, vectors, matrices, and vendor bindings.
+- Manual memory management is acceptable and allocator policy should be visible through context or project conventions.
+- C interop is frequent and the team wants a C-like workflow rather than a safe-wrapper-first approach.
+- Dependencies can be vendored and kept small.
+- The project can tolerate a younger language and compiler.
+
+## Watch Points
+
+Rust's risks are learning curve, compile times, trait/lifetime complexity, async ecosystem choices, and dependency review. Rust reduces many memory hazards, but unsafe boundaries still need serious engineering.
+
+Odin's risks are compiler and ecosystem maturity, lack of an official package manager, fewer production examples, fewer maintainers with long Odin experience, and manual memory safety obligations.
+
+When in doubt, prototype the riskiest part. For Rust, test ownership shape, unsafe boundaries, dependencies, compile times, and target support. For Odin, test allocator policy, vendoring, C interop, debugging, release builds, and whether the team can maintain manual lifetime rules.

@@ -1,0 +1,228 @@
+---
+title: Odin
+slug: odin
+status: active
+summary: Odin is a young, statically typed systems language by Ginger Bill / Bill Hall for high-performance, data-oriented native software, with manual memory management, explicit allocator support, built-in array programming, strong C interop, and no official package manager.
+firstReleased: 2016
+creators:
+  - Ginger Bill / Bill Hall
+paradigms:
+  - systems
+  - procedural
+  - imperative
+  - data-oriented
+typing:
+  discipline: static
+  strength: strong and distinct typing with inference, explicit conversions, procedure groups, parametric polymorphism, and compile-time features
+memory:
+  model: manual memory management with allocator-aware built-ins, explicit cleanup, context-provided allocators, and no required garbage collector
+runtime:
+  model: ahead-of-time native compilation through the Odin compiler, with support for C ABI interop and small runtime assumptions
+officialSite: https://odin-lang.org/
+repository: https://github.com/odin-lang/Odin
+packageManagers:
+  - manual vendoring
+  - core library collection
+  - vendor library collection
+  - third-party OS packages
+comparedWith:
+  - c
+  - zig
+  - rust
+bestFor:
+  - Data-oriented native software, game and graphics code, tooling, simulations, parsers, libraries, and systems-adjacent applications where explicit allocation and layout are central.
+  - Teams that like C-level control but want stronger typing, slices, dynamic arrays, maps, defer, array programming, procedure groups, and clearer language-level support for data layout.
+  - Projects that can vendor dependencies, pin compiler releases, and treat the compiler, standard library, and package ecosystem as still developing.
+  - Native code that benefits from C ABI interop, official graphics and multimedia bindings, SIMD/vector-oriented types, and direct control over memory representation.
+poorFit:
+  - Organizations that need a stable 1.0 language contract, a mature official package registry, broad hiring availability, and long-term dependency automation today.
+  - Safety-critical or security-sensitive code that requires compiler-enforced ownership, borrowing, or data-race prevention comparable to safe Rust.
+  - Ordinary web, enterprise, data, mobile, or scripting applications where existing ecosystems provide deeper libraries, hosting conventions, and operational tooling.
+  - Projects that cannot manually vendor dependencies, audit copied source, pin exact versions, and update code when Odin releases or libraries change.
+sources:
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Odin Documentation
+    url: https://odin-lang.org/docs/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: Getting Started
+    url: https://odin-lang.org/docs/install/
+    publisher: Odin
+  - title: Odin package documentation
+    url: https://pkg.odin-lang.org/
+    publisher: Odin
+  - title: package simd
+    url: https://pkg.odin-lang.org/core/simd/
+    publisher: Odin
+  - title: Odin source repository
+    url: https://github.com/odin-lang/Odin
+    publisher: Odin
+  - title: gingerBill
+    url: https://www.gingerbill.org/
+    publisher: Ginger Bill
+lastVerified: 2026-05-23
+---
+
+## Origin And Design Goals
+
+Odin was created by Ginger Bill, also known as Bill Hall. The official FAQ says the project began in late July 2016 after frustration with C++ and after an abandoned attempt to extend C with a preprocessor. Ginger Bill's own project page describes Odin as a 2016-now open source systems language intended as a C replacement with goals around simplicity, performance, modern systems, and joy of programming.
+
+The public positioning is direct: Odin is a general-purpose language for high-performance, modern systems and data-oriented programming. The language borrows from older procedural and systems languages, especially Pascal, C, Go, Oberon-2, Newsqueak, and GLSL, while rejecting some C++-style abstractions that would make the language surface larger.
+
+The design center is practical native code. Odin tries to keep data and procedures separate, make layout and allocation visible, avoid hidden control flow, avoid a preprocessor, and keep code readable by developers who are thinking in memory, data transforms, and platform boundaries. That makes it especially interesting to game, graphics, tools, simulation, and systems developers who like C's control but want more language help around arrays, typing, cleanup, and interop.
+
+## Current Maturity
+
+Odin is active, open source, and usable, but it should still be treated as a developing language and toolchain. The official repository warns that the compiler is still in development, and the GitHub releases page listed `dev-2026-05` as the latest release when this page was verified. The install guide describes monthly and nightly releases, while the docs and packages continue to evolve.
+
+For production planning, read that as a concrete risk rather than a dismissal. Odin can be a good fit for serious native projects when the team pins the compiler, vendors dependencies, tests the exact target platforms, and accepts that compiler behavior, packages, and ecosystem conventions may change. It is a weaker fit when the organization needs a stable standards process, long compatibility windows, or a large pool of experienced developers today.
+
+## Runtime, Compilation, And Platforms
+
+Odin normally compiles ahead of time to native code through the Odin compiler. The getting-started guide lists supported compiler host platforms including Windows x86-64, Linux x86-64 and ARM64, macOS x86-64 and ARM64, FreeBSD x86-64 and ARM64, NetBSD x86-64 and ARM64, and OpenBSD x86-64, with compilation to more targets.
+
+The language does not require a garbage collector. It is meant for programs where native code, layout control, ABI boundaries, low-level libraries, and explicit memory policy are part of the engineering model. That includes desktop tools, game and graphics code, host-side utilities, native libraries, kernels or kernel-adjacent experiments, and services where the team wants a C-shaped runtime profile.
+
+As with other young systems languages, target support should be verified by building and debugging the real artifact. The relevant questions are not just "does Odin compile?" but "does this release support our target, linker, calling convention, debugger, foreign libraries, build scripts, SIMD use, and release packaging?"
+
+## Memory Management And Allocators
+
+Odin is manually memory managed. Programmers own allocation, deallocation, ownership transfer, and cleanup policy. The language and core library make that policy more visible than plain C by centering allocators and an implicit `context` value.
+
+The overview describes built-ins such as `new` and `make` using `context.allocator` unless an allocator is explicitly supplied. Dynamic arrays and maps carry allocator information. The default context includes a general allocator and a temporary allocator, and the core library provides allocator-related helpers such as `free`, `free_all`, `delete`, and tracking allocators.
+
+This is one of Odin's strongest differences from C. A library can make allocation strategy part of the API without inventing a large local convention. A game system can use frame arenas, fixed buffers, pools, scratch allocators, or subsystem-specific allocators and keep those choices visible.
+
+The cost is responsibility. Odin does not have Rust's borrow checker. It does not automatically pair allocation and deallocation. `defer` helps put cleanup close to setup, but lifetime, aliasing, allocator pairing, thread sharing, and foreign memory remain project obligations.
+
+Related memory concepts: [Manual Memory Management](/concepts/manual-memory-management/), [Stack Vs Heap Allocation](/concepts/stack-vs-heap-allocation/), [Ownership](/concepts/ownership/), and [Memory Safety](/concepts/memory-safety/).
+
+## Types, Procedures, And Data-Oriented Features
+
+Odin is statically typed and strongly typed by default. It supports explicit conversions, type inference, arrays, slices, dynamic arrays, maps, structs, unions, tagged unions, enums, bit sets, matrices, quaternions, raw pointers, procedure values, parametric polymorphism, and compile-time `when` statements.
+
+Distinct types are central to its type-safety story. A declaration such as `Meters :: distinct f32` creates a type that is not interchangeable with its base type without explicit conversion. That is useful when a project wants C-like representations but stronger boundaries between identifiers, units, handles, entity IDs, vectors, or domain values.
+
+Odin uses procedures rather than methods. The FAQ is explicit that data structures are data, and subtype-like composition can be expressed with `using` when useful. `using` can promote fields and give controlled data composition, but Odin avoids classes, inheritance, and uniform function-call syntax as language-level defaults.
+
+Procedure groups are Odin's explicit overload mechanism. A name can refer to a set of procedures, and overload choice is intentionally declared rather than inferred from unrelated same-name declarations. That gives mathematical and API-heavy code a controlled form of overloading without the full complexity of C++ overload lookup.
+
+## Array Programming, SIMD, And Layout
+
+Odin has unusual built-in support for data-oriented code. Fixed-length arrays support array programming operations, swizzling, and vector-like notation. The homepage and FAQ show examples such as element-wise array arithmetic and swizzles over small arrays. The language also has `#soa` data types for structure-of-arrays layouts, which are common in game, simulation, graphics, and data-oriented engine work.
+
+SIMD is exposed through special `#simd [N]T` vector types and the `core:simd` package. The package documentation describes SIMD vectors as array-like types whose lane count is a power of two. The overview also documents matrix layout choices intended to support vectorization on modern hardware where possible.
+
+These features do not remove the need to profile. They do make common math, layout, and transform patterns less library-dependent than they are in C. That is a practical reason Odin shows up in game and graphics conversations even though it is not only a game language.
+
+## Packages, Core, Vendor, And Dependencies
+
+Odin programs are organized into packages. A package is a directory of `.odin` files that share the same package declaration. Imports can refer to library collections such as `core:` and `vendor:`. The `core` collection holds fundamental runtime, OS, formatting, memory, container, math, and other common packages. The `vendor` collection holds officially maintained bindings and wrappers for widely useful external libraries.
+
+The Odin homepage calls out batteries-included graphics and multimedia support, including official libraries or bindings for major graphics APIs and packages such as SDL, GLFW, raylib, microui, and miniaudio in `vendor`. This is a real advantage for graphics and game-adjacent experiments because early projects can start with maintained bindings instead of writing every foreign binding from scratch.
+
+The package-manager story is deliberately different from Rust, Go, JavaScript, Java, or C#. Odin's FAQ says there will not be an official Odin package manager. The recommended model is manual dependency management: copy or vendor the packages a project depends on, fix specific versions, and keep the dependency set visible.
+
+That stance has consequences:
+
+- Reproducible builds depend on your repository layout, vendored source, submodules, lockfiles from external tools if you choose them, and CI setup.
+- Dependency updates are explicit maintenance work rather than registry resolution.
+- Library discovery is less centralized.
+- Teams must decide whether to vendor source, use Git submodules, copy packages, or adopt an unofficial tool.
+- Package names and import paths should be treated as part of project structure, not left to an external resolver.
+
+This can be a virtue for small native projects that want full control. It is a poor fit for teams expecting mature registry metadata, dependency graph tooling, automated semver resolution, and security advisory workflows.
+
+Related tooling concepts: [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), and [Documentation Cultures](/concepts/documentation-cultures/).
+
+## Foreign Function Support
+
+Odin has a foreign system for calling external procedures and representing ABI details. The overview documents calling conventions such as C, cdecl, stdcall, fastcall, Odin, contextless, and naked, plus foreign-procedure support for C varargs and pointer-passing details. Attributes such as `@(export)` support exported symbols for dynamic libraries.
+
+This makes Odin a practical candidate for C ABI boundaries, graphics APIs, platform SDKs, native libraries, and bindings to existing C ecosystems. The project still has to define the hard boundary rules: which side allocates memory, which side frees it, how callbacks behave, how strings are represented, how errors cross the boundary, which structs are layout-compatible, and which target ABI is being used.
+
+## Syntax Example
+
+```odin
+package main
+
+import "core:fmt"
+
+Vector3 :: distinct [3]f32
+
+Entity :: struct {
+    name: string,
+    position: Vector3,
+    velocity: Vector3,
+}
+
+advance :: proc(entity: ^Entity, dt: f32) {
+    entity.position += entity.velocity * dt
+}
+
+main :: proc() {
+    entities := make([dynamic]Entity)
+    defer delete(entities)
+
+    append(&entities, Entity{
+        name = "probe",
+        position = Vector3{0, 0, 0},
+        velocity = Vector3{1, 2, 0},
+    })
+
+    for &entity in entities {
+        advance(entity, 0.5)
+        fmt.printf("%s: %.2f %.2f %.2f\n",
+            entity.name,
+            entity.position.x,
+            entity.position.y,
+            entity.position.z,
+        )
+    }
+}
+```
+
+This example shows several Odin defaults: packages, `core` imports, distinct vector-like array types, pointer parameters for mutation, array arithmetic, dynamic arrays, and `defer` for cleanup.
+
+## Best-Fit Use Cases
+
+Odin is a strong candidate for:
+
+- Game engines, tools, simulations, graphics experiments, and math-heavy native systems that benefit from array programming, swizzling, SIMD/vector types, `#soa`, and official graphics-related `vendor` packages.
+- C replacement modules where manual memory management, simple procedural code, direct data layout, and C ABI integration matter.
+- Native tools and applications where the team wants explicit allocators, stronger typing than C, and no required garbage collector.
+- Codebases that can vendor dependencies and keep the dependency graph intentionally small.
+- Teams already comfortable with C-level reasoning that want a cleaner syntax and more built-in support for data-oriented programming.
+
+## Poor-Fit Or Risky Use Cases
+
+Odin can be a poor fit when:
+
+- The organization needs mature package infrastructure, a large public registry, vulnerability metadata, and automated dependency resolution.
+- The project requires a stable 1.0 compatibility contract today.
+- The team expects compiler-enforced memory safety and data-race prevention similar to Rust.
+- The product is mostly an ordinary backend, frontend, data system, mobile app, or business application.
+- Vendor SDKs, certification paths, or target tooling are built around C, C++, Rust, Ada, Java, C#, Python, or another established ecosystem.
+
+## Governance, Standardization, And Ecosystem
+
+Odin is not standardized through ISO, ECMA, or another external standards body. Development happens in the open source Odin repository and surrounding community, with Ginger Bill as the language's central designer and maintainer voice.
+
+The ecosystem is younger than C, C++, Rust, Go, JavaScript, Java, or C#. It has official documentation, a package documentation site, `core` and `vendor` library collections, examples, community libraries, and monthly/nightly releases. It also has fewer books, fewer production case studies, fewer maintained packages, and fewer developers with long commercial Odin experience.
+
+For evaluation, build a real vertical slice: compiler version, target platform, foreign libraries, memory policy, dependency vendoring, editor support, tests, profiling, and release packaging. Odin's strengths show up when those constraints match its design; its risks show up when a team assumes a mature ecosystem that does not exist yet.
+
+## Comparison Notes
+
+[Odin vs C](/comparisons/odin-vs-c/) is the closest comparison for C replacement work. C has unmatched platform reach and institutional maturity. Odin is more pleasant when its stronger typing, allocators, arrays, `defer`, and packages reduce project complexity enough to accept a younger ecosystem.
+
+[Odin vs Zig](/comparisons/odin-vs-zig/) is the closest comparison among younger C alternatives. Both are manual, native, and C-friendly. Odin leans more into data-oriented language features and game/graphics ergonomics. Zig leans more into cross-compilation, build-system integration, and explicit allocator parameters by convention.
+
+[Odin vs Rust](/comparisons/odin-vs-rust/) is the safety-model comparison. Rust is the stronger choice when ownership, borrowing, package maturity, and safe APIs are central. Odin is the simpler manual-control option when the team prefers procedural data-oriented code and accepts more responsibility for memory and concurrency correctness.

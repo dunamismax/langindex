@@ -1,12 +1,13 @@
 ---
 title: Choosing A Game Development Language
 slug: choosing-a-game-development-language
-summary: A practical guide for choosing C++, C#, Rust, JavaScript, Lua, or engine-specific scripting by engine, platform targets, iteration speed, performance constraints, and team workflow.
+summary: A practical guide for choosing C++, C#, Rust, Odin, JavaScript, Lua, or engine-specific scripting by engine, platform targets, iteration speed, performance constraints, and team workflow.
 audience: Developers choosing a language for gameplay code, game engines, tools, native plugins, simulations, prototypes, or shipped game projects.
 candidates:
   - cpp
   - csharp
   - rust
+  - odin
   - javascript
   - lua
 sources:
@@ -31,6 +32,18 @@ sources:
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: package simd
+    url: https://pkg.odin-lang.org/core/simd/
+    publisher: Odin
   - title: Lua about
     url: https://www.lua.org/about.html
     publisher: Lua
@@ -43,7 +56,7 @@ sources:
   - title: LuaJIT
     url: https://luajit.org/luajit.html
     publisher: LuaJIT
-lastVerified: 2026-05-19
+lastVerified: 2026-05-23
 ---
 
 ## Start With The Engine
@@ -94,6 +107,12 @@ Rust is worth evaluating for custom engines, game-adjacent tools, asset pipeline
 
 Rust is a weaker default when the engine, documentation, asset workflow, and community examples are C++ or C# centered. In games, ecosystem fit and editor workflow often beat language elegance. Prototype the build integration, debugger, platform targets, and content pipeline before committing.
 
+## When Odin Is Worth Evaluating
+
+Odin is worth evaluating for custom engines, rendering experiments, simulations, native tools, and game-adjacent libraries where procedural data-oriented code is a better fit than a managed scripting layer. Its built-in array programming, swizzling, matrices, quaternions, `#soa` layouts, SIMD/vector support, explicit allocation model, and official graphics-oriented `vendor` packages are directly relevant to game and graphics work.
+
+Odin is a weaker default when the project is already centered on Unreal, Unity, Godot, console SDKs, or middleware that expects C++, C#, GDScript, or another supported language. It is also risky when the team needs a mature official package manager, a large hiring pool, or Rust-style safety checks. Prototype the renderer or toolchain integration, target platforms, asset workflow, debugging, and dependency vendoring before committing.
+
 ## When Lua Fits
 
 Lua is a strong scripting choice when the engine or host application wants a small embedded language for gameplay logic, mods, plugins, configuration, or designer-authored behavior. Lua's C API, tables, metatables, coroutines, and small runtime make it practical when native code owns rendering, physics, storage, networking, and platform integration while scripts own behavior.
@@ -110,7 +129,7 @@ Lua is not a replacement for engine architecture. The host still needs debugging
 
 ## Scripting And Tool Languages
 
-Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua for embedded scripting, modding, or data-driven logic, and JavaScript or TypeScript for web games or tooling.
+Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua for embedded scripting, modding, or data-driven logic, Odin or Rust for custom native tools and experimental engine components, and JavaScript or TypeScript for web games or tooling.
 
 Do not choose a scripting layer only because it is easy to start. Check how it handles:
 
@@ -132,3 +151,5 @@ Start with the engine-native scripting language for prototypes, designer-authore
 Start with Lua when the engine supports it well or when a custom host needs a compact embedded scripting layer for mods, plugins, or gameplay behavior.
 
 Evaluate Rust for custom native components and tools when its safety model is worth the integration cost.
+
+Evaluate Odin for custom native components, graphics experiments, and tools when data-oriented ergonomics and explicit allocation are worth the younger ecosystem and manual dependency model.

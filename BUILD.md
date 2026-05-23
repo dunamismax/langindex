@@ -38,15 +38,15 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 1 - Odin
 
-- [ ] Add a complete Odin page at `src/content/languages/odin.mdx`.
-- [ ] Cover origin, Ginger Bill / Bill Hall, design goals, data-oriented programming, manual memory management, explicit allocators, `defer`, `using`, procedure groups, distinct types, array programming, SIMD/vector-oriented features, package layout, `core` and `vendor` library collections, foreign function support, graphics/game-development fit, and current implementation maturity.
-- [ ] Cover the lack of an official package manager and what that means for dependency management, vendoring, reproducible builds, and project structure.
-- [ ] Add Odin vs Zig comparison.
-- [ ] Add Odin vs C comparison.
-- [ ] Add Odin vs Rust comparison.
-- [ ] Add Odin to systems, performance-critical, game-development, and embedded-language guides where the comparison is useful and not overstated.
-- [ ] Update validation slug lists, route/content-count tests, search fixtures if needed, and any language index expectations.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Odin page at `src/content/languages/odin.mdx`.
+- [x] Cover origin, Ginger Bill / Bill Hall, design goals, data-oriented programming, manual memory management, explicit allocators, `defer`, `using`, procedure groups, distinct types, array programming, SIMD/vector-oriented features, package layout, `core` and `vendor` library collections, foreign function support, graphics/game-development fit, and current implementation maturity.
+- [x] Cover the lack of an official package manager and what that means for dependency management, vendoring, reproducible builds, and project structure.
+- [x] Add Odin vs Zig comparison.
+- [x] Add Odin vs C comparison.
+- [x] Add Odin vs Rust comparison.
+- [x] Add Odin to systems, performance-critical, game-development, and embedded-language guides where the comparison is useful and not overstated.
+- [x] Update validation slug lists, route/content-count tests, search fixtures if needed, and any language index expectations.
+- [x] Run the normal verification commands.
 
 ## Phase 2 - GDScript
 

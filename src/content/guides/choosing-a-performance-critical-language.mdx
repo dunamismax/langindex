@@ -1,11 +1,12 @@
 ---
 title: Choosing A Performance-Critical Language
 slug: choosing-a-performance-critical-language
-summary: A practical guide for choosing C++, Rust, Ada, C, Fortran, Julia, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
+summary: A practical guide for choosing C++, Rust, Odin, Ada, C, Fortran, Julia, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
 audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
 candidates:
   - cpp
   - rust
+  - odin
   - ada
   - c
   - fortran
@@ -54,6 +55,18 @@ sources:
   - title: The Rust Programming Language - Ownership
     url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
     publisher: Rust Project
+  - title: Odin Programming Language
+    url: https://odin-lang.org/
+    publisher: Odin
+  - title: Overview
+    url: https://odin-lang.org/docs/overview/
+    publisher: Odin
+  - title: Frequently Asked Questions
+    url: https://odin-lang.org/docs/faq/
+    publisher: Odin
+  - title: package simd
+    url: https://pkg.odin-lang.org/core/simd/
+    publisher: Odin
   - title: ISO/IEC 8652:2023 - Programming languages - Ada
     url: https://www.iso.org/standard/83621.html
     publisher: International Organization for Standardization
@@ -78,7 +91,7 @@ sources:
   - title: Introduction to .NET
     url: https://learn.microsoft.com/en-us/dotnet/core/introduction
     publisher: Microsoft Learn
-lastVerified: 2026-05-21
+lastVerified: 2026-05-23
 ---
 
 ## Define Performance Before Choosing
@@ -129,6 +142,12 @@ Choose Rust when the project needs native code without a required garbage collec
 
 Rust can be slower to adopt when the workload depends on C++-first engines, vendor SDKs, specialized libraries, or platform tooling. Measure compile times, dependency maturity, async/runtime choices, and FFI boundaries early.
 
+## When Odin Fits
+
+Choose Odin when the performance-sensitive work is native, data-oriented, and close enough to C that manual memory management is acceptable. Odin is strongest for game and graphics code, simulations, tools, and native components that benefit from explicit allocation, distinct types, array programming, swizzling, `#soa` layouts, SIMD/vector support, and direct C interop.
+
+Odin is usually not the right answer when the performance requirement also requires mature package automation, a stable 1.0 compatibility promise, or Rust-style memory safety. Measure the exact compiler release, target support, foreign libraries, allocator policy, profiling workflow, and vendored dependency set before treating Odin as a production default.
+
 ## When Ada Fits
 
 Choose Ada when the performance-sensitive work is also high-integrity, embedded, real-time, or certification-sensitive. Ada is strongest when predictable native execution must be paired with explicit domain types, package boundaries, tasking, restricted runtime profiles, and reviewable contracts.
@@ -168,6 +187,6 @@ Managed runtimes need measurement. Garbage collection, allocation rate, startup 
 
 Start with the highest-level language and runtime that meet the measured constraint. Move down the stack only where the constraint proves it.
 
-Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use Ada when the performance-sensitive component is also high-integrity, embedded, real-time, or certification-sensitive. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
+Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use Odin when the hot path is data-oriented native code and the team accepts manual memory management plus a younger ecosystem. Use Ada when the performance-sensitive component is also high-integrity, embedded, real-time, or certification-sensitive. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
 
 Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.
