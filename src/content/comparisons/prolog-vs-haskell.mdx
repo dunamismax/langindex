@@ -1,0 +1,96 @@
+---
+title: Prolog vs Haskell
+slug: prolog-vs-haskell
+summary: Prolog and Haskell are both declarative alternatives to mainstream imperative programming, but Prolog centers relations, unification, and search while Haskell centers pure functions, static types, laziness, and explicit effects.
+languages:
+  - prolog
+  - haskell
+useCases:
+  - declarative programming
+  - symbolic systems
+  - rule-heavy software
+  - language tooling
+  - education and research
+sources:
+  - title: ISO/IEC 13211-1:1995 Prolog General Core
+    url: https://www.iso.org/standard/21413.html
+    publisher: ISO
+  - title: SWI-Prolog
+    url: https://www.swi-prolog.org/index.hom
+    publisher: SWI-Prolog
+  - title: Constraint Logic Programming
+    url: https://www.swi-prolog.org/pldoc/man?section=clp
+    publisher: SWI-Prolog
+  - title: CLP(FD) Constraint Logic Programming Over Finite Domains
+    url: https://www.swi-prolog.org/man/clpfd.html
+    publisher: SWI-Prolog
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Haskell 2010 Language Report - Introduction
+    url: https://www.haskell.org/onlinereport/haskell2010/haskellch1.html
+    publisher: Haskell.org
+  - title: Glasgow Haskell Compiler
+    url: https://www.haskell.org/ghc/
+    publisher: GHC
+  - title: The Haskell Cabal
+    url: https://www.haskell.org/cabal/
+    publisher: Cabal
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for symbolic, rule-heavy, compiler-adjacent, educational, research, and domain-modeling work where a team is considering a declarative language.
+
+For the full profiles, see [Prolog](/languages/prolog/) and [Haskell](/languages/haskell/).
+
+## Shared Territory
+
+Both languages are far from mainstream imperative defaults. Both are used in programming-language education, research, compilers, DSLs, symbolic processing, and domains where ordinary mutable object graphs are not the clearest model.
+
+Both can express recursive structure well. Both reward precise thinking about the domain. Both can be poor fits when the team only wants a conventional service language with a large hiring pool and default vendor support.
+
+The core difference is the unit of thought: Haskell is about values and pure functions; Prolog is about relations and queries.
+
+## Key Differences
+
+| Dimension | Prolog | Haskell |
+| --- | --- | --- |
+| Paradigm center | Logic and relational programming | Pure functional programming |
+| Main mechanism | Unification, backtracking, predicates, constraints | Functions, expressions, algebraic data types, type classes |
+| Typing | Dynamic term-based typing | Strong static typing with inference |
+| Evaluation/search | Query-driven proof search with backtracking | Lazy evaluation of expressions |
+| Effects | Implementation predicates and operational control | Explicit effect boundaries, especially `IO` |
+| Best symbolic fit | Rules, relations, grammars, constraints, search | Typed interpreters, compilers, DSLs, symbolic transformations |
+| Main risk | Nontermination, accidental search cost, dialect differences | Learning curve, laziness/performance surprises, extension sprawl |
+
+## Choose Prolog When
+
+- The domain is naturally represented as facts, rules, relations, and queries.
+- The hard part is search, unification, symbolic matching, or constraint satisfaction.
+- You want answers, alternatives, or explanations from a rule base rather than a single computed value.
+- CLP(FD), tabling, grammars, or logic variables directly simplify the model.
+- The team can own Prolog operational concerns such as goal order, indexing, cuts, duplicate answers, and termination.
+
+## Choose Haskell When
+
+- Strong static types, algebraic data types, type classes, and pure functions are central to the architecture.
+- You want invalid states, effects, and domain rules visible in types.
+- The work is a compiler, parser, DSL, symbolic transformer, backend service, or domain model where a typed functional core pays for itself.
+- The team is willing to own GHC, Cabal or Stack, package versioning, Haskell Language Server support, and profiling.
+- Search is not the primary execution model, or it can be expressed cleanly through libraries.
+
+## Watch Points
+
+Prolog can look more declarative than it behaves under load. Clause order, goal order, indexing, cut, negation as failure, and constraints affect performance and sometimes meaning. Prototype with real data and observe the search tree.
+
+Haskell can make relationships explicit in types, but it does not give Prolog-style logic variables or built-in proof search as the default model. Libraries can implement logic programming or search, but they are application choices rather than the language's ordinary execution model.
+
+## Practical Default
+
+Use Prolog when relations and search are the product's natural model.
+
+Use Haskell when typed functional modeling, pure transformations, and explicit effects are the product's natural model.
+
+Use neither by default for ordinary application work unless the prototype shows that the domain really benefits from the language model.

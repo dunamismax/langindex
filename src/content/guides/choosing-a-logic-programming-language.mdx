@@ -1,0 +1,95 @@
+---
+title: Choosing A Logic Programming Language
+slug: choosing-a-logic-programming-language
+summary: A practical guide for deciding when Prolog, constraint logic programming, or a rule/search subsystem fits better than implementing relations and search in a mainstream language.
+audience: Developers and teams evaluating Prolog or logic-programming techniques for rules, constraints, symbolic systems, search, knowledge representation, language tooling, or education.
+candidates:
+  - prolog
+  - python
+  - haskell
+  - clojure
+sources:
+  - title: ISO/IEC 13211-1:1995 Prolog General Core
+    url: https://www.iso.org/standard/21413.html
+    publisher: ISO
+  - title: ISO/IEC 13211-2:2000 Prolog Modules
+    url: https://www.iso.org/standard/20775.html
+    publisher: ISO
+  - title: SWI-Prolog
+    url: https://www.swi-prolog.org/index.hom
+    publisher: SWI-Prolog
+  - title: Constraint Logic Programming
+    url: https://www.swi-prolog.org/pldoc/man?section=clp
+    publisher: SWI-Prolog
+  - title: CLP(FD) Constraint Logic Programming Over Finite Domains
+    url: https://www.swi-prolog.org/man/clpfd.html
+    publisher: SWI-Prolog
+  - title: SWI-Prolog For The Semantic Web
+    url: https://www.swi-prolog.org/web/
+    publisher: SWI-Prolog
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: Haskell Language
+    url: https://www.haskell.org/
+    publisher: Haskell.org
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+lastVerified: 2026-05-24
+---
+
+## Start With The Shape Of The Problem
+
+Logic programming is worth evaluating when the natural description of the problem is facts, rules, relations, constraints, and queries.
+
+That includes:
+
+- Scheduling, allocation, planning, routing, and puzzle-like constraint problems.
+- Symbolic AI, expert-system-style rules, policy checks, and explanation-oriented reasoning.
+- Grammars, parsers, DSLs, type-rule experiments, interpreters, static analysis, and program transformation.
+- Knowledge-base queries where relationships matter more than object ownership or step-by-step control flow.
+- Education and research where unification, recursion, backtracking, and declarative search are part of the goal.
+
+If the work is mostly ordinary application code, start with the mainstream language the team already operates well. Logic programming earns adoption when it makes the hard part smaller, not when it makes the easy parts unusual.
+
+## Choose Prolog When
+
+Choose [Prolog](/languages/prolog/) when the rule/search core is the central product problem.
+
+Prolog is strongest when predicates can express the domain clearly and when multiple answers, partial information, constraints, or explanations are useful. It is a good candidate for compact solvers, symbolic prototypes, knowledge-base queries, DSL analysis, grammars, and teaching.
+
+The team still needs implementation discipline. Pick SWI-Prolog, GNU Prolog, SICStus, Scryer, Trealla, or another implementation intentionally. Document which extensions are used. Test representative queries. Watch termination, duplicate answers, goal order, indexing, cut, negation as failure, and package availability.
+
+## Use CLP When Constraints Are The Real Model
+
+Constraint logic programming is often the practical reason to choose Prolog. SWI-Prolog's CLP documentation describes constraint solvers for finite-domain integers, Booleans, rationals, and floating-point numbers, with propagation that can prune search from accumulated information.
+
+Use CLP(FD) when integer domains, scheduling slots, positions, counts, capacities, ordering, or allocation constraints are the core model. It is usually clearer to state the legal space and labeling strategy than to write a custom backtracking search by hand.
+
+Do not assume CLP is magic. The project still needs finite domains, good constraints, realistic test data, and profiling.
+
+## Use A Mainstream Language When
+
+Use Python, TypeScript, Java, C#, Go, Kotlin, Rust, or another mainstream language when the problem is mostly application integration and only lightly rule-based.
+
+Python is often the default surrounding language for prototypes because it has broad libraries, packaging, data tools, and team familiarity. Haskell may fit when typed functional modeling is the real value. Clojure may fit when JVM integration, immutable data, REPL workflows, and data-shaped rules matter more than Prolog-style proof search.
+
+The practical pattern is to keep the product in the mainstream language and isolate a Prolog or solver subsystem only if the rule/search core earns that boundary.
+
+## Questions To Answer
+
+- Are the central entities better expressed as relations than as objects, tables, or functions?
+- Do users need one answer, all answers, an explanation, or a proof trace?
+- Is the search space finite, bounded, and testable?
+- Which constraints can prune the search before enumeration?
+- Does negation mean "not provable from this database" or classical logical negation?
+- Which Prolog implementation, constraint libraries, modules, packages, and deployment path will be pinned?
+- Can maintainers read modes, determinism expectations, cuts, and recursive predicates confidently?
+- Where is the boundary between Prolog and the rest of the system?
+
+## Practical Default
+
+Prototype the hardest rule/search relation in Prolog before committing to it.
+
+If the Prolog version is shorter but harder to reason about, keep the mainstream language. If the Prolog version makes the domain rules visibly clearer, testable, and easier to change, isolate it as a deliberate subsystem or choose Prolog for that project.

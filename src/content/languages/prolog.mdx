@@ -1,0 +1,199 @@
+---
+title: Prolog
+slug: prolog
+status: active
+summary: Prolog is a logic programming language for expressing facts, rules, relations, and queries, with unification, backtracking, recursion, and constraint logic programming as its central practical tools.
+firstReleased: 1972
+creators:
+  - Alain Colmerauer and Philippe Roussel, with foundational logic-programming work by Robert Kowalski
+paradigms:
+  - logic
+  - declarative
+  - relational
+  - symbolic
+typing:
+  discipline: dynamic
+  strength: term-based dynamic typing with atoms, numbers, variables, compound terms, unification, runtime instantiation errors, and implementation-specific extensions rather than a mainstream static type system
+memory:
+  model: implementation-managed stacks, heaps, trails, and garbage collection for terms, choice points, variables, and compiled predicates; ordinary Prolog code rarely performs manual memory management
+runtime:
+  model: interactive and compiled Prolog systems, commonly using a WAM-style abstract machine or implementation-specific bytecode/native compilation, with SWI-Prolog as a common open source environment
+officialSite: https://www.swi-prolog.org/
+repository: https://github.com/SWI-Prolog/swipl-devel
+packageManagers:
+  - SWI-Prolog packs
+  - implementation libraries
+  - OS packages
+  - manual vendoring
+comparedWith:
+  - haskell
+  - python
+bestFor:
+  - Rule-heavy, relation-heavy, search-heavy, and symbolic domains where facts, rules, unification, backtracking, and constraints model the problem more directly than imperative control flow.
+  - Constraint satisfaction, scheduling, allocation, puzzles, theorem-proving-adjacent tools, program analysis, DSLs, parsers, and knowledge-representation prototypes.
+  - Education and research settings where logic programming, declarative search, recursion, unification, and operational semantics are part of the learning goal.
+  - SWI-Prolog-based tools that can benefit from its mature interactive environment, libraries, semantic-web/RDF support, packs, debugger, and permissive license.
+poorFit:
+  - Ordinary web, mobile, CRUD, data-engineering, ML, or systems software where mainstream ecosystems, static tooling, deployment conventions, and hiring matter more than relational search.
+  - Teams that need predictable performance from broad search spaces but cannot model constraints, prune search, profile choice points, or control termination.
+  - Projects that require a large package ecosystem, vendor SDK coverage, or a single dominant implementation contract across all dependencies.
+  - Codebases whose maintainers are uncomfortable with cut, negation as failure, mode expectations, variable instantiation order, nontermination risk, and implementation-specific dialect differences.
+sources:
+  - title: ISO/IEC 13211-1:1995 Prolog General Core
+    url: https://www.iso.org/standard/21413.html
+    publisher: ISO
+  - title: ISO/IEC 13211-2:2000 Prolog Modules
+    url: https://www.iso.org/standard/20775.html
+    publisher: ISO
+  - title: SWI-Prolog
+    url: https://www.swi-prolog.org/index.hom
+    publisher: SWI-Prolog
+  - title: SWI-Prolog Reference Manual
+    url: https://www.swi-prolog.org/pldoc/doc_for?object=manual
+    publisher: SWI-Prolog
+  - title: Getting Started Quickly
+    url: https://www.swi-prolog.org/pldoc/man?section=quickstart
+    publisher: SWI-Prolog
+  - title: Special Unification And Comparison Predicates
+    url: https://www.swi-prolog.org/pldoc/man?section=unifyspecial
+    publisher: SWI-Prolog
+  - title: Constraint Logic Programming
+    url: https://www.swi-prolog.org/pldoc/man?section=clp
+    publisher: SWI-Prolog
+  - title: CLP(FD) Constraint Logic Programming Over Finite Domains
+    url: https://www.swi-prolog.org/man/clpfd.html
+    publisher: SWI-Prolog
+  - title: SWI-Prolog For The Semantic Web
+    url: https://www.swi-prolog.org/web/
+    publisher: SWI-Prolog
+  - title: SWI-Prolog License Conditions
+    url: https://www.swi-prolog.org/license.html
+    publisher: SWI-Prolog
+  - title: 50 Years Of Prolog
+    url: https://logicprogramming.org/2022/02/50-years-of-prolog/
+    publisher: Association for Logic Programming
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+Prolog is the best-known logic programming language. A Prolog program is mostly a collection of facts and rules. A query asks whether a relation can be proven, and the runtime searches for substitutions that make the query true.
+
+That makes Prolog different from languages where the main unit is a function, object, procedure, or statement sequence. Prolog code often describes relationships: parenthood, graph reachability, grammar recognition, scheduling constraints, type-inference rules, symbolic transformations, access policies, or business rules. The system then uses unification and backtracking to search for answers.
+
+This page treats Prolog as a practical niche language and as the reference point for logic programming. It is not a general-purpose default for ordinary application development, but it remains unusually sharp when a problem is more naturally written as relations plus search.
+
+## Origin And Standardization
+
+Prolog emerged in Marseille in the early 1970s from work by Alain Colmerauer and Philippe Roussel, with Robert Kowalski's logic-programming work shaping the procedural interpretation of logic. The Association for Logic Programming marked 2022 as Prolog's fiftieth year, which is the basis for the 1972 first-release date used here.
+
+The standardized core is ISO/IEC 13211-1:1995, "Programming languages - Prolog - Part 1: General core." ISO describes that standard as specifying Prolog text representation, syntax, semantic rules, input/output representation, and restrictions for conforming processors. ISO/IEC 13211-2:2000 covers modules, though real-world module behavior still varies by implementation.
+
+The practical consequence is important: "ISO Prolog" is a portability baseline, not the whole ecosystem. Serious Prolog projects usually choose a specific implementation and document which extensions, module behavior, libraries, tabling, constraints, foreign interfaces, and deployment features they rely on.
+
+## Language Model
+
+The central concepts are facts, rules, predicates, terms, variables, unification, and queries.
+
+A predicate is a named relation with an arity, such as `parent/2` or `path/2`. Facts state that a relation holds. Rules state that a relation holds when other goals can be proven. Variables begin uppercase in common Prolog syntax. Compound terms such as `person(Name, Age)` provide structured data without classes or records in the mainstream object-oriented sense.
+
+Unification is the matching mechanism. It can bind variables, compare structured terms, and make a query and a clause head agree. Backtracking explores alternate clauses and alternate bindings when a later goal fails or when the user asks for another answer.
+
+This gives Prolog a natural "generate and test" shape, but good Prolog code is not just brute force. Clause order, goal order, indexing, constraints, tabling, cuts, and failure behavior all affect termination and performance.
+
+Related concepts: [Functional Programming](/concepts/functional-programming/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Interpreters, JIT, and AOT](/concepts/interpreters-jit-and-aot/), and [REPL And Interactive Development](/concepts/repl-and-interactive-development/).
+
+## Syntax Example
+
+```prolog
+edge(a, b).
+edge(b, c).
+edge(a, d).
+edge(d, c).
+
+path(From, To) :-
+    edge(From, To).
+
+path(From, To) :-
+    edge(From, Via),
+    path(Via, To).
+```
+
+Example queries:
+
+```prolog
+?- path(a, c).
+true.
+
+?- path(a, Where).
+Where = b ;
+Where = d ;
+Where = c ;
+Where = c.
+```
+
+The duplicate `c` answer is not a mistake in the abstract relation: there are two paths from `a` to `c`. A production version would decide whether paths, reachability, duplicate elimination, cycle handling, or all route explanations are the desired behavior.
+
+## Constraints And Search
+
+Constraint logic programming is one of Prolog's strongest modern uses. SWI-Prolog documents CLP as a declarative programming paradigm where dedicated solvers reason over domains such as finite-domain integers, Booleans, rationals, and floating-point numbers. CLP(FD) is especially common for integer constraints, allocation, scheduling, puzzles, and combinatorial search.
+
+The difference from ordinary arithmetic is not cosmetic. A constraint such as `X #= Y + 1` can participate in relational reasoning before all variables are known. The solver can delay checks, propagate information, prune impossible branches, and make the same relation usable in more than one direction.
+
+This is why Prolog can be compelling for problems such as timetabling, seating, resource allocation, dependency resolution sketches, type-inference experiments, and logic puzzles. The programmer describes the legal space and lets the solver help search it.
+
+The trap is assuming constraints remove all search cost. They improve the model and can prune dramatically, but the project still needs finite domains, labeling strategy, constraint design, and profiling.
+
+## SWI-Prolog And Implementations
+
+SWI-Prolog is the most common open source Prolog environment for many learners and practitioners. Its site describes it as a comprehensive free Prolog environment that began in 1987 and is widely used in research, education, and commercial applications. It provides an interactive top level, debugger, libraries, packs, modules, threads, tabling, HTTP/web libraries, RDF and semantic-web tooling, foreign interfaces, and deployment support.
+
+SWI-Prolog is not the only implementation. GNU Prolog, SICStus Prolog, Scryer Prolog, Trealla Prolog, YAP, Ciao, ECLiPSe, Tau Prolog, and Logtalk-on-Prolog environments all have different strengths. Commercial, academic, and standards-oriented Prolog systems may differ in performance, libraries, module semantics, constraint solvers, tabling behavior, Unicode handling, deployment, and extension syntax.
+
+For portable code, stay close to ISO Prolog and test on the target implementations. For production code, choose one implementation deliberately and treat its extensions as part of the platform contract.
+
+## Tooling, Packages, And Deployment
+
+Prolog development is often interactive. A common workflow is to load a source file into the top level, run queries, inspect answers, use the tracer or debugger, update source, and reload. This is excellent for exploring relations and explaining search behavior.
+
+The package story is implementation-centered. SWI-Prolog has packs and a substantial bundled library set. Other implementations have their own libraries, package conventions, or operating-system packages. There is no Prolog equivalent of one universal PyPI, npm, Cargo, Maven, or NuGet ecosystem that all serious projects assume.
+
+Deployment should be proven early. Check whether the chosen Prolog can build the desired executable, embed into the desired host, run in the target container or OS package, expose the needed HTTP/RDF/foreign interface, and ship with pinned dependencies.
+
+## Best-Fit Use Cases
+
+Prolog is a strong fit when:
+
+- The domain is naturally a set of facts, rules, relations, constraints, and queries.
+- Search, backtracking, or constraint satisfaction is the main problem rather than incidental control flow.
+- The system needs explanations, symbolic transformations, rule evaluation, grammars, DSLs, program analysis, or theorem-proving-adjacent behavior.
+- Interactive exploration of a knowledge base or rule system is useful.
+- The team accepts that implementation choice, operational semantics, and search modeling are core engineering concerns.
+
+## Poor-Fit Or Risky Use Cases
+
+Prolog can be a poor fit when:
+
+- The product is an ordinary web app, service, CLI, mobile app, data pipeline, ML application, or systems component where mainstream ecosystems are the main value.
+- Broad hiring, onboarding, vendor SDKs, or conventional deployment matter more than declarative search.
+- The team expects Prolog to infer efficient algorithms from vague rules.
+- Nontermination, duplicate answers, excessive backtracking, dynamic predicates, cut, and negation as failure would be hard for maintainers to reason about.
+- The project requires strong static typing, mainstream IDE support, or package infrastructure comparable to TypeScript, Python, Java, C#, Rust, or Go.
+
+## Operational Pitfalls
+
+Prolog's declarative surface has operational consequences.
+
+Goal order can affect termination. A logically true relation can still loop if recursive calls are placed before constraining goals. Clause order can affect which answers appear first and how much search occurs. Duplicate answers may be meaningful, accidental, or expensive depending on the relation. Negation is usually negation as failure, which is not the same as classical logical negation for open-world reasoning.
+
+The cut operator `!` can improve determinism or performance, but it also commits to choices and can change the meaning of a predicate if used carelessly. Low-level arithmetic predicates often require arguments to be instantiated in a particular direction, while CLP(FD) constraints can preserve relational behavior better for integer domains.
+
+Unification has its own edge cases. ISO includes `unify_with_occurs_check/2` for sound unification, while ordinary `=/2` in common systems may allow cyclic terms unless configured otherwise. That is useful in some implementation contexts and surprising in logic-heavy code.
+
+Treat these as design constraints, not defects. Good Prolog code documents predicate modes, determinism expectations, termination assumptions, constraint domains, duplicate-answer policy, and implementation-specific dependencies.
+
+## Comparison Notes
+
+[Prolog vs Haskell](/comparisons/prolog-vs-haskell/) is the closest declarative-language comparison. Haskell is functional, statically typed, pure by default, and centered on expressions and types. Prolog is relational, dynamically typed, query-driven, and centered on unification plus search.
+
+[Prolog vs Python For Rule/Search-Heavy Problems](/comparisons/prolog-vs-python-for-rule-search-heavy-problems/) is the practical adoption comparison. Python is usually easier to staff and integrate. Prolog is often clearer when the hard part is a relation, rule set, grammar, or constraint search.

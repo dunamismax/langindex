@@ -1,0 +1,108 @@
+---
+title: Prolog vs Python For Rule/Search-Heavy Problems
+slug: prolog-vs-python-for-rule-search-heavy-problems
+summary: Python is usually easier to integrate, staff, and deploy, while Prolog can be clearer for rule bases, symbolic relations, grammars, and constraint search where unification and backtracking are the core model.
+languages:
+  - prolog
+  - python
+useCases:
+  - rule engines
+  - search problems
+  - symbolic AI
+  - constraint satisfaction
+  - automation
+sources:
+  - title: ISO/IEC 13211-1:1995 Prolog General Core
+    url: https://www.iso.org/standard/21413.html
+    publisher: ISO
+  - title: SWI-Prolog
+    url: https://www.swi-prolog.org/index.hom
+    publisher: SWI-Prolog
+  - title: Constraint Logic Programming
+    url: https://www.swi-prolog.org/pldoc/man?section=clp
+    publisher: SWI-Prolog
+  - title: CLP(FD) Constraint Logic Programming Over Finite Domains
+    url: https://www.swi-prolog.org/man/clpfd.html
+    publisher: SWI-Prolog
+  - title: SWI-Prolog For The Semantic Web
+    url: https://www.swi-prolog.org/web/
+    publisher: SWI-Prolog
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: pip Documentation
+    url: https://pip.pypa.io/en/stable/
+    publisher: Python Packaging Authority
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for rule-heavy and search-heavy work: policy logic, symbolic matching, small expert systems, graph reasoning, scheduling, allocation, DSL analysis, puzzle-like constraints, and knowledge-base prototypes.
+
+It is not a general Python vs Prolog comparison. For ordinary scripting, data work, web services, automation, and glue code, Python is usually the practical default.
+
+For the full profiles, see [Prolog](/languages/prolog/) and [Python](/languages/python/).
+
+## Shared Territory
+
+Both languages can be used for automation, symbolic processing, parsers, graph traversal, data transformation, and rules. Both are interactive and approachable for experiments. Both can be embedded in larger systems or called across a process boundary.
+
+The difference is default leverage. Python gives general-purpose libraries, packaging, and integration. Prolog gives native relations, unification, backtracking, and constraints.
+
+## Key Differences
+
+| Dimension | Prolog | Python |
+| --- | --- | --- |
+| Core model | Facts, rules, predicates, queries, unification | Statements, functions, objects, modules, libraries |
+| Search | Built into the execution model through backtracking | Explicit algorithms, generators, recursion, queues, solver libraries |
+| Constraints | CLP libraries are idiomatic in Prolog systems | Usually external libraries or custom modeling |
+| Ecosystem | Implementation-specific libraries and packs | Broad standard library, PyPI, virtual environments, many integrations |
+| Staffing | Niche skill set | Very broad hiring and onboarding pool |
+| Deployment | Depends heavily on chosen Prolog implementation | Mature cross-platform packaging and runtime conventions |
+| Debugging risk | Search tree, cuts, modes, nontermination | Ordinary control flow, but custom search code can grow complex |
+
+## Choose Prolog When
+
+- The rule set is easier to read as relations than as nested Python control flow.
+- You need multiple possible answers, proof-like explanations, unification, or backtracking as ordinary behavior.
+- Constraint satisfaction is central, especially over finite integer domains.
+- The work is symbolic AI, a grammar, a small expert system, a solver, a type-rule prototype, or a knowledge-base query tool.
+- A Prolog implementation such as SWI-Prolog can be a clear subsystem with tested boundaries.
+
+## Choose Python When
+
+- The project is mostly automation, files, APIs, web services, data processing, notebooks, or integration.
+- The team needs a broad package ecosystem, mainstream deployment, and easy hiring.
+- Search is only one part of a larger application and can be handled with a library or explicit algorithm.
+- The rule logic needs to integrate tightly with existing Python services, data pipelines, machine learning code, or cloud SDKs.
+- Operational simplicity matters more than a compact declarative rule representation.
+
+## Integration Pattern
+
+The practical split is often not "rewrite everything in Prolog." It is:
+
+- Keep the application, data loading, UI, APIs, and orchestration in Python.
+- Isolate a rule/search/constraint core in Prolog when that core is genuinely clearer.
+- Exchange data through files, JSON, a subprocess, HTTP, foreign interfaces, or a narrow embedding layer.
+- Test the Prolog relation set with representative cases and expected answers.
+
+This keeps Prolog's strength where it matters and avoids forcing the whole product into a niche ecosystem.
+
+## Watch Points
+
+Python search code can become a maze of mutable state, callbacks, recursion, pruning flags, and special cases. If the core is really relational, a Prolog prototype may expose the model faster.
+
+Prolog can also fail badly when the model is vague. Unbounded search, accidental duplicate answers, poor goal ordering, misuse of cut, and implementation-specific libraries can make a concise program hard to maintain.
+
+## Practical Default
+
+Use Python for the surrounding system unless there is a specific reason not to.
+
+Use Prolog for the rule/search core when a prototype shows that relations, unification, backtracking, and constraints make the hardest part simpler and more reviewable.

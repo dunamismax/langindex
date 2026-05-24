@@ -42,6 +42,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "perl",
     "php",
     "powershell",
+    "prolog",
     "python",
     "r",
     "ruby",
@@ -713,9 +714,9 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 44);
-        assert_eq!(content.comparisons.len(), 66);
-        assert_eq!(content.guides.len(), 22);
+        assert_eq!(content.languages.len(), 45);
+        assert_eq!(content.comparisons.len(), 68);
+        assert_eq!(content.guides.len(), 23);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
         assert!(content.comparison("ada-vs-rust").is_some());
@@ -761,6 +762,7 @@ mod tests {
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
         assert!(content.language("powershell").is_some());
+        assert!(content.language("prolog").is_some());
         assert!(content.language("rust").is_some());
         assert!(content.language("visual-basic").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
@@ -801,6 +803,12 @@ mod tests {
         assert!(content.comparison("dart-vs-typescript").is_some());
         assert!(content.comparison("rust-vs-go").is_some());
         assert!(content.comparison("powershell-vs-bash").is_some());
+        assert!(content.comparison("prolog-vs-haskell").is_some());
+        assert!(
+            content
+                .comparison("prolog-vs-python-for-rule-search-heavy-problems")
+                .is_some()
+        );
         assert!(
             content
                 .guide("choosing-an-embedded-scripting-language")
@@ -817,6 +825,11 @@ mod tests {
                 .is_some()
         );
         assert!(content.guide("choosing-a-lisp-family-language").is_some());
+        assert!(
+            content
+                .guide("choosing-a-logic-programming-language")
+                .is_some()
+        );
         assert!(
             content
                 .guide("choosing-a-concurrency-oriented-backend-language")
@@ -853,6 +866,7 @@ mod tests {
         assert!(routes.contains("/languages/gdscript"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
+        assert!(routes.contains("/languages/prolog"));
         assert!(routes.contains("/languages/visual-basic"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));
@@ -877,11 +891,14 @@ mod tests {
         assert!(routes.contains("/comparisons/dart-vs-typescript"));
         assert!(routes.contains("/comparisons/rust-vs-go/"));
         assert!(routes.contains("/comparisons/powershell-vs-bash"));
+        assert!(routes.contains("/comparisons/prolog-vs-haskell"));
+        assert!(routes.contains("/comparisons/prolog-vs-python-for-rule-search-heavy-problems"));
         assert!(routes.contains("/comparisons/solidity-vs-rust-for-smart-contracts"));
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
         assert!(routes.contains("/guides/choosing-a-lisp-family-language"));
+        assert!(routes.contains("/guides/choosing-a-logic-programming-language"));
         assert!(routes.contains("/guides/choosing-a-smart-contract-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));

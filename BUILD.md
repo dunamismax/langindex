@@ -71,13 +71,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 4 - Prolog
 
-- [ ] Add a complete Prolog page.
-- [ ] Cover logic programming, facts and rules, unification, backtracking, predicates, recursion, declarative search, constraint logic programming, ISO Prolog, SWI-Prolog, common educational and symbolic-AI uses, and operational pitfalls.
-- [ ] Add Prolog vs Haskell comparison.
-- [ ] Add Prolog vs Python for rule/search-heavy problems comparison.
-- [ ] Add Prolog to functional-programming or a new logic-programming guide if the existing guide cannot carry it cleanly.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Prolog page.
+- [x] Cover logic programming, facts and rules, unification, backtracking, predicates, recursion, declarative search, constraint logic programming, ISO Prolog, SWI-Prolog, common educational and symbolic-AI uses, and operational pitfalls.
+- [x] Add Prolog vs Haskell comparison.
+- [x] Add Prolog vs Python for rule/search-heavy problems comparison.
+- [x] Add Prolog to functional-programming or a new logic-programming guide if the existing guide cannot carry it cleanly.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 5 - Common Lisp
 
