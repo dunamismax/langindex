@@ -1,0 +1,216 @@
+---
+title: Scheme
+slug: scheme
+status: active
+summary: Scheme is a small, standardized Lisp-family language for teaching, language research, interpreters, compilers, embedded extension systems, and careful functional programming where lexical scope, proper tail calls, hygienic macros, and continuations matter.
+firstReleased: 1975
+creators:
+  - Gerald Jay Sussman
+  - Guy L. Steele Jr.
+paradigms:
+  - lisp
+  - functional
+  - metaprogramming
+  - symbolic
+  - educational
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with standard predicates, first-class procedures, lexical closures, records in modern reports, and implementation-specific optional checks or compiler diagnostics
+memory:
+  model: automatic memory management in each implementation, normally garbage-collected, with mutable pairs, strings, vectors, bytevectors, and implementation-specific controls for foreign memory or embedding
+runtime:
+  model: many implementations across interpreters, bytecode systems, native-code compilers, embeddable runtimes, R5RS/R6RS/R7RS modes, and implementation-specific extensions
+officialSite: https://www.scheme.org/
+packageManagers:
+  - SRFIs
+  - implementation libraries
+  - OS packages
+  - source vendoring
+comparedWith:
+  - common-lisp
+  - clojure
+bestFor:
+  - Teaching, programming-language courses, interpreters, compilers, macro systems, semantics experiments, and language research where a small Lisp with formal reports is useful.
+  - Embedded extension languages when a host can choose a Scheme implementation such as Guile, Chibi, Gambit, or another runtime and expose a narrow API.
+  - Teams that value lexical scope, first-class procedures, proper tail calls, hygienic macros, continuations, and simple composable primitives more than a large default platform.
+  - Projects that can choose one implementation and document its report level, libraries, module system, package source, foreign interface, and deployment model.
+poorFit:
+  - Teams that need one dominant implementation, one official package registry, one standard build tool, broad hiring, and mainstream vendor SDK coverage before Lisp-family expressiveness.
+  - Application stacks where a large batteries-included platform such as Racket, Clojure/JVM, Python, JavaScript, Java, or .NET is the real requirement.
+  - Codebases that must be portable across Scheme implementations while also relying heavily on implementation-specific modules, FFI, threads, records, objects, or package tools.
+  - Performance-critical systems where the team cannot benchmark the chosen implementation, control allocation, understand continuation costs, or own runtime integration.
+sources:
+  - title: Scheme
+    url: https://www.scheme.org/
+    publisher: Scheme.org
+  - title: The Lambda Papers
+    url: https://research.scheme.org/lambda-papers/
+    publisher: Scheme.org
+  - title: Revised7 Report on the Algorithmic Language Scheme
+    url: https://r7rs.org/
+    publisher: R7RS
+  - title: R7RS - Basic Concepts
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-5.html
+    publisher: Scheme Reports
+  - title: R7RS - Expressions
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-6.html
+    publisher: Scheme Reports
+  - title: R6RS
+    url: https://www.r6rs.org/
+    publisher: R6RS
+  - title: Chez Scheme
+    url: https://cisco.github.io/ChezScheme/
+    publisher: Chez Scheme
+  - title: GNU Guile
+    url: https://www.gnu.org/software/guile/
+    publisher: GNU
+  - title: Dialects of Racket and Scheme
+    url: https://docs.racket-lang.org/guide/dialects.html
+    publisher: Racket
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+Scheme is a Lisp-family language, not one runtime or one product platform. The language is defined through reports such as R5RS, R6RS, and R7RS, while practical projects choose an implementation with its own libraries, module conventions, compiler, embedding API, package story, foreign interface, and deployment model.
+
+This page treats Scheme as the standards-oriented language family. R7RS small is the current small-language report, R6RS remains important for implementations such as Chez Scheme, and older R5RS material still matters in education and legacy code. Racket is related but should not be treated as identical to portable Scheme: Racket's own guide describes it as a Lisp dialect descended from Scheme, and its `#lang` module system is specific to Racket tools.
+
+## Origin And Standards
+
+Scheme was introduced in 1975 by Gerald Jay Sussman and Guy L. Steele Jr. at MIT. The Scheme.org Lambda Papers index lists the first report, *SCHEME: An Interpreter For Extended Lambda Calculus*, as MIT AI Memo 349 from December 1975. Those papers explored actors, lambda calculus, continuations, tail recursion, lexical scope, compilation, and program representation.
+
+The later Revised Reports turned that research language into a standards family. R7RS describes Scheme as a language for building abstractions from simple, composable primitives. It also frames the seventh revision as split between a small language for embedding, education, and research, and a larger language effort for mainstream software needs. The R7RS small language was completed in 2013, while R7RS large remains ongoing.
+
+That history explains both Scheme's durability and its friction. The core language is deliberately small and influential. The implementation ecosystem is intentionally plural. A production project should say which report and implementation it targets instead of assuming "Scheme" implies one uniform library and toolchain.
+
+## Language Model
+
+Scheme is dynamically typed, lexically scoped, expression-oriented, and built around first-class procedures. A `lambda` expression captures the environment where it is evaluated, which gives Scheme ordinary lexical closures. Identifiers are resolved by the innermost visible binding region, with global bindings used only when no enclosing binding applies.
+
+Scheme is also a Lisp. Source code and data share external representations built from symbols, lists, vectors, numbers, strings, booleans, and other values. Quotation and quasiquotation let programs construct code-shaped data, while macros let programs define new derived expression forms.
+
+The design is smaller than Common Lisp and less platform-centered than Clojure. Scheme does not put CLOS, a condition system, persistent immutable collections, Java interop, or a large standard platform at the center. Its core value is clarity: procedures, lexical binding, tail calls, macros, continuations, and simple data structures.
+
+Related concepts: [Metaprogramming And Macros](/concepts/metaprogramming-and-macros/), [Functional Programming](/concepts/functional-programming/), [REPL And Interactive Development](/concepts/repl-and-interactive-development/), [Garbage Collection](/concepts/garbage-collection/), and [Closures And First-Class Functions](/concepts/closures-and-first-class-functions/).
+
+## Proper Tail Calls And Continuations
+
+Proper tail recursion is a defining Scheme requirement. R7RS says Scheme implementations must support an unbounded number of active tail calls. That makes loops written as tail-recursive procedure calls a normal Scheme technique rather than an optimization the programmer hopes the compiler performs.
+
+Continuations are another central idea. Scheme exposes the current continuation through `call-with-current-continuation`, often written `call/cc` in implementations. A captured continuation represents the rest of the computation at the capture point and can later be invoked. This can express escapes, backtracking, coroutines, generators, cooperative control, and unusual control abstractions.
+
+These features are powerful but not free. Tail calls are routine. First-class continuations need more care because they affect control flow, resource lifetime, debugging, and sometimes implementation performance. Most application code should prefer ordinary functions, tail recursion, parameters, exceptions, or implementation-specific delimited-control facilities unless full continuations are the right model.
+
+## Hygienic Macros
+
+Scheme has a strong hygienic macro tradition. R7RS describes the standard `syntax-rules` pattern language and says macros defined through it are hygienic and referentially transparent, preserving lexical scoping. That means generated bindings are effectively renamed to avoid unintended captures, and inserted free references refer to the bindings visible where the transformer was specified.
+
+This is a different macro culture from Common Lisp's `defmacro`. Common Lisp macros are very powerful source transformations, but programmers must manage capture carefully. Scheme's standard macro system makes safe local syntactic abstraction a central language feature. Implementations may also provide richer systems such as `syntax-case` or non-standard macro facilities.
+
+Use macros when the abstraction genuinely needs syntax: binding forms, control forms, DSLs, compile-time checks, or code generation. Prefer functions when ordinary data and higher-order procedures express the idea clearly.
+
+## Racket, Guile, Chez, And Implementations
+
+Scheme's implementation diversity is part of the language's identity. Scheme.org lists multiple R7RS and R6RS implementations, and each has its own center of gravity.
+
+Guile is GNU's Scheme implementation and extension-language platform. GNU describes it as supporting R5RS, most of R6RS, and many SRFIs, with modules for practical work and integration with C and C++ programs. Guile is relevant when Scheme is embedded into an application or used inside GNU-adjacent tooling.
+
+Chez Scheme is an R6RS-oriented implementation with a native-code compiler and programming environment. Its documentation describes support for proper tail calls, continuations, user-defined records, libraries, exceptions, hygienic macro expansion, C and foreign-language interfaces, threads, non-blocking I/O, and whole-program compilation.
+
+Racket is a descendant of Scheme and can run Scheme dialects, but it is also its own language family and tool suite. If the project wants Racket's `#lang` system, DrRacket, package ecosystem, contracts, typed variants, teaching languages, and language-oriented programming platform, evaluate Racket as Racket rather than treating it as portable Scheme.
+
+## Syntax Example
+
+```scheme
+(define (healthy? status)
+  (and (<= 200 status)
+       (< status 400)))
+
+(define-syntax when-unhealthy
+  (syntax-rules ()
+    ((_ status body ...)
+     (if (not (healthy? status))
+         (begin body ...)))))
+
+(define (status-line check)
+  (let ((name (car check))
+        (status (cdr check)))
+    (string-append name
+                   " "
+                   (number->string status)
+                   " "
+                   (if (healthy? status) "ok" "attention"))))
+
+(define (report checks)
+  (let loop ((remaining checks)
+             (lines '()))
+    (if (null? remaining)
+        (reverse lines)
+        (let* ((check (car remaining))
+               (status (cdr check)))
+          (when-unhealthy status
+            (display "warning: ")
+            (display (car check))
+            (newline))
+          (loop (cdr remaining)
+                (cons (status-line check) lines))))))
+
+(for-each (lambda (line)
+            (display line)
+            (newline))
+          (report '(("scheme" . 200)
+                    ("example" . 503))))
+```
+
+This small example uses pairs, lists, lexical bindings, predicates, a hygienic `syntax-rules` macro, named `let` for tail-recursive looping, mutation-free list accumulation, and output procedures. Exact module headers and command lines vary by implementation and report mode, so production examples should name the target implementation.
+
+## Tooling, Libraries, And Builds
+
+There is no single Scheme equivalent of Cargo, npm, Maven, or Go modules. The practical ecosystem is implementation-specific.
+
+R7RS defines a small standard library set and a `define-library` form. R6RS defines a different library system. SRFIs provide a community process for portable library and language extensions, but SRFI support varies by implementation. Guile, Chez Scheme, Gambit, Chicken, Chibi, Racket's Scheme modes, MIT/GNU Scheme, Gauche, Sagittarius, Gerbil, and other systems each have their own conventions.
+
+For a maintained Scheme project, write down:
+
+- The implementation and version.
+- The target report or dialect mode.
+- Which SRFIs and implementation libraries are required.
+- How dependencies are fetched, pinned, vendored, audited, and mirrored.
+- How tests, formatting, linting, documentation, and CI run.
+- Whether the deployment artifact is source, bytecode, native code, an embedded runtime, a saved image, a package, or a host application.
+- Which non-standard features are allowed.
+
+Scheme can be practical, but portability does not happen by accident. Treat implementation choice as architecture.
+
+## Best-Fit Use Cases
+
+Scheme is strongest when:
+
+- The goal is teaching core programming-language ideas without a large industrial surface.
+- The project is an interpreter, compiler, macro system, DSL, static-analysis tool, or semantics experiment.
+- Tail recursion, lexical closures, continuations, and hygienic macros are central to the model.
+- The application needs an embedded extension language and a Scheme implementation fits the host's licensing, footprint, C interface, and library needs.
+- A team already knows the chosen implementation and can own packaging, runtime behavior, and deployment.
+
+Scheme's best uses are often precise rather than broad: educational systems, research tools, language workbenches, embedded configuration or scripting, symbolic transformation, and small expert-maintained applications.
+
+## Poor-Fit Or Risky Use Cases
+
+Scheme can be a poor fit when:
+
+- Broad mainstream hiring, vendor SDKs, conventional web frameworks, or a large package ecosystem dominate the decision.
+- The team wants "a Lisp" but really needs Clojure's JVM ecosystem, Common Lisp's larger standardized language, or Racket's language-platform tooling.
+- Portability across multiple Scheme implementations is required but the application depends on non-standard modules, records, threads, FFI, object systems, or package tools.
+- The code will be maintained by developers who cannot use the REPL, read s-expressions comfortably, debug macro expansion, or reason about tail calls and continuations.
+- Runtime performance, startup, memory behavior, or host integration is assumed instead of benchmarked on the chosen implementation.
+
+The danger is not minimalism. The danger is picking Scheme for elegance while leaving implementation, libraries, packaging, and production ownership vague.
+
+## Nearby Comparisons
+
+[Scheme vs Common Lisp](/comparisons/scheme-vs-common-lisp/) is the closest Lisp-family comparison. Scheme is smaller, more standards-fragmented, and centered on lexical scope, proper tail calls, hygienic macros, and continuations. Common Lisp is larger, ANSI-standardized, and centered on CLOS, conditions, packages, macros, and mature implementation-specific application development.
+
+[Scheme vs Clojure](/comparisons/scheme-vs-clojure/) is the practical hosted-platform comparison. Choose Scheme when the goal is a small standards-oriented Lisp, education, language implementation, or embedding. Choose Clojure when the JVM, Java interop, immutable persistent data, and a modern production ecosystem are part of the value.
+
+Racket is nearby but not yet a separate LangIndex page. Treat Racket as a related language platform rather than simply "Scheme with libraries."

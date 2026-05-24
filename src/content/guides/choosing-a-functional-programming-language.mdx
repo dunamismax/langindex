@@ -1,7 +1,7 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Common Lisp, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Common Lisp, Scheme, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
@@ -12,6 +12,7 @@ candidates:
   - scala
   - clojure
   - common-lisp
+  - scheme
   - kotlin
   - rust
   - javascript
@@ -89,6 +90,15 @@ sources:
   - title: Common Lisp HyperSpec - Conditions
     url: https://www.lispworks.com/documentation/HyperSpec/Body/09_.htm
     publisher: LispWorks
+  - title: Revised7 Report on the Algorithmic Language Scheme
+    url: https://r7rs.org/
+    publisher: R7RS
+  - title: R7RS - Basic Concepts
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-5.html
+    publisher: Scheme Reports
+  - title: R7RS - Expressions
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-6.html
+    publisher: Scheme Reports
   - title: Kotlin Language Specification
     url: https://kotlinlang.org/spec/introduction.html
     publisher: JetBrains
@@ -152,6 +162,12 @@ Kotlin may fit better.
 Choose [Common Lisp](/languages/common-lisp/) when functional techniques are part of a broader Lisp system: macros, symbolic data, generic functions, CLOS, conditions, live image development, and implementation-specific compiler/runtime control. It is strongest for symbolic systems, DSL-heavy applications, compilers, expert tools, and exploratory systems where the team can own a Common Lisp implementation and ecosystem.
 
 Do not choose Common Lisp only because it is expressive or historically important. Choose it when the team values ANSI Common Lisp, interactive image workflows, CLOS, macros, and deployment choices enough to sustain a smaller, more specialized ecosystem. If the JVM is the platform constraint, Clojure may be the better Lisp-family option.
+
+## Choose Scheme When
+
+Choose [Scheme](/languages/scheme/) when functional programming is tied to a small Lisp-family language: lexical scope, first-class procedures, proper tail calls, hygienic macros, continuations, language implementation, education, or embedding. It is strongest for programming-language courses, interpreters, compilers, DSL experiments, symbolic transformation, and small expert-maintained systems where the chosen implementation is part of the design.
+
+Do not choose Scheme only because the core language is elegant. Choose it when the team can name the target report or implementation, library set, SRFIs, package path, FFI, and deployment model. If the team wants a large Lisp application language, Common Lisp may fit better. If the team wants JVM production services, Clojure may fit better.
 
 ## Choose Elixir When
 
@@ -225,6 +241,8 @@ Start with Scala when the JVM, Spark, or Java interoperability is central and th
 Start with Clojure when the JVM, immutable data, Java interoperability, macros, and REPL-driven development are central, and dynamic typing is acceptable.
 
 Start with Common Lisp when the team wants ANSI Common Lisp, CLOS, conditions, image-based development, macros, and implementation-specific control more than mainstream ecosystem defaults.
+
+Start with Scheme when teaching, language tooling, embedding, proper tail calls, hygienic macros, continuations, or small-language semantics are the reason for choosing a functional Lisp.
 
 Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
 

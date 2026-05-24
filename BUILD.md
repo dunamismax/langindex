@@ -84,20 +84,20 @@ Selection signals checked on 2026-05-23:
 - [x] Add a complete Common Lisp page.
 - [x] Cover standardization, dynamic typing, homoiconicity, macros, CLOS, condition system, image-based development, REPL workflow, SBCL and other implementations, ASDF/Quicklisp, performance profile, and ecosystem maturity.
 - [x] Add Common Lisp vs Clojure comparison.
-- [x] Add Common Lisp vs Scheme comparison if Scheme exists by the time this phase starts; Scheme is not yet published, so the comparison is deferred to the Phase 6 Scheme TODO below.
+- [x] Add Common Lisp vs Scheme comparison if Scheme exists by the time this phase starts; Scheme was not yet published during Phase 5, so this comparison was completed in Phase 6.
 - [x] Add Common Lisp to the Lisp-family and functional-programming guides.
 - [x] Update validation and tests.
 - [x] Run the normal verification commands.
 
 ## Phase 6 - Scheme
 
-- [ ] Add a complete Scheme page.
-- [ ] Cover minimal core language design, lexical scope, proper tail calls, hygienic macros, continuations, RnRS standards, Racket relationship and distinction, Guile, Chez Scheme, education, language research, and embedding.
-- [ ] Add Scheme vs Common Lisp comparison.
-- [ ] Add Scheme vs Clojure comparison.
-- [ ] Add Scheme to the Lisp-family, functional-programming, and embedded-scripting guides where accurate.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Scheme page.
+- [x] Cover minimal core language design, lexical scope, proper tail calls, hygienic macros, continuations, RnRS standards, Racket relationship and distinction, Guile, Chez Scheme, education, language research, and embedding.
+- [x] Add Scheme vs Common Lisp comparison.
+- [x] Add Scheme vs Clojure comparison.
+- [x] Add Scheme to the Lisp-family, functional-programming, and embedded-scripting guides where accurate.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 7 - D
 

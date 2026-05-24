@@ -5,6 +5,7 @@ summary: A practical guide for evaluating Clojure, Common Lisp, Scheme, Racket, 
 audience: Developers and teams considering a Lisp-family language for production work, language tooling, DSLs, education, research, symbolic systems, or data-heavy JVM applications.
 candidates:
   - common-lisp
+  - scheme
   - clojure
 sources:
   - title: Clojure Rationale
@@ -59,7 +60,7 @@ Do not choose a Lisp-family language only because parentheses, macros, or REPL d
 - Scheme when a small language, teaching, language research, interpreters, compilers, or standards-oriented simplicity matters.
 - Racket when language-oriented programming, DSLs, teaching languages, macros, documentation, and the Racket platform are the point.
 
-LangIndex currently has complete pages for Common Lisp and Clojure. Scheme and Racket should each get their own pages before this guide treats them as complete recommendations.
+LangIndex currently has complete pages for Common Lisp, Scheme, and Clojure. Racket should get its own page before this guide treats it as a complete recommendation.
 
 ## Choose Clojure When
 
@@ -79,7 +80,7 @@ Do not choose Common Lisp only to avoid the JVM. Make the implementation and dep
 
 ## Choose Scheme Or Racket When
 
-Evaluate Scheme when a small Lisp-family language, teaching, interpreters, compilers, formal semantics, or research-friendly simplicity is the real fit. Scheme's value is often clarity and minimalism, but production decisions depend heavily on the chosen implementation and library ecosystem.
+Evaluate [Scheme](/languages/scheme/) when a small Lisp-family language, teaching, interpreters, compilers, formal semantics, proper tail calls, hygienic macros, continuations, or research-friendly simplicity is the real fit. Scheme's value is often clarity and minimalism, but production decisions depend heavily on the chosen implementation and library ecosystem.
 
 Evaluate Racket when language-oriented programming is the product advantage. Racket is especially relevant for DSLs, teaching languages, macro systems, program analysis, documentation-heavy language tools, and projects that benefit from Racket's batteries-included platform.
 
@@ -114,7 +115,7 @@ The main risks are ecosystem and maintenance fit:
 
 For Clojure specifically, watch JVM startup, classpath complexity, dynamic data contracts, macro discipline, and mixed `deps.edn`/Leiningen conventions.
 
-For Common Lisp, Scheme, and Racket, watch implementation portability, library coverage, packaging, deployment familiarity, and hiring.
+For Common Lisp, Scheme, and Racket, watch implementation portability, library coverage, packaging, deployment familiarity, and hiring. For Scheme specifically, name the target report or dialect mode and test the SRFIs, modules, FFI, tail calls, continuations, and package path the project relies on.
 
 ## Practical Default
 

@@ -49,6 +49,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "ruby",
     "rust",
     "scala",
+    "scheme",
     "solidity",
     "sql",
     "swift",
@@ -715,8 +716,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 46);
-        assert_eq!(content.comparisons.len(), 69);
+        assert_eq!(content.languages.len(), 47);
+        assert_eq!(content.comparisons.len(), 71);
         assert_eq!(content.guides.len(), 23);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
@@ -760,6 +761,7 @@ mod tests {
         assert!(content.language("objective-c").is_some());
         assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
+        assert!(content.language("scheme").is_some());
         assert!(content.language("julia").is_some());
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
@@ -778,6 +780,8 @@ mod tests {
         assert!(content.comparison("clojure-vs-java").is_some());
         assert!(content.comparison("clojure-vs-scala").is_some());
         assert!(content.comparison("common-lisp-vs-clojure").is_some());
+        assert!(content.comparison("scheme-vs-common-lisp").is_some());
+        assert!(content.comparison("scheme-vs-clojure").is_some());
         assert!(content.comparison("julia-vs-python").is_some());
         assert!(content.comparison("julia-vs-r").is_some());
         assert!(content.comparison("zig-vs-c").is_some());
@@ -864,6 +868,7 @@ mod tests {
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
+        assert!(routes.contains("/languages/scheme"));
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/nim"));
         assert!(routes.contains("/languages/odin"));
@@ -890,6 +895,8 @@ mod tests {
         assert!(routes.contains("/comparisons/clojure-vs-java"));
         assert!(routes.contains("/comparisons/clojure-vs-scala"));
         assert!(routes.contains("/comparisons/common-lisp-vs-clojure"));
+        assert!(routes.contains("/comparisons/scheme-vs-common-lisp"));
+        assert!(routes.contains("/comparisons/scheme-vs-clojure"));
         assert!(routes.contains("/languages/erlang"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));

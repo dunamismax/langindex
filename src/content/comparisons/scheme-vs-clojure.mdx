@@ -1,0 +1,117 @@
+---
+title: Scheme vs Clojure
+slug: scheme-vs-clojure
+summary: "Scheme and Clojure are both Lisp-family languages, but Scheme centers a small standards-oriented language with proper tail calls, hygienic macros, continuations, and many implementations while Clojure centers immutable data, JVM interop, REPL workflows, and a modern hosted ecosystem."
+languages:
+  - scheme
+  - clojure
+useCases:
+  - Lisp-family systems
+  - functional programming
+  - language tooling
+  - education and research
+  - embedded scripting
+  - JVM services
+sources:
+  - title: Scheme
+    url: https://www.scheme.org/
+    publisher: Scheme.org
+  - title: Revised7 Report on the Algorithmic Language Scheme
+    url: https://r7rs.org/
+    publisher: R7RS
+  - title: R7RS - Basic Concepts
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-5.html
+    publisher: Scheme Reports
+  - title: R7RS - Expressions
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-6.html
+    publisher: Scheme Reports
+  - title: GNU Guile
+    url: https://www.gnu.org/software/guile/
+    publisher: GNU
+  - title: Chez Scheme
+    url: https://cisco.github.io/ChezScheme/
+    publisher: Chez Scheme
+  - title: Clojure
+    url: https://clojure.org/
+    publisher: Clojure
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Differences with Lisps
+    url: https://clojure.org/reference/lisps
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: deps.edn Reference
+    url: https://clojure.org/reference/deps_edn
+    publisher: Clojure
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing between Scheme and Clojure as Lisp-family languages. Both use s-expressions, dynamic typing, functions, macros, and interactive development. The practical decision is usually not syntax. It is whether the team wants a small standards-oriented Lisp with many implementations or a JVM-hosted Lisp with immutable data and Java ecosystem access.
+
+If the JVM is not useful and the project does not need Scheme's small-language properties, also compare Common Lisp, Racket, Lua, Python, JavaScript, or the host platform's default language.
+
+## Shared Territory
+
+Scheme and Clojure both support functional programming, higher-order functions, symbolic data, macro abstraction, and REPL-driven exploration. Both can be strong for language tooling, DSLs, rule-shaped code, data transformation, and exploratory development.
+
+Both can also become hard to maintain if dynamic data, macros, namespace/module conventions, and runtime assumptions are informal. Tests, naming discipline, boundary validation, and documented build/deployment paths matter more than the fact that both are Lisps.
+
+## Key Differences
+
+| Dimension      | Scheme                                             | Clojure                                                |
+| -------------- | -------------------------------------------------- | ------------------------------------------------------ |
+| Platform       | Many implementations and report modes              | Hosted Lisp, primarily on the JVM                      |
+| Language core  | Small, standards-oriented, implementation-plural    | Small core plus Clojure libraries and JVM host model   |
+| Data defaults  | Lists, pairs, vectors, strings, records, mutable and immutable styles | Immutable persistent maps, vectors, sets, lists, sequences |
+| Tail calls     | Proper tail recursion is required                  | JVM tail-call limits shape idioms such as `recur`      |
+| Macros         | Standard hygienic `syntax-rules`; implementation extensions vary | Clojure macros over data forms, with namespace conventions |
+| Control        | Continuations are part of the language tradition   | Exceptions, recursion constructs, Java host control flow |
+| Interop        | Implementation-specific C, host, or FFI integration | Direct Java interop and Maven ecosystem access         |
+| Tooling        | SRFIs and implementation-specific tools             | Clojure CLI, `deps.edn`, `tools.build`, Leiningen, Clojars |
+| Main risk      | Fragmented libraries and portability assumptions   | Dynamic data contracts, JVM startup, classpath/tooling choices |
+
+## Choose Scheme When
+
+- Teaching, language implementation, semantics, macro systems, or research-friendly simplicity are the real reason.
+- Proper tail calls, continuations, hygienic macros, or a small standard core matter directly.
+- The host application wants an embedded Scheme runtime and can define a narrow scripting API.
+- The project can commit to one implementation and document its report level, libraries, FFI, and deployment.
+- JVM access would add more operational weight than value.
+
+## Choose Clojure When
+
+- The JVM is an asset because Java libraries, Maven artifacts, observability, deployment infrastructure, and existing platform ownership matter.
+- Immutable persistent data and explicit state references are the default design advantage.
+- Backend services, integration systems, internal platforms, data pipelines, or rules/data-transformation workloads are the target.
+- The team wants Lisp macros and REPL workflows while staying close to Java operations.
+- Clojure CLI, `deps.edn`, Clojars, Java interop, and JVM containers fit the organization better than Scheme implementation choices.
+
+## Watch Points
+
+Scheme portability is narrower than the word "Scheme" suggests. A useful program often chooses Guile modules, Chez libraries, Gambit features, Chicken eggs, Racket compatibility modes, SRFIs, or implementation-specific FFI. That is acceptable when documented, but misleading when presented as portable Scheme.
+
+Clojure portability is mostly host portability: JVM versions, Clojure versions, Maven coordinates, classpaths, Java interop, startup behavior, and deployment artifacts. Clojure code often assumes immutable persistent collections and Clojure data conventions that do not map naturally to other Lisps.
+
+Scheme's proper tail recursion and continuations shape control-flow style. Clojure's JVM target shapes recursion and interop style. Do not port examples mechanically between them.
+
+## Application Fit
+
+Clojure is usually the more direct production-service choice when the organization already operates JVM systems. It can use Java drivers, libraries, monitoring agents, logging stacks, build systems, and deployment patterns while giving developers a data-oriented Lisp.
+
+Scheme is usually the more direct choice for language education, interpreters, compilers, embedded extension systems, and small expert-maintained tools. It can be used for services and applications, but the chosen implementation must earn that role through libraries, packaging, runtime behavior, and team skill.
+
+The clean decision is platform-first. Choose Clojure when the JVM and immutable data model are part of the advantage. Choose Scheme when small-language semantics, standards work, embedding, or language-tooling clarity are the advantage.
+
+## Migration Or Interoperability Notes
+
+Scheme and Clojure code do not share a routine runtime boundary. Clojure interoperates with Java and other JVM languages. Scheme interop depends on the implementation: C APIs, foreign-function interfaces, embedding APIs, generated executables, bytecode or native compilers, sockets, files, or process boundaries.
+
+Porting is usually a redesign. Scheme code may assume proper tail calls, `syntax-rules`, continuations, mutable pairs, and implementation modules. Clojure code may assume persistent maps, keywords, namespaces, Java classes, protocols, atoms, refs, and Maven dependencies.

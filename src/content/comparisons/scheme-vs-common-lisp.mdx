@@ -1,0 +1,111 @@
+---
+title: Scheme vs Common Lisp
+slug: scheme-vs-common-lisp
+summary: "Scheme and Common Lisp are both Lisp-family languages, but Scheme centers a small standards-oriented core with lexical scope, proper tail calls, hygienic macros, and continuations while Common Lisp centers ANSI Common Lisp, CLOS, conditions, packages, and mature multi-implementation application development."
+languages:
+  - scheme
+  - common-lisp
+useCases:
+  - Lisp-family systems
+  - language tooling
+  - education and research
+  - symbolic systems
+  - DSLs
+  - embedded extension languages
+sources:
+  - title: Scheme
+    url: https://www.scheme.org/
+    publisher: Scheme.org
+  - title: The Lambda Papers
+    url: https://research.scheme.org/lambda-papers/
+    publisher: Scheme.org
+  - title: Revised7 Report on the Algorithmic Language Scheme
+    url: https://r7rs.org/
+    publisher: R7RS
+  - title: R7RS - Basic Concepts
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-5.html
+    publisher: Scheme Reports
+  - title: R7RS - Expressions
+    url: https://standards.scheme.org/corrected-r7rs/r7rs-Z-H-6.html
+    publisher: Scheme Reports
+  - title: Common Lisp Documentation
+    url: https://www.lispworks.com/documentation/common-lisp.html
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec
+    url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Objects
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/07_.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Conditions
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/09_.htm
+    publisher: LispWorks
+  - title: Common Lisp Implementations
+    url: https://common-lisp.net/implementations
+    publisher: Common-Lisp.net
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing between Scheme and Common Lisp as Lisp-family languages. Both use s-expressions, dynamic typing, first-class functions, macros, interactive workflows, and code-as-data ideas. They differ in language size, standardization style, object systems, macro culture, implementation expectations, and production ecosystem shape.
+
+If the team does not specifically need Lisp-family strengths, compare both against Clojure, Racket, Python, JavaScript, Rust, Java, or the platform-default language first.
+
+## Shared Territory
+
+Scheme and Common Lisp both reward developers who are comfortable with symbolic data, recursive structure, REPL feedback, macros, and language-oriented design. Both can build interpreters, compilers, DSLs, expert tools, program-analysis tools, symbolic systems, teaching environments, and production applications maintained by fluent teams.
+
+Both also need convention. Macros should be reviewed. Dynamic boundaries need tests and validation. Implementation-specific behavior should be named. A Lisp project can be elegant for its maintainers and opaque to everyone else if package, module, deployment, and style rules stay implicit.
+
+## Key Differences
+
+| Dimension       | Scheme                                             | Common Lisp                                             |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------- |
+| Language size   | Small standards-oriented core                      | Large ANSI standardized language                        |
+| Standard track  | RnRS reports, with R5RS, R6RS, and R7RS differences | ANSI INCITS 226-1994 Common Lisp                        |
+| Scope model     | Lexical scope is central                           | Lexical scope plus dynamic variables and packages       |
+| Tail calls      | Proper tail recursion is required                  | Tail-call optimization is implementation-dependent      |
+| Macros          | Standard hygienic `syntax-rules`; richer systems vary | `defmacro` and macro expansion over Lisp forms          |
+| Control         | First-class continuations in the language tradition | Conditions, restarts, `catch`/`throw`, implementation tools |
+| Object model    | Records and implementation-specific object systems | CLOS generic functions, classes, methods, method combinations |
+| Tooling         | Implementation-specific libraries, SRFIs, report modes | ASDF, Quicklisp, implementations such as SBCL and ECL   |
+| Main risk       | Fragmented implementation/library/package choices  | Larger language surface, niche ecosystem, image discipline |
+
+## Choose Scheme When
+
+- The goal is education, programming-language research, interpreters, compilers, macro systems, or a small language core.
+- Proper tail calls, lexical scope, hygienic macros, and continuations are central to the design.
+- An embedded extension language is wanted and a Scheme implementation such as Guile, Chibi, Gambit, or another runtime fits the host.
+- The project can choose one implementation and document its target report, library set, package source, FFI, and deployment model.
+- Minimal language surface is a feature, not a missing platform.
+
+## Choose Common Lisp When
+
+- ANSI Common Lisp's larger language surface is the desired baseline.
+- CLOS, generic functions, method combinations, conditions, restarts, packages, and image-based development are practical advantages.
+- The team wants mature Common Lisp implementations such as SBCL, ECL, ABCL, LispWorks, Allegro CL, or others.
+- The project is symbolic, DSL-heavy, expert-facing, interactive, or implementation-tuned enough to justify Common Lisp's specialized ecosystem.
+- Portability across Common Lisp implementations matters more than Scheme's small core.
+
+## Watch Points
+
+Scheme's name covers a family of reports and implementations. R7RS small, R6RS, R5RS, Guile, Chez Scheme, Gambit, Chicken, Chibi, Racket's Scheme modes, and other systems are not interchangeable. Portability should be tested against the exact systems the project claims to support.
+
+Common Lisp is more uniform as a language standard, but practical systems still depend on implementation behavior, ASDF systems, Quicklisp or vendored dependencies, editor conventions, image state, foreign libraries, and deployment choices.
+
+The macro difference is important. Scheme's hygienic macros reduce accidental capture for standard pattern-based macros. Common Lisp's macros are more direct and broad, but they put more responsibility on the programmer to avoid capture and hidden control flow.
+
+## Application Fit
+
+Scheme is often sharper for courses, books, semantics experiments, language tools, small embedders, and systems where the language core should stay tiny. It can build applications, but application teams must provide conventions that larger platforms bundle by default.
+
+Common Lisp is usually the more application-oriented traditional Lisp. It has a larger standard, CLOS, conditions, richer implementation environments, and a long history of building substantial systems. That does not make it a mainstream default; it means the language surface has more of the machinery needed for long-lived Lisp applications.
+
+Choose Scheme for minimalism and language-design clarity. Choose Common Lisp for a larger standardized Lisp with more built-in application machinery.
+
+## Migration Or Interoperability Notes
+
+Porting between Scheme and Common Lisp is usually a redesign. Names, truth values, module/package systems, macro systems, object models, condition handling, standard libraries, iteration idioms, tail-call assumptions, and implementation extensions differ.
+
+Use explicit service, file, protocol, FFI, or process boundaries when mixing them. Avoid presenting a Scheme or Common Lisp API as "just Lisp" to callers who do not share that implementation's data and module conventions.

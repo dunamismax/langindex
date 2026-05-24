@@ -1,10 +1,11 @@
 ---
 title: Choosing An Embedded Scripting Language
 slug: choosing-an-embedded-scripting-language
-summary: A practical guide for choosing Lua, GDScript, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
+summary: A practical guide for choosing Lua, Scheme, GDScript, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
 audience: Developers adding a scripting or plugin layer to a host application, game, editor, native tool, device UI, database, or extensible product.
 candidates:
   - lua
+  - scheme
   - gdscript
   - javascript
   - python
@@ -24,6 +25,12 @@ sources:
   - title: LuaJIT
     url: https://luajit.org/luajit.html
     publisher: LuaJIT
+  - title: Revised7 Report on the Algorithmic Language Scheme
+    url: https://r7rs.org/
+    publisher: R7RS
+  - title: GNU Guile
+    url: https://www.gnu.org/software/guile/
+    publisher: GNU
   - title: GDScript
     url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
     publisher: Godot Engine
@@ -80,6 +87,19 @@ Choose Lua when:
 - Existing users or tools already expect Lua, LuaJIT, or a Lua-like dialect.
 
 The main watch point is version clarity. Reference Lua 5.5, Lua 5.4, LuaJIT's Lua 5.1-style compatibility, Luau, and host-customized dialects are not interchangeable. Write down the supported language version and test plugin compatibility against it.
+
+## When Scheme Fits
+
+Scheme fits embedded scripting when the host wants a Lisp-family extension language, small composable semantics, hygienic macros, proper tail calls, and a runtime such as Guile, Chibi, Gambit, or another implementation with a suitable embedding story. Guile is the clearest official example: GNU describes it as a Scheme implementation and extension-language platform that can be integrated with C and C++ programs.
+
+Choose Scheme when:
+
+- The host wants scripts to express symbolic rules, transformations, configuration, or DSL-like behavior.
+- The host team can own a specific Scheme implementation, report mode, module set, SRFIs, and FFI boundary.
+- Macro power and tail-recursive control flow are useful to trusted plugin authors.
+- A Lisp-style extension surface is more valuable than broad mainstream familiarity.
+
+The main watch point is implementation specificity. "Scheme" is not one embeddable runtime with one package manager. Document the implementation, exposed API, allowed libraries, resource limits, and compatibility policy.
 
 ## When GDScript Fits
 
@@ -147,6 +167,8 @@ For a durable plugin surface, prefer a small host-provided API, versioned plugin
 ## Practical Default
 
 Start with Lua when the goal is a small, host-controlled embedded scripting language.
+
+Start with Scheme when the host wants a Lisp-family extension language and the team can own the specific Scheme implementation and API boundary.
 
 Start with GDScript when the host is Godot and scripts should be first-class Godot content.
 
