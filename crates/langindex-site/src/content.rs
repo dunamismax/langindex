@@ -48,6 +48,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "ocaml",
     "perl",
     "php",
+    "plsql",
     "powershell",
     "prolog",
     "python",
@@ -725,8 +726,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 56);
-        assert_eq!(content.comparisons.len(), 85);
+        assert_eq!(content.languages.len(), 57);
+        assert_eq!(content.comparisons.len(), 87);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -784,6 +785,7 @@ mod tests {
         assert!(content.language("gleam").is_some());
         assert!(content.language("micropython").is_some());
         assert!(content.language("mojo").is_some());
+        assert!(content.language("plsql").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -853,6 +855,12 @@ mod tests {
         assert!(
             content
                 .comparison("micropython-vs-c-for-microcontrollers")
+                .is_some()
+        );
+        assert!(content.comparison("plsql-vs-sql").is_some());
+        assert!(
+            content
+                .comparison("plsql-vs-java-for-database-adjacent-business-logic")
                 .is_some()
         );
         assert!(
@@ -945,6 +953,7 @@ mod tests {
         assert!(routes.contains("/languages/gdscript"));
         assert!(routes.contains("/languages/gleam"));
         assert!(routes.contains("/languages/micropython"));
+        assert!(routes.contains("/languages/plsql"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
@@ -973,6 +982,8 @@ mod tests {
         assert!(routes.contains("/comparisons/gleam-vs-erlang"));
         assert!(routes.contains("/comparisons/micropython-vs-python"));
         assert!(routes.contains("/comparisons/micropython-vs-c-for-microcontrollers"));
+        assert!(routes.contains("/comparisons/plsql-vs-sql"));
+        assert!(routes.contains("/comparisons/plsql-vs-java-for-database-adjacent-business-logic"));
         assert!(routes.contains("/comparisons/mojo-vs-python"));
         assert!(routes.contains("/comparisons/mojo-vs-julia"));
         assert!(routes.contains("/comparisons/elixir-vs-ruby"));

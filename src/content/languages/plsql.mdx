@@ -1,0 +1,215 @@
+---
+title: PL/SQL
+slug: plsql
+status: active
+summary: PL/SQL is Oracle's procedural extension to SQL for stored database logic, packages, procedures, functions, triggers, exceptions, data-local business rules, and Oracle Database applications that deliberately keep work close to relational data.
+creators:
+  - Oracle
+paradigms:
+  - procedural
+  - database
+  - relational
+  - imperative
+  - enterprise
+typing:
+  discipline: static with database-bound dynamic features
+  strength: statically declared PL/SQL and SQL types, records, collections, package specifications, and schema object metadata, with dynamic SQL and runtime database privileges shaping real programs
+memory:
+  model: Oracle Database-managed execution memory, package state, cursors, collections, shared pool objects, transactions, and database storage rather than manual heap allocation
+runtime:
+  model: PL/SQL units are compiled by Oracle Database, stored in the database when persistent, and executed by the Oracle Database PL/SQL engine alongside SQL execution
+officialSite: https://www.oracle.com/database/technologies/appdev/plsql.html
+packageManagers:
+  - Oracle Database schemas
+  - SQL scripts
+  - SQLcl
+  - SQL*Plus
+  - Oracle SQL Developer
+  - migration tools
+comparedWith:
+  - sql
+  - java
+  - abap
+  - python
+bestFor:
+  - Oracle Database applications where data-local logic, validation, batch work, reporting support, or shared database APIs should run inside the database transaction boundary.
+  - Packages, procedures, functions, and triggers that centralize Oracle-specific behavior used by several clients, jobs, forms, reports, services, or integration tools.
+  - Enterprise maintenance of existing Oracle estates where PL/SQL packages already encode important data semantics, permissions, workflows, and operational jobs.
+  - Database-adjacent performance work where reducing round trips, using set-based SQL, and measuring execution plans matter more than moving every rule into an application service.
+poorFit:
+  - General-purpose services, web applications, CLIs, desktop apps, mobile apps, or integration code that needs ordinary process structure, files, network clients, libraries, or independent deployment.
+  - Systems that need database portability across PostgreSQL, SQL Server, MySQL, SQLite, Db2, and Oracle without isolating vendor-specific procedural code.
+  - Application architecture where stored procedures and triggers would hide business behavior from source control, tests, migration review, observability, and rollback plans.
+  - Logic that depends on broad Java, Python, JavaScript, cloud SDK, or operating-system ecosystems more than on Oracle Database data and transactions.
+sources:
+  - title: PL/SQL for Developers
+    url: https://www.oracle.com/database/technologies/appdev/plsql.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - Overview of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/overview.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - Main Features of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/main-features-pl-sql.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - PL/SQL Triggers
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/plsql-triggers.html
+    publisher: Oracle
+  - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
+    publisher: Oracle
+  - title: Oracle AI Database Concepts - Server-Side Programming
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/cncpt/server-side-programming.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Packages and Types Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/arpls/
+    publisher: Oracle
+  - title: Oracle Database SQL Language Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
+    publisher: Oracle
+  - title: Using Oracle SQLcl
+    url: https://docs.oracle.com/en/database/oracle/sql-developer-command-line/20.4/sqcug/working-sqlcl.html
+    publisher: Oracle
+  - title: The Java Database Connectivity API
+    url: https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/
+    publisher: Oracle
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+PL/SQL is Oracle's procedural extension to SQL. Oracle's current language reference describes it as a transaction-processing language that extends SQL with procedural programming, while Oracle's PL/SQL developer page emphasizes that PL/SQL program units are compiled by Oracle Database and stored inside the database.
+
+That coupling is the center of the language. PL/SQL is not a portable replacement for SQL, and it is not a general-purpose service language that merely happens to connect to Oracle. It is the language Oracle Database applications use when logic should live near Oracle schemas, SQL statements, transactions, packages, triggers, privileges, jobs, and database-resident APIs.
+
+The useful architectural question is therefore not "PL/SQL or application code" in the abstract. It is which behavior belongs inside Oracle Database because the data, transaction, permissions, or shared database API are the durable boundary, and which behavior belongs in Java, C#, Python, TypeScript, Go, or another application runtime.
+
+## Language Model
+
+PL/SQL combines SQL statements with procedural constructs: blocks, declarations, variables, constants, conditions, loops, subprograms, packages, triggers, cursors, records, collections, exceptions, and dynamic SQL. The basic source unit is the block, divided into declarative, executable, and optional exception-handling parts.
+
+PL/SQL programs can be anonymous blocks, procedures, functions, packages, package bodies, triggers, types, type bodies, and libraries. Named stored units are compiled and stored in the database, while anonymous blocks are compiled when submitted by a tool or application.
+
+SQL is still central. PL/SQL code commonly runs `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `MERGE`, DDL through dynamic SQL where appropriate, and calls to stored functions or packages. Good PL/SQL usually pushes set operations into SQL and uses procedural code around orchestration, validation, error handling, batching, and API boundaries.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Object-Oriented Programming](/concepts/object-oriented-programming/), [Modules And Namespacing](/concepts/modules-and-namespacing/), and [Build Systems](/concepts/build-systems/).
+
+## Oracle Database Coupling
+
+PL/SQL is tightly coupled to Oracle Database. Its types, privileges, schemas, optimizer interaction, transactions, errors, data dictionary views, package state, supplied packages, SQL dialect, and deployment model are Oracle-specific.
+
+That coupling is a feature when Oracle Database is the system of record. PL/SQL can expose stable procedures to many clients, enforce shared data rules close to tables, run under definer or invoker rights, participate in a database transaction, call supplied packages, and avoid repeated client-server round trips for data-local operations.
+
+It is also the main portability cost. A PL/SQL package is not a PostgreSQL function, a SQL Server stored procedure, or a generic ISO SQL persistent stored module. Moving the same application to another database means redesigning packages, triggers, exception behavior, dynamic SQL, deployment scripts, privileges, and optimizer assumptions.
+
+## Packages, Procedures, And Functions
+
+Packages are the usual PL/SQL unit for serious application code. Oracle documents a package as a schema object that groups related types, variables, constants, subprograms, cursors, and exceptions. A package has a specification for public items and usually a body for implementation details. That split lets teams preserve a public database API while changing private implementation.
+
+Procedures and functions are named subprograms. A procedure performs an action; a function computes and returns a value. Stored subprograms can be standalone schema objects or package members. Package subprograms are often easier to organize, version, test, secure, and expose than a large collection of unrelated standalone procedures.
+
+Package design is an API design problem. Public specifications should stay small and stable. Package bodies should hide internal helper routines, SQL details, and implementation state. Grants, synonyms, editioning, migration scripts, and caller contracts all matter because database clients may be Java services, reports, scheduled jobs, Oracle Forms, APEX pages, SQL scripts, or other PL/SQL units.
+
+## Triggers And Hidden Behavior
+
+A trigger is a database-stored unit that Oracle invokes automatically when a specified database event occurs. Triggers can run around DML on tables or views, and Oracle also supports database and schema events. They are useful for audit records, derived values, cross-table maintenance, compatibility layers, and enforcing behavior that must happen regardless of which client issued the change.
+
+Triggers are also a common source of hidden complexity. A table update can execute code that the application developer did not call directly. Trigger order, row-level versus statement-level behavior, mutating-table restrictions, autonomous transactions, retries, and exception handling can all affect correctness.
+
+Use triggers where automatic database-side behavior is the simplest reliable owner. Prefer ordinary constraints, generated columns, foreign keys, unique constraints, and explicit package procedures when those are clearer. If trigger logic grows large, move most of it into named package subprograms and keep the trigger as a thin dispatch point.
+
+## Transactions And Error Handling
+
+PL/SQL code usually runs inside the caller's Oracle Database transaction. A procedure can read and change rows, call other PL/SQL units, raise exceptions, and return control to a caller that commits or rolls back. That makes transaction ownership a design choice, not a syntax detail.
+
+Exceptions are the main error-handling model. When an error occurs, PL/SQL raises an exception and transfers control to an exception-handling part of the block if one exists. Code can handle predefined exceptions, user-defined exceptions, and application errors raised deliberately for callers.
+
+Transaction-local behavior is one reason PL/SQL exists. It can validate data, update several tables, write audit rows, and return a clear error before any client commits. The risk is mixing too much work into the transaction. Long loops, network callouts through supplied packages, expensive dynamic SQL, locks held while waiting on external systems, and hidden commits can make database behavior hard to operate.
+
+## Optimizer And Database Boundary
+
+PL/SQL and SQL are close, but they are not the same execution model. SQL statements are optimized by Oracle Database. PL/SQL procedural flow is compiled and executed by the PL/SQL engine, which works with the SQL executors when code issues SQL statements.
+
+Performance work should start with the boundary between set-based SQL and procedural loops. A row-by-row loop that executes a query for each record can be far slower than one set-based statement. PL/SQL also provides bulk features such as collections, `BULK COLLECT`, and `FORALL` for cases where procedural code must move many rows across the SQL boundary.
+
+The optimizer boundary also shapes maintainability. PL/SQL should not hide inefficient SQL behind a package name. Important statements still need plans, indexes, statistics, bind variable discipline, representative data, and tests under realistic concurrency.
+
+## Tooling And Deployment
+
+PL/SQL development is usually database-centered. Common tools include Oracle SQL Developer, SQLcl, SQL*Plus, PL/SQL compiler warnings, data dictionary views, migration tools, schema diff tools, unit-testing frameworks, CI scripts, and source-controlled SQL files.
+
+SQLcl is Oracle's Java-based command-line interface for Oracle Database and can execute SQL and PL/SQL interactively or as batch files. SQL Developer and other IDEs can edit, compile, run, and debug stored procedures and functions. Production teams often wrap those tools with migrations so package specs, package bodies, grants, synonyms, triggers, and test fixtures move through environments reproducibly.
+
+PL/SQL has no language package manager comparable to npm, Cargo, Maven, or pip. Dependencies are schema objects, grants, supplied Oracle packages, installed database components, and application-owned scripts. That makes environment inventory important: database version, edition, options, schemas, privileges, NLS settings, optimizer parameters, jobs, links, external directories, and client drivers can all affect behavior.
+
+## Syntax Example
+
+```sql
+CREATE OR REPLACE PACKAGE language_catalog AUTHID DEFINER AS
+  PROCEDURE add_language(
+    p_slug  IN languages.slug%TYPE,
+    p_title IN languages.title%TYPE
+  );
+END language_catalog;
+/
+
+CREATE OR REPLACE PACKAGE BODY language_catalog AS
+  PROCEDURE add_language(
+    p_slug  IN languages.slug%TYPE,
+    p_title IN languages.title%TYPE
+  ) IS
+  BEGIN
+    INSERT INTO languages (slug, title, created_at)
+    VALUES (LOWER(p_slug), p_title, SYSTIMESTAMP);
+  EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+      RAISE_APPLICATION_ERROR(
+        -20001,
+        'Language slug already exists: ' || p_slug
+      );
+  END add_language;
+END language_catalog;
+/
+
+BEGIN
+  language_catalog.add_language('plsql', 'PL/SQL');
+END;
+/
+```
+
+This example shows a package specification, package body, procedure, table-bound `%TYPE` declarations, an `INSERT`, exception handling, and an application error. Real PL/SQL should also include migration ordering, grants, tests, review of transaction ownership, and representative database fixtures.
+
+## Best-Fit Use Cases
+
+PL/SQL is a strong fit when:
+
+- Oracle Database is the durable system of record and the logic must run close to tables, views, constraints, transactions, and permissions.
+- Multiple clients need a shared database API instead of duplicating SQL and validation in every application.
+- Existing PL/SQL packages already encode business rules, batch jobs, data cleanup, reporting support, or integration behavior.
+- Performance depends on reducing round trips and combining set-based SQL with carefully measured procedural orchestration.
+- The team has Oracle Database development, DBA, migration, testing, and operational expertise.
+
+## Poor-Fit Or Risky Use Cases
+
+PL/SQL is a poor default when:
+
+- The work is a general service, UI, CLI, worker, or integration layer that does not need to run inside Oracle Database.
+- The organization needs strong database portability and cannot isolate Oracle-specific procedural code behind a narrow boundary.
+- Stored procedures and triggers are changed manually in production rather than through source-controlled, repeatable migrations.
+- Business logic becomes invisible to application tests, code review, observability, or incident response.
+- The code calls external services or performs long-running work while holding database locks or transaction resources.
+
+## Enterprise Maintenance
+
+Many PL/SQL systems are long-lived enterprise systems. They may include thousands of packages, triggers, forms, reports, jobs, synonyms, grants, database links, scheduler programs, and client applications. Treating those systems as "just SQL scripts" understates the maintenance problem.
+
+A practical inventory should include package specs and bodies, trigger behavior, table dependencies, grants, callers, scheduled jobs, batch windows, data volumes, exception contracts, migration history, performance-sensitive SQL, and ownership. Before rewriting PL/SQL into Java or another service language, preserve the behavior that users and downstream systems depend on.
+
+Modernization often means keeping PL/SQL where it is the right database boundary, extracting non-database responsibilities into services, replacing hidden triggers with clearer APIs where possible, adding tests around packages, and making deployment repeatable from source.
+
+## Comparison Notes
+
+[PL/SQL vs SQL](/comparisons/plsql-vs-sql/) separates relational querying and schema work from Oracle-specific procedural database programming. SQL remains the language of relational sets and constraints; PL/SQL adds Oracle-resident program units around that database work.
+
+[PL/SQL vs Java For Database-Adjacent Business Logic](/comparisons/plsql-vs-java-for-database-adjacent-business-logic/) is the main architecture comparison for Oracle-centered enterprise systems. PL/SQL is strongest inside the database boundary. Java is stronger for services, APIs, orchestration, and broad JVM ecosystem work outside that boundary.
+
+ABAP is adjacent as another enterprise platform language, but ABAP belongs to SAP application systems while PL/SQL belongs to Oracle Database schemas and stored program units.

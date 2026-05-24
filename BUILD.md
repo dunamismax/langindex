@@ -188,13 +188,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 16 - PL/SQL
 
-- [ ] Add a complete PL/SQL page.
-- [ ] Cover Oracle Database coupling, procedural SQL, packages, stored procedures, triggers, exceptions, transaction context, optimizer/database boundary, deployment, tooling, and enterprise maintenance.
-- [ ] Add PL/SQL vs SQL comparison.
-- [ ] Add PL/SQL vs Java for database-adjacent business logic comparison if source-backed.
-- [ ] Add PL/SQL to SQL/data-access, enterprise, and legacy-maintenance guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete PL/SQL page.
+- [x] Cover Oracle Database coupling, procedural SQL, packages, stored procedures, triggers, exceptions, transaction context, optimizer/database boundary, deployment, tooling, and enterprise maintenance.
+- [x] Add PL/SQL vs SQL comparison.
+- [x] Add PL/SQL vs Java for database-adjacent business logic comparison if source-backed.
+- [x] Add PL/SQL to SQL/data-access, enterprise, and legacy-maintenance guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 17 - Transact-SQL
 

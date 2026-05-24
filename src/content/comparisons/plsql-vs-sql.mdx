@@ -1,0 +1,88 @@
+---
+title: PL/SQL vs SQL
+slug: plsql-vs-sql
+summary: SQL is the relational database language family for schemas, queries, constraints, and set operations, while PL/SQL is Oracle's procedural extension for packages, stored subprograms, triggers, exceptions, and database-resident application logic.
+languages:
+  - plsql
+  - sql
+useCases:
+  - Oracle Database
+  - stored procedures
+  - data access
+  - database logic
+  - enterprise maintenance
+sources:
+  - title: Oracle AI Database PL/SQL Language Reference - Overview of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/overview.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - Main Features of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/main-features-pl-sql.html
+    publisher: Oracle
+  - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
+    publisher: Oracle
+  - title: Oracle Database SQL Language Reference
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
+    publisher: Oracle
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: ISO/IEC 9075-4:2023 - Persistent Stored Modules
+    url: https://www.iso.org/standard/76586.html
+    publisher: International Organization for Standardization
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams working near Oracle Database and deciding whether a rule belongs in ordinary SQL, schema constraints, views, application code, or PL/SQL stored logic. PL/SQL and SQL are closely related, but they are not the same layer.
+
+SQL is the relational language family for defining schemas, querying tables, changing rows, expressing constraints, and letting the database optimizer choose execution plans. PL/SQL is Oracle's procedural extension to SQL for blocks, packages, procedures, functions, triggers, exceptions, cursors, records, collections, and database-resident APIs.
+
+## Key Differences
+
+| Dimension | SQL | PL/SQL |
+| --- | --- | --- |
+| Primary role | Relational schema, query, constraint, and set-based data operations | Oracle-resident procedural logic around SQL, transactions, packages, and triggers |
+| Standardization | SQL is standardized, though real systems use dialects | Oracle-specific language and runtime, adjacent to SQL/PSM but not portable SQL |
+| Execution model | SQL statements are optimized by the database engine | PL/SQL units are compiled and run by Oracle's PL/SQL engine and issue SQL as needed |
+| Modularity | Views, functions, procedures, schemas, migrations, and database objects | Packages, package bodies, procedures, functions, triggers, types, and anonymous blocks |
+| Main risk | Dialect drift, poor plans, missing constraints, weak transaction testing | Hidden business logic, trigger surprises, Oracle lock-in, deployment discipline gaps |
+
+## Choose SQL When
+
+- The rule is naturally relational: constraints, joins, filters, aggregations, windows, views, indexes, or set-based transformations.
+- A single statement can express the work clearly and lets Oracle's optimizer operate on the full data set.
+- The result should stay visible as schema, migration, view, or query logic rather than hidden behind procedural control flow.
+- Portability across database systems is important enough to avoid Oracle-specific procedural features.
+- The application language should own orchestration while SQL owns durable data access.
+
+## Choose PL/SQL When
+
+- The logic must run inside Oracle Database, close to the transaction and data permissions.
+- Several clients need a shared database API through packages, procedures, or functions.
+- The code needs procedural control flow, exceptions, package state, records, collections, bulk operations, or dynamic SQL around SQL statements.
+- A trigger is the right owner for automatic database-side behavior that must occur regardless of caller.
+- Existing Oracle packages and jobs already own important behavior and need maintenance rather than a rewrite.
+
+## Use Them Together
+
+Most PL/SQL programs are mostly about SQL. Good PL/SQL does not replace set-based thinking. It wraps SQL with API design, error handling, batching, transaction-local validation, and shared database behavior.
+
+The boundary should be explicit:
+
+- Put ordinary data invariants in constraints where possible.
+- Put set operations in SQL statements, views, or materialized views when they are clearer and measurable.
+- Put Oracle-specific orchestration in PL/SQL packages when several callers need the same database-owned behavior.
+- Keep triggers small and documented.
+- Keep package specs stable and package bodies reviewable through migrations.
+
+## Watch Points
+
+PL/SQL can hide expensive SQL behind a friendly procedure name. Review important query plans even when callers only see a package API. Test with production-shaped data, concurrency, statistics, indexes, and transaction isolation assumptions.
+
+SQL-only designs can also become brittle when several clients duplicate the same validation, batching, or exception mapping. In an Oracle-centered system, a small package can sometimes be the clearer boundary than scattered SQL in many application repositories.
+
+## Practical Default
+
+Start with SQL for relational data rules and set-based work. Add PL/SQL when Oracle Database should own a stable procedural API, transaction-local validation, package-level behavior, or automatic trigger behavior. Keep the split visible in source control and tests so database code does not become an unreviewed second application.

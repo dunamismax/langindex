@@ -19,6 +19,7 @@ candidates:
   - visual-basic
   - vba
   - abap
+  - plsql
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -116,6 +117,12 @@ sources:
   - title: ABAP Development Tools for Eclipse
     url: https://help.sap.com/docs/ABAP_ENVIRONMENT/abap-environment/eclipse-tool-for-abap-environment
     publisher: SAP Help Portal
+  - title: Oracle AI Database PL/SQL Language Reference - Overview of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/overview.html
+    publisher: Oracle
+  - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
+    publisher: Oracle
 lastVerified: 2026-05-24
 ---
 
@@ -205,6 +212,8 @@ Visual Basic systems split into different maintenance shapes. VB.NET code should
 VBA systems usually sit inside Office documents, Excel workbooks, Access databases, templates, forms, reports, and macro policies. Preserve host object-model behavior, sample files, trusted-location/signing policy, references, and user workflows before replacing macros with C#, Office Add-ins, Office Scripts, PowerShell, Python, Microsoft Graph, or services.
 
 ABAP systems usually sit inside SAP landscapes where code, data, customizing, authorizations, transports, and business processes are coupled. Preserve transactions, reports, background jobs, SAP data semantics, released API boundaries, transport paths, and functional ownership before replacing ABAP behavior with Java, SQL, integration middleware, or external services. For SAP S/4HANA and cloud modernization, check whether custom code can move toward ABAP Cloud, RAP, CDS, ADT, and released SAP APIs instead of depending on old internals.
+
+PL/SQL systems usually sit inside Oracle Database schemas where packages, procedures, triggers, grants, jobs, reports, and application clients depend on shared database behavior. Preserve package specifications, table dependencies, callers, transaction semantics, exception contracts, optimizer-sensitive SQL, and migration order before replacing PL/SQL behavior with Java, Python, SQL-only migrations, or external services. Modernization often means testing and versioning packages, reducing hidden trigger behavior, and moving non-database responsibilities outward while keeping true data-local rules in Oracle.
 
 ## Practical Default
 

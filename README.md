@@ -61,8 +61,8 @@ Stephen's FileFerry site architecture. Production runs the release-built
 
 LangIndex ships four content groups:
 
-- `languages` — 56 individual programming language profiles.
-- `comparisons` — 85 dimensional, tradeoff-first comparisons between related
+- `languages` — 57 individual programming language profiles.
+- `comparisons` — 87 dimensional, tradeoff-first comparisons between related
   languages.
 - `guides` — 25 cross-language decision guides framed by the problem the
   developer is solving.

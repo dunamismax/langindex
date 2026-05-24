@@ -5,6 +5,7 @@ summary: A guide for deciding where SQL should own relational data, transactions
 audience: Developers and teams designing backend services, data workflows, reporting surfaces, migrations, and database boundaries around relational systems.
 candidates:
   - sql
+  - plsql
   - python
   - java
   - csharp
@@ -29,6 +30,12 @@ sources:
   - title: Oracle Database SQL Language Reference
     url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
     publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - Overview of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/overview.html
+    publisher: Oracle
+  - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
+    publisher: Oracle
   - title: The Java Database Connectivity API
     url: https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/
     publisher: Oracle
@@ -38,7 +45,7 @@ sources:
   - title: ADO.NET Overview
     url: https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-overview
     publisher: Microsoft Learn
-lastVerified: 2026-05-15
+lastVerified: 2026-05-24
 ---
 
 ## Start With Ownership
@@ -90,6 +97,8 @@ Review generated queries on important paths. Add indexes for actual access patte
 Stored procedures, triggers, and database functions are useful when logic must run close to data, inside a transaction, under database permissions, or as part of an invariant that multiple clients share. Examples include audit records, denormalized counters, data cleanup, validation around bulk imports, and batch operations.
 
 Use them carefully. Database-resident logic needs source control, review, migration ordering, tests, observability, and rollback plans. If stored procedures become a hidden application, the architecture becomes harder to reason about than either SQL or application code alone.
+
+In Oracle-centered systems, [PL/SQL](/languages/plsql/) is the main procedural language for that database-resident layer. Use it for stable package APIs, transaction-local validation, data-local batch work, and trigger behavior that truly belongs inside Oracle Database. Keep ordinary relational constraints and set-based transformations in SQL where they are clearer, and keep cross-system workflow in the application layer.
 
 ## Data And Analytics Workflows
 
