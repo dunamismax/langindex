@@ -131,12 +131,12 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 10 - Verilog / SystemVerilog
 
-- [ ] Add a complete Verilog/SystemVerilog page, or split into separate pages if research shows the combined treatment would be misleading.
-- [ ] Cover hardware description and verification, simulation vs synthesis, modules, always blocks, blocking/nonblocking assignment, testbenches, SystemVerilog verification features, FPGA/ASIC workflows, toolchains, and standards.
-- [ ] Add Verilog/SystemVerilog vs VHDL comparison once VHDL exists, or stage the comparison with a TODO until Phase 11 lands.
-- [ ] Add Verilog/SystemVerilog to embedded and safety-critical guides, with clear hardware-language framing.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Verilog/SystemVerilog page, or split into separate pages if research shows the combined treatment would be misleading.
+- [x] Cover hardware description and verification, simulation vs synthesis, modules, always blocks, blocking/nonblocking assignment, testbenches, SystemVerilog verification features, FPGA/ASIC workflows, toolchains, and standards.
+- [x] Add Verilog/SystemVerilog vs VHDL comparison once VHDL exists, or stage the comparison with a TODO until Phase 11 lands. Staged for Phase 11 because VHDL is not yet published.
+- [x] Add Verilog/SystemVerilog to embedded and safety-critical guides, with clear hardware-language framing.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 11 - VHDL
 

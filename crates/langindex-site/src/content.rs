@@ -58,6 +58,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "swift",
     "typescript",
     "vba",
+    "verilog-systemverilog",
     "visual-basic",
     "zig",
 ];
@@ -719,7 +720,7 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 50);
+        assert_eq!(content.languages.len(), 51);
         assert_eq!(content.comparisons.len(), 77);
         assert_eq!(content.guides.len(), 24);
         assert_eq!(content.concepts.len(), 40);
@@ -794,6 +795,7 @@ mod tests {
         assert!(content.language("powershell").is_some());
         assert!(content.language("prolog").is_some());
         assert!(content.language("rust").is_some());
+        assert!(content.language("verilog-systemverilog").is_some());
         assert!(content.language("visual-basic").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
@@ -910,6 +912,7 @@ mod tests {
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
+        assert!(routes.contains("/languages/verilog-systemverilog"));
         assert!(routes.contains("/languages/visual-basic"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));

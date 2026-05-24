@@ -1,0 +1,219 @@
+---
+title: Verilog / SystemVerilog
+slug: verilog-systemverilog
+status: active
+summary: Verilog and SystemVerilog are hardware description and verification languages for modeling, simulating, verifying, and synthesizing digital logic for FPGA, ASIC, and SoC designs.
+firstReleased: 1984
+creators:
+  - Phil Moorby
+paradigms:
+  - hardware description
+  - register-transfer level
+  - concurrent
+  - verification
+  - event-driven simulation
+typing:
+  discipline: static hardware-oriented
+  strength: fixed-width nets and variables, four-state logic, packed and unpacked types, modules, interfaces, parameters, assertions, and tool-dependent synthesizable subsets
+memory:
+  model: hardware state, signals, registers, wires, memories, and simulation objects rather than an application heap or garbage-collected runtime
+runtime:
+  model: interpreted or compiled by HDL simulators for verification, or accepted by synthesis tools that translate a synthesizable subset into FPGA or ASIC netlists
+officialSite: https://standards.ieee.org/ieee/1800/7743/
+packageManagers:
+  - IEEE 1800
+  - UVM
+  - Verilator
+  - Icarus Verilog
+  - FPGA and ASIC EDA toolchains
+comparedWith:
+  - assembly
+  - c
+  - cpp
+  - ada
+bestFor:
+  - Digital hardware design where the source describes registers, combinational logic, finite-state machines, interfaces, memories, and clocked behavior that must become FPGA or ASIC logic.
+  - Verification environments that need SystemVerilog assertions, coverage, constrained random testing, interfaces, classes, DPI, or UVM-style reusable verification components.
+  - FPGA projects where vendor synthesis, simulation, timing analysis, constraints, IP integration, and board flows already support Verilog or SystemVerilog.
+  - ASIC and SoC front-end flows where RTL, lint, simulation, formal checks, synthesis, equivalence checking, and signoff tools agree on a controlled language subset.
+poorFit:
+  - Ordinary firmware, drivers, operating-system code, applications, scripts, services, or business logic that runs on a processor rather than being synthesized into hardware.
+  - Hardware teams that have not separated synthesizable RTL from testbench-only constructs, timing constraints, clock-domain rules, reset strategy, and vendor/tool-supported subsets.
+  - Projects that need broad software package ecosystems, dynamic data structures, reflection, operating-system APIs, or general-purpose runtime libraries.
+  - Safety-critical or mission-critical hardware flows that treat language choice as sufficient without requirements traceability, verification plans, tool qualification, timing closure, and hardware evidence.
+sources:
+  - title: IEEE 1800-2023 - IEEE Standard for SystemVerilog
+    url: https://standards.ieee.org/ieee/1800/7743/
+    publisher: IEEE Standards Association
+  - title: IEEE 1364-2005 - IEEE Standard for Verilog Hardware Description Language
+    url: https://standards.ieee.org/ieee/1364/3641/
+    publisher: IEEE Standards Association
+  - title: Accellera Systems Initiative Posthumously Honors Phil Moorby
+    url: https://www.accellera.org/news/press-releases/378-accellera-systems-initiative-posthumously-honors-phil-moorby-with-2023-technical-excellence-award
+    publisher: Accellera Systems Initiative
+  - title: UVM Standard Universal Verification Methodology
+    url: https://www.verilog.org/downloads/standards/uvm
+    publisher: Accellera Systems Initiative
+  - title: Vivado Design Suite User Guide - Synthesis
+    url: https://docs.amd.com/v/u/en-US/ug901-vivado-synthesis
+    publisher: AMD
+  - title: Verilator README
+    url: https://raw.githubusercontent.com/verilator/verilator/master/README.rst
+    publisher: Verilator Project
+  - title: Icarus Verilog README
+    url: https://raw.githubusercontent.com/steveicarus/iverilog/master/README.md
+    publisher: Icarus Verilog Project
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+Verilog and SystemVerilog are languages for digital hardware design and verification. They are not ordinary software languages that happen to be low level. Source code describes hardware structure and behavior: modules, ports, wires, registers, clocks, resets, combinational logic, memories, state machines, assertions, and testbenches.
+
+The combined treatment is deliberate. IEEE lists IEEE 1364-2005 Verilog as superseded by IEEE 1800-2009, and the current IEEE 1800-2023 SystemVerilog page describes SystemVerilog as a unified hardware design, specification, and verification language. In modern practice, teams often write synthesizable RTL in a Verilog-like subset plus selected SystemVerilog features, and write richer verification code in SystemVerilog.
+
+That does not make every SystemVerilog construct synthesizable. Hardware projects must still name the accepted subset for each simulator, synthesizer, linter, formal tool, FPGA vendor, ASIC flow, coding standard, and verification methodology.
+
+## Origin And Standardization
+
+Accellera credits Phil Moorby with inventing Verilog HDL in 1984 and developing Verilog-XL. IEEE 1364-2005 defined Verilog as a hardware description language for creation, verification, synthesis, testing, communication, maintenance, modification, and procurement of electronic systems. That standalone Verilog standard is now superseded.
+
+SystemVerilog grew out of Verilog and verification-oriented extensions. The current IEEE 1800-2023 page says the standard provides the syntax and semantics for SystemVerilog and covers behavioral, RTL, and gate-level modeling plus testbenches using coverage, assertions, object-oriented programming, and constrained random verification. It also notes that the 2005 SystemVerilog standard represented a merger path from IEEE 1364-2005 Verilog and IEEE 1800-2005 SystemVerilog extensions.
+
+The practical standard to check for new work is IEEE 1800-2023. Legacy code, vendor IP, FPGA examples, textbooks, and tools may still use Verilog-1995, Verilog-2001, Verilog-2005, or partial SystemVerilog support.
+
+## Hardware Description Model
+
+A Verilog or SystemVerilog design is built from modules. A module defines ports, internal signals, parameters, continuous assignments, procedural blocks, submodule instances, and optional assertions or generate logic. Hardware concurrency is the default: separate continuous assignments and procedural blocks describe behavior that exists at the same time, not a sequence of software statements executed by one thread.
+
+Common RTL code separates:
+
+- Combinational logic, often written with `assign` or `always_comb`.
+- Sequential logic, often written with `always_ff` on a clock edge and reset.
+- Module interfaces, memories, parameters, generated instances, and named subblocks.
+- Testbench code that drives inputs, checks outputs, records coverage, and may never be synthesized.
+
+This model is close to hardware, but it is still a source language. Synthesis tools infer gates, flip-flops, muxes, memories, arithmetic structures, and vendor primitives from a supported subset. Simulation tools execute an event-driven or compiled model to check behavior before hardware is built or programmed.
+
+Related concepts: [Compilation Targets](/concepts/compilation-targets/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), and [Data Races And Memory Models](/concepts/data-races-and-memory-models/).
+
+## Simulation Versus Synthesis
+
+Simulation and synthesis are different contracts.
+
+Simulation answers "what does this HDL model do under these stimulus events?" It can use delays, `$display`, file I/O, randomization, classes, scoreboards, assertions, coverage, DPI calls, and testbench control logic. Commercial HDL simulators, FPGA-vendor simulators, Verilator, and Icarus Verilog all sit in this broad category, with different language support and performance profiles.
+
+Synthesis answers "which hardware can implement this supported source subset on this target?" FPGA synthesis turns RTL into a netlist for a device family and later place-and-route flow. ASIC synthesis maps RTL into a technology-library netlist that still needs constraints, timing analysis, physical design, power intent, test insertion, equivalence checking, and signoff. AMD's Vivado synthesis guide describes transforming RTL designs written in SystemVerilog, Verilog, and VHDL into a gate-level netlist for Xilinx FPGA implementation.
+
+Do not assume simulation success means hardware success. A testbench can pass while the RTL is unsynthesizable, incorrectly constrained, metastable across clock domains, dependent on simulator scheduling accidents, or too slow after timing analysis.
+
+## Core RTL Constructs
+
+Verilog and SystemVerilog RTL uses a small set of constructs constantly:
+
+- `module` and `endmodule` define hardware blocks.
+- `input`, `output`, and `inout` define module ports.
+- `wire`, `reg`, and SystemVerilog `logic` describe signals and variables.
+- `assign` describes continuous combinational connections.
+- `always`, `always_comb`, `always_ff`, and `always_latch` describe procedural hardware behavior.
+- Parameters and `generate` blocks configure and replicate structure.
+- Packed widths such as `[7:0]` make bit sizes explicit.
+- Nonblocking assignments (`<=`) are normally used for clocked sequential state.
+- Blocking assignments (`=`) are commonly used inside combinational procedural logic when order inside the block matters.
+
+The blocking versus nonblocking distinction is one of the language's sharp edges. In clocked RTL, nonblocking assignment lets state updates conceptually happen together at the clock edge. In combinational blocks, blocking assignment can express ordered calculations. Mixing the two casually can create simulation/synthesis mismatches or unreadable scheduling behavior.
+
+## SystemVerilog Verification Features
+
+SystemVerilog is much larger than classic Verilog because it also includes verification features. IEEE 1800-2023 covers testbench support with assertions, coverage, object-oriented programming, and constrained random verification. Those features support self-checking testbenches, protocol checkers, randomized stimulus, functional coverage, class-based components, interfaces, and foreign-language integration through DPI.
+
+UVM sits on top of SystemVerilog as a verification methodology and class library. Accellera describes UVM as improving interoperability and reuse of verification components. In practice, UVM is most relevant in larger ASIC and SoC verification environments where teams need reusable agents, monitors, sequences, scoreboards, configuration, reports, and coverage across many blocks or projects.
+
+UVM is not required for every design. Small FPGA modules, teaching projects, and focused IP blocks may be better served by direct self-checking testbenches, assertions, formal properties, cocotb, Verilator plus C++/Python harnesses, or vendor simulation flows. The testbench should match the risk and complexity of the hardware.
+
+## FPGA And ASIC Workflows
+
+FPGA workflows usually combine HDL source, constraints, vendor IP, simulation libraries, synthesis, implementation, timing analysis, bitstream generation, board programming, and hardware debug. The language is only one part of the flow. A design that is clean SystemVerilog can still fail because the target FPGA lacks enough block RAM, DSPs, routing, timing margin, clock resources, or supported primitives.
+
+ASIC workflows add more irreversible cost. RTL usually passes through lint, clock-domain crossing checks, reset checks, simulation, formal verification, synthesis, static timing analysis, power intent, equivalence checking, scan/test insertion, physical design, extraction, signoff, and eventually fabrication. The language subset must be agreed across many tools, and every ambiguous construct costs verification time.
+
+Open-source tools are useful but have limits. Verilator accepts Verilog and SystemVerilog, performs lint checks, and compiles designs into C++ or SystemC simulation models. Icarus Verilog targets IEEE 1364 Verilog and a growing subset of SystemVerilog. These tools are valuable for learning, CI, lint-like checks, open hardware, and some production flows, but they are not automatic replacements for every commercial mixed-language, timing-annotated, UVM-heavy, FPGA-vendor, or ASIC signoff flow.
+
+## Syntax Example
+
+```systemverilog
+module pulse_counter #(
+    parameter int WIDTH = 8
+) (
+    input  logic             clk,
+    input  logic             rst_n,
+    input  logic             pulse,
+    output logic [WIDTH-1:0] count
+);
+    logic pulse_d;
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            pulse_d <= 1'b0;
+            count   <= '0;
+        end else begin
+            pulse_d <= pulse;
+
+            if (pulse && !pulse_d) begin
+                count <= count + 1'b1;
+            end
+        end
+    end
+endmodule
+```
+
+This example describes hardware: a parameterized module, a clock, an active-low reset, a delayed signal, and a counter that increments on a rising pulse. A real project would add a testbench, timing constraints, reset and clock-domain review, lint/formal checks where useful, and target-specific synthesis verification.
+
+## Best-Fit Use Cases
+
+Verilog and SystemVerilog are strong fits for:
+
+- FPGA RTL where vendor tools, board support, IP, examples, and timing flows support the language subset.
+- ASIC and SoC RTL where the front-end flow expects Verilog/SystemVerilog modules.
+- Verification environments that need assertions, constrained random stimulus, functional coverage, interfaces, DPI, or UVM.
+- Digital IP blocks, bus interfaces, processors, accelerators, controllers, DSP pipelines, and hardware glue logic.
+- Hardware teams that can review clocking, resets, synthesis subsets, timing, CDC, constraints, and verification plans alongside source code.
+
+## Poor-Fit Or Risky Use Cases
+
+Verilog and SystemVerilog are poor defaults when:
+
+- The work is software running on a CPU or microcontroller. Use C, C++, Rust, Ada, assembly, Python, or another software language for firmware and host code.
+- The design can be better expressed as vendor IP configuration, high-level synthesis, schematic capture, Chisel, SpinalHDL, Bluespec, Amaranth, or another HDL generator, and the team accepts that toolchain.
+- The team does not have hardware-design review discipline for clock domains, resets, latches, inferred memories, timing constraints, metastability, and synthesis warnings.
+- The verification plan assumes "it simulates" is enough.
+- A safety or mission-critical hardware project lacks traceability, independent verification, constrained language subsets, tool qualification, and target evidence.
+
+## Tooling And Ecosystem
+
+The ecosystem is toolchain-centered, not package-manager-centered. A project normally pins simulators, synthesis tools, lint/formal tools, FPGA vendor versions, standard-cell libraries, IP versions, constraints, scripts, and CI images. Reuse often happens through IP blocks, modules, parameterized generators, vendor catalogs, UVM verification components, internal repositories, and generated RTL.
+
+File extensions are only hints. `.v` often means Verilog; `.sv` often means SystemVerilog; `.svh` often means included SystemVerilog headers. Tools may still require flags to select the language mode or standard version. Mixed-language projects can include Verilog, SystemVerilog, VHDL, SystemC, C/C++ DPI code, Tcl scripts, Python generators, constraints, and vendor metadata.
+
+Maintainable projects write down:
+
+- The accepted language standard and coding subset.
+- Which constructs are simulation-only.
+- Which simulator, synthesizer, linter, formal tool, and FPGA/ASIC flow are authoritative.
+- Clock, reset, CDC, X-propagation, and initialization policies.
+- How generated RTL and vendored IP are reviewed.
+- Which warnings fail CI.
+
+## Governance And Current Status
+
+SystemVerilog is standardized through IEEE 1800. The current IEEE page lists IEEE 1800-2023 as an active standard, with publication on February 28, 2024 and ANSI approval on February 27, 2025. Verilog's standalone IEEE 1364-2005 standard is superseded, but Verilog source and Verilog-style RTL remain common in existing projects and examples.
+
+Accellera remains important around verification and EDA standards. Its UVM downloads page lists current UVM reference implementations for IEEE 1800.2, including UVM 2020-3.1 modified in August 2024 when this page was verified.
+
+The practical status is mature but fragmented. Verilog/SystemVerilog are central to digital hardware work, but support differs by construct, standard version, tool, license, target, and flow. A serious project should validate its exact subset with the exact tools it will ship through.
+
+## Comparison Notes
+
+VHDL is the closest HDL comparison and should get a dedicated LangIndex comparison once the VHDL page is published. Until then, the main distinction to keep in mind is not "software language versus software language"; it is HDL ecosystem, type discipline, vendor flow, verification style, and organizational history.
+
+Assembly, C, C++, Rust, and Ada are nearby only at the hardware/software boundary. They run on processors or define firmware and low-level software; Verilog/SystemVerilog describes hardware to be simulated or synthesized. A system may use SystemVerilog for an FPGA accelerator, C for firmware, Python for test orchestration, and C++ for a simulator harness, but those languages own different layers.

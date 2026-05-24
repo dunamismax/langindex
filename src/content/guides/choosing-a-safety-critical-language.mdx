@@ -1,13 +1,14 @@
 ---
 title: Choosing A Safety-Critical Language
 slug: choosing-a-safety-critical-language
-summary: A practical guide for choosing Ada, SPARK, C, C++, Rust, or another language for safety-critical and high-integrity software by certification context, target runtime, tool qualification, analyzability, and team evidence.
-audience: Teams choosing implementation languages for software where defects can create safety, security, regulatory, or mission consequences.
+summary: A practical guide for choosing Ada, SPARK, C, C++, Rust, Verilog/SystemVerilog, or another language for safety-critical and high-integrity software or hardware by certification context, target runtime, tool qualification, analyzability, and team evidence.
+audience: Teams choosing implementation languages for software or hardware where defects can create safety, security, regulatory, or mission consequences.
 candidates:
   - ada
   - rust
   - c
   - cpp
+  - verilog-systemverilog
 sources:
   - title: ISO/IEC 8652:2023 - Programming languages - Ada
     url: https://www.iso.org/standard/83621.html
@@ -45,7 +46,16 @@ sources:
   - title: ISO/IEC JTC1/SC22/WG14 - C
     url: https://www.open-std.org/jtc1/sc22/wg14/
     publisher: ISO/IEC JTC1/SC22/WG14
-lastVerified: 2026-05-21
+  - title: IEEE 1800-2023 - IEEE Standard for SystemVerilog
+    url: https://standards.ieee.org/ieee/1800/7743/
+    publisher: IEEE Standards Association
+  - title: IEEE 1364-2005 - IEEE Standard for Verilog Hardware Description Language
+    url: https://standards.ieee.org/ieee/1364/3641/
+    publisher: IEEE Standards Association
+  - title: UVM Standard Universal Verification Methodology
+    url: https://www.verilog.org/downloads/standards/uvm
+    publisher: Accellera Systems Initiative
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Assurance Case
@@ -62,6 +72,14 @@ Before choosing a language, name:
 - How requirements, code, tests, static analysis, formal proof, coverage, and field diagnostics connect.
 
 If those answers are missing, a safer language will not create a safety case by itself.
+
+## When Verilog / SystemVerilog Fits
+
+Choose Verilog/SystemVerilog only when the safety-critical artifact is digital hardware: FPGA logic, ASIC RTL, SoC blocks, safety monitors, bus interfaces, voting logic, accelerators, or verification environments around those components. It is not a replacement for Ada, C, C++, Rust, or SPARK firmware running on a processor.
+
+In high-integrity hardware work, the safety case must cover more than the HDL source. It should name the synthesizable subset, coding standard, simulator, linter, formal tools, synthesis flow, constraints, clock and reset policy, CDC checks, timing closure, equivalence checks, fault handling, verification plan, traceability, tool qualification expectations, and target evidence from simulation, formal analysis, emulation, FPGA testing, or silicon validation.
+
+SystemVerilog assertions, coverage, constrained random testing, and UVM can support verification evidence, especially for larger ASIC and SoC projects. They do not remove the need for independent review, requirements traceability, deterministic reset behavior, safe-state design, or hardware-in-the-loop evidence.
 
 ## When Ada Fits
 
@@ -126,3 +144,5 @@ Start with C when the target platform and certification evidence are already C-c
 Start with C++ when the ecosystem is decisive and the organization can enforce a safety-oriented subset.
 
 Evaluate Rust when memory safety is a central hazard and the target/toolchain evidence can be proved early. Do not treat any language as sufficient by itself; the safety case is the product.
+
+Use Verilog/SystemVerilog when the safety-critical asset is hardware RTL or hardware verification, and keep the boundary explicit between synthesized logic and processor software.
