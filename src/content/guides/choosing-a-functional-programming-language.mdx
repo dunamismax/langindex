@@ -1,7 +1,7 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Common Lisp, Scheme, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Common Lisp, Scheme, Elixir, Erlang, Gleam, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
@@ -9,6 +9,7 @@ candidates:
   - fsharp
   - elixir
   - erlang
+  - gleam
   - scala
   - clojure
   - common-lisp
@@ -42,6 +43,15 @@ sources:
   - title: Phoenix Framework
     url: https://www.phoenixframework.org/
     publisher: Phoenix
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: Everything! - The Gleam Language Tour
+    url: https://tour.gleam.run/everything/
+    publisher: Gleam
+  - title: Frequently asked questions
+    url: https://gleam.run/frequently-asked-questions/
+    publisher: Gleam
   - title: Erlang/OTP
     url: https://www.erlang.org/
     publisher: Erlang/OTP
@@ -195,6 +205,20 @@ Do not choose Erlang only to adopt functional programming. Choose it when the
 BEAM and OTP are the platform you want, and when the team accepts Erlang syntax,
 Rebar3, releases, Dialyzer-style analysis, and OTP operations.
 
+## Choose Gleam When
+
+Choose [Gleam](/languages/gleam/) when functional programming should live on the
+BEAM with static typing and a small language surface. Gleam is strongest when
+custom types, pattern matching, opaque types, explicit `Result` values, and
+compiler-checked modules clarify code that would otherwise be dynamic Erlang or
+Elixir.
+
+Do not choose Gleam only because it is newer or friendlier. Choose it when typed
+BEAM code is the advantage and when the team has checked the package ecosystem,
+OTP wrappers, JavaScript target assumptions, and Erlang/Elixir interop needed by
+the project. If Phoenix, Elixir macros, direct OTP internals, or mature
+production conventions matter more, Elixir or Erlang may fit better.
+
 ## Choose OCaml When
 
 Choose [OCaml](/languages/ocaml) when a strict ML-family language fits the work better than Haskell's purity and laziness.
@@ -247,6 +271,8 @@ Start with Scheme when teaching, language tooling, embedding, proper tail calls,
 Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
 
 Start with Erlang when existing OTP depth, direct Erlang libraries, or long-running infrastructure are stronger constraints than modern syntax.
+
+Start with Gleam when static typing, a compact language, and BEAM runtime behavior are the combined reason.
 
 Start with Haskell when purity, laziness, type classes, and explicit effects are the core advantage and the team can own the GHC ecosystem.
 

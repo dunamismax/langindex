@@ -1,0 +1,104 @@
+---
+title: Gleam vs Erlang
+slug: gleam-vs-erlang
+summary: Gleam and Erlang both run on Erlang/OTP, but Erlang is the original dynamic language and operational center of OTP while Gleam adds static typing, a smaller modern syntax, integrated tooling, and a JavaScript target on top of the BEAM ecosystem.
+languages:
+  - gleam
+  - erlang
+useCases:
+  - BEAM applications
+  - OTP infrastructure
+  - distributed systems
+  - concurrent services
+  - typed functional programming
+sources:
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: Frequently asked questions
+    url: https://gleam.run/frequently-asked-questions/
+    publisher: Gleam
+  - title: Command line reference
+    url: https://gleam.run/command-line-reference/
+    publisher: Gleam
+  - title: Externals guide
+    url: https://gleam.run/documentation/externals/
+    publisher: Gleam
+  - title: gleam/erlang/process
+    url: https://hexdocs.pm/gleam_erlang/gleam/erlang/process.html
+    publisher: HexDocs
+  - title: gleam/otp/supervision
+    url: https://hexdocs.pm/gleam_otp/gleam/otp/supervision.html
+    publisher: HexDocs
+  - title: Erlang/OTP
+    url: https://www.erlang.org/
+    publisher: Erlang/OTP
+  - title: Erlang Processes
+    url: https://www.erlang.org/doc/system/ref_man_processes.html
+    publisher: Erlang/OTP
+  - title: OTP Design Principles
+    url: https://www.erlang.org/doc/system/design_principles.html
+    publisher: Erlang/OTP
+  - title: Distributed Erlang
+    url: https://www.erlang.org/doc/system/distributed.html
+    publisher: Erlang/OTP
+  - title: Rebar3 Getting Started
+    url: https://rebar3.org/docs/getting-started/
+    publisher: Rebar3
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing between [Erlang](/languages/erlang/) and Gleam for BEAM services, OTP libraries, distributed systems, messaging infrastructure, or typed functional modules. It assumes Erlang/OTP is already attractive; if the BEAM is not the runtime you want, compare Go, Java, C#, Rust, TypeScript, Python, or Scala separately.
+
+## Shared Territory
+
+Gleam and Erlang both sit on Erlang/OTP. They can share the BEAM's process model, message passing, distribution mechanisms, OTP applications, Hex packages, release concerns, and runtime operations. Both are functional languages shaped by immutable data and pattern matching.
+
+The difference is how close the source language is to OTP's original surface. Erlang is the direct language of the runtime and documentation. Gleam is a statically typed language that compiles to Erlang source and uses packages to expose process and OTP abstractions.
+
+## Key Differences
+
+| Dimension        | Gleam                                                | Erlang                                                  |
+| ---------------- | ---------------------------------------------------- | ------------------------------------------------------- |
+| Typing           | Statically typed with inference                      | Dynamically typed with typespecs and Dialyzer analysis  |
+| Syntax           | Modern C-family-influenced functional syntax         | Prolog-influenced functional syntax                     |
+| Tooling center   | `gleam` CLI, formatter, LSP, Hex                     | Rebar3, Erlang shell, EUnit, Common Test, OTP tools     |
+| Runtime target   | Erlang/OTP and JavaScript                            | Erlang/OTP                                              |
+| OTP depth        | Typed wrappers and interop with Erlang/OTP libraries | Native language of OTP documentation and conventions    |
+| Ecosystem age    | Young, post-1.0, active                              | Decades old, mature in telecom and infrastructure       |
+| Main advantage   | Typed APIs and compact source                        | Operational maturity and direct runtime access          |
+| Main risk        | Smaller ecosystem and less direct OTP integration    | Syntax/tooling friction and weaker compile-time checks  |
+
+## Choose Gleam When
+
+- Static typing is the main reason to add a new BEAM language.
+- The codebase benefits from typed custom data, pattern matching, opaque types, and compiler-checked module APIs.
+- The team wants a smaller modern syntax and integrated formatter/build-tool/LSP workflow.
+- JavaScript output is useful for a narrow shared-code story.
+- The project can verify that `gleam_erlang`, `gleam_otp`, externals, dependencies, and deployment cover the required OTP behavior.
+
+## Choose Erlang When
+
+- The system is existing Erlang/OTP infrastructure or close to OTP internals.
+- The team needs direct alignment with Erlang documentation, shell workflows, Rebar3, releases, and mature operational conventions.
+- The work involves telecom-style infrastructure, protocol servers, messaging systems, distributed Erlang nodes, or libraries consumed mainly by Erlang projects.
+- Runtime behavior, hot code loading, tracing, profiling, and compatibility with older Erlang systems matter more than a modern source language.
+- The organization already has Erlang developers and production runbooks.
+
+## Watch Points
+
+Gleam's typed message subjects can make local protocols clearer, but BEAM systems still have dynamic boundaries. External Erlang functions, cross-node data, JavaScript-specific APIs, and Elixir macro surfaces are not proven safe by the Gleam compiler.
+
+Erlang's dynamic model is not undisciplined by default. Typespecs, Dialyzer, tests, OTP behaviours, protocol design, and mature production patterns can make Erlang systems highly maintainable. The tradeoff is that the compiler will not enforce the same data-shape contracts as Gleam.
+
+Gleam compiles to Erlang source, but migration is not a mechanical formatting pass. Erlang code may rely on selective receive patterns, records, parse transforms, process dictionary use, dynamic terms, or library conventions that need explicit Gleam boundaries.
+
+## Practical Default
+
+Start with Erlang when the work is close to mature OTP infrastructure, legacy Erlang systems, direct distributed Erlang, or teams that already operate Erlang confidently.
+
+Start with Gleam when the team wants BEAM runtime behavior but static typing and a smaller language are the adoption reason.
+
+For mixed systems, keep stable Erlang OTP applications in place. Add Gleam modules where typed boundaries improve new code, and make interop explicit through functions, Erlang modules, OTP applications, process protocols, or service boundaries.

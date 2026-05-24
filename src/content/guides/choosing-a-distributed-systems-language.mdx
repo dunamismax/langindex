@@ -1,11 +1,12 @@
 ---
 title: Choosing A Distributed Systems Language
 slug: choosing-a-distributed-systems-language
-summary: A practical guide for choosing Erlang, Elixir, Go, Java, C#, Scala, Rust, TypeScript, or Python when distributed services, node coordination, message passing, reliability, and operations shape the language decision.
+summary: A practical guide for choosing Erlang, Elixir, Gleam, Go, Java, C#, Scala, Rust, TypeScript, or Python when distributed services, node coordination, message passing, reliability, and operations shape the language decision.
 audience: Teams choosing a language for distributed services, clustered systems, messaging infrastructure, control planes, realtime coordination, workers, or service platforms that run across multiple machines.
 candidates:
   - erlang
   - elixir
+  - gleam
   - go
   - java
   - csharp
@@ -32,6 +33,15 @@ sources:
   - title: Phoenix Framework
     url: https://www.phoenixframework.org/
     publisher: Phoenix
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: gleam/erlang/process
+    url: https://hexdocs.pm/gleam_erlang/gleam/erlang/process.html
+    publisher: HexDocs
+  - title: gleam/otp/supervision
+    url: https://hexdocs.pm/gleam_otp/gleam/otp/supervision.html
+    publisher: HexDocs
   - title: The Go Programming Language
     url: https://go.dev/
     publisher: Go Project
@@ -56,7 +66,7 @@ sources:
   - title: asyncio - Asynchronous I/O
     url: https://docs.python.org/3/library/asyncio.html
     publisher: Python Software Foundation
-lastVerified: 2026-05-21
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Boundary
@@ -84,6 +94,12 @@ Erlang is strongest for mature OTP systems, telecom-style infrastructure, protoc
 Choose [Elixir](/languages/elixir) when the system wants BEAM processes and OTP supervision but also benefits from Elixir syntax, Mix, Hex, macros, Phoenix, LiveView, channels, PubSub, and the modern Elixir web ecosystem.
 
 Elixir is often the better BEAM default for new product backends, realtime web applications, websocket-heavy systems, event-driven services, and teams new to OTP. Erlang is often the better default for existing Erlang estates, lower-level OTP infrastructure, or teams already fluent in Erlang conventions.
+
+## Choose Gleam When Typed BEAM Boundaries Matter
+
+Choose [Gleam](/languages/gleam/) when the team wants Erlang/OTP runtime behavior but static typing is part of the adoption reason. Gleam can model process protocols, domain data, and library APIs with compiler-checked custom types while still using BEAM processes and Erlang/Elixir libraries through explicit interop.
+
+Gleam is most credible for new BEAM modules, services, or libraries where the dependency set is verified early and where JavaScript targeting may matter for shared code. It is a weaker distributed-systems default when the system needs mature Phoenix conventions, direct Erlang OTP internals, large-package ecosystem depth, or operational patterns documented primarily for Erlang and Elixir.
 
 ## Choose Go For Service Fleets And Control Planes
 
@@ -126,6 +142,8 @@ Choose Python when the distributed work is close to data processing, ML orchestr
 Start with Erlang when direct BEAM node behavior, OTP infrastructure, and existing Erlang knowledge are central.
 
 Start with Elixir when BEAM concurrency and supervision are valuable but Phoenix, Mix, and modern product delivery matter.
+
+Start with Gleam when typed BEAM modules are the point and the team has verified the required OTP and package surface.
 
 Start with Go for service fleets, agents, controllers, proxies, workers, and infrastructure tools where explicit network protocols and simple deployment are enough.
 

@@ -1,0 +1,107 @@
+---
+title: Gleam vs Elixir
+slug: gleam-vs-elixir
+summary: Gleam and Elixir both target Erlang/OTP and share the BEAM runtime, but Gleam emphasizes static typing, a small language surface, integrated tooling, and a JavaScript target while Elixir emphasizes dynamic productivity, macros, Phoenix, mature testing, and deeper BEAM tooling integration.
+languages:
+  - gleam
+  - elixir
+useCases:
+  - BEAM applications
+  - concurrent systems
+  - realtime backends
+  - functional programming
+  - typed services
+sources:
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: Frequently asked questions
+    url: https://gleam.run/frequently-asked-questions/
+    publisher: Gleam
+  - title: Command line reference
+    url: https://gleam.run/command-line-reference/
+    publisher: Gleam
+  - title: Externals guide
+    url: https://gleam.run/documentation/externals/
+    publisher: Gleam
+  - title: gleam/erlang/process
+    url: https://hexdocs.pm/gleam_erlang/gleam/erlang/process.html
+    publisher: HexDocs
+  - title: gleam/otp/supervision
+    url: https://hexdocs.pm/gleam_otp/gleam/otp/supervision.html
+    publisher: HexDocs
+  - title: The Elixir Programming Language
+    url: https://elixir-lang.org/
+    publisher: Elixir
+  - title: Introduction
+    url: https://hexdocs.pm/elixir/introduction.html
+    publisher: Elixir
+  - title: Processes
+    url: https://hexdocs.pm/elixir/processes.html
+    publisher: Elixir
+  - title: Erlang libraries
+    url: https://hexdocs.pm/elixir/erlang-libraries.html
+    publisher: Elixir
+  - title: Mix
+    url: https://hexdocs.pm/mix/Mix.html
+    publisher: Elixir
+  - title: Phoenix Framework
+    url: https://www.phoenixframework.org/
+    publisher: Phoenix
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing a BEAM language for services, workers, realtime applications, libraries, or functional backend code. It is not a BEAM-versus-JVM or BEAM-versus-Go comparison. Gleam and [Elixir](/languages/elixir/) both depend on Erlang/OTP as the runtime foundation.
+
+## Shared Territory
+
+Both languages can build BEAM applications, use Hex packages, interoperate with Erlang libraries, model work as isolated processes, and participate in OTP-style systems. Both are functional by default and fit long-running services better when message passing, supervision, and runtime observability are part of the design.
+
+The important shared question is architectural: does the system benefit from BEAM processes and OTP patterns? If the answer is no, neither language should win only because its syntax is attractive.
+
+## Key Differences
+
+| Dimension        | Gleam                                                   | Elixir                                                   |
+| ---------------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| Typing           | Statically typed with inference                         | Dynamically typed, with typespecs and evolving type work |
+| Language surface | Small, no macros or type classes                        | Larger, macro-friendly, DSL-friendly                     |
+| Runtime target   | Erlang/OTP and JavaScript                               | Erlang/OTP                                               |
+| Tooling center   | `gleam` build tool, formatter, LSP, Hex                 | Mix, IEx, ExUnit, ExDoc, Hex                             |
+| Web ecosystem    | Young; frameworks and libraries still maturing          | Phoenix, LiveView, Ecto, Plug, mature web conventions    |
+| OTP style        | Typed wrappers through packages such as `gleam_otp`     | Direct, mature Elixir OTP modules and conventions        |
+| Interop risk     | External declarations can overstate runtime safety      | Erlang interop is direct; Elixir macros stay Elixir-only |
+| Main advantage   | Compiler-checked data and compact source                | Mature product ecosystem and BEAM integration            |
+
+## Choose Gleam When
+
+- Static typing is a core requirement for the BEAM codebase.
+- The team values a small language surface, integrated formatting, and explicit `Result`-style errors.
+- The project wants to expose libraries to other BEAM languages without relying on macro-heavy Elixir APIs.
+- Some code may target JavaScript as well as Erlang, and runtime-specific boundaries can be kept narrow.
+- Phoenix is not the main reason for choosing the BEAM.
+
+## Choose Elixir When
+
+- Phoenix, LiveView, Ecto, channels, PubSub, or the broader Elixir web ecosystem are central.
+- The team wants mature Mix, ExUnit, IEx, documentation, release, and debugging workflows.
+- Macros and DSLs are useful rather than a risk.
+- The organization has Elixir developers or is adopting BEAM through product backend work.
+- Runtime integration, stack traces, coverage, profiling, and ecosystem documentation matter more than static typing.
+
+## Watch Points
+
+Gleam's static types are useful, but they do not remove OTP design work. A typed message protocol can still have backpressure, timeout, restart, distribution, and observability problems. External Erlang, Elixir, or JavaScript code also sits outside the compiler's proof.
+
+Elixir's dynamic typing is productive, but large systems need tests, boundaries, typespecs where useful, runtime validation, and discipline around macros. The lack of compile-time static checking is a real tradeoff for teams that depend on typed refactors.
+
+Gleam can use Elixir code when Elixir is installed, but Elixir macros cannot be called directly from Gleam. APIs that are ordinary functions are much easier to share than APIs whose public surface is a macro DSL.
+
+## Practical Default
+
+Start with Elixir when building a Phoenix-centered product, realtime web system, or ordinary BEAM application where mature libraries and team adoption matter most.
+
+Start with Gleam when static typing and a compact functional language are the reason to choose the BEAM, and when the team is ready to verify package maturity, OTP wrappers, deployment, and interop boundaries directly.
+
+For mixed systems, do not force a rewrite. Keep Elixir where Phoenix or macros are doing real work, add Gleam where typed modules or libraries reduce risk, and share boundaries through ordinary BEAM modules, OTP applications, services, queues, or clearly typed data.

@@ -1,11 +1,12 @@
 ---
 title: Choosing A Concurrency-Oriented Backend Language
 slug: choosing-a-concurrency-oriented-backend-language
-summary: A decision guide for choosing Elixir, Erlang, Go, Crystal, Java, C#, Kotlin, Scala, Rust, JavaScript, or Python when concurrent services, realtime systems, background work, and operational reliability drive the backend language decision.
+summary: A decision guide for choosing Elixir, Erlang, Gleam, Go, Crystal, Java, C#, Kotlin, Scala, Rust, JavaScript, or Python when concurrent services, realtime systems, background work, and operational reliability drive the backend language decision.
 audience: Teams choosing a backend language for realtime applications, high-concurrency services, workers, event-driven systems, distributed systems, or long-running infrastructure.
 candidates:
   - elixir
   - erlang
+  - gleam
   - go
   - crystal
   - java
@@ -44,6 +45,15 @@ sources:
   - title: OTP Design Principles
     url: https://www.erlang.org/doc/system/design_principles.html
     publisher: Erlang/OTP
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: gleam/erlang/process
+    url: https://hexdocs.pm/gleam_erlang/gleam/erlang/process.html
+    publisher: HexDocs
+  - title: gleam/otp/supervision
+    url: https://hexdocs.pm/gleam_otp/gleam/otp/supervision.html
+    publisher: HexDocs
   - title: The Go Programming Language Specification
     url: https://go.dev/ref/spec
     publisher: Go Project
@@ -83,7 +93,7 @@ sources:
   - title: asyncio - Asynchronous I/O
     url: https://docs.python.org/3/library/asyncio.html
     publisher: Python Software Foundation
-lastVerified: 2026-05-21
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Concurrency Shape
@@ -116,6 +126,12 @@ Elixir is not the fastest answer for every backend. It earns its place when the 
 Choose [Erlang](/languages/erlang) when the organization already owns Erlang systems, the problem sits close to mature Erlang libraries, or the team wants direct OTP conventions and Erlang syntax. Erlang remains highly relevant for telecom-style systems, messaging infrastructure, protocol servers, soft realtime coordination, trusted distributed BEAM nodes, and long-lived BEAM services.
 
 For new product web applications, Elixir usually offers a smoother path through Phoenix and Mix. For existing Erlang infrastructure, keep Erlang where it is stable and introduce Elixir only where the language and tooling improve delivery. For distributed Erlang, treat node security, cookies, TLS distribution, version compatibility, and partition behavior as design requirements rather than runtime defaults.
+
+## Choose Gleam When Static Types Should Sit On The BEAM
+
+Choose [Gleam](/languages/gleam/) when the backend wants BEAM processes and message passing but also needs static types, explicit `Result` values, and a compact language surface. Gleam's typed process subjects and OTP packages can clarify actor-style protocols in new code.
+
+Gleam is not yet the mature BEAM backend default. Verify web frameworks, database clients, OTP wrappers, deployment, observability, JavaScript-versus-Erlang target assumptions, and interop with required Erlang or Elixir libraries before committing. Choose Elixir or Erlang when their deeper BEAM tooling and production conventions are the real constraint.
 
 ## Choose Go For Network Services And Operational Simplicity
 
@@ -165,6 +181,8 @@ Choose Python when the backend is close to data workflows, ML orchestration, scr
 Start with Elixir when Phoenix and OTP supervision are real advantages for realtime, event-driven, or stateful backend systems.
 
 Start with Erlang when the system is already Erlang/OTP-centered or close to mature Erlang infrastructure.
+
+Start with Gleam when static typing is the reason to choose a BEAM backend and the required OTP and package surface has been proved in a vertical slice.
 
 Start with Go for network services, infrastructure components, and workers where deployment simplicity and goroutines are enough.
 

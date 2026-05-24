@@ -29,6 +29,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "fortran",
     "fsharp",
     "gdscript",
+    "gleam",
     "go",
     "groovy",
     "haskell",
@@ -722,8 +723,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 53);
-        assert_eq!(content.comparisons.len(), 79);
+        assert_eq!(content.languages.len(), 54);
+        assert_eq!(content.comparisons.len(), 81);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -778,6 +779,7 @@ mod tests {
         assert!(content.language("nim").is_some());
         assert!(content.language("odin").is_some());
         assert!(content.language("gdscript").is_some());
+        assert!(content.language("gleam").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -813,6 +815,8 @@ mod tests {
         assert!(content.comparison("haskell-vs-ocaml").is_some());
         assert!(content.comparison("haskell-vs-scala").is_some());
         assert!(content.comparison("elixir-vs-erlang").is_some());
+        assert!(content.comparison("gleam-vs-elixir").is_some());
+        assert!(content.comparison("gleam-vs-erlang").is_some());
         assert!(content.comparison("elixir-vs-ruby").is_some());
         assert!(content.comparison("clojure-vs-java").is_some());
         assert!(content.comparison("clojure-vs-scala").is_some());
@@ -929,6 +933,7 @@ mod tests {
         assert!(routes.contains("/languages/nim"));
         assert!(routes.contains("/languages/odin"));
         assert!(routes.contains("/languages/gdscript"));
+        assert!(routes.contains("/languages/gleam"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
@@ -953,6 +958,8 @@ mod tests {
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));
+        assert!(routes.contains("/comparisons/gleam-vs-elixir"));
+        assert!(routes.contains("/comparisons/gleam-vs-erlang"));
         assert!(routes.contains("/comparisons/elixir-vs-ruby"));
         assert!(routes.contains("/comparisons/clojure-vs-java"));
         assert!(routes.contains("/comparisons/clojure-vs-scala"));

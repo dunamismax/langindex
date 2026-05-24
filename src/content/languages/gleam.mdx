@@ -1,0 +1,231 @@
+---
+title: Gleam
+slug: gleam
+status: active
+summary: Gleam is a statically typed functional language for the Erlang VM and JavaScript runtimes, centered on a small language surface, actor-style BEAM concurrency, Hex packages, integrated tooling, and practical interoperability with Erlang and Elixir.
+firstReleased: 2019
+creators:
+  - Louis Pilfold
+paradigms:
+  - functional
+  - concurrent
+  - distributed
+  - actor-style
+typing:
+  discipline: static
+  strength: strong static typing with inference, algebraic data types, pattern matching, opaque types, labelled arguments, and explicit Result-based errors
+memory:
+  model: automatic memory management through the target runtime, normally Erlang/OTP garbage collection on the BEAM or JavaScript runtime garbage collection on the JavaScript target
+runtime:
+  model: compiled to Erlang source for Erlang/OTP or to JavaScript for JavaScript runtimes
+officialSite: https://gleam.run/
+repository: https://github.com/gleam-lang/gleam
+packageManagers:
+  - Gleam build tool
+  - Hex
+  - Gleam package index
+comparedWith:
+  - elixir
+  - erlang
+  - haskell
+  - ocaml
+  - typescript
+bestFor:
+  - BEAM services where static typing, a small functional language, actor-style processes, and Erlang/Elixir interoperability are more important than macro-heavy metaprogramming.
+  - Teams evaluating Erlang/OTP reliability patterns but wanting compiler-checked data shapes, integrated formatting, a built-in build tool, Hex dependency workflows, and a modern syntax.
+  - Libraries or application code that can run on Erlang and JavaScript when runtime-specific APIs, external functions, and concurrency assumptions are kept explicit.
+  - New functional codebases that value predictable source, Result-oriented error handling, no null values, no exceptions, and a compact language surface.
+poorFit:
+  - Systems that need the mature Phoenix ecosystem, Elixir macros, or full Elixir BEAM tooling integration more than static typing.
+  - Existing Erlang/OTP estates where direct Erlang syntax, Rebar3, OTP internals, and decades of operational conventions matter more than a newer language surface.
+  - CPU-bound native systems, hard realtime software, browser applications that depend heavily on npm-first framework ecosystems, or projects whose required libraries are not available or practical through externals.
+  - Organizations that need a large hiring pool, a long production track record, or highly mature OTP documentation and testing libraries in the source language today.
+sources:
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: Documentation
+    url: https://gleam.run/documentation/
+    publisher: Gleam
+  - title: Everything! - The Gleam Language Tour
+    url: https://tour.gleam.run/everything/
+    publisher: Gleam
+  - title: Writing Gleam
+    url: https://gleam.run/writing-gleam/
+    publisher: Gleam
+  - title: Command line reference
+    url: https://gleam.run/command-line-reference/
+    publisher: Gleam
+  - title: Frequently asked questions
+    url: https://gleam.run/frequently-asked-questions/
+    publisher: Gleam
+  - title: Externals guide
+    url: https://gleam.run/documentation/externals/
+    publisher: Gleam
+  - title: Gleam version 1
+    url: https://gleam.run/news/gleam-version-1/
+    publisher: Gleam
+  - title: JavaScript source maps
+    url: https://gleam.run/news/javascript-source-maps/
+    publisher: Gleam
+  - title: Introducing the Gleam package index
+    url: https://gleam.run/news/introducing-the-gleam-package-index/
+    publisher: Gleam
+  - title: gleam/erlang/process
+    url: https://hexdocs.pm/gleam_erlang/gleam/erlang/process.html
+    publisher: HexDocs
+  - title: gleam/otp/supervision
+    url: https://hexdocs.pm/gleam_otp/gleam/otp/supervision.html
+    publisher: HexDocs
+  - title: Gleam source repository
+    url: https://github.com/gleam-lang/gleam
+    publisher: Gleam
+lastVerified: 2026-05-24
+---
+
+## Origin And Design Goals
+
+Gleam was created by Louis Pilfold as a functional language for scalable, maintainable systems on the Erlang virtual machine. The first public Gleam release was announced in April 2019, and Gleam v1.0.0 was released on March 4, 2024 as the first stable release of the language.
+
+The design goal is not to replace every BEAM language. Gleam deliberately combines static typing, a small language surface, functional programming, and the reliability properties of Erlang/OTP. It keeps syntax closer to C-family languages than Erlang or ML-family languages, avoids macros and type classes, and tries to make source code predictable for everyday maintenance.
+
+That makes Gleam most interesting when a team wants BEAM concurrency and interoperability but also wants compile-time checks for data shapes, module APIs, pattern matches, and ordinary refactors.
+
+## Runtime Targets: BEAM And JavaScript
+
+Gleam compiles to Erlang source for the Erlang/OTP runtime and can also compile to JavaScript. The BEAM target is the center of the language's concurrency and backend story: Erlang processes, message passing, isolated heaps, schedulers, OTP libraries, and Hex packages are the platform underneath.
+
+The JavaScript target is real, but it is not the same operating model. Gleam can run in browsers and JavaScript runtimes, and recent releases added JavaScript source-map support. Runtime-specific APIs still matter. The official externals documentation warns that external code can make it difficult or impossible for a project to support both Erlang and JavaScript targets, and the language tour calls out differences in concurrent I/O between Erlang and JavaScript.
+
+For cross-target projects, treat the target as part of the public contract. Code that uses BEAM processes, OTP libraries, Erlang externals, or Erlang-specific I/O is not automatically portable to JavaScript. Code that uses JavaScript callbacks, promises, browser APIs, or npm-adjacent packages may not fit normal BEAM style.
+
+Related runtime concepts: [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), [Compilation Targets](/concepts/compilation-targets/), and [Actor Model And Message Passing](/concepts/actor-model-and-message-passing/).
+
+## Type System And Language Model
+
+Gleam is statically typed with type inference. Everyday code uses immutable data, modules, functions, pipelines, custom types, labelled arguments, pattern matching, recursion, opaque types, and `Result` values for fallible work. Gleam does not use null values or exceptions as ordinary control flow.
+
+Custom types and pattern matching are central. A domain can model states as named variants, then force callers to handle them with `case` expressions. Opaque types let a module expose a type while keeping its constructors private, which is useful for smart constructors and validated values.
+
+The tradeoff is intentional simplicity. Gleam does not have Elixir macros, Erlang parse transforms, Rust traits, Haskell type classes, or ML functors. That keeps application code easier to read, but it also means some abstractions that other functional languages encode in their type systems or metaprogramming systems are handled with ordinary modules, functions, and conventions.
+
+Related type concepts: [Algebraic Data Types And Pattern Matching](/concepts/algebraic-data-types-and-pattern-matching/), [Static Vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Type Inference](/concepts/type-inference/), and [Errors As Values Vs Exceptions](/concepts/errors-as-values-vs-exceptions/).
+
+## Processes, Actors, And OTP
+
+On the Erlang target, Gleam can use BEAM processes. The `gleam_erlang` package exposes typed process subjects, spawning, sending, receiving, timers, monitors, selectors, and process registration. A `Subject(message)` gives a typed channel-like value for sending messages of one message type to the process that owns the subject.
+
+Gleam also has OTP-oriented packages such as `gleam_otp`, including actor and supervision modules. These libraries wrap Erlang/OTP concepts in Gleam types, but the underlying runtime is still Erlang/OTP. Serious BEAM work still requires understanding processes, mailboxes, links, monitors, supervision, restarts, releases, node distribution, and observability.
+
+This is one of Gleam's sharpest strengths and risks. Typed subjects can make message protocols clearer inside Gleam code. But distributed Erlang, cross-node messages, Erlang libraries, Elixir macro-heavy APIs, and OTP internals can expose dynamic or runtime-specific boundaries where the compiler cannot prove everything.
+
+## Syntax Example
+
+```gleam
+import gleam/erlang/process
+
+type Check {
+  Check(name: String, status: Int)
+}
+
+type Message {
+  Record(name: String, status: Int)
+  IsOk(name: String, reply: process.Subject(Result(Int, String)))
+  Stop
+}
+
+pub fn main() {
+  let subject = process.new_subject()
+
+  process.spawn(fn() {
+    loop(subject, [])
+  })
+
+  process.send(subject, Record("Gleam", 200))
+  process.send(subject, Record("Example", 503))
+
+  let reply = process.new_subject()
+  process.send(subject, IsOk("Gleam", reply))
+  echo process.receive(reply, within: 1000)
+
+  process.send(subject, Stop)
+}
+
+fn loop(subject: process.Subject(Message), checks: List(Check)) -> Nil {
+  case process.receive_forever(subject) {
+    Record(name, status) -> loop(subject, [Check(name, status), ..checks])
+    IsOk(name, reply) -> {
+      process.send(reply, lookup(checks, name))
+      loop(subject, checks)
+    }
+    Stop -> Nil
+  }
+}
+
+fn lookup(checks: List(Check), name: String) -> Result(Int, String) {
+  case checks {
+    [] -> Error("missing")
+    [Check(check_name, status), ..rest] ->
+      case check_name == name {
+        True -> Ok(status)
+        False -> lookup(rest, name)
+      }
+  }
+}
+```
+
+The example shows typed messages, a process-owned subject, spawning a BEAM process, sending and receiving messages, immutable state through recursion, pattern matching, and `Result` values.
+
+## Tooling, Packages, And Builds
+
+Gleam ships integrated tooling. The command-line reference covers project creation, builds, type checks, tests, dependency management, formatting, documentation generation, package publishing, Hex operations, language-server startup, and export commands for Erlang and JavaScript artifacts. `gleam format` is the standard formatter, and `gleam lsp` runs the language server used by editors.
+
+Packages are distributed through Hex, the Erlang ecosystem package manager. The Gleam package index exists because Hex hosts packages for Erlang, Elixir, and Gleam, while Gleam users often want to discover packages written in Gleam or with Gleam bindings. Gleam projects use `gleam.toml` for dependencies and a `manifest.toml` lockfile for reproducible installs.
+
+This is a simpler starting story than many functional languages, but the ecosystem is still young. Before committing to Gleam, verify the exact packages, JavaScript or Erlang target, OTP libraries, database clients, web framework, testing strategy, deployment process, and editor support your project needs.
+
+Related tooling concepts: [Package Managers](/concepts/package-managers/), [Build Systems](/concepts/build-systems/), [Formatters And Linters](/concepts/formatters-and-linters/), and [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/).
+
+## Erlang And Elixir Interoperability
+
+Gleam can use code written in Erlang and Elixir. External functions and external types let Gleam declare typed boundaries to runtime-specific code, and the build tool can compile Elixir dependencies and Elixir source files when Elixir is installed.
+
+Those boundaries need discipline. The compiler cannot type-check the implementation of external Erlang, Elixir, or JavaScript code. If the declared type is wrong, bugs and runtime errors are possible. Elixir macros also cannot be called directly from outside Elixir, so APIs that depend on macros may need an Elixir wrapper module before Gleam can use them.
+
+Interop is therefore a practical strength, not a guarantee that every BEAM library feels native. Gleam works best when the public boundary is ordinary functions, data, processes, and OTP applications that can be modeled clearly in Gleam types.
+
+## Best-Fit Use Cases
+
+Gleam is a strong candidate for:
+
+- BEAM services that benefit from static typing, process isolation, message passing, and OTP libraries.
+- Functional backend code where a small language surface, integrated formatter, explicit errors, and compiler checks matter more than macros.
+- Libraries intended for other BEAM languages when the API can be expressed without Elixir-only macro conventions.
+- Shared core logic that can target Erlang and JavaScript after runtime-specific dependencies are isolated.
+- Teams evaluating functional programming that want a more compact language than Haskell, Scala, Elixir, or Erlang.
+
+## Poor-Fit Or Risky Use Cases
+
+Gleam can be a poor fit when:
+
+- Phoenix, LiveView, Ecto, mature Elixir testing, macros, or deeper Elixir tooling are the main reason to choose the BEAM.
+- The system is an existing Erlang/OTP estate where Erlang syntax and Rebar3 are already institutional knowledge.
+- The dependency graph depends heavily on Elixir macros, Erlang dynamic conventions, JavaScript framework packages, or runtime APIs that are awkward from Gleam.
+- The project requires native compilation, manual memory control, GPU libraries, hard realtime behavior, or CPU-bound numerical performance.
+- Hiring availability, production case studies, and long-lived ecosystem maturity are stronger constraints than the language's type and tooling advantages.
+
+## Governance, Releases, And Ecosystem
+
+Gleam is an open source project in the `gleam-lang/gleam` repository under the Apache 2.0 license. The repository describes the project as not owned by a corporation and supported by sponsors. The current public release when this page was verified was v1.16.0, published on April 24, 2026.
+
+The stable 1.0 release matters. The v1 announcement says Gleam follows semantic versioning and that backwards compatibility is now a priority for public APIs in the main repository, including the language design, compiler, build tool, package manager, formatter, language server, and compiler WASM/JavaScript API.
+
+The ecosystem is active but younger than Erlang, Elixir, JavaScript, Java, Python, Go, Rust, or C#. Treat that honestly: Gleam is no longer a pre-1.0 experiment, but it is still a newer language with a smaller package ecosystem, smaller hiring surface, and a tooling stack that is improving quickly.
+
+## Nearby Comparisons
+
+[Gleam vs Elixir](/comparisons/gleam-vs-elixir/) is the closest comparison for new BEAM product work. Elixir has Phoenix, macros, dynamic typing, mature testing, and deeper BEAM integration. Gleam has static typing, a smaller language surface, integrated tooling, and a JavaScript target.
+
+[Gleam vs Erlang](/comparisons/gleam-vs-erlang/) is the closest comparison for OTP infrastructure and existing BEAM systems. Erlang is the original language of the runtime and has direct OTP conventions. Gleam gives a typed functional layer that can still interoperate with Erlang libraries.
+
+Haskell, OCaml, F#, and Scala are nearby when the main question is functional programming with static types. TypeScript is nearby when the JavaScript target is the reason to evaluate Gleam, though TypeScript remains much closer to npm, web frameworks, and mainstream JavaScript operations.

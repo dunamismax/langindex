@@ -158,13 +158,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 13 - Gleam
 
-- [ ] Add a complete Gleam page.
-- [ ] Cover BEAM target, JavaScript target, static typing, functional style, OTP interoperability, package manager/build tool, formatter, actor/process model, relationship to Erlang and Elixir, ecosystem maturity, and governance.
-- [ ] Add Gleam vs Elixir comparison.
-- [ ] Add Gleam vs Erlang comparison.
-- [ ] Add Gleam to distributed-systems, concurrency-oriented backend, functional-programming, and JavaScript/compile-to-JavaScript guides where accurate.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Gleam page.
+- [x] Cover BEAM target, JavaScript target, static typing, functional style, OTP interoperability, package manager/build tool, formatter, actor/process model, relationship to Erlang and Elixir, ecosystem maturity, and governance.
+- [x] Add Gleam vs Elixir comparison.
+- [x] Add Gleam vs Erlang comparison.
+- [x] Add Gleam to distributed-systems, concurrency-oriented backend, functional-programming, and JavaScript/compile-to-JavaScript guides where accurate.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 14 - Mojo
 

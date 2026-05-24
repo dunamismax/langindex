@@ -9,6 +9,7 @@ candidates:
   - dart
   - kotlin
   - csharp
+  - gleam
 sources:
   - title: ECMAScript Language Specification
     url: https://tc39.es/ecma262/
@@ -46,7 +47,16 @@ sources:
   - title: Blazor
     url: https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-10.0
     publisher: Microsoft .NET
-lastVerified: 2026-05-20
+  - title: Gleam Programming Language
+    url: https://gleam.run/
+    publisher: Gleam
+  - title: Multi target externals - The Gleam Language Tour
+    url: https://tour.gleam.run/advanced-features/multi-target-externals/
+    publisher: Gleam
+  - title: JavaScript source maps
+    url: https://gleam.run/news/javascript-source-maps/
+    publisher: Gleam
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Runtime
@@ -78,11 +88,13 @@ For production web applications, TypeScript is often worth the setup once route 
 
 ## Choose Another Compile-to-JavaScript Language When
 
-Another language can make sense when its home framework or platform is the real reason for the choice. Dart is usually evaluated because of Flutter. Kotlin can matter when a team is sharing code across JVM, Android, or multiplatform projects. C# can enter the conversation when .NET and WebAssembly tooling are already strategic.
+Another language can make sense when its home framework or platform is the real reason for the choice. Dart is usually evaluated because of Flutter. Kotlin can matter when a team is sharing code across JVM, Android, or multiplatform projects. C# can enter the conversation when .NET and WebAssembly tooling are already strategic. Gleam can matter when shared functional code or typed libraries need to target both Erlang/OTP and JavaScript.
 
 The constraint is ecosystem distance. A language can target JavaScript while still making npm packages, framework examples, debugging tools, hiring, and community patterns less direct than JavaScript or TypeScript.
 
 For Dart specifically, separate Flutter web from general web development. Flutter web can be a reasonable extension of a Flutter app, especially when shared UI is valuable across mobile and browser targets. For ordinary browser and Node.js applications, TypeScript usually remains closer to the runtime APIs, npm packages, framework documentation, and debugging conventions.
+
+For Gleam specifically, separate "can compile to JavaScript" from "is a general JavaScript ecosystem replacement." Gleam is more compelling when the same typed functional modules can support BEAM and JavaScript targets, or when a team values Gleam's small language and `Result`-oriented style. It is less compelling when the product depends heavily on npm-first UI frameworks, browser API examples, bundler plugins, or JavaScript package conventions. Runtime-specific externals and concurrent I/O differences must be documented.
 
 ## Questions To Ask
 
@@ -93,8 +105,9 @@ For Dart specifically, separate Flutter web from general web development. Flutte
 - Are external inputs validated at runtime, independent of static types?
 - Does the chosen framework document a first-class TypeScript, JavaScript, or alternate-language path?
 - Would a non-JavaScript source language isolate the team from the package ecosystem they need every day?
+- Does a multi-target language such as Gleam need to support both JavaScript and another runtime, and are target-specific externals isolated?
 - Which runtime APIs are required, and do they exist in the target browsers, Node.js version, edge runtime, Deno, or Bun?
 
 ## Practical Default
 
-For most new production web and Node.js applications, start with TypeScript in strict mode unless the project is intentionally small or short-lived. For tiny scripts and experiments, start with JavaScript and add TypeScript only when the maintenance surface justifies it. Choose Dart, Kotlin, C#, or another compile-to-JavaScript language only when that language's platform, framework, or shared-code story is the primary requirement.
+For most new production web and Node.js applications, start with TypeScript in strict mode unless the project is intentionally small or short-lived. For tiny scripts and experiments, start with JavaScript and add TypeScript only when the maintenance surface justifies it. Choose Dart, Kotlin, C#, Gleam, or another compile-to-JavaScript language only when that language's platform, framework, or shared-code story is the primary requirement.
