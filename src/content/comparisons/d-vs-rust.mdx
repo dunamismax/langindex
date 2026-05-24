@@ -1,0 +1,109 @@
+---
+title: D vs Rust
+slug: d-vs-rust
+summary: D and Rust both compile to native code and target systems-adjacent work, but Rust centers ownership-checked memory safety and Cargo while D centers C/C++ adjacency, garbage-collected productivity by default, CTFE, ranges, Phobos, DUB, and attribute-based safety boundaries.
+languages:
+  - d
+  - rust
+useCases:
+  - systems programming
+  - native libraries
+  - performance-sensitive tools
+  - memory safety
+sources:
+  - title: D Programming Language
+    url: https://dlang.org/
+    publisher: D Language Foundation
+  - title: Overview
+    url: https://dlang.org/overview.html
+    publisher: D Language Foundation
+  - title: Functions
+    url: https://dlang.org/spec/function.html
+    publisher: D Language Foundation
+  - title: Memory-Safe-D-Spec
+    url: https://dlang.org/spec/memory-safe-d.html
+    publisher: D Language Foundation
+  - title: std.range
+    url: https://dlang.org/phobos/std_range
+    publisher: D Language Foundation
+  - title: Intro to DUB
+    url: https://dub.pm/
+    publisher: D Language Foundation
+  - title: Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+  - title: The Rust Programming Language - Ownership
+    url: https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+    publisher: Rust Project
+  - title: The Rust Programming Language - Unsafe Rust
+    url: https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
+    publisher: Rust Project
+  - title: The Cargo Book
+    url: https://doc.rust-lang.org/cargo/
+    publisher: Rust Project
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for native tools, infrastructure components, libraries, services, C/C++ adjacent code, and teams deciding whether memory safety should be enforced primarily by Rust's type system or by D's attribute boundaries plus project discipline.
+
+## Practical Difference
+
+Rust is the stronger default when memory safety is a product requirement. Ownership, borrowing, lifetimes, `Drop`, `Send`, `Sync`, `Result`, `Option`, and the safe/unsafe split let Rust libraries encode many lifetime, aliasing, and thread-sharing rules in types.
+
+D is the more C++-adjacent productivity language. It offers native compilation, a garbage-collected default runtime, RAII tools, `@safe`, `@trusted`, `@system`, CTFE, templates, mixins, ranges, Phobos, and DUB. It can be simpler to write for some native application and tooling work, but it does not give Rust's compile-time ownership model.
+
+Choose Rust when the compiler should reject many ownership mistakes before review. Choose D when a GC-backed native language with powerful compile-time features and C/C++ adjacency better matches the project.
+
+## Memory Model
+
+Rust has no required garbage collector. Safe Rust code is constrained by ownership and borrowing rules. Unsafe Rust exists for raw pointers, FFI, hardware, and low-level abstractions, but it is explicit and can be wrapped behind safe APIs.
+
+D is garbage collected by default. It can also use RAII, scope guards, manual allocation, C allocation, `@nogc`, reduced-runtime styles, and safety attributes. `@safe` code is checked against memory-safety restrictions, `@trusted` code is manually reviewed, and `@system` code can use unsafe operations.
+
+That makes D flexible but less mechanically strict. A D project must decide which modules are `@safe`, which wrappers are `@trusted`, where GC allocation is allowed, which functions are `@nogc`, and how pointer lifetimes are reviewed. A Rust project must pay the borrow-checker and API-design cost up front.
+
+## Tooling And Ecosystem
+
+Rust has the stronger package and build ecosystem. Cargo, crates.io, rustup, docs.rs, editions, stable releases, and a large library base are major practical advantages.
+
+D has DUB, the DUB registry, Phobos, DMD, LDC, and GDC. That is a real modern workflow, especially compared with bare C or C++ projects, but the ecosystem is much smaller. Check D package health, compiler support, editor support, framework maturity, deployment examples, and staffing before choosing D for a broad product.
+
+## Compile-Time Programming
+
+D's CTFE, templates, constraints, `static if`, `static foreach`, template mixins, string mixins, and traits make compile-time programming a central language feature. This can be useful for generated tables, serialization, parsers, bindings, DSL-like APIs, and eliminating repetitive native code.
+
+Rust has macros, const evaluation, generics, traits, derive macros, build scripts, and procedural macros. Its metaprogramming ecosystem is powerful, but Rust often pushes API correctness through traits and types rather than string mixins or general CTFE-heavy patterns.
+
+If compile-time code generation is the main productivity tool and the team can keep it readable, D may feel more direct. If the priority is checked ownership and broadly reusable safe APIs, Rust is usually stronger.
+
+## Interop
+
+Both languages can live near C boundaries. Rust's FFI is explicit and unsafe at the boundary; strong Rust wrappers can make the rest of the code safe. D's C/C++ adjacency and native syntax can make interop-heavy code feel more familiar to C++ developers, but ownership, exceptions, strings, allocation, callbacks, and threading still need careful contracts.
+
+For security-sensitive wrappers around unsafe native libraries, Rust often earns its complexity. For native tools or C/C++ adjacent application code where GC and D's language features are acceptable, D can be productive.
+
+## Choose D When
+
+- GC-backed native productivity is acceptable.
+- C/C++ adjacency and fast iteration matter more than ownership checking.
+- CTFE, templates, ranges, mixins, contracts, and Phobos reduce real code complexity.
+- The team can isolate `@system` and `@trusted` code and enforce `@safe` where useful.
+- DUB packages and Phobos cover the needed domain.
+
+## Choose Rust When
+
+- Memory safety and data-race prevention should be enforced by the compiler.
+- The project benefits from Cargo, crates.io, rustup, and Rust's package maturity.
+- Public APIs need ownership, borrowing, `Result`, `Option`, enums, traits, and safe abstractions.
+- Unsafe code can be kept small and reviewed.
+- The team can absorb Rust's learning curve and compile-time feedback.
+
+## Watch Points
+
+D's risks are ecosystem size, GC behavior, runtime assumptions, manual safety policy, and the need to audit trusted wrappers.
+
+Rust's risks are learning curve, compile times, dependency complexity, async/runtime choices, and FFI integration cost.
+
+Prototype the hardest constraint before choosing: memory model, dependency graph, target platform, FFI boundary, profiler, release build, and team readability.

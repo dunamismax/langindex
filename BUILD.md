@@ -101,14 +101,14 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 7 - D
 
-- [ ] Add a complete D page.
-- [ ] Cover native compilation, C/C++ adjacency, templates, compile-time function evaluation, ranges, garbage collection with systems escape hatches, `@safe`, `dub`, Phobos, LDC/GDC/DMD, ecosystem size, and governance.
-- [ ] Add D vs C++ comparison.
-- [ ] Add D vs Rust comparison.
-- [ ] Add D vs Zig comparison.
-- [ ] Add D to systems and performance-critical guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete D page.
+- [x] Cover native compilation, C/C++ adjacency, templates, compile-time function evaluation, ranges, garbage collection with systems escape hatches, `@safe`, `dub`, Phobos, LDC/GDC/DMD, ecosystem size, and governance.
+- [x] Add D vs C++ comparison.
+- [x] Add D vs Rust comparison.
+- [x] Add D vs Zig comparison.
+- [x] Add D to systems and performance-critical guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 8 - HCL
 

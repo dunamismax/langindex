@@ -1,0 +1,105 @@
+---
+title: D vs Zig
+slug: d-vs-zig
+summary: D and Zig both serve native systems-adjacent work, but D favors a larger C++-adjacent language with garbage collection by default, CTFE, ranges, Phobos, DUB, and safety attributes while Zig favors a smaller pre-1.0 language with explicit allocation, comptime, integrated builds, cross-compilation, and no default garbage collector.
+languages:
+  - d
+  - zig
+useCases:
+  - systems programming
+  - C replacement
+  - native tools
+  - cross-compilation
+sources:
+  - title: D Programming Language
+    url: https://dlang.org/
+    publisher: D Language Foundation
+  - title: Overview
+    url: https://dlang.org/overview.html
+    publisher: D Language Foundation
+  - title: Features Overview
+    url: https://dlang.org/comparison.html
+    publisher: D Language Foundation
+  - title: Functions
+    url: https://dlang.org/spec/function.html
+    publisher: D Language Foundation
+  - title: Memory-Safe-D-Spec
+    url: https://dlang.org/spec/memory-safe-d.html
+    publisher: D Language Foundation
+  - title: Intro to DUB
+    url: https://dub.pm/
+    publisher: D Language Foundation
+  - title: Zig Programming Language
+    url: https://ziglang.org/
+    publisher: Zig Software Foundation
+  - title: Overview - Zig Programming Language
+    url: https://ziglang.org/learn/overview/
+    publisher: Zig Software Foundation
+  - title: Zig Language Reference 0.16.0
+    url: https://ziglang.org/documentation/0.16.0/
+    publisher: Zig Software Foundation
+  - title: 0.16.0 Release Notes
+    url: https://ziglang.org/download/0.16.0/release-notes.html
+    publisher: Zig Software Foundation
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for native tools, low-level libraries, C replacement modules, systems-adjacent applications, and teams deciding between D's larger integrated language and Zig's smaller explicit systems language.
+
+## Practical Difference
+
+D is older and more C++ adjacent. It has garbage collection by default, Phobos, DUB, templates, CTFE, mixins, ranges, classes, contracts, built-in unit tests, safety attributes, and multiple compiler families. Its strength is giving native-code developers a broad language and library surface without fully living in C++.
+
+Zig is younger and more C adjacent. Its overview emphasizes no hidden control flow, no hidden memory allocations, no preprocessor, no macros, explicit allocation, comptime, error unions, optionals, `defer`, integrated builds, C import, `zig cc`, and cross-compilation.
+
+Choose D when high-level native productivity and metaprogramming are the attraction. Choose Zig when explicit allocation, small-language discipline, cross-compilation, and C build integration are the attraction.
+
+## Memory And Runtime
+
+D uses a garbage collector by default, with RAII, manual allocation, `@nogc`, and safety attributes available where needed. That can be productive for tools, services, and native applications where occasional GC is acceptable and hot paths can be isolated.
+
+Zig has no default GC. Allocation is generally passed explicitly through allocator parameters, and the project chooses arenas, fixed buffers, page allocators, general-purpose allocators, or no allocation. Zig has safety checks in selected build modes, but it does not enforce Rust-style ownership.
+
+If a target cannot tolerate GC or runtime assumptions, Zig is usually the more direct starting point. If a native application benefits from managed convenience plus selective low-level control, D may be faster to build with.
+
+## Compile-Time Facilities
+
+D's CTFE can run ordinary functions in compile-time contexts, and templates, mixins, constraints, traits, `static if`, and `static foreach` give the language a deep metaprogramming toolbox.
+
+Zig's `comptime` is central to generic programming, configuration, code generation, and replacing many C preprocessor patterns. It is explicit at the language surface and fits Zig's preference for visible behavior.
+
+Both languages can move work to compile time. D has a broader and older metaprogramming surface. Zig has a smaller model that is tightly integrated with its build and type system.
+
+## Build, Packages, And C Interop
+
+D uses DUB as its official package manager and build tool. It can resolve dependencies, build, run, test, and store selected versions in `dub.selections.json`. D also has the DUB registry and Phobos.
+
+Zig's build story is compiler-centered. `zig build`, `build.zig`, `build.zig.zon`, C import, C/C++ compilation support, and `zig cc` make it attractive when the build itself is part of the C replacement problem.
+
+For C interop, both can work. Zig is often stronger when the project needs to compile C/C++, cross-compile C dependencies, or replace C modules one at a time. D is often stronger when the implementation benefits from Phobos, GC, ranges, CTFE, and a more application-level language.
+
+## Choose D When
+
+- Native productivity matters more than allocator-explicit purity.
+- DUB, Phobos, ranges, CTFE, and mixins are useful for the project.
+- A garbage-collected default runtime is acceptable.
+- C/C++ adjacency is needed, but the code is not primarily freestanding or no-runtime.
+- The team wants a more expressive C++ alternative and can accept a smaller ecosystem.
+
+## Choose Zig When
+
+- No default garbage collector and explicit allocation are central.
+- Cross-compilation, `zig cc`, and C build integration are major requirements.
+- The project is a C replacement module, freestanding component, parser, allocator, codec, or low-level tool.
+- A smaller language surface is more valuable than classes, GC, ranges, and string mixins.
+- The team can tolerate Zig's pre-1.0 churn and package maturity limits.
+
+## Watch Points
+
+D's watch points are GC behavior, runtime assumptions, DUB package depth, ecosystem size, and safety-policy discipline around `@safe`, `@trusted`, and `@system`.
+
+Zig's watch points are pre-1.0 changes, evolving package APIs, manual memory responsibility, and fewer mature domain libraries than Rust, C++, Go, or C.
+
+For either language, prove the target with a vertical slice: compiler version, build system, dependencies, allocator policy, C boundary, debugging, profiling, and release packaging.

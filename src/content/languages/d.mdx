@@ -1,0 +1,234 @@
+---
+title: D
+slug: d
+status: active
+summary: D is a C and C++ adjacent systems programming language with native compilation, garbage collection by default, templates, compile-time function execution, ranges, @safe/@trusted/@system safety attributes, DUB packages, Phobos, and the DMD, LDC, and GDC compiler families.
+firstReleased: 2001
+creators:
+  - Walter Bright
+paradigms:
+  - systems
+  - imperative
+  - procedural
+  - object-oriented
+  - generic
+  - metaprogramming
+  - functional
+typing:
+  discipline: static
+  strength: static typing with type inference, templates, constraints, mixins, overloads, attributes, structs, classes, interfaces, arrays, ranges, and explicit unsafe escape hatches
+memory:
+  model: garbage collected by default, with RAII, scope guards, @nogc functions, manual allocation, C interop, and @safe/@trusted/@system attributes for memory-safety boundaries
+runtime:
+  model: ahead-of-time native compilation through DMD, LDC, or GDC, with a D runtime and standard library in ordinary builds plus C and C++ interop for native boundaries
+officialSite: https://dlang.org/
+repository: https://github.com/dlang/dmd
+packageManagers:
+  - DUB
+  - dub build
+  - dub test
+  - dub.selections.json
+comparedWith:
+  - cpp
+  - rust
+  - zig
+bestFor:
+  - Native tools, services, libraries, and systems-adjacent software where C-like control, C and C++ interop, fast iteration, templates, ranges, and compile-time metaprogramming are useful.
+  - Teams that want a more integrated language than C++ for many everyday tasks but can accept a smaller ecosystem, a garbage-collected default runtime, and explicit unsafe boundaries.
+  - Applications where DUB, Phobos, CTFE, @safe code, unit tests, contracts, and native compilers can simplify a C or C++ shaped codebase without requiring Rust's ownership model.
+  - Code that can isolate @system or manually managed parts behind @trusted or @safe interfaces and test allocator, GC, and FFI behavior directly.
+poorFit:
+  - Projects that require Rust-style compile-time ownership and borrowing guarantees across the whole codebase.
+  - Hard real-time, safety-critical, or no-runtime targets unless the team has already proven @nogc, betterC, allocator, compiler, and library constraints on the exact platform.
+  - Domains that depend heavily on the C++, Rust, Go, Java, Python, JavaScript, or C# package ecosystems and hiring pools.
+  - Teams that cannot own dependency health, compiler choice, D runtime behavior, GC tuning, and C/C++ boundary rules explicitly.
+sources:
+  - title: D Programming Language
+    url: https://dlang.org/
+    publisher: D Language Foundation
+  - title: Overview
+    url: https://dlang.org/overview.html
+    publisher: D Language Foundation
+  - title: Features Overview
+    url: https://dlang.org/comparison.html
+    publisher: D Language Foundation
+  - title: Templates
+    url: https://dlang.org/spec/template.html
+    publisher: D Language Foundation
+  - title: Functions
+    url: https://dlang.org/spec/function.html
+    publisher: D Language Foundation
+  - title: Memory-Safe-D-Spec
+    url: https://dlang.org/spec/memory-safe-d.html
+    publisher: D Language Foundation
+  - title: std.range
+    url: https://dlang.org/phobos/std_range
+    publisher: D Language Foundation
+  - title: Intro to DUB
+    url: https://dub.pm/
+    publisher: D Language Foundation
+  - title: Downloads
+    url: https://dlang.org/download
+    publisher: D Language Foundation
+  - title: The D Language Foundation
+    url: https://dlang.org/foundation/about.html
+    publisher: D Language Foundation
+  - title: Origins of the D Programming Language
+    url: https://erdani.org/research/hopl.pdf
+    publisher: ACM HOPL
+lastVerified: 2026-05-24
+---
+
+## Origin And Design Goals
+
+D was created by Walter Bright after long experience with C and C++ compilers. The HOPL history paper by Walter Bright and Andrei Alexandrescu identifies August 2001 as the public birth of the language, and the D Language Foundation describes the original direction as a "better C++" that later grew into an open source language ecosystem.
+
+That history still explains D's shape. D is designed for native systems programming, but it keeps many high-level conveniences in the language and standard library: modules, classes, interfaces, templates, mixins, contracts, built-in unit tests, slices, associative arrays, ranges, garbage collection, RAII, and compile-time execution. The result is not C with minor syntax changes and not C++ with a different standard library. It is a separate language that keeps C/C++ adjacency while choosing a more integrated tool and language model.
+
+The practical evaluation question is whether those integrations help more than the ecosystem cost. D can feel productive for native tools, data processing, services, libraries, and C/C++ adjacent code. It is weaker when the team needs the broadest library base, the largest hiring pool, a formal ISO standard, or compiler-enforced ownership comparable to Rust.
+
+## Runtime, Compilers, And Native Code
+
+D normally compiles ahead of time to native code. The official downloads page presents three main compiler families:
+
+- DMD, the official reference compiler, with the latest D version and fast compilation.
+- GDC, the GCC-based D compiler, with GCC optimization and debugger integration.
+- LDC, the LLVM-based D compiler, with LLVM optimization and broad target work.
+
+That compiler spread matters. DMD is often attractive for fast iteration and reference behavior. LDC and GDC are often evaluated when optimization, target support, system toolchains, or integration with LLVM/GCC infrastructure matter. A serious project should pin the compiler family and version, not just "D", because release behavior, optimization, target support, linker behavior, and diagnostics can differ.
+
+Ordinary D programs use the D runtime and Phobos standard library. D can also interoperate with C and C++, and specialized builds can reduce runtime assumptions, but those paths are engineering constraints rather than defaults. If a target is freestanding, embedded, hard real-time, or no-runtime, prove the exact compiler switches, libraries, startup code, allocator policy, and FFI behavior early.
+
+## Memory Management And Safety
+
+D is garbage collected by default. The official overview is explicit that D memory allocation is fully garbage collected, while also documenting explicit resource-management tools: class allocation hooks, RAII, scope guards, and direct native access where needed. The feature overview also calls out the `@nogc` subset and explicit memory allocation control.
+
+That gives D a hybrid profile. Many applications can use the GC for productivity and still use value types, stack allocation, RAII, `scope(exit)`, `scope(failure)`, `scope(success)`, C allocation, custom allocators, or `@nogc` functions in measured hot paths. This is useful when the product wants native code but does not need every module to be allocator-explicit.
+
+The safety story is attribute-based. D's memory-safe subset uses `@safe`, `@trusted`, and `@system`:
+
+- `@safe` functions are restricted to operations intended not to corrupt memory.
+- `@trusted` functions expose a safe interface while internally using operations that the compiler cannot verify.
+- `@system` functions may use unsafe operations and cannot be called directly from `@safe` code.
+
+This is a meaningful guardrail, but it is not Rust's ownership model. D can reject unsafe operations in `@safe` code and can infer safety in some cases, especially templates, but the project still has to decide where unsafe code is allowed, how trusted wrappers are reviewed, how pointer lifetimes are documented, how GC and manual memory interact, and what CI checks enforce.
+
+Related concepts: [Garbage Collection](/concepts/garbage-collection/), [Manual Memory Management](/concepts/manual-memory-management/), [RAII And Deterministic Cleanup](/concepts/raii-and-deterministic-cleanup/), [Memory Safety](/concepts/memory-safety/), and [Foreign Function Interface](/concepts/foreign-function-interface/).
+
+## Templates, CTFE, Mixins, And Generics
+
+Templates are D's primary generic-programming mechanism. The language specification defines template declarations, template parameters, constraints, specialization, function templates, template mixins, and related compile-time features. Template constraints are computed at compile time and are widely used by Phobos APIs to express what operations a type must support.
+
+D also supports Compile Time Function Execution, usually abbreviated CTFE. The function specification describes CTFE as using functions to compute values in compile-time contexts such as manifest constants, static initializers, static array dimensions, template value parameters, `static if`, `static foreach`, `static assert`, mixin statements, pragmas, and traits. A major ergonomic point is that ordinary functions can often be used at compile time when their inputs are compile-time known.
+
+String mixins and template mixins make this metaprogramming model more powerful than simple C preprocessor substitution. They can generate declarations, specialize algorithms, validate tables, build parsers, or remove boilerplate. They can also make code harder to read when overused. Treat D metaprogramming like any other powerful abstraction: use it where it reduces real duplication or checks invariants, and keep generated behavior reviewable.
+
+## Ranges, Phobos, And Library Style
+
+Phobos is D's standard library. It includes modules for algorithms, ranges, arrays, strings, formatting, files, concurrency, math, traits, testing support, and much more. D's library style is heavily shaped by ranges.
+
+The `std.range` documentation defines ranges as abstractions over arrays, lists, files, incoming network data, and other sequential sources. Ranges let the same algorithms operate over different concrete containers or streams. The overview notes that dynamic arrays and associative arrays act as ranges, and Phobos algorithms use template constraints to require only the operations they need.
+
+For C++ developers, ranges may feel like a standard-library-level attempt to separate algorithms from storage. For Rust developers, ranges may feel closer to iterator-heavy pipelines, though D's safety and ownership model is different. For D projects, ranges are central enough that teams should learn them early instead of writing every loop and container transformation by hand.
+
+## DUB, Packages, And Tooling
+
+DUB is the official package manager and build tool for D. Its documentation describes package discovery through the DUB registry, project creation, dependency fetching, builds, runs, tests, configurations, build types, recipe files in `dub.sdl` or `dub.json`, and a `dub.selections.json` file that stores resolved dependency versions.
+
+This gives D a more standard project workflow than traditional C or C++ projects often have. Typical commands include:
+
+```sh
+dub init
+dub build
+dub test
+dub run
+dub upgrade
+```
+
+The ecosystem is still much smaller than Rust's crates.io, Go modules, npm, Maven Central, NuGet, PyPI, or the broad C++ universe. Before choosing D, check whether the exact libraries, bindings, maintainers, CI examples, editor support, and deployment patterns exist for the project domain. DUB helps with package workflow, but it does not erase ecosystem size.
+
+## C And C++ Interop
+
+D's C and C++ adjacency is one of its core reasons to exist. The language can call C functions, expose native symbols, use C-like structs, and integrate with C/C++ code at ABI and build boundaries. This makes D plausible for native tools, libraries, services, and components near existing C or C++ estates.
+
+Interop still needs ordinary native discipline. Document who owns memory, which allocator frees it, whether a pointer can outlive the call, how strings are encoded, whether callbacks may cross threads, how exceptions or errors are represented, which compiler and standard library own the linked artifact, and whether the public boundary is C ABI, C++ ABI, or a process/protocol boundary.
+
+D is attractive when it lets the implementation be more expressive while the public boundary stays boring. It is less attractive when the project needs direct consumption by a C++ ecosystem that expects CMake/vcpkg/Conan conventions, header-only templates, or a stable C++ ABI.
+
+## Syntax Example
+
+```d
+import std.algorithm : filter, map;
+import std.array : array;
+import std.stdio : writeln;
+
+struct Language
+{
+    string name;
+    int year;
+    string[] domains;
+}
+
+bool isRecent(Language language, int since) @safe
+{
+    return language.year >= since;
+}
+
+string describe(Language language) @safe
+{
+    import std.format : format;
+    return "%s (%s)".format(language.name, language.year);
+}
+
+void main() @safe
+{
+    auto languages = [
+        Language("D", 2001, ["systems", "native tools"]),
+        Language("Rust", 2015, ["systems", "libraries"]),
+        Language("C++", 1985, ["native applications", "engines"]),
+    ];
+
+    languages[]
+        .filter!(language => language.isRecent(2000))
+        .map!describe
+        .array
+        .writeln;
+}
+```
+
+This example shows modules, structs, slices, `@safe`, Uniform Function Call Syntax, templates, ranges, and Phobos algorithms. A production D project would also define DUB metadata, tests, compiler version, build type, warnings policy, formatter/editor setup, and dependency pins.
+
+## Best-Fit Use Cases
+
+D is a strong candidate for:
+
+- Native command-line tools, services, parsers, generators, and internal systems where fast compilation, expressive standard-library code, and native output matter.
+- C or C++ adjacent components where D can hide boilerplate behind modules, templates, ranges, contracts, and CTFE while preserving a stable external boundary.
+- Performance-sensitive application code where a garbage-collected default is acceptable but hot paths can be profiled, made allocation-light, or marked `@nogc`.
+- Teams that want built-in unit tests, contracts, a standard package/build tool, and a language with both high-level and low-level modes.
+
+## Poor-Fit Or Risky Use Cases
+
+D can be a poor fit when:
+
+- The project requires Rust-style memory safety, ownership, borrowing, and data-race prevention across most code.
+- The target cannot tolerate a GC or D runtime, and the team has not proven a reduced-runtime or `@nogc` subset.
+- The organization needs a broad hiring pool, vendor SDK examples, long-lived package depth, and mainstream operational conventions.
+- The domain is already strongly owned by C++, Rust, Go, Java, Python, JavaScript, C#, or another ecosystem.
+- Heavy templates, mixins, or unsafe/trusted wrappers would make the codebase hard for the actual team to review.
+
+## Governance, Standardization, And Ecosystem
+
+D is not standardized through ISO in the way C and C++ are. The D Language Foundation is a 501(c)(3) public charity devoted to open source technology related to the D programming language. It holds and defends intellectual property, provides resources for development and adoption, awards scholarships, and organizes DConf.
+
+Language and implementation work happens in the open through D's repositories, compiler releases, documentation, forums, DUB packages, and foundation activity. Walter Bright remains central to D's history and language identity, while the modern project also includes foundation governance, compiler maintainers, Phobos maintainers, DUB maintainers, LDC and GDC communities, and ecosystem contributors.
+
+The ecosystem is active but comparatively small. D has multiple compilers, official documentation, a standard library, package/build tooling, editor integrations, forums, DConf, and long history. It has fewer current production case studies, fewer packages, fewer developers, and less third-party vendor gravity than the largest mainstream systems choices.
+
+## Comparison Notes
+
+[D vs C++](/comparisons/d-vs-cpp/) is the closest historical comparison. Choose C++ when the domain depends on C++ engines, SDKs, libraries, standards, staffing, and build systems. Choose D when native C/C++ adjacency is useful but modules, ranges, CTFE, Phobos, DUB, and a more integrated language are worth a smaller ecosystem.
+
+[D vs Rust](/comparisons/d-vs-rust/) is the memory-safety comparison. Choose Rust when ownership, borrowing, Cargo maturity, and safe APIs are central product requirements. Choose D when GC-backed productivity, native code, compile-time metaprogramming, and C/C++ interop matter more than Rust-style static ownership.
+
+[D vs Zig](/comparisons/d-vs-zig/) is the systems-control comparison. Choose Zig when allocator-explicit code, cross-compilation, C build integration, and no default GC are the center. Choose D when the project benefits from a larger language surface, Phobos, DUB, ranges, CTFE, and optional safety attributes.

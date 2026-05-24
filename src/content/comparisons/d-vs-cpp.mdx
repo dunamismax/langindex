@@ -1,0 +1,111 @@
+---
+title: D vs C++
+slug: d-vs-cpp
+summary: D and C++ both target high-performance native software, but C++ offers ISO standardization, enormous ecosystem reach, and deep legacy/platform adoption while D offers a more integrated C++-adjacent language with garbage collection by default, CTFE, ranges, Phobos, DUB, and @safe/@trusted/@system safety boundaries.
+languages:
+  - d
+  - cpp
+useCases:
+  - systems programming
+  - native applications
+  - C++ migration
+  - performance-sensitive tools
+sources:
+  - title: D Programming Language
+    url: https://dlang.org/
+    publisher: D Language Foundation
+  - title: Overview
+    url: https://dlang.org/overview.html
+    publisher: D Language Foundation
+  - title: Features Overview
+    url: https://dlang.org/comparison.html
+    publisher: D Language Foundation
+  - title: Templates
+    url: https://dlang.org/spec/template.html
+    publisher: D Language Foundation
+  - title: Memory-Safe-D-Spec
+    url: https://dlang.org/spec/memory-safe-d.html
+    publisher: D Language Foundation
+  - title: Intro to DUB
+    url: https://dub.pm/
+    publisher: D Language Foundation
+  - title: Downloads
+    url: https://dlang.org/download
+    publisher: D Language Foundation
+  - title: The Standard
+    url: https://isocpp.org/std/the-standard
+    publisher: Standard C++ Foundation
+  - title: The Committee - Standard C++
+    url: https://isocpp.org/std/the-committee
+    publisher: Standard C++ Foundation
+  - title: C++ Core Guidelines
+    url: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+    publisher: Standard C++ Foundation
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for native tools, libraries, services, performance-sensitive applications, and teams deciding whether a C++-shaped problem benefits from D's language integration or C++'s ecosystem gravity.
+
+## Practical Difference
+
+C++ is the larger industrial platform. It has ISO standardization, many compilers, mature build systems, huge existing codebases, major game engines, browser engines, database engines, graphics stacks, embedded SDKs, robotics stacks, financial systems, and a massive body of local expertise and legacy code.
+
+D is the more integrated C++ alternative. It keeps native compilation and C/C++ adjacency, but it includes modules, garbage collection by default, Phobos, DUB, built-in unit tests, contracts, ranges, CTFE, string and template mixins, slices, associative arrays, scope guards, and safety attributes as ordinary language and library features.
+
+The decision is usually not "which language is better." It is whether the project needs C++'s ecosystem and standardization more than D's integrated language surface.
+
+## Memory And Safety
+
+C++ resource management is usually centered on RAII, value types, containers, destructors, smart pointers, references, and local coding rules. Modern C++ can be disciplined and efficient, but the language still permits raw ownership, unchecked indexing, invalid references, data races, allocator mismatches, and undefined behavior.
+
+D uses a garbage collector by default and offers RAII, scope guards, `@nogc`, manual allocation, C interop, and attributes for safety boundaries. `@safe` code is restricted, `@trusted` code wraps operations the compiler cannot verify, and `@system` code can use unsafe operations.
+
+Choose C++ when deterministic object lifetime and RAII-centered code are non-negotiable across the whole project. Choose D when GC-backed productivity is acceptable and hot paths or native boundaries can be isolated and measured.
+
+## Generics And Metaprogramming
+
+C++ templates, concepts, constexpr, overloads, ADL, specialization, SFINAE, and modern compile-time facilities are powerful but can be difficult to diagnose and standardize across codebases.
+
+D also has powerful templates, constraints, CTFE, template mixins, string mixins, `static if`, `static foreach`, and traits. The language often makes compile-time programming feel more direct than preprocessor-heavy or template-metaprogramming-heavy C++.
+
+Both languages can produce hard-to-read metaprogramming. D earns its place when CTFE and mixins reduce boilerplate while staying reviewable. C++ earns its place when templates, concepts, constexpr, and existing libraries already solve the domain problem.
+
+## Tooling, Packages, And Ecosystem
+
+C++ tooling is fragmented but extremely deep: CMake, MSBuild, Meson, Bazel, Make, Conan, vcpkg, platform SDKs, vendor tools, static analyzers, sanitizers, profilers, and decades of compiler work.
+
+DUB gives D a more standard package/build/test workflow than many C++ projects start with. Phobos provides a broad standard library, and DMD/LDC/GDC give different compiler tradeoffs. The package and hiring ecosystem is much smaller than C++.
+
+If the project depends on Unreal, Qt, LLVM, Chromium, CUDA-heavy C++ APIs, vendor embedded SDKs, or large C++ internal libraries, C++ is usually the practical owner. If the project is a new native tool or component and D's language features reduce complexity enough to accept a smaller ecosystem, D deserves a prototype.
+
+## Interop And Migration
+
+D can be introduced near C and C++ boundaries, but migration should be narrow. A stable C ABI wrapper is often easier to sustain than exposing a C++ ABI across unknown compilers or trying to make D consume arbitrary C++ templates and build conventions.
+
+Start with a tool, service, parser, generator, or library boundary where D can own the implementation and publish a boring interface. Avoid broad rewrites of mature C++ systems unless the team has already proven build integration, dependency replacement, debugging, profiling, and deployment.
+
+## Choose D When
+
+- The project is new enough that DUB and Phobos can be central.
+- CTFE, templates, mixins, ranges, contracts, and built-in unit tests reduce real boilerplate.
+- A garbage-collected default runtime is acceptable.
+- Unsafe and manually managed sections can be isolated behind reviewed interfaces.
+- The team wants C/C++ adjacency without inheriting the full C++ language and build surface.
+
+## Choose C++ When
+
+- The domain already depends on C++ engines, SDKs, libraries, or staff expertise.
+- ISO standardization, compiler variety, and long-lived platform support are major requirements.
+- Deterministic RAII and no default garbage collector are central across the codebase.
+- Existing C++ code can be modernized with local rules, sanitizers, static analysis, and better build discipline.
+- Public ABI, vendor integration, or certification evidence is already C++ centered.
+
+## Watch Points
+
+D's watch points are ecosystem size, package health, GC behavior, runtime assumptions, compiler selection, and the need to police `@trusted` and `@system` code.
+
+C++'s watch points are language complexity, ABI fragility, dependency fragmentation, unsafe defaults, and inconsistent local coding styles.
+
+For either choice, build a vertical slice before committing: compiler, package manager, target platform, profiler, debugger, FFI, release build, CI, and the hardest dependency.

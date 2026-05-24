@@ -10,6 +10,7 @@ candidates:
   - go
   - c
   - cpp
+  - d
   - zig
   - odin
   - nim
@@ -99,6 +100,21 @@ sources:
   - title: C++ Support in Clang
     url: https://clang.llvm.org/cxx_status
     publisher: LLVM Project
+  - title: D Programming Language
+    url: https://dlang.org/
+    publisher: D Language Foundation
+  - title: Overview
+    url: https://dlang.org/overview.html
+    publisher: D Language Foundation
+  - title: Memory-Safe-D-Spec
+    url: https://dlang.org/spec/memory-safe-d.html
+    publisher: D Language Foundation
+  - title: Intro to DUB
+    url: https://dub.pm/
+    publisher: D Language Foundation
+  - title: Downloads
+    url: https://dlang.org/download
+    publisher: D Language Foundation
   - title: Zig Programming Language
     url: https://ziglang.org/
     publisher: Zig Software Foundation
@@ -147,14 +163,14 @@ sources:
   - title: The Shards command
     url: https://crystal-lang.org/reference/latest/man/shards/index.html
     publisher: Crystal
-lastVerified: 2026-05-23
+lastVerified: 2026-05-24
 ---
 
 ## Start With Runtime Constraints
 
 The first question is not which language is more admired. It is what the program is allowed to depend on at runtime.
 
-If the project cannot tolerate a garbage collector, Go is probably the wrong default. That does not make Go slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, high-integrity control software, and allocator-sensitive libraries often need a no-GC language such as Ada, Rust, C, C++, or Zig. Assembly belongs even lower: use it for exact target instructions, startup code, ABI shims, and hardware entry points, not as the default owner for ordinary systems logic.
+If the project cannot tolerate a garbage collector, Go is probably the wrong default, and D's ordinary GC-backed runtime also needs careful proof before it belongs. That does not make either language slow or unsuitable for services; it means the runtime model has to match the deployment constraint. Kernels, embedded firmware, hard real-time components, game-engine internals, high-integrity control software, and allocator-sensitive libraries often need a no-GC language such as Ada, Rust, C, C++, or Zig. Assembly belongs even lower: use it for exact target instructions, startup code, ABI shims, and hardware entry points, not as the default owner for ordinary systems logic.
 
 If a managed runtime is acceptable and the target is a network service, command-line tool, control plane, or deployment helper, Go becomes much more attractive. It gives native binaries, a standard formatter, a standard test workflow, and built-in concurrency without requiring the team to model ownership and lifetimes in every module.
 
@@ -176,6 +192,8 @@ Choose Ada when the project needs native execution, strong nominal typing, expli
 Choose C when existing code, ABI requirements, vendor SDKs, platform conventions, freestanding targets, or broad compiler reach dominate the decision. C is often the integration language for operating-system interfaces, embedded SDKs, language runtimes, and plugin surfaces. Ownership can be disciplined in C, but the discipline usually lives in API contracts, documentation, coding standards, sanitizers, static analysis, fuzzing, and review rather than in the type system.
 
 Choose C++ when the project needs native control plus richer abstraction tools such as RAII, templates, constructors/destructors, standard containers, and stronger library modeling. C++ is often a better fit than C for large native applications and performance-sensitive frameworks when the organization has mature C++ practices.
+
+Choose D when C/C++ adjacency, native compilation, DUB, Phobos, templates, CTFE, ranges, and `@safe` boundaries are attractive, and the project can accept a garbage-collected default runtime plus a smaller ecosystem. Treat `@nogc`, manual allocation, reduced-runtime styles, and C/C++ interop as constraints to prove on the exact target.
 
 Choose Zig when explicit allocation, simple language mechanics, C-oriented control, and integrated cross-compilation are attractive, and the team accepts a younger ecosystem, pre-1.0 release churn, and more manual responsibility.
 
@@ -270,6 +288,22 @@ Before starting new C++ work, answer these questions:
 
 If these answers are not explicit, "modern C++" can mean too many incompatible things. Define the subset and toolchain before the codebase grows around accidental defaults.
 
+## D Adoption Constraints
+
+D is the systems-adjacent choice to evaluate when a project wants native compilation and C/C++ adjacency with a broader integrated language surface: garbage collection by default, Phobos, DUB, templates, CTFE, ranges, mixins, contracts, built-in unit tests, and `@safe`/`@trusted`/`@system` safety boundaries. It is especially relevant for native tools, services, libraries, parsers, generators, and C/C++ adjacent applications where full Rust-style ownership checking is not the main requirement.
+
+Before starting new D work, answer these questions:
+
+- Which compiler family will be pinned: DMD, LDC, or GDC?
+- Is the ordinary D runtime and garbage collector acceptable on the target?
+- Which modules must be `@safe`, which wrappers may be `@trusted`, and where is `@system` allowed?
+- Which code must be `@nogc`, manually allocated, or isolated from GC pauses?
+- Does DUB and the DUB registry cover the dependency set, or will packages be vendored or written locally?
+- Which C or C++ boundaries are required, and who owns allocation, callbacks, exceptions, strings, and threading?
+- Does the team value D's CTFE, ranges, Phobos, and C++ adjacency enough to accept a smaller ecosystem and hiring pool?
+
+If these answers are vague, D's productive surface can hide runtime and ecosystem risk. Keep the first milestone narrow and prove compiler choice, runtime behavior, package health, FFI, profiling, and deployment before using it broadly.
+
 ## Zig Adoption Constraints
 
 Zig is the systems choice to evaluate when a project wants C-like control with a clearer allocation story, stronger language constructs than C, and a toolchain that treats cross-compilation and C interop as central features. It is especially relevant for C replacement modules, native tools, allocators, parsers, embedded-adjacent experiments, freestanding targets, and projects where `zig cc` or `zig build` can simplify a messy C/C++ build.
@@ -361,6 +395,8 @@ C++ can ship native binaries and libraries, but the deployment shape is usually 
 
 Zig can be unusually practical when cross-compilation is a first-order requirement. It can build Zig code for many targets, act as a C or C++ compiler, and bundle target/libc knowledge that ordinary C projects often have to assemble by hand. Still test the exact target, libc, linker, debugger, and package set instead of treating the target list as a guarantee.
 
+D can be practical when C/C++ adjacency and native productivity matter more than a no-GC default. DUB, Phobos, DMD, LDC, and GDC give a real workflow, while CTFE and ranges can reduce boilerplate. Still test GC behavior, `@nogc` boundaries, DUB package health, compiler selection, and C/C++ interop before treating D as an ordinary drop-in for C++ or Rust.
+
 Odin can be practical when data-oriented native code and graphics-friendly libraries matter more than automated dependency resolution. Its `core` and `vendor` collections are useful starting points, but the repository should own vendoring, compiler pins, and dependency review explicitly because there is no official package manager.
 
 Nim can be practical when the team wants a native executable from code that reads closer to a scripting language. Its generated C-family backends make C interop and platform compilers part of the deployment story. Test the selected backend, memory-management mode, C compiler, Nimble packages, and target operating systems together.
@@ -376,6 +412,8 @@ C and C++ depend heavily on local standards. A mature C++ organization with RAII
 Ada fits teams that value explicit domain modeling, real-time profiles, packages, contracts, and assurance evidence. It is less attractive when the team needs the largest mainstream package ecosystem, fast onboarding from common web/backend backgrounds, or terse exploratory code.
 
 Zig fits teams that already think comfortably about allocation and native boundaries but want a cleaner language and toolchain than C. It is less attractive when the team needs a mature hiring pool, a stable package ecosystem, or compiler-enforced ownership.
+
+D fits teams that want native compilation, C/C++ adjacency, and a more integrated language than C++ for some application and tooling work. It is less attractive when the target rejects GC/runtime assumptions, when Rust-style safety is required, or when package and staffing depth matter more than CTFE, ranges, and Phobos.
 
 Odin fits teams that think in data layout, explicit allocation, and C interop, especially for game, graphics, tooling, and simulation work. It is less attractive when package automation, long-term compatibility, broad hiring, or compiler-enforced memory safety matter more than data-oriented ergonomics.
 
@@ -404,6 +442,8 @@ Start with C when the work is a narrow ABI layer, platform interface, firmware t
 
 Start with C++ when the domain already depends on C++ engines, frameworks, libraries, or performance tooling, and the organization has a real plan for modern C++ safety practices, ABI boundaries, and build reproducibility.
 
+Start with D when native C/C++ adjacent productivity, DUB, Phobos, CTFE, ranges, and attribute-based safety are the draw, and a GC-backed default runtime plus a smaller ecosystem are acceptable.
+
 Start with Zig when explicit control, cross-compilation, and C replacement work are the draw, and the project can absorb a younger language and ecosystem.
 
 Start with Odin when data-oriented native code, graphics-friendly libraries, explicit allocation, and manual vendoring are acceptable tradeoffs for a cleaner C-adjacent workflow.
@@ -412,4 +452,4 @@ Start with Nim when native compilation, C-family interop, macros, and Python-lik
 
 Start with Crystal when native compilation, Ruby-like readability, fibers, Shards, and C bindings are the draw, and the project can absorb a smaller ecosystem plus platform-support checks.
 
-Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Ada or SPARK for high-integrity control modules, Nim or Crystal for native tools or wrapper layers, and C or C++ at legacy or ABI edges.
+Revisit the decision when a project crosses boundaries. It is common for a platform to use Go for service orchestration, Rust for narrow memory-sensitive components, Ada or SPARK for high-integrity control modules, D or Nim for native tools or wrapper layers, and C or C++ at legacy or ABI edges.
