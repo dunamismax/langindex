@@ -10,6 +10,7 @@ use thiserror::Error;
 use url::Url;
 
 const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
+    "abap",
     "ada",
     "assembly",
     "bash",
@@ -718,11 +719,22 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 49);
-        assert_eq!(content.comparisons.len(), 75);
+        assert_eq!(content.languages.len(), 50);
+        assert_eq!(content.comparisons.len(), 77);
         assert_eq!(content.guides.len(), 24);
         assert_eq!(content.concepts.len(), 40);
+        assert!(content.language("abap").is_some());
         assert!(content.language("ada").is_some());
+        assert!(
+            content
+                .comparison("abap-vs-java-for-enterprise-systems")
+                .is_some()
+        );
+        assert!(
+            content
+                .comparison("abap-vs-sql-for-business-data-logic")
+                .is_some()
+        );
         assert!(content.comparison("ada-vs-rust").is_some());
         assert!(content.comparison("ada-vs-cpp").is_some());
         assert!(
@@ -877,7 +889,10 @@ mod tests {
     fn route_manifest_covers_public_content() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
         let routes = content.all_routes();
+        assert!(routes.contains("/languages/abap"));
         assert!(routes.contains("/languages/elixir"));
+        assert!(routes.contains("/comparisons/abap-vs-java-for-enterprise-systems"));
+        assert!(routes.contains("/comparisons/abap-vs-sql-for-business-data-logic"));
         assert!(routes.contains("/languages/clojure"));
         assert!(routes.contains("/languages/common-lisp"));
         assert!(routes.contains("/languages/delphi"));

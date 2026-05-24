@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -18,6 +18,7 @@ candidates:
   - delphi
   - visual-basic
   - vba
+  - abap
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -106,6 +107,15 @@ sources:
   - title: Macros From The Internet Are Blocked By Default In Office
     url: https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked
     publisher: Microsoft Learn
+  - title: ABAP - Programming
+    url: https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/7bfe8cdcfbb040dcb6702dada8c3e2f0/2ff82a005ddd4f369b74bfda71f297c0.html
+    publisher: SAP Help Portal
+  - title: ABAP Cloud Development Model
+    url: https://help.sap.com/docs/abap-cloud/abap-cloud/abap-cloud-in-nutshell
+    publisher: SAP Help Portal
+  - title: ABAP Development Tools for Eclipse
+    url: https://help.sap.com/docs/ABAP_ENVIRONMENT/abap-environment/eclipse-tool-for-abap-environment
+    publisher: SAP Help Portal
 lastVerified: 2026-05-24
 ---
 
@@ -113,7 +123,7 @@ lastVerified: 2026-05-24
 
 Legacy maintenance is not a referendum on whether a language is fashionable. It is a risk-management problem around working software: behavior, data, dependencies, operators, tests, deployment, security, and the people who can safely change it.
 
-The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, or Delphi system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
+The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, or ABAP system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
 
 ## Inventory The System
 
@@ -193,6 +203,8 @@ Delphi systems usually exist because they sit near Windows desktop workflows, VC
 Visual Basic systems split into different maintenance shapes. VB.NET code should be treated as a .NET system: pin the SDK or .NET Framework target, packages, project files, Visual Studio requirements, and interop boundaries before moving new work to C#. VB6 systems usually sit near Windows desktop forms, ActiveX controls, COM registration, ADO, installers, 32-bit runtime behavior, and user workflows; start by reproducing the build and testing runtime behavior on supported Windows versions.
 
 VBA systems usually sit inside Office documents, Excel workbooks, Access databases, templates, forms, reports, and macro policies. Preserve host object-model behavior, sample files, trusted-location/signing policy, references, and user workflows before replacing macros with C#, Office Add-ins, Office Scripts, PowerShell, Python, Microsoft Graph, or services.
+
+ABAP systems usually sit inside SAP landscapes where code, data, customizing, authorizations, transports, and business processes are coupled. Preserve transactions, reports, background jobs, SAP data semantics, released API boundaries, transport paths, and functional ownership before replacing ABAP behavior with Java, SQL, integration middleware, or external services. For SAP S/4HANA and cloud modernization, check whether custom code can move toward ABAP Cloud, RAP, CDS, ADT, and released SAP APIs instead of depending on old internals.
 
 ## Practical Default
 

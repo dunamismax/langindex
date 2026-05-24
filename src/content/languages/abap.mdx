@@ -1,0 +1,231 @@
+---
+title: ABAP
+slug: abap
+status: active
+summary: ABAP is SAP's business application language for SAP systems, custom extensions, reports, data-intensive transaction logic, SAP NetWeaver and ABAP Platform applications, and cloud-ready SAP extensions through ABAP Cloud and RAP.
+creators:
+  - SAP
+paradigms:
+  - procedural
+  - object-oriented
+  - enterprise
+  - business application
+  - database-integrated
+typing:
+  discipline: static with dynamic features
+  strength: statically declared ABAP and Dictionary types, object references, internal tables, and database-bound structures, with dynamic programming facilities and framework metadata common in real systems
+memory:
+  model: ABAP runtime-managed data objects, internal sessions, internal tables, object references, database result sets, and SAP application-server resources rather than manual heap allocation
+runtime:
+  model: ABAP source is activated into platform-independent byte code and executed by the ABAP runtime on SAP NetWeaver Application Server for ABAP, ABAP Platform, SAP BTP ABAP environment, or SAP S/4HANA ABAP environments
+officialSite: https://www.sap.com/products/technology-platform/abap.html
+packageManagers:
+  - ABAP packages
+  - Change and Transport System
+  - ABAP Development Tools
+  - gCTS
+  - abapGit
+comparedWith:
+  - java
+  - sql
+  - cobol
+  - vba
+bestFor:
+  - SAP custom development, extensions, reports, data validation, workflow-adjacent logic, and integration code where SAP business objects, authorization, lifecycle management, and application data are the center.
+  - Maintaining and modernizing existing SAP ERP, SAP S/4HANA, SAP NetWeaver, and ABAP Platform codebases.
+  - Business-data logic that benefits from ABAP Dictionary types, Open SQL, internal tables, Core Data Services, RAP, transports, and SAP's development lifecycle.
+  - Cloud-ready SAP extensions that can live inside ABAP Cloud restrictions and use released APIs, RAP, CDS, ADT, and SAP BTP ABAP environment tooling.
+poorFit:
+  - General-purpose web, mobile, CLI, desktop, game, data-science, or infrastructure work where SAP is not the application platform.
+  - Greenfield services that do not need SAP application data, SAP authorization, SAP lifecycle management, or ABAP Platform deployment.
+  - Cloud extensions that require unreleased SAP internals, classic statements, direct database assumptions, or on-premise-only framework behavior forbidden by ABAP Cloud.
+  - Modernization plans that treat ABAP as source text to rewrite before preserving SAP transactions, customizing, authorizations, transports, data semantics, and operational ownership.
+sources:
+  - title: ABAP - Programming
+    url: https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/7bfe8cdcfbb040dcb6702dada8c3e2f0/2ff82a005ddd4f369b74bfda71f297c0.html
+    publisher: SAP Help Portal
+  - title: SAP NetWeaver Application Server for ABAP
+    url: https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_FOR_SOH_740/7bfe8cdcfbb040dcb6702dada8c3e2f0/d0ec44e837174b0da80d558c1c142cba.html
+    publisher: SAP Help Portal
+  - title: ABAP Keyword Documentation
+    url: https://help.sap.com/docs/sap-btp-abap-environment/abap-environment/abap-keyword-documentation
+    publisher: SAP Help Portal
+  - title: Open SQL
+    url: https://help.sap.com/docs/PRODUCT_ID/cfae740a0a21455dbe6e510c2d86e36a/fceb3969358411d1829f0000e829fbfe.html
+    publisher: SAP Help Portal
+  - title: Working with Internal Tables
+    url: https://help.sap.com/docs/abap-cloud/abap-concepts/working-with-internal-tables
+    publisher: SAP Help Portal
+  - title: ABAP Dictionary
+    url: https://help.sap.com/docs/SAP_NETWEAVER_731_BW_ABAP/ec1c9c8191b74de98feb94001a95dd76/cf21ea0b446011d189700000e8322d00.html
+    publisher: SAP Help Portal
+  - title: ABAP Cloud Development Model
+    url: https://help.sap.com/docs/abap-cloud/abap-cloud/abap-cloud-in-nutshell
+    publisher: SAP Help Portal
+  - title: Developing with ABAP Cloud in the SAP BTP ABAP Environment
+    url: https://help.sap.com/docs/btp/btp-developers-guide/abap-cloud
+    publisher: SAP Help Portal
+  - title: ABAP RESTful Application Programming Model
+    url: https://help.sap.com/docs/abap-cloud/abap-rap/abap-restful-application-programming-model
+    publisher: SAP Help Portal
+  - title: ABAP Development Tools for Eclipse
+    url: https://help.sap.com/docs/ABAP_ENVIRONMENT/abap-environment/eclipse-tool-for-abap-environment
+    publisher: SAP Help Portal
+  - title: Working with Transports
+    url: https://help.sap.com/docs/ABAP_Cloud/abap-development-tools-user-guide/working-with-transports
+    publisher: SAP Help Portal
+  - title: Working with abapGit
+    url: https://help.sap.com/docs/btp/sap-business-technology-platform/working-with-abapgit
+    publisher: SAP Help Portal
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+ABAP is SAP's business application language. SAP Help describes ABAP, Advanced Business Application Programming, as an SAP programming language and a component of the SAP NetWeaver application platform. SAP uses it for application components, while SAP customers and partners use it for custom applications, extensions, reports, interfaces, and changes around delivered SAP systems.
+
+That scope matters. ABAP is not a general-purpose language that happens to have SAP libraries. It is tightly coupled to SAP application servers, SAP repository objects, ABAP Dictionary metadata, transports, authorizations, database access through ABAP SQL, and SAP's application lifecycle.
+
+The practical question is therefore not "ABAP or Java" in isolation. It is whether the work belongs inside the SAP system boundary, near SAP business objects and lifecycle management, or outside that boundary in a service, integration layer, data platform, or user interface.
+
+## Platform And Runtime
+
+ABAP programs run on SAP NetWeaver Application Server for ABAP, ABAP Platform, SAP S/4HANA ABAP environments, or SAP BTP ABAP environment. SAP's application-server documentation describes a three-tier architecture: presentation layer, application layer, and database layer. The application layer contains the ABAP runtime environment where ABAP programs execute.
+
+Older SAP documentation describes ABAP source activation as producing platform-independent byte code that is interpreted by the runtime. The important operational point is that ABAP development is server-centered. Developers work with repository objects in an ABAP system, activate them, assign changes to packages and transports, and move those changes through SAP landscapes.
+
+That server-centered model gives ABAP tight integration with SAP metadata, authorization, lifecycle, and data semantics. It also makes ABAP hard to evaluate apart from a real SAP system. Build reproducibility, testing, deployment, and review depend on the ABAP system release, installed components, software component structure, transport process, and development tools.
+
+Related concepts: [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), [Compilation Targets](/concepts/compilation-targets/), [Build Systems](/concepts/build-systems/), and [Package Managers](/concepts/package-managers/).
+
+## Language Model
+
+ABAP supports procedural programming, modularization, classes, interfaces, object references, exceptions, events, internal tables, structured data, database access, and framework-oriented development. SAP's keyword documentation covers both the ABAP language and the object-oriented part, ABAP Objects.
+
+The language is strongly shaped by SAP data. ABAP programs commonly use types from the ABAP Dictionary, structures that mirror business tables or service data, internal tables for in-memory collections, and Open SQL for database access. The code often sits near transactions, reports, forms, batch jobs, workflow exits, enhancement points, CDS models, RAP behavior implementations, and integration APIs.
+
+Modern ABAP code can be clean, object-oriented, and testable, but many production estates include decades of procedural reports, includes, function modules, generated code, enhancement implementations, and framework-specific conventions. Readability depends as much on SAP module knowledge and data model knowledge as on language syntax.
+
+## Open SQL And Business Data
+
+Open SQL is ABAP's database access language for tables and views known to the ABAP Dictionary. SAP's older Open SQL documentation describes it as ABAP statements that operate on the central database and provide uniform syntax and semantics across SAP-supported database systems. In modern SAP systems, ABAP SQL and CDS also sit close to SAP HANA-optimized data models and application services.
+
+This database integration is one of ABAP's core strengths. Business logic can run near SAP application data, use SAP-defined types and authorizations, respect client handling and repository metadata, and participate in the same lifecycle as the rest of the SAP application.
+
+It is also a boundary. Open SQL is not the same thing as standard SQL, and ABAP is not only a stored-procedure language. ABAP code can read database rows, transform internal tables, call application APIs, update business objects, raise messages, participate in transactions, and interact with SAP frameworks. Moving that logic into plain SQL, Java, or another language means preserving those platform semantics deliberately.
+
+Related concepts: [Standard Library Philosophy](/concepts/standard-library-philosophy/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), and [Testing Cultures](/concepts/testing-cultures/).
+
+## Internal Tables And Data Processing
+
+Internal tables are central to ABAP. SAP's internal-table documentation describes operations for populating tables, reading lines, sequential processing, modifying content, sorting, and deleting. In practical SAP code, internal tables are the workhorse data structure for database results, intermediate business records, report output, validations, batch operations, and interface payloads.
+
+That model fits enterprise data workflows well. ABAP programs often select business data, process it in internal tables, validate it against customizing or master data, call SAP APIs, and produce reports, messages, updates, or integration outputs.
+
+The risk is hidden scale and coupling. A report that works for a department can become expensive against production-sized tables. A loop over internal tables can hide database round trips. A modernization plan should identify data volumes, indexes, lock behavior, authorization checks, transaction boundaries, and whether logic should stay in ABAP, move into CDS/database-side logic, or move to an external service.
+
+## Reports, Classes, And Repository Objects
+
+ABAP has a long history of report programs: selection screens, database reads, internal-table processing, and list or file output. Reports remain common in SAP maintenance because they are close to users, business data, administrative workflows, and batch-style tasks.
+
+ABAP Objects gives the language classes, interfaces, methods, visibility, inheritance, events, object references, and exception-oriented designs. Modern SAP development uses classes heavily, especially around services, behavior implementations, tests, application logic, and framework boundaries.
+
+ABAP systems also contain many other repository objects: function modules, dictionary objects, packages, message classes, CDS artifacts, behavior definitions, service definitions, enhancements, forms, and generated artifacts. A serious ABAP inventory should list object types, packages, software components, transport layers, dependencies, owners, and runtime paths rather than only counting source files.
+
+## ABAP Cloud And RAP
+
+ABAP Cloud is SAP's cloud-ready development model. SAP describes it as a model for lifecycle-stable and cloud-ready business apps, services, and extensions. Its core elements include Core Data Services for data models and analytics, the ABAP RESTful Application Programming Model for transactional apps and services, a cloud-optimized ABAP language, released public SAP APIs and extension points, and ABAP Development Tools.
+
+RAP is the modern SAP application model for transactional services and SAP Fiori applications. It defines an architecture around CDS, behavior, service exposure, OData, and ABAP implementation logic. It is the right place to look when new SAP work should be cloud-ready, service-based, and aligned with SAP's current extension strategy.
+
+The restriction is intentional. ABAP Cloud code uses a restricted, cloud-safe ABAP language version and released APIs. Older ABAP patterns that reached into unreleased tables, classic frameworks, or system internals may not be valid in ABAP Cloud. Cloud readiness is therefore not a formatting pass; it is a design and dependency review.
+
+## Tooling, Packages, And Transports
+
+Modern ABAP development usually uses ABAP Development Tools for Eclipse. SAP describes ADT as its current IDE for ABAP development, with source editing, syntax checks, code completion, navigation, refactoring support, debugging, profiling, tests, and object editing across ABAP systems.
+
+ABAP packages group repository objects and are part of the technical architecture. SAP's package documentation describes packages as transportable repository objects that group development objects. Transport requests move development changes through a landscape; SAP's transport documentation notes that development objects usually need to be assigned to a transport request when created or edited so they can be transferred to other systems.
+
+Git support exists, but it is not the same as a normal local-source workflow. SAP documents abapGit as a Git client for importing and exporting ABAP objects between ABAP systems, and SAP BTP ABAP environment includes a SAP-owned cloud version. gCTS and software components can also connect ABAP development with Git-backed lifecycle patterns. For existing on-premise systems, the exact supported route depends on release, tooling, governance, and SAP landscape policy.
+
+## Syntax Example
+
+```abap
+CLASS lcl_sales_report DEFINITION.
+  PUBLIC SECTION.
+    TYPES: BEGIN OF ty_order,
+             customer_id TYPE string,
+             amount      TYPE decfloat34,
+           END OF ty_order,
+           ty_orders TYPE STANDARD TABLE OF ty_order WITH EMPTY KEY.
+
+    CLASS-METHODS total_for_customer
+      IMPORTING target_customer_id TYPE string
+                orders      TYPE ty_orders
+      RETURNING VALUE(total) TYPE decfloat34.
+ENDCLASS.
+
+CLASS lcl_sales_report IMPLEMENTATION.
+  METHOD total_for_customer.
+    LOOP AT orders INTO DATA(order)
+      WHERE customer_id = target_customer_id.
+      total += order-amount.
+    ENDLOOP.
+  ENDMETHOD.
+ENDCLASS.
+
+START-OF-SELECTION.
+  DATA(orders) = VALUE lcl_sales_report=>ty_orders(
+    ( customer_id = `C100` amount = '120.50' )
+    ( customer_id = `C200` amount = '75.00' )
+    ( customer_id = `C100` amount = '29.50' ) ).
+
+  DATA(total) = lcl_sales_report=>total_for_customer(
+    target_customer_id = `C100`
+    orders             = orders ).
+
+  WRITE: / |Total for C100: { total }|.
+```
+
+This small example shows a local class, structured row type, standard internal table, inline declarations, a loop over an internal table, decimal numeric data, and report-style output. Production ABAP would usually use SAP Dictionary types, Open SQL or CDS data sources, authorization checks, messages, unit tests, packages, and transports around the code.
+
+## Best-Fit Use Cases
+
+ABAP is a strong fit when:
+
+- The application logic belongs inside SAP's business system boundary.
+- The work depends on SAP application data, customizing, authorizations, transactions, or lifecycle management.
+- Existing ABAP code already owns valuable SAP behavior and must be modernized safely.
+- New SAP extensions can follow ABAP Cloud, RAP, CDS, ADT, released APIs, and SAP's supported extension model.
+- The team has SAP functional knowledge, ABAP development skill, and access to representative SAP systems.
+
+## Poor-Fit Or Risky Use Cases
+
+ABAP is a poor default when:
+
+- The system is not centered on SAP application data or SAP runtime ownership.
+- The work is a general service, web app, CLI, mobile app, data pipeline, or infrastructure tool that can be built and operated better outside SAP.
+- The planned cloud extension depends on unreleased SAP internals or old on-premise assumptions.
+- The organization lacks ABAP, SAP Basis, transport, authorization, and functional-module expertise.
+- Modernization starts with translation before preserving business behavior, customizing, transactions, reports, integrations, and user workflows.
+
+## Modernization Constraints
+
+ABAP modernization usually means one of several different things:
+
+- Clean up and test existing custom ABAP in place.
+- Move procedural reports or function modules toward classes, tests, CDS, and RAP where appropriate.
+- Adapt custom code for SAP S/4HANA or ABAP Cloud restrictions.
+- Replace direct table reads or unreleased internals with released APIs and extension points.
+- Expose stable SAP behavior through services, events, files, or integration platforms.
+- Move non-SAP responsibilities to Java, C#, Python, TypeScript, SQL, or a data platform.
+
+These paths have different risk. An ABAP-to-Java rewrite is usually not the first modernization step. First identify what the ABAP code actually owns: transactions, data semantics, customizing, authorizations, messages, enhancement points, reports, print forms, background jobs, integration contracts, and manual user workflows.
+
+## Comparison Notes
+
+[ABAP vs Java For Enterprise Systems](/comparisons/abap-vs-java-for-enterprise-systems/) is the main architecture comparison. ABAP is the closer fit inside SAP systems; Java is usually the stronger default for new JVM services and integration layers outside SAP.
+
+[ABAP vs SQL For Business-Data Logic](/comparisons/abap-vs-sql-for-business-data-logic/) separates SAP application logic from database-local set operations. ABAP can own SAP business behavior, while SQL is strongest for relational querying, constraints, and database-side transformations.
+
+COBOL is adjacent because both languages often appear in long-lived enterprise estates, but their platforms are different. VBA is adjacent as another business-maintenance language, but VBA is Office-hosted while ABAP is SAP-hosted.

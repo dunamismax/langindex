@@ -15,6 +15,7 @@ candidates:
   - python
   - typescript
   - vba
+  - abap
 sources:
   - title: The Java Language Specification, Java SE 26 Edition
     url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
@@ -88,6 +89,15 @@ sources:
   - title: Macros From The Internet Are Blocked By Default In Office
     url: https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked
     publisher: Microsoft Learn
+  - title: ABAP - Programming
+    url: https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/7bfe8cdcfbb040dcb6702dada8c3e2f0/2ff82a005ddd4f369b74bfda71f297c0.html
+    publisher: SAP Help Portal
+  - title: ABAP Cloud Development Model
+    url: https://help.sap.com/docs/abap-cloud/abap-cloud/abap-cloud-in-nutshell
+    publisher: SAP Help Portal
+  - title: ABAP Development Tools for Eclipse
+    url: https://help.sap.com/docs/ABAP_ENVIRONMENT/abap-environment/eclipse-tool-for-abap-environment
+    publisher: SAP Help Portal
 lastVerified: 2026-05-24
 ---
 
@@ -128,6 +138,8 @@ The enterprise fit is strongest when the organization will actually use the plat
 Java is a poor enterprise default when it becomes ceremony without leverage. A small internal tool does not need a large framework because an enterprise framework exists.
 
 VBA enters enterprise decisions as an existing workflow platform rather than a new backend choice. Many organizations have business-critical behavior in Excel workbooks, Access databases, templates, reports, and macros. Treat those systems as legacy enterprise assets: inventory files, formulas, Access objects, macro security policy, references, owners, and outputs before moving behavior to Java, C#, Python, PowerShell, Office Add-ins, Microsoft Graph, or services.
+
+ABAP enters enterprise decisions as a SAP platform language rather than a general JVM competitor. If logic belongs inside SAP application data, SAP authorizations, transports, ABAP Cloud, RAP, CDS, or released SAP APIs, ABAP may be the safer owner. If the work is a new cross-system service, API, worker, or integration layer outside SAP, Java is usually a better default than recreating SAP application behavior in an unsupported place.
 
 ## Choose Java In The JVM Ecosystem When
 
@@ -185,3 +197,5 @@ Start with Python or TypeScript when the surrounding ecosystem, not the JVM, is 
 Start with SQL as a first-class companion when backend correctness depends on relational constraints, transactional updates, reporting queries, and database-side execution. The JVM should make those database contracts explicit, not bury them.
 
 Keep VBA only where desktop Office is still the controlled runtime for an existing workflow. Do not make Java compete with a workbook macro until the team has identified which behavior belongs in Office, which belongs in a service, and which belongs in a data or reporting layer.
+
+Keep ABAP where SAP business semantics and lifecycle management are the point. Use Java around SAP when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call SAP rather than pretending to be SAP.

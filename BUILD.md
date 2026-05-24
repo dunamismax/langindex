@@ -121,13 +121,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 9 - ABAP
 
-- [ ] Add a complete ABAP page.
-- [ ] Cover SAP coupling, business application development, Open SQL, internal tables, reports, classes/objects, transports, SAP NetWeaver/ABAP Platform, RAP, cloud ABAP restrictions, tooling, and legacy modernization constraints.
-- [ ] Add ABAP vs Java for enterprise systems comparison.
-- [ ] Add ABAP vs SQL for business-data logic comparison if the scope is clear.
-- [ ] Add ABAP to enterprise and legacy-maintenance guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete ABAP page.
+- [x] Cover SAP coupling, business application development, Open SQL, internal tables, reports, classes/objects, transports, SAP NetWeaver/ABAP Platform, RAP, cloud ABAP restrictions, tooling, and legacy modernization constraints.
+- [x] Add ABAP vs Java for enterprise systems comparison.
+- [x] Add ABAP vs SQL for business-data logic comparison if the scope is clear.
+- [x] Add ABAP to enterprise and legacy-maintenance guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 10 - Verilog / SystemVerilog
 
