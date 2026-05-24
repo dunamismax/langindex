@@ -81,13 +81,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 5 - Common Lisp
 
-- [ ] Add a complete Common Lisp page.
-- [ ] Cover standardization, dynamic typing, homoiconicity, macros, CLOS, condition system, image-based development, REPL workflow, SBCL and other implementations, ASDF/Quicklisp, performance profile, and ecosystem maturity.
-- [ ] Add Common Lisp vs Clojure comparison.
-- [ ] Add Common Lisp vs Scheme comparison if Scheme exists by the time this phase starts; otherwise leave a tracked TODO in this file.
-- [ ] Add Common Lisp to the Lisp-family and functional-programming guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Common Lisp page.
+- [x] Cover standardization, dynamic typing, homoiconicity, macros, CLOS, condition system, image-based development, REPL workflow, SBCL and other implementations, ASDF/Quicklisp, performance profile, and ecosystem maturity.
+- [x] Add Common Lisp vs Clojure comparison.
+- [x] Add Common Lisp vs Scheme comparison if Scheme exists by the time this phase starts; Scheme is not yet published, so the comparison is deferred to the Phase 6 Scheme TODO below.
+- [x] Add Common Lisp to the Lisp-family and functional-programming guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 6 - Scheme
 

@@ -1,7 +1,7 @@
 ---
 title: Choosing A Functional Programming Language
 slug: choosing-a-functional-programming-language
-summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
+summary: A practical guide for choosing Haskell, OCaml, F#, Scala, Clojure, Common Lisp, Elixir, Erlang, or a functional style in mainstream languages when domain modeling, explicit effects, immutable data, type systems, platform fit, and team skill drive the decision.
 audience: Developers and teams deciding whether to adopt a functional-first language or use functional programming techniques inside an existing platform.
 candidates:
   - haskell
@@ -11,6 +11,7 @@ candidates:
   - erlang
   - scala
   - clojure
+  - common-lisp
   - kotlin
   - rust
   - javascript
@@ -76,6 +77,18 @@ sources:
   - title: Values and Change
     url: https://clojure.org/about/state
     publisher: Clojure
+  - title: Common Lisp Documentation
+    url: https://www.lispworks.com/documentation/common-lisp.html
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec
+    url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Objects
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/07_.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Conditions
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/09_.htm
+    publisher: LispWorks
   - title: Kotlin Language Specification
     url: https://kotlinlang.org/spec/introduction.html
     publisher: JetBrains
@@ -88,7 +101,7 @@ sources:
   - title: MDN JavaScript Guide - Functions
     url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
     publisher: MDN Web Docs
-lastVerified: 2026-05-21
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Reason
@@ -133,6 +146,12 @@ Do not choose Clojure only because Java feels verbose. Choose it when dynamic
 data-first design and REPL workflows are part of the engineering advantage. If
 compile-time types are the main requirement, Scala, Haskell, OCaml, F#, Rust, or
 Kotlin may fit better.
+
+## Choose Common Lisp When
+
+Choose [Common Lisp](/languages/common-lisp/) when functional techniques are part of a broader Lisp system: macros, symbolic data, generic functions, CLOS, conditions, live image development, and implementation-specific compiler/runtime control. It is strongest for symbolic systems, DSL-heavy applications, compilers, expert tools, and exploratory systems where the team can own a Common Lisp implementation and ecosystem.
+
+Do not choose Common Lisp only because it is expressive or historically important. Choose it when the team values ANSI Common Lisp, interactive image workflows, CLOS, macros, and deployment choices enough to sustain a smaller, more specialized ecosystem. If the JVM is the platform constraint, Clojure may be the better Lisp-family option.
 
 ## Choose Elixir When
 
@@ -204,6 +223,8 @@ Start with functional style inside an existing mainstream platform when the proj
 Start with Scala when the JVM, Spark, or Java interoperability is central and the team intentionally wants functional abstractions with static types.
 
 Start with Clojure when the JVM, immutable data, Java interoperability, macros, and REPL-driven development are central, and dynamic typing is acceptable.
+
+Start with Common Lisp when the team wants ANSI Common Lisp, CLOS, conditions, image-based development, macros, and implementation-specific control more than mainstream ecosystem defaults.
 
 Start with Elixir when the BEAM, OTP supervision, Phoenix, and message-passing concurrency are the practical reason for choosing a functional language.
 

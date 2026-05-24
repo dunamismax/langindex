@@ -4,6 +4,7 @@ slug: choosing-a-lisp-family-language
 summary: A practical guide for evaluating Clojure, Common Lisp, Scheme, Racket, and Lisp-family systems by platform, macro power, interactive development, ecosystem fit, tooling, deployment, and team maintenance cost.
 audience: Developers and teams considering a Lisp-family language for production work, language tooling, DSLs, education, research, symbolic systems, or data-heavy JVM applications.
 candidates:
+  - common-lisp
   - clojure
 sources:
   - title: Clojure Rationale
@@ -24,6 +25,18 @@ sources:
   - title: Common Lisp HyperSpec
     url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
     publisher: LispWorks
+  - title: Common Lisp Documentation
+    url: https://www.lispworks.com/documentation/common-lisp.html
+    publisher: LispWorks
+  - title: Common Lisp Implementations
+    url: https://common-lisp.net/implementations
+    publisher: Common-Lisp.net
+  - title: ASDF Manual - Introduction
+    url: https://asdf.common-lisp.dev/asdf/Introduction.html
+    publisher: ASDF
+  - title: Quicklisp beta
+    url: https://www.quicklisp.org/
+    publisher: Quicklisp
   - title: R7RS Small Language
     url: https://standards.scheme.org/corrected-r7rs/r7rs.html
     publisher: Scheme Reports
@@ -33,7 +46,7 @@ sources:
   - title: ClojureScript
     url: https://clojurescript.org/
     publisher: ClojureScript
-lastVerified: 2026-05-21
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Platform
@@ -42,11 +55,11 @@ Do not choose a Lisp-family language only because parentheses, macros, or REPL d
 
 - Clojure when the JVM, Java libraries, immutable data, and interactive development are useful.
 - ClojureScript when the target is JavaScript and the team specifically wants Clojure semantics in that ecosystem.
-- Common Lisp when an ANSI-standardized Lisp, image-based development, CLOS, mature implementations, and implementation-specific deployment tradeoffs fit the team.
+- [Common Lisp](/languages/common-lisp/) when an ANSI-standardized Lisp, image-based development, CLOS, mature implementations, and implementation-specific deployment tradeoffs fit the team.
 - Scheme when a small language, teaching, language research, interpreters, compilers, or standards-oriented simplicity matters.
 - Racket when language-oriented programming, DSLs, teaching languages, macros, documentation, and the Racket platform are the point.
 
-LangIndex has a complete page for Clojure first because it is the most direct production Lisp choice for JVM teams. Common Lisp, Scheme, and Racket should each get their own pages before this guide treats them as complete recommendations.
+LangIndex currently has complete pages for Common Lisp and Clojure. Scheme and Racket should each get their own pages before this guide treats them as complete recommendations.
 
 ## Choose Clojure When
 
@@ -58,7 +71,7 @@ Prefer Java or Kotlin when the goal is broad JVM readability, static typing, mai
 
 ## Choose Common Lisp When
 
-Evaluate Common Lisp when the team wants a standardized, mature Lisp with powerful interactive development, macros, CLOS, multiple implementations, image-based workflows, and decades of language history.
+Evaluate [Common Lisp](/languages/common-lisp/) when the team wants a standardized, mature Lisp with powerful interactive development, macros, CLOS, multiple implementations, image-based workflows, and decades of language history.
 
 Common Lisp can be compelling for symbolic systems, expert tools, compilers, DSL-heavy applications, long-lived interactive processes, and teams already fluent in its ecosystem. The practical risk is not the language's age; it is whether the chosen implementation, library ecosystem, deployment model, editor workflow, FFI, and maintenance pool fit the product.
 

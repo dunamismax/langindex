@@ -1,0 +1,136 @@
+---
+title: Common Lisp vs Clojure
+slug: common-lisp-vs-clojure
+summary: "Common Lisp and Clojure are both Lisp-family languages with macros and interactive workflows, but Common Lisp centers ANSI-standardized multi-implementation Lisp, CLOS, conditions, and image-based development while Clojure centers immutable data, JVM interop, and a modern hosted ecosystem."
+languages:
+  - common-lisp
+  - clojure
+useCases:
+  - Lisp-family systems
+  - functional programming
+  - symbolic systems
+  - DSLs
+  - interactive development
+  - backend services
+sources:
+  - title: Common Lisp Documentation
+    url: https://www.lispworks.com/documentation/common-lisp.html
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec
+    url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - History
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/01_ab.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - defmacro
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/m_defmac.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Objects
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/07_.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Conditions
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/09_.htm
+    publisher: LispWorks
+  - title: Common Lisp Implementations
+    url: https://common-lisp.net/implementations
+    publisher: Common-Lisp.net
+  - title: SBCL Download
+    url: https://www.sbcl.org/platform-table.html
+    publisher: Steel Bank Common Lisp
+  - title: ASDF Manual - Introduction
+    url: https://asdf.common-lisp.dev/asdf/Introduction.html
+    publisher: ASDF
+  - title: Quicklisp beta
+    url: https://www.quicklisp.org/
+    publisher: Quicklisp
+  - title: Clojure
+    url: https://clojure.org/
+    publisher: Clojure
+  - title: Clojure Rationale
+    url: https://clojure.org/about/rationale
+    publisher: Clojure
+  - title: Differences with Lisps
+    url: https://clojure.org/reference/lisps
+    publisher: Clojure
+  - title: Data Structures
+    url: https://clojure.org/reference/data_structures
+    publisher: Clojure
+  - title: Values and Change
+    url: https://clojure.org/about/state
+    publisher: Clojure
+  - title: Java Interop
+    url: https://clojure.org/reference/java_interop
+    publisher: Clojure
+  - title: deps.edn Reference
+    url: https://clojure.org/reference/deps_edn
+    publisher: Clojure
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing between Common Lisp and Clojure as practical Lisp-family languages. Both offer macros, code-as-data ideas, dynamic typing, interactive development, and functional programming techniques. They differ sharply in platform gravity, data model, standardization, deployment, and ecosystem expectations.
+
+If the team does not specifically want a Lisp-family language, compare both against Java, Kotlin, Scala, Python, Elixir, Rust, or another platform-default language first.
+
+## Shared Territory
+
+Common Lisp and Clojure both reward developers who are comfortable with s-expressions, REPL feedback, small functions, symbolic names, macros, and language extension. Both can build production systems, internal tools, DSLs, compilers, symbolic applications, and data-transformation code.
+
+Both also require discipline. Macros should be reviewed carefully. Dynamic data needs tests and validation. Interactive workflows need reproducible startup and CI. A Lisp system can become highly productive for an expert team and opaque for future maintainers if conventions are not documented.
+
+## Key Differences
+
+| Dimension        | Common Lisp                                      | Clojure                                                   |
+| ---------------- | ------------------------------------------------ | --------------------------------------------------------- |
+| Platform         | ANSI language with multiple implementations      | Hosted Lisp, primarily on the JVM                         |
+| Standardization  | ANSI INCITS 226-1994 language standard           | Clojure core language and libraries led by the Clojure team |
+| Data defaults    | Lists, arrays, hash tables, objects, structures, mutable and immutable styles | Immutable persistent maps, vectors, sets, lists, and sequences |
+| Object model     | CLOS generic functions, classes, methods, method combinations | Protocols, records, types, multimethods, Java classes     |
+| Error recovery   | Condition system with handlers and restarts      | Exceptions, Java interop, library-level error conventions |
+| Workflow         | REPL plus live image, compiler, debugger, restarts, saved images | REPL-driven JVM development, namespace reload, tests, Java tooling |
+| Tooling          | ASDF, Quicklisp, implementation tooling, SLIME/SLY | Clojure CLI, deps.edn, tools.build, Leiningen, Clojars, Maven |
+| Deployment       | Implementation-specific binaries, images, scripts, or hosted runtimes | JVM artifacts, classpaths, JARs, containers, Java operations |
+| Main risk        | Implementation portability, niche tooling, image-state discipline | Informal data contracts, JVM startup, classpath/tooling choices |
+
+## Choose Common Lisp When
+
+- ANSI Common Lisp itself is the desired language surface.
+- CLOS generic functions, method combinations, and the condition system are valuable.
+- The team wants image-based development, restarts, live debugging, saved images, or implementation-specific compiler controls.
+- The project is symbolic, language-oriented, DSL-heavy, research-influenced, or built for expert users.
+- The team can choose and support a specific implementation such as SBCL, ECL, ABCL, LispWorks, or Allegro CL.
+- Avoiding the JVM is a real platform requirement, not just a reaction against Java syntax.
+
+## Choose Clojure When
+
+- The JVM is an asset because Java libraries, Maven artifacts, observability, deployment infrastructure, and existing platform ownership matter.
+- Immutable persistent data structures and explicit state references are the default design advantage.
+- The team wants Lisp macros and REPL workflows while staying close to Java operations.
+- Backend services, internal platforms, data transformation, rules, integrations, or JVM-hosted systems are the target.
+- Clojure CLI, `deps.edn`, Clojars, Java interop, and JVM containers fit the team's deployment model.
+- A single modern language community matters more than Common Lisp's multi-implementation standard.
+
+## Watch Points
+
+Common Lisp can be technically strong but organizationally risky if only one developer understands the implementation, editor workflow, ASDF systems, image state, dependency sources, and deployment artifact. Portability should be tested if the project claims to support more than one implementation.
+
+Clojure can be productive but fragile if map shapes, specs, validation, namespace reloads, dependency aliases, and Java interop boundaries are informal. The JVM still needs ordinary operational care: JDK versions, classpaths, heap sizing, GC behavior, startup time, logs, metrics, and security updates.
+
+Both languages make macros available. That does not mean application code should become a private language everywhere. Macros earn their place when ordinary functions or data cannot express the abstraction cleanly.
+
+## Backend And Application Fit
+
+Clojure is usually the clearer backend choice when the organization already operates JVM systems. It can use mature Java drivers, SDKs, monitoring agents, logging stacks, HTTP servers, serialization libraries, and deployment patterns while giving developers a data-oriented Lisp.
+
+Common Lisp can still build services and applications, but it asks the team to own more platform decisions. That can be worthwhile for expert systems, specialized tools, custom runtimes, high-interaction development, and applications that benefit from CLOS, conditions, or an image-oriented workflow.
+
+For ordinary web APIs, internal CRUD, or platform-integrated enterprise services, Clojure has a more conventional modern production story if the JVM is acceptable. For language tooling, symbolic manipulation, or systems where live debugging and image state are a central advantage, Common Lisp may be a better fit.
+
+## Migration Or Interoperability Notes
+
+Common Lisp and Clojure do not share a routine runtime boundary. Clojure interoperates directly with Java and other JVM languages. Common Lisp interop depends on the chosen implementation: C FFI, embedding, generated executables, JVM hosting through ABCL, sockets, files, databases, HTTP APIs, or message queues.
+
+Porting code between them is usually a redesign, not syntax conversion. Clojure code often assumes persistent immutable collections, keywords, namespaces, Java interop, and JVM libraries. Common Lisp code often assumes CLOS, packages, conditions, implementation features, ASDF systems, and a different macro culture.
+
+Use service, file, database, or protocol boundaries when mixing them. Keep Lisp-specific data shapes and macro conventions inside the codebase that owns them.

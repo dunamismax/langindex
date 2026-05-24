@@ -1,0 +1,264 @@
+---
+title: Common Lisp
+slug: common-lisp
+status: active
+summary: Common Lisp is an ANSI-standardized Lisp for symbolic systems, interactive development, macro-heavy abstraction, CLOS object modeling, and long-lived applications where a mature dynamic language and implementation-specific deployment tradeoffs fit.
+firstReleased: 1984
+creators:
+  - Common Lisp design group, including Scott Fahlman, Richard P. Gabriel, David A. Moon, Guy L. Steele Jr., Daniel Weinreb, and other contributors
+paradigms:
+  - lisp
+  - functional
+  - object-oriented
+  - metaprogramming
+  - symbolic
+typing:
+  discipline: dynamic
+  strength: strong runtime typing with optional declarations, compiler policy controls, generic functions, conditions, and implementation-specific type inference or diagnostics
+memory:
+  model: automatic memory management in each implementation, normally garbage-collected, with implementation-specific controls for allocation, images, foreign memory, threads, and runtime tuning
+runtime:
+  model: multiple ANSI Common Lisp implementations, commonly interactive and compiled, with SBCL as a widely used open source native-code implementation and other open source and commercial implementations available
+officialSite: https://lisp-lang.org/
+packageManagers:
+  - ASDF
+  - Quicklisp
+  - implementation libraries
+  - OS packages
+  - manual vendoring
+comparedWith:
+  - clojure
+bestFor:
+  - Symbolic systems, expert tools, DSLs, compilers, program-transformation tools, rule-heavy applications, and exploratory systems where macros and interactive inspection are central.
+  - Teams that already value ANSI Common Lisp, CLOS, the condition system, image-based development, and implementation-specific tuning enough to own the ecosystem.
+  - Long-lived interactive processes, development tools, research-influenced systems, and applications where a live image plus a debugger and REPL improve feedback loops.
+  - Projects that can choose and document a specific implementation, dependency source, editor workflow, deployment artifact, foreign interface, and runtime operating model.
+poorFit:
+  - Teams that need broad mainstream hiring, static typing as the primary safety boundary, conventional IDE refactoring, or vendor SDK coverage before Lisp-specific power.
+  - Small services, mobile apps, browser front ends, serverless functions, or platform-default projects where deployment familiarity matters more than interactive Lisp workflows.
+  - Codebases where macro discipline, package boundaries, image state, implementation extensions, or dynamic interfaces would make maintenance harder for future owners.
+  - Projects that require one modern standard library, one official package registry, one dominant build convention, and uniform behavior across all implementations.
+sources:
+  - title: Common Lisp Documentation
+    url: https://www.lispworks.com/documentation/common-lisp.html
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec
+    url: https://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - History
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/01_ab.htm
+    publisher: LispWorks
+  - title: Common Lisp The Language - Acknowledgments First Edition
+    url: https://people.cs.georgetown.edu/~maloof/cltl/clm/node4.html
+    publisher: Georgetown University
+  - title: Common Lisp HyperSpec - Evaluation
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/03_a.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Compilation
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/03_b.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Declarations
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/03_c.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - defmacro
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/m_defmac.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Objects
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/07_.htm
+    publisher: LispWorks
+  - title: Common Lisp HyperSpec - Conditions
+    url: https://www.lispworks.com/documentation/HyperSpec/Body/09_.htm
+    publisher: LispWorks
+  - title: Common Lisp Implementations
+    url: https://common-lisp.net/implementations
+    publisher: Common-Lisp.net
+  - title: SBCL Download
+    url: https://www.sbcl.org/platform-table.html
+    publisher: Steel Bank Common Lisp
+  - title: SBCL User Manual
+    url: https://www.sbcl.org/manual/
+    publisher: Steel Bank Common Lisp
+  - title: ASDF Manual - Introduction
+    url: https://asdf.common-lisp.dev/asdf/Introduction.html
+    publisher: ASDF
+  - title: Quicklisp beta
+    url: https://www.quicklisp.org/
+    publisher: Quicklisp
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+Common Lisp is a standardized Lisp, not one implementation and not the whole Lisp family. It is best understood as a portable language specification plus a set of mature implementations, each with its own compiler, debugger, runtime, foreign-function interface, image format, threading story, libraries, and deployment conventions.
+
+This page treats ANSI Common Lisp as the language baseline and SBCL as a common open source implementation reference. That does not make SBCL the only serious choice. Common Lisp projects may use SBCL, Clozure CL, ECL, ABCL, CLISP, LispWorks, Allegro CL, or other implementations depending on licensing, host platform, performance, embedding, commercial support, and application needs.
+
+## Origin And Standardization
+
+Common Lisp was created to consolidate several important Lisp dialects and implementation traditions. The HyperSpec history says Symbolics, the Spice project, the NIL project, and the S-1 Lisp project joined in April 1981 to define Common Lisp. The first edition of *Common Lisp the Language* was completed in 1984 and credited a broad group of contributors across universities, labs, and vendors.
+
+ANSI standardization followed. X3J13 was formed in 1986 to produce an ANSI Common Lisp standard, and LispWorks documents ANSI INCITS 226-1994, formerly ANSI X3.226:1994, as the official standard. The Common Lisp HyperSpec is derived from that standard with permission, but the ANSI document remains the official standard.
+
+That standardization is a practical strength. Common Lisp has a large, stable language surface: functions, macros, packages, conditions, CLOS, sequences, hash tables, arrays, numbers, pathnames, streams, compilation semantics, declarations, and much more are part of the language specification rather than only a library convention.
+
+The cost is that Common Lisp evolution happens mostly through implementations and libraries rather than rapid changes to the standard itself. Portability is real, but serious projects still need to name the implementation extensions they rely on.
+
+## Language Model
+
+Common Lisp is dynamically typed, expression-oriented, and multi-paradigm. It supports functional style, imperative code, object-oriented programming through CLOS, macros, generic functions, multiple values, lexical closures, dynamic variables, packages, rest and keyword arguments, and interactive evaluation.
+
+It is also a Lisp in the code-as-data sense. Source forms are read as Lisp objects before evaluation or compilation. Lists commonly represent function calls, special forms, macro calls, or data. Symbols are interned in packages. Quoting, backquote, unquote, and macro expansion make program generation part of ordinary language use.
+
+Common Lisp is not a minimal Lisp. Compared with Scheme, the language is large and industrial. Compared with Clojure, it is not tied to the JVM and does not center immutable persistent data structures by default. Compared with many modern dynamic languages, it has a more explicit compiler and image tradition, plus a condition system that separates signaling from recovery.
+
+Related concepts: [Metaprogramming And Macros](/concepts/metaprogramming-and-macros/), [REPL And Interactive Development](/concepts/repl-and-interactive-development/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Garbage Collection](/concepts/garbage-collection/), and [Object-Oriented Programming](/concepts/object-oriented-programming/).
+
+## Macros And Homoiconicity
+
+Common Lisp macros transform source forms before evaluation or compilation. `defmacro` defines a macro by associating a macro function with a name in the global environment. The macro receives the unevaluated form structure and returns a new form. That makes macros stronger than ordinary higher-order functions when the abstraction needs to control evaluation, introduce bindings, create syntax, or generate repetitive code.
+
+This is the source of much of Common Lisp's power and much of its risk. Macros can build DSLs, define control constructs, remove boilerplate, integrate with CLOS, generate optimized code, and shape a problem-specific language. They can also hide control flow, make debugging harder, create subtle variable-capture problems, and lock code to one team's conventions.
+
+Good Common Lisp uses macros deliberately. Prefer functions, generic functions, ordinary data, and CLOS when they express the abstraction clearly. Use macros when the abstraction genuinely needs unevaluated syntax or compile-time transformation.
+
+## CLOS And The Condition System
+
+The Common Lisp Object System is part of ANSI Common Lisp. CLOS is centered on generic functions and methods rather than only classes with methods attached to them. Methods can specialize on required arguments, and generic function dispatch can model behavior across multiple object types. CLOS also supports classes, slots, initialization, method combinations, and meta-object facilities in implementation-specific ways.
+
+That makes Common Lisp object-oriented, but not in the Java or C# sense. Object modeling is one tool beside functions, macros, packages, and data. CLOS is especially useful when behavior should dispatch on domain objects without forcing every abstraction into a class hierarchy.
+
+The condition system is another distinctive part of the standard. Conditions can be signaled, handlers can observe or handle them, and restarts can offer recovery choices. This is broader than ordinary exceptions because the signaling code can expose recovery options without deciding which policy the caller should choose.
+
+Use CLOS and conditions when they clarify boundaries. They can be overused just like macros; simple functions and explicit return values are often enough.
+
+## REPL, Images, And Interactive Development
+
+Common Lisp development is strongly interactive. The standard evaluation model includes the read-eval-print loop, and real implementations combine a REPL with compilation, redefinition, inspection, debugging, tracing, and image state.
+
+The image model matters. A Common Lisp session is not only a process that runs source files from scratch. Developers often compile and load definitions into a live environment, inspect objects, redefine functions or methods, fix conditions in the debugger, and continue execution. Some implementations can save a core image or deliver an executable-like artifact with preloaded code.
+
+This can be a major productivity advantage for exploratory systems, language tools, long-running applications, and domain models that are easier to inspect live. It also requires production discipline. Startup paths, system loading, dependency pinning, image-building scripts, configuration, migrations, and deployment artifacts should be tested from a clean process, not only from a developer's long-lived image.
+
+## Runtime, Implementations, And Performance
+
+Common Lisp performance depends heavily on implementation, compiler settings, declarations, data representation, and code style. SBCL is widely used when open source native-code performance matters. Its download page listed SBCL 2.6.4 as the most recent version on April 29, 2026, and the SBCL manual documents compiler, debugger, efficiency, extensions, foreign-function, and image-related behavior.
+
+Other implementations have different strengths. ECL can be attractive for embedding and C-oriented deployment. ABCL targets the JVM. LispWorks and Allegro CL provide commercial tooling and support. Clozure CL, CLISP, and others may fit specific legacy, platform, licensing, or development constraints.
+
+Do not describe Common Lisp as simply "interpreted" or simply "compiled." The standard allows multiple execution strategies, and implementations commonly support interactive evaluation plus compilation. A production choice should benchmark the chosen implementation against the actual workload and include startup time, memory profile, GC behavior, foreign calls, thread behavior, delivery size, and operations support.
+
+## Syntax Example
+
+```lisp
+(defpackage #:health-summary
+  (:use #:cl))
+
+(in-package #:health-summary)
+
+(defclass service ()
+  ((name :initarg :name :reader service-name)
+   (status :initarg :status :accessor service-status)))
+
+(defgeneric healthy-p (value))
+
+(defmethod healthy-p ((service service))
+  (<= 200 (service-status service) 399))
+
+(define-condition unhealthy-service (warning)
+  ((service :initarg :service :reader condition-service))
+  (:report (lambda (condition stream)
+             (let ((service (condition-service condition)))
+               (format stream "~A returned ~D"
+                       (service-name service)
+                       (service-status service))))))
+
+(defmacro with-services ((var services) &body body)
+  `(dolist (,var ,services)
+     ,@body))
+
+(defun report (services)
+  (with-output-to-string (out)
+    (with-services (service services)
+      (unless (healthy-p service)
+        (warn 'unhealthy-service :service service))
+      (format out "~A ~D ~:[attention~;ok~]~%"
+              (service-name service)
+              (service-status service)
+              (healthy-p service)))))
+
+(defun main ()
+  (handler-bind
+      ((unhealthy-service
+         (lambda (condition)
+           (format *error-output* "~&warning: ~A~%" condition)
+           (muffle-warning))))
+    (write-string
+     (report (list (make-instance 'service
+                                   :name "common-lisp"
+                                   :status 200)
+                   (make-instance 'service
+                                   :name "example"
+                                   :status 503))))))
+
+(main)
+```
+
+Save this as `health-summary.lisp`, then run it with SBCL:
+
+```sh
+sbcl --script health-summary.lisp
+```
+
+The example shows a package, CLOS class, generic function, method specialization, condition, warning handler, macro, list construction, formatted output, and a script-style entry point. Production Common Lisp would usually put this in an ASDF system and test the pure behavior separately from the script boundary.
+
+## Tooling, Packages, And Builds
+
+ASDF is the standard build-system convention for Common Lisp projects. The ASDF manual describes it as a tool for specifying how systems are made from components and how to compile, load, test, and operate on those components in the right order. In practice, an `.asd` file describes systems and dependencies while implementation-specific commands load or build them.
+
+Quicklisp is the common library manager. The Quicklisp site describes it as working with existing Common Lisp implementations to download, install, and load libraries. When checked for this page, it described a beta distribution with more than 1,500 libraries and listed the last library update as January 1, 2026.
+
+Common Lisp tooling is less uniform than Rust's Cargo, Go's toolchain, .NET's SDK, or Java's Maven/Gradle mainstream. Teams should decide:
+
+- Which implementation and version are supported.
+- Whether dependencies come from Quicklisp, ASDF source registries, Git, OS packages, a vendored tree, or an internal mirror.
+- How systems are built, tested, linted, formatted, and delivered.
+- Which editor workflow is supported, often Emacs with SLIME or SLY.
+- How image state, configuration, foreign libraries, and deployment artifacts are reproduced in CI.
+
+## Best-Fit Use Cases
+
+Common Lisp is strongest when the language's unusual strengths line up with the product:
+
+- Symbolic manipulation, compilers, interpreters, theorem-proving-adjacent tools, expert systems, rule engines, and program-analysis tools.
+- DSL-heavy applications where macros remove real accidental complexity.
+- Long-lived systems where live debugging, inspection, restarts, and image-based workflows matter.
+- Tools for expert users where the language can be extended around the domain.
+- Research, prototyping, and exploratory engineering that may later become a maintained system.
+- Teams with enough Common Lisp fluency to own portability, implementation choice, deployment, and code review.
+
+The strongest Common Lisp projects usually make a clear implementation choice and treat the language's power as an engineering tool, not an excuse for private dialects everywhere.
+
+## Poor-Fit Or Risky Use Cases
+
+Common Lisp can be a poor fit when:
+
+- Static typing, mainstream hiring, or conventional IDE support is the main risk control.
+- The platform already has a good default language and the project does not need macros, CLOS, restarts, or live images.
+- Dependency governance must rely on one official registry and one dominant modern toolchain.
+- The team cannot support a Lisp editor, debugger, package conventions, ASDF systems, or deployment model.
+- Public APIs are mostly consumed by non-Lisp code and need ordinary platform-native shapes.
+- Implementation extensions become part of the codebase without being documented.
+
+The danger is not that Common Lisp is old. The danger is choosing it for aesthetics while ignoring ecosystem fit, deployment ownership, and maintenance staffing.
+
+## Ecosystem Maturity
+
+Common Lisp is mature in the sense of standard stability, implementation history, and language depth. It is not mature in the sense of having one vendor-neutral package registry, one dominant implementation, one default web framework, one official formatter, and broad mainstream onboarding material comparable to Python, JavaScript, Java, or Go.
+
+That makes it a niche but durable tool. It can be a sharp choice for the right team and problem, especially when the system benefits from live development, symbolic abstraction, and language extension. It is a weak default when the surrounding organization needs conventional hiring, platform SDK coverage, and standard deployment patterns more than Lisp-specific expressiveness.
+
+## Nearby Comparisons
+
+[Common Lisp vs Clojure](/comparisons/common-lisp-vs-clojure/) is the main Lisp-family comparison available now. Choose Clojure when the JVM, Java libraries, immutable persistent data, and Clojure's managed ecosystem are central. Choose Common Lisp when ANSI Common Lisp, multiple implementations, CLOS, condition restarts, image-based development, and implementation-specific deployment are part of the value.
+
+Scheme is the next close Lisp-family comparison, but Scheme is not yet a published LangIndex language page. The Scheme comparison is tracked in the build plan for the next phase.
