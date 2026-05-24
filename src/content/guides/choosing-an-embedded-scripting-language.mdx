@@ -1,10 +1,11 @@
 ---
 title: Choosing An Embedded Scripting Language
 slug: choosing-an-embedded-scripting-language
-summary: A practical guide for choosing Lua, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
+summary: A practical guide for choosing Lua, GDScript, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
 audience: Developers adding a scripting or plugin layer to a host application, game, editor, native tool, device UI, database, or extensible product.
 candidates:
   - lua
+  - gdscript
   - javascript
   - python
 sources:
@@ -23,6 +24,15 @@ sources:
   - title: LuaJIT
     url: https://luajit.org/luajit.html
     publisher: LuaJIT
+  - title: GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+    publisher: Godot Engine
+  - title: GDScript reference
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html
+    publisher: Godot Engine
+  - title: Frequently asked questions
+    url: https://docs.godotengine.org/en/stable/about/faq.html
+    publisher: Godot Engine
   - title: Getting started with embedding V8
     url: https://v8.dev/docs/embed
     publisher: V8
@@ -38,7 +48,7 @@ sources:
   - title: Embedding Python in Another Application
     url: https://docs.python.org/3/extending/embedding.html
     publisher: Python Software Foundation
-lastVerified: 2026-05-19
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Host
@@ -70,6 +80,19 @@ Choose Lua when:
 - Existing users or tools already expect Lua, LuaJIT, or a Lua-like dialect.
 
 The main watch point is version clarity. Reference Lua 5.5, Lua 5.4, LuaJIT's Lua 5.1-style compatibility, Luau, and host-customized dialects are not interchangeable. Write down the supported language version and test plugin compatibility against it.
+
+## When GDScript Fits
+
+GDScript fits embedded-scripting conversations only when Godot is the host. It is not a general-purpose embedder language like Lua, JavaScript, or Python. Its strength is that Godot already exposes the host API: scenes, nodes, resources, signals, editor tooling, exported properties, and lifecycle callbacks.
+
+Choose GDScript when:
+
+- The product is a Godot game, editor extension, internal tool, simulation, or interactive app.
+- Scripts should live in Godot scenes and participate in the editor workflow.
+- Designers or gameplay developers need editable properties, signal connections, and quick iteration without creating a separate plugin runtime.
+- The project can treat scripts as Godot-specific content rather than portable modules.
+
+The main watch point is lock-in to the host. GDScript is productive because it is tightly integrated with Godot, but that also means code reuse outside Godot is limited. If you are designing your own engine or plugin host, Lua is usually the better first scripting runtime to evaluate.
 
 ## When JavaScript Fits
 
@@ -124,6 +147,8 @@ For a durable plugin surface, prefer a small host-provided API, versioned plugin
 ## Practical Default
 
 Start with Lua when the goal is a small, host-controlled embedded scripting language.
+
+Start with GDScript when the host is Godot and scripts should be first-class Godot content.
 
 Start with JavaScript when the host and plugin authors are already web or Node.js centered.
 

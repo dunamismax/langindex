@@ -1,0 +1,110 @@
+---
+title: GDScript vs Lua
+slug: gdscript-vs-lua
+summary: GDScript and Lua are both lightweight-feeling scripting choices for games, but GDScript is tightly coupled to Godot while Lua is a small general-purpose embeddable language for many host applications and engines.
+languages:
+  - gdscript
+  - lua
+useCases:
+  - game scripting
+  - engine scripting
+  - editor tools
+  - embedded scripting
+  - modding
+sources:
+  - title: GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+    publisher: Godot Engine
+  - title: GDScript reference
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html
+    publisher: Godot Engine
+  - title: Static typing in GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html
+    publisher: Godot Engine
+  - title: Frequently asked questions
+    url: https://docs.godotengine.org/en/stable/about/faq.html
+    publisher: Godot Engine
+  - title: Lua about
+    url: https://www.lua.org/about.html
+    publisher: Lua
+  - title: Lua 5.5 Reference Manual
+    url: https://www.lua.org/manual/5.5/manual.html
+    publisher: Lua
+  - title: Lua uses
+    url: https://www.lua.org/uses.html
+    publisher: Lua
+  - title: LuaRocks Documentation
+    url: https://luarocks.org/docs
+    publisher: LuaRocks
+  - title: LuaJIT
+    url: https://luajit.org/luajit.html
+    publisher: LuaJIT
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for game and application developers deciding between a Godot-native scripting language and a general embeddable scripting language. It is not a claim that one language is universally better.
+
+Use GDScript when Godot is the host and editor workflow is central. Use Lua when you are embedding a scripting language into your own host, using an engine that exposes Lua well, supporting mods, or targeting an existing Lua ecosystem.
+
+## Shared Territory
+
+GDScript and Lua are both approachable, dynamically usable scripting languages often associated with game logic, callbacks, configuration-like data, plugins, and fast iteration. Both can express small gameplay systems with little ceremony, and both are usually used alongside a larger host that owns rendering, assets, platform APIs, and performance-sensitive work.
+
+The important difference is where the host boundary lives. GDScript assumes Godot. Lua assumes a host that embeds Lua or launches Lua.
+
+## Key Differences
+
+| Dimension | GDScript | Lua |
+| --- | --- | --- |
+| Design center | Godot Engine scripts, scenes, nodes, resources, signals, and editor workflow | Small embeddable extension language for many hosts |
+| Runtime | Runs inside Godot projects and editor tooling | Reference Lua interpreter/library, LuaJIT, or host-selected Lua runtime |
+| Typing | Dynamic by default with optional static annotations | Dynamic runtime typing |
+| Object model | Extends Godot classes and uses engine objects directly | Tables, metatables, userdata, and host-defined APIs |
+| Editor integration | Built into Godot's editor, Inspector, docs, and scene workflow | Host-specific; excellent in some engines, minimal in others |
+| Package story | Godot addons, Asset Library, project-local code | LuaRocks plus host-specific modules and vendoring |
+| Portability | Mostly Godot-specific | Portable across many hosts when APIs are controlled |
+| Modding fit | Strong when the game is a Godot project exposing scripts/addons deliberately | Strong when the host embeds Lua and documents a stable plugin API |
+
+## Choose GDScript When
+
+- The project is built in Godot and scripts should live naturally in scenes.
+- The code needs exported properties, signals, resources, node paths, tool scripts, and Godot editor integration.
+- Designers or gameplay developers should inspect and tweak behavior in the Godot editor.
+- The team wants the engine-native path for prototypes, UI, scene orchestration, and ordinary game logic.
+- Reuse outside Godot is less important than Godot-specific productivity.
+
+## Choose Lua When
+
+- You are building or extending a host application that needs a small embedded scripting runtime.
+- The engine, game, plugin system, or modding environment already exposes Lua or LuaJIT.
+- Scripts should be portable across hosts with a deliberately small API boundary.
+- The host is written in C or C++ and wants a documented C API for scripting.
+- LuaRocks, existing Lua libraries, or existing Lua modding knowledge matter.
+
+## Godot-Specific Fit
+
+GDScript is strongest because it removes translation work between script and engine. A script can extend a node, export properties to the Inspector, connect signals, run as a tool in the editor, and call Godot APIs in the naming style used by the rest of Godot's documentation.
+
+Lua can be used in Godot through third-party integrations, but that is no longer the default Godot path. The Godot FAQ explains that the engine created GDScript after earlier Lua and Python experience because binding third-party languages to the engine's object model and editor workflow was costly.
+
+## Host API And Portability
+
+Lua is better when you control the host and need a language that is not tied to one engine. A C or C++ application can embed Lua, expose a focused API, decide which standard libraries are available, and keep scripts small. That is why Lua remains common in games, tools, plugins, and application scripting.
+
+GDScript's host API is Godot itself. That gives it high leverage inside Godot and low portability outside Godot. Moving GDScript code to another engine usually means rewriting the engine-facing code, not just translating syntax.
+
+## Performance And Hot Paths
+
+Neither language choice should be used to hide poor architecture. In games, slow systems often come from algorithms, allocations, asset loading, draw calls, physics use, or excessive host API calls. Both GDScript and Lua are usually best for high-level behavior while the host handles heavy work.
+
+Lua has LuaJIT as an important performance-oriented implementation in some ecosystems, but LuaJIT is centered on Lua 5.1 compatibility and is not the same as current reference Lua. GDScript has optional static typing and Godot-specific optimized opcodes, but hot loops may still belong in engine APIs, shaders, C#, C++, or GDExtension.
+
+## Practical Default
+
+Use GDScript for Godot-native gameplay, UI, scene behavior, and editor tools.
+
+Use Lua for engine-agnostic embedded scripting, custom hosts, Lua-centered modding, or applications that need a small scripting language independent of Godot.
+
+If both are possible in a Godot project, choose GDScript unless a specific Lua ecosystem, modding requirement, or legacy integration justifies the extra binding and tooling surface.

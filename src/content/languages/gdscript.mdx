@@ -1,0 +1,204 @@
+---
+title: GDScript
+slug: gdscript
+status: active
+summary: GDScript is Godot's integrated scripting language for gameplay, tools, editor workflows, and Godot-specific content, with Python-like indentation, dynamic typing plus optional static annotations, first-class integration with nodes, scenes, signals, resources, and the Godot editor.
+paradigms:
+  - object-oriented
+  - imperative
+  - event-driven
+  - gradually typed
+typing:
+  discipline: gradual
+  strength: dynamic by default with optional static annotations, inference, typed variables, typed function parameters, typed return values, and Godot editor warnings
+memory:
+  model: managed by Godot's runtime object model, including value types, reference-like arrays and dictionaries, nodes owned by the scene tree, and engine-side resource lifetimes
+runtime:
+  model: Godot-integrated scripting runtime executed inside Godot projects and editor workflows, with direct access to the engine API, nodes, resources, and scene lifecycle callbacks
+officialSite: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+repository: https://github.com/godotengine/godot
+packageManagers:
+  - Godot Asset Library
+  - project-local addons
+comparedWith:
+  - csharp
+  - lua
+bestFor:
+  - Godot games, prototypes, gameplay scripts, UI logic, editor tools, content workflows, and small-to-medium game systems that benefit from the engine's native scripting model.
+  - Teams that want fast iteration inside the Godot editor, concise node and signal code, exported properties, resources, scene-tree callbacks, and script templates.
+  - Designer-adjacent workflows where code should expose editable properties and behavior directly in Godot scenes without a separate build step.
+  - Projects that can keep performance-critical loops in Godot engine APIs, shaders, C#, C++, or GDExtension while GDScript owns high-level behavior.
+poorFit:
+  - Non-Godot games, standalone applications, web services, command-line tools, or embedded hosts where the Godot engine is not the runtime.
+  - CPU-heavy simulations, tight inner loops, custom engine internals, or native middleware where C++, C#, shaders, or GDExtension are better performance and integration choices.
+  - Large codebases that need a broad package ecosystem, independent runtime distribution, mature external IDE/language tooling, or reuse outside Godot.
+  - Projects that expect GDScript to behave like Python or Lua. It is syntactically familiar to Python users but is a Godot-specific language with its own runtime and API model.
+sources:
+  - title: GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+    publisher: Godot Engine
+  - title: GDScript reference
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html
+    publisher: Godot Engine
+  - title: Static typing in GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html
+    publisher: Godot Engine
+  - title: Step by step
+    url: https://docs.godotengine.org/en/stable/getting_started/step_by_step/
+    publisher: Godot Engine
+  - title: Using signals
+    url: https://docs.godotengine.org/en/stable/getting_started/step_by_step/signals.html
+    publisher: Godot Engine
+  - title: Frequently asked questions
+    url: https://docs.godotengine.org/en/stable/about/faq.html
+    publisher: Godot Engine
+  - title: Running code in the editor
+    url: https://docs.godotengine.org/en/stable/tutorials/plugins/running_code_in_the_editor.html
+    publisher: Godot Engine
+  - title: "C#/.NET"
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/
+    publisher: Godot Engine
+  - title: "C# API differences to GDScript"
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_differences.html
+    publisher: Godot Engine
+  - title: What is GDExtension?
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html
+    publisher: Godot Engine
+  - title: Godot Asset Library
+    url: https://godotengine.org/asset-library/asset
+    publisher: Godot Engine
+  - title: Godot source repository
+    url: https://github.com/godotengine/godot
+    publisher: Godot Engine
+lastVerified: 2026-05-24
+---
+
+## Origin And Design Goals
+
+GDScript is Godot's integrated scripting language. The current Godot documentation describes it as a high-level, object-oriented, imperative, gradually typed language built for Godot, with indentation-based syntax similar to Python and a goal of tight integration with Godot Engine.
+
+That coupling is the point. GDScript is not a general-purpose scripting runtime that happens to embed in Godot. It exists so scripts can extend nodes, react to scene lifecycle callbacks, connect signals, expose editable properties, work with resources, run in editor tooling, and use Godot's API with little glue code.
+
+The Godot FAQ explains that the engine previously used Lua in its early days and experimented with Python, but the team created a custom language because binding third-party VMs cleanly to Godot's object model, threading, C++ interface, vector types, garbage behavior, and editor completion workflow was costly. GDScript trades broad ecosystem reuse for a more direct Godot development path.
+
+## Godot Coupling
+
+GDScript should be evaluated as part of Godot, not as a standalone language. A `.gd` file commonly extends a Godot class such as `Node`, `Node2D`, `CharacterBody2D`, `Control`, `Resource`, or `EditorScript`. The script then participates in the engine's object model and lifecycle through callbacks such as `_ready()`, `_process(delta)`, `_physics_process(delta)`, and signal handlers.
+
+Godot's scene model shapes ordinary GDScript code. Scenes are composed from nodes, nodes form a tree, saved scenes can be instanced, and scripts often retrieve nearby nodes, export properties to the Inspector, react to signals, and call engine APIs. This is why a compact GDScript file can express game behavior that would require more binding code in a generic embedded language.
+
+The downside is portability. GDScript knowledge transfers to other languages at the programming-concept level, but real GDScript code depends on Godot classes, scene paths, resources, exported properties, editor metadata, and engine lifecycle. If the project might leave Godot, treat GDScript as engine-specific application code.
+
+## Type System
+
+GDScript is dynamically typed by default and gradually typed in modern Godot. You can write untyped scripts, typed scripts, or a mix, although the Godot docs recommend a consistent style within a codebase.
+
+Static annotations can be applied to variables, constants, function parameters, and return values. Godot can infer types in common cases with `:=`, and typed code improves editor completion, documentation, warning quality, and some runtime performance through optimized opcodes when operand or argument types are known at compile time.
+
+The type system is practical rather than absolute. Some operations remain unsafe from the type checker's perspective, casts can fail, nested types have limits, and engine objects often cross through `Variant` values, node paths, resources, and runtime-loaded scenes. Types are still useful: they make Godot scripts easier to navigate, safer to refactor, and clearer for collaborators.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Object-Oriented Programming](/concepts/object-oriented-programming/), and [Language Servers And Editor Tooling](/concepts/language-servers-and-editor-tooling/).
+
+## Nodes, Scenes, Signals, And Resources
+
+GDScript's core idioms follow Godot's content model:
+
+- Nodes are the fundamental runtime units. They have names, editable properties, callbacks, and parent-child relationships.
+- Scenes are node trees saved as reusable content. Instancing scenes is a normal way to compose actors, UI, levels, and reusable behaviors.
+- Signals are Godot's event/delegation mechanism. A node can emit a signal when something happens, and other nodes can connect callbacks without tight object references.
+- Resources hold reusable data such as textures, animations, materials, scripts, custom data objects, and configuration-like assets.
+
+These pieces are not library conventions layered on top of GDScript. They are the engine's architecture. A strong GDScript codebase usually keeps scene ownership, signal connections, exported data, node paths, and resource loading explicit enough that designers and programmers can reason about the same project.
+
+## Syntax Example
+
+```gdscript
+extends Node2D
+
+signal health_depleted
+
+@export var speed: float = 180.0
+@export var max_health: int = 3
+
+var health: int
+
+@onready var sprite: Sprite2D = $Sprite2D
+
+func _ready() -> void:
+    health = max_health
+    health_depleted.connect(_on_health_depleted)
+
+func _process(delta: float) -> void:
+    var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    position += direction * speed * delta
+    sprite.flip_h = direction.x < 0.0
+
+func take_damage(amount: int) -> void:
+    health = max(health - amount, 0)
+    if health == 0:
+        health_depleted.emit()
+
+func _on_health_depleted() -> void:
+    queue_free()
+```
+
+This example shows common GDScript patterns: extending a node, declaring a signal, exporting Inspector-editable properties, using typed variables and return values, resolving a child node with `@onready`, responding to lifecycle callbacks, and freeing the node through Godot's scene-tree model.
+
+## Editor Workflow And Tool Scripts
+
+GDScript is strongest when the Godot editor is part of the workflow. The built-in script editor, Inspector, node dock, scene tree, signal connection UI, exported properties, documentation lookup, script templates, and debugger are designed around Godot's own scripting model.
+
+Tool scripts take that integration further. Adding `@tool` makes a script execute in the editor, which is useful for level-design helpers, previews, custom gizmos, generated content, and one-off editor automation through `EditorScript`.
+
+That power has risks. The Godot docs warn that `@tool` scripts run inside the editor and can manipulate the currently edited scene tree. Changes can be permanent, and misuse can crash or corrupt an editor session. Treat tool scripts like editor plugins: keep them small, version controlled, easy to disable, and careful around node deletion or scene mutation.
+
+## Runtime Model And Performance Limits
+
+In most Godot projects, GDScript is fast enough for gameplay orchestration, UI behavior, input handling, scene logic, AI state machines, animation triggers, simple data transforms, and editor automation. The FAQ emphasizes that many game performance problems come from algorithms, GPU work, or common engine code rather than the scripting language itself.
+
+That does not make GDScript the right layer for every system. Tight CPU loops, procedural generation hot paths, custom physics, large pathfinding workloads, complex simulation, data-oriented engine internals, native middleware, and platform SDK integration may need another layer.
+
+Godot's practical split is:
+
+- Use GDScript for engine-native behavior, iteration speed, content glue, tools, UI, scenes, and gameplay code close to nodes.
+- Use C# when the project benefits from .NET, static typing, C# libraries, or a team already skilled in C#.
+- Use GDExtension or C++ modules for native code, engine extensions, third-party libraries, and performance-critical systems where the native boundary is worth owning.
+- Use shaders, animation systems, physics settings, navigation, and built-in engine APIs before moving too much work into script loops.
+
+Typed GDScript can help performance, but it is not a substitute for algorithmic work, profiling, or moving the right responsibilities into the engine or native code.
+
+## Packages, Addons, And Distribution
+
+GDScript does not have a language package manager comparable to npm, NuGet, PyPI, Cargo, or LuaRocks. Reuse usually happens through Godot projects, addons, the Godot Asset Library, Git submodules, copied folders, or project-local conventions.
+
+This fits Godot's asset-centered workflow, but it changes dependency management. A production project should pin addon versions, review scripts before importing them, decide whether addons can run in the editor, document required Godot versions, and test exported builds on target platforms.
+
+For libraries that are mostly ordinary code, GDScript's Godot coupling can be a limitation. Shared game systems often assume Godot classes, resources, nodes, signals, project settings, or editor metadata. Keep reusable code's engine dependencies clear if it must survive across projects.
+
+## Best-Fit Use Cases
+
+GDScript is a strong fit for:
+
+- Godot-first games where gameplay code, UI, scenes, resources, editor iteration, and designer-facing properties are central.
+- Prototypes and small-to-medium games where fast iteration and low ceremony matter more than maximum raw throughput.
+- Godot editor tools, custom inspectors, one-off content automation, and level-design helpers.
+- Teams that want a concise scripting layer and can keep performance-sensitive subsystems in engine APIs, C#, shaders, C++, or GDExtension.
+- Projects where contributors are working mostly inside the Godot editor rather than a separate build system.
+
+## Poor-Fit Or Risky Use Cases
+
+GDScript can be a poor fit when:
+
+- The project is not using Godot as its engine or editor.
+- The code must be reused outside Godot with little adaptation.
+- The team needs broad third-party packages, mature standalone language tooling, or an independent runtime.
+- Performance-critical code is dominated by script-side loops rather than engine calls, data layout, shaders, native extensions, or better algorithms.
+- The project expects C#/.NET, C++, Lua, or Python ecosystem compatibility from a Godot-specific language.
+
+## Comparison Notes
+
+C# is the closest in-engine comparison. C# brings static typing, .NET libraries, external IDE tooling, and stronger fit for teams already invested in C#. GDScript usually has the smoother Godot-editor workflow, less ceremony, and tighter syntax for node, scene, and signal code. C# support also has platform and tooling constraints inside Godot, especially around the dedicated .NET editor build and web export support.
+
+Lua is the closest embedded-scripting comparison. Lua is a small general-purpose embeddable language used by many hosts; GDScript is a Godot-specific scripting language. Choose Lua when you are designing your own host or modding runtime. Choose GDScript when the host is Godot and the value comes from direct scene, node, resource, signal, and editor integration.
+
+GDExtension and C++ are not direct scripting-language substitutes. They are native extension paths for performance-sensitive systems, engine integration, and third-party native libraries. Use them when the native boundary is justified, not for ordinary scene behavior that GDScript expresses clearly.

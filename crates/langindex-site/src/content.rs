@@ -25,6 +25,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "erlang",
     "fortran",
     "fsharp",
+    "gdscript",
     "go",
     "groovy",
     "haskell",
@@ -711,8 +712,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 42);
-        assert_eq!(content.comparisons.len(), 61);
+        assert_eq!(content.languages.len(), 43);
+        assert_eq!(content.comparisons.len(), 63);
         assert_eq!(content.guides.len(), 22);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
@@ -743,6 +744,7 @@ mod tests {
         assert!(content.comparison("groovy-vs-kotlin").is_some());
         assert!(content.language("nim").is_some());
         assert!(content.language("odin").is_some());
+        assert!(content.language("gdscript").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -782,6 +784,8 @@ mod tests {
         assert!(content.comparison("odin-vs-c").is_some());
         assert!(content.comparison("odin-vs-rust").is_some());
         assert!(content.comparison("odin-vs-zig").is_some());
+        assert!(content.comparison("gdscript-vs-csharp-for-godot").is_some());
+        assert!(content.comparison("gdscript-vs-lua").is_some());
         assert!(
             content
                 .comparison("fortran-vs-python-for-numerics")
@@ -845,6 +849,7 @@ mod tests {
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/nim"));
         assert!(routes.contains("/languages/odin"));
+        assert!(routes.contains("/languages/gdscript"));
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/visual-basic"));
@@ -857,6 +862,8 @@ mod tests {
         assert!(routes.contains("/comparisons/odin-vs-c"));
         assert!(routes.contains("/comparisons/odin-vs-rust"));
         assert!(routes.contains("/comparisons/odin-vs-zig"));
+        assert!(routes.contains("/comparisons/gdscript-vs-csharp-for-godot"));
+        assert!(routes.contains("/comparisons/gdscript-vs-lua"));
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));

@@ -50,13 +50,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 2 - GDScript
 
-- [ ] Add a complete GDScript page.
-- [ ] Cover Godot coupling, dynamic typing with optional static annotations, scene tree integration, signals, nodes, resources, tool scripts, editor workflow, runtime model, performance limits, and the distinction between GDScript, C#, C++, and GDExtension in Godot projects.
-- [ ] Add GDScript vs C# for Godot comparison.
-- [ ] Add GDScript vs Lua comparison if the page needs a lightweight embedded-scripting comparison.
-- [ ] Add GDScript to the game-development and embedded-scripting guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete GDScript page.
+- [x] Cover Godot coupling, dynamic typing with optional static annotations, scene tree integration, signals, nodes, resources, tool scripts, editor workflow, runtime model, performance limits, and the distinction between GDScript, C#, C++, and GDExtension in Godot projects.
+- [x] Add GDScript vs C# for Godot comparison.
+- [x] Add GDScript vs Lua comparison if the page needs a lightweight embedded-scripting comparison.
+- [x] Add GDScript to the game-development and embedded-scripting guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 3 - VBA
 

@@ -1,11 +1,12 @@
 ---
 title: Choosing A Game Development Language
 slug: choosing-a-game-development-language
-summary: A practical guide for choosing C++, C#, Rust, Odin, JavaScript, Lua, or engine-specific scripting by engine, platform targets, iteration speed, performance constraints, and team workflow.
+summary: A practical guide for choosing C++, C#, GDScript, Rust, Odin, JavaScript, Lua, or engine-specific scripting by engine, platform targets, iteration speed, performance constraints, and team workflow.
 audience: Developers choosing a language for gameplay code, game engines, tools, native plugins, simulations, prototypes, or shipped game projects.
 candidates:
   - cpp
   - csharp
+  - gdscript
   - rust
   - odin
   - javascript
@@ -19,6 +20,18 @@ sources:
     publisher: Unity
   - title: What is GDExtension?
     url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html
+    publisher: Godot Engine
+  - title: GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+    publisher: Godot Engine
+  - title: GDScript reference
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html
+    publisher: Godot Engine
+  - title: Static typing in GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html
+    publisher: Godot Engine
+  - title: Frequently asked questions
+    url: https://docs.godotengine.org/en/stable/about/faq.html
     publisher: Godot Engine
   - title: The Standard
     url: https://isocpp.org/std/the-standard
@@ -56,7 +69,7 @@ sources:
   - title: LuaJIT
     url: https://luajit.org/luajit.html
     publisher: LuaJIT
-lastVerified: 2026-05-23
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Engine
@@ -101,6 +114,19 @@ Choose C# when:
 
 Use C++ alongside C# when native plugins, engine internals, platform APIs, or middleware require it.
 
+## When GDScript Fits
+
+GDScript is the default scripting language to evaluate when Godot is the engine center. It is built for Godot's scene tree, nodes, resources, signals, exported properties, editor workflow, and lifecycle callbacks. That makes it especially productive for prototypes, small and medium games, UI, gameplay behavior, editor tools, and designer-facing scripts.
+
+Choose GDScript when:
+
+- Godot is the engine and the project benefits from fast iteration inside the Godot editor.
+- Gameplay code is close to scenes, nodes, signals, resources, input, UI, and exported Inspector properties.
+- Contributors need a concise engine-native language instead of a separate .NET or native build workflow.
+- Performance-sensitive work can stay in engine APIs, shaders, C#, C++, or GDExtension while GDScript owns high-level behavior.
+
+GDScript is a weaker default when the code must be reused outside Godot, when the team needs a broad standalone language ecosystem, or when tight CPU loops and native middleware dominate the work.
+
 ## When Rust Is Worth Evaluating
 
 Rust is worth evaluating for custom engines, game-adjacent tools, asset pipelines, network services, plugins, and safety-sensitive native systems where ownership checks and no required garbage collector are important.
@@ -129,7 +155,7 @@ Lua is not a replacement for engine architecture. The host still needs debugging
 
 ## Scripting And Tool Languages
 
-Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools, visual scripting for designer-authored behavior, Lua for embedded scripting, modding, or data-driven logic, Odin or Rust for custom native tools and experimental engine components, and JavaScript or TypeScript for web games or tooling.
+Many games use more than one language. A common split is C++ for engine and performance-critical systems, C# for Unity gameplay and tools or Godot/.NET projects, GDScript for Godot-native scene and editor workflow, visual scripting for designer-authored behavior, Lua for embedded scripting, modding, or data-driven logic, Odin or Rust for custom native tools and experimental engine components, and JavaScript or TypeScript for web games or tooling.
 
 Do not choose a scripting layer only because it is easy to start. Check how it handles:
 
@@ -145,6 +171,8 @@ Do not choose a scripting layer only because it is easy to start. Check how it h
 Start with C++ for Unreal, custom engines, native middleware, and engine-level performance work.
 
 Start with C# for Unity gameplay, editor tooling, and teams that want a managed language inside a mature commercial engine.
+
+Start with GDScript for Godot-native gameplay, UI, editor tools, prototypes, and workflows where scene integration and iteration speed matter more than maximum control.
 
 Start with the engine-native scripting language for prototypes, designer-authored logic, small games, and workflows where iteration speed matters more than maximum control.
 

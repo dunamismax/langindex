@@ -1,0 +1,118 @@
+---
+title: "GDScript vs C# For Godot"
+slug: gdscript-vs-csharp-for-godot
+summary: "GDScript and C# are both official Godot scripting choices, but GDScript is the engine-native, editor-centered default while C# brings .NET, stronger static typing, external IDE tooling, and different platform and workflow constraints."
+languages:
+  - gdscript
+  - csharp
+useCases:
+  - Godot games
+  - gameplay scripting
+  - editor tools
+  - game prototypes
+  - .NET game code
+sources:
+  - title: GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/
+    publisher: Godot Engine
+  - title: GDScript reference
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html
+    publisher: Godot Engine
+  - title: Static typing in GDScript
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html
+    publisher: Godot Engine
+  - title: "C#/.NET"
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/
+    publisher: Godot Engine
+  - title: "C# API differences to GDScript"
+    url: https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_differences.html
+    publisher: Godot Engine
+  - title: Frequently asked questions
+    url: https://docs.godotengine.org/en/stable/about/faq.html
+    publisher: Godot Engine
+  - title: "C# Documentation"
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Introduction to .NET
+    url: https://learn.microsoft.com/en-us/dotnet/core/introduction
+    publisher: Microsoft Learn
+  - title: An introduction to NuGet
+    url: https://learn.microsoft.com/en-us/nuget/what-is-nuget
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for Godot projects choosing their primary gameplay and tool language. It is not a general C# vs dynamic-language comparison, and it is not about Unity. Inside Godot, both languages call Godot APIs, work with nodes, scenes, resources, signals, exports, and engine lifecycle callbacks. The practical question is which language should own which parts of the project.
+
+For the full GDScript profile, see [GDScript](/languages/gdscript). For the full C# profile, see [C#](/languages/csharp).
+
+## Shared Territory
+
+Both GDScript and C# can implement gameplay scripts, UI logic, editor tools, signal handlers, exported properties, resources, scene behavior, input handling, and ordinary game systems. Both can call Godot APIs and both can coexist in a project when the boundaries are deliberate.
+
+The biggest shared constraint is Godot itself. Engine version, target platforms, export templates, scene structure, resource loading, threading model, and editor workflow will shape the code more than language preference alone.
+
+## Key Differences
+
+| Dimension | GDScript | C# In Godot |
+| --- | --- | --- |
+| Design center | Godot-native scripting and editor workflow | .NET language integrated into Godot |
+| Type model | Dynamic by default, optional static annotations | Statically typed C# and .NET type system |
+| Syntax/API style | Godot-oriented snake_case APIs and compact node syntax | PascalCase C# API surface and idiomatic C# mappings |
+| Editor path | Built into standard Godot workflow | Requires the .NET-enabled editor build for C# projects |
+| IDE tooling | Godot script editor and Godot-aware completion | External C# IDEs provide essential C# tooling |
+| Ecosystem | Godot addons and project-local code | .NET libraries, NuGet, analyzers, and C# tooling |
+| Platform watch point | Follows ordinary Godot script support | Current Godot C# support has platform/export constraints, including no Godot 4 C# web export |
+| Performance profile | Good for high-level game logic; typed GDScript can use optimized opcodes | C# can be faster in some cases but API marshalling and GC behavior matter |
+
+## Choose GDScript When
+
+- The project is Godot-first and values the shortest path from scene editing to working gameplay.
+- Designers or content-focused contributors need exported properties, signals, and scripts that feel native in the editor.
+- Prototypes, small games, UI, scene orchestration, and ordinary gameplay behavior are the main workload.
+- The team wants minimal build ceremony and no separate .NET dependency for the scripting layer.
+- Code is mostly Godot-specific and does not need reuse outside the engine.
+
+## Choose C# When
+
+- The team already knows C# and wants a statically typed language by default.
+- The project benefits from .NET libraries, NuGet packages, analyzers, test tools, or external IDE workflows.
+- Larger systems need C# language features, refactoring support, or shared code with other .NET projects.
+- The target platforms are compatible with Godot's current C# support.
+- The team is comfortable using the .NET-enabled Godot editor and external C# tooling.
+
+## Performance And Runtime Boundaries
+
+The Godot FAQ is careful about performance: all officially supported languages are fast enough for general-purpose scripting, and many game bottlenecks come from algorithms, GPU work, or engine systems rather than the scripting language. It also notes that C# can be faster in some cases, while many Godot API calls can add marshalling cost and C# garbage collection can affect timing.
+
+Use that as a profiling rule, not a slogan. If a system is slow in GDScript, first check the algorithm, allocations, node traversal, signal frequency, physics use, draw calls, resource loading, and engine API usage. Then decide whether typed GDScript, C#, shaders, C++, GDExtension, or a different architecture is the right fix.
+
+## Tooling And Workflow
+
+GDScript has the smoothest built-in Godot workflow. The editor understands scripts, exported variables, signal callbacks, scene paths, `@tool`, and Godot documentation directly. That matters for content iteration and for contributors who live in the Godot editor.
+
+C# has stronger general programming tooling through external IDEs. Godot's own documentation says the built-in script editor does not provide C# IntelliSense or many other essential C# development tools. That is not a blocker for C# teams, but it changes the workflow: Godot becomes the engine/editor, while an external C# IDE owns most language navigation, refactoring, and analysis.
+
+## Mixed-Language Projects
+
+A practical split is GDScript for scene-local behavior, UI glue, prototypes, and editor-facing scripts, with C# for larger gameplay systems, data-heavy code, libraries, tests, or teams that want C# contracts. Mixed projects need explicit boundaries so scripts do not become hard to trace across two language conventions.
+
+Document which language owns:
+
+- Core gameplay systems.
+- Scene-local scripts.
+- Editor tools.
+- Shared data models and resources.
+- Tests and simulation logic.
+- Performance-critical code.
+- APIs exposed to designers or addon users.
+
+## Practical Default
+
+Start with GDScript when the project is Godot-centered, iteration speed matters, and the code is close to scenes, nodes, signals, resources, and editor tooling.
+
+Start with C# when .NET expertise, static typing, external IDEs, package access, or shared C# code are central and Godot's current C# platform constraints fit the project.
+
+For performance-critical native work, compare GDExtension or C++ as a separate decision. GDScript vs C# is usually about workflow, maintainability, ecosystem, and Godot integration before it is about raw speed.
