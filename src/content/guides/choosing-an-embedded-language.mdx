@@ -1,7 +1,7 @@
 ---
 title: Choosing an Embedded Language
 slug: choosing-an-embedded-language
-summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, VHDL, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
+summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, MicroPython, VHDL, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
   - assembly
@@ -11,6 +11,7 @@ candidates:
   - cpp
   - zig
   - odin
+  - micropython
   - vhdl
   - verilog-systemverilog
 sources:
@@ -107,6 +108,21 @@ sources:
   - title: Getting Started
     url: https://odin-lang.org/docs/install/
     publisher: Odin
+  - title: MicroPython homepage
+    url: https://micropython.org/
+    publisher: MicroPython
+  - title: MicroPython downloads
+    url: https://micropython.org/download/
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 documentation
+    url: https://docs.micropython.org/en/v1.28.0/
+    publisher: MicroPython
+  - title: MicroPython on microcontrollers
+    url: https://docs.micropython.org/en/v1.28.0/reference/constrained.html
+    publisher: MicroPython
+  - title: MicroPython Support Tiers
+    url: https://docs.micropython.org/en/v1.28.0/develop/support_tiers.html
+    publisher: MicroPython
 lastVerified: 2026-05-24
 ---
 
@@ -239,6 +255,20 @@ Use Odin when:
 
 Do not assume Odin is embedded-ready for a board because it is C-adjacent. Check startup code, linker scripts, panic/error policy, volatile and memory-mapped I/O patterns, interrupt behavior, atomics, debugger support, and whether the compiler output fits the vendor workflow.
 
+## When MicroPython Fits
+
+MicroPython fits when the target is a supported board and the work benefits from interactive Python-like hardware control. It is strongest for classroom projects, sensor prototypes, lab instruments, data loggers, factory tests, diagnostics, and product experiments where a REPL, readable scripts, and quick deploy cycles matter more than minimum firmware footprint.
+
+Use MicroPython when:
+
+- The exact board has a mature MicroPython port with enough flash, RAM, filesystem space, and documented peripheral support.
+- Developers need to test GPIO, I2C, SPI, UART, ADC, PWM, timers, networking, or displays interactively.
+- The project can accept a Python subset, garbage collection, port-specific module availability, and package limits.
+- Timing-critical or vendor-owned layers can remain in C, native modules, or a narrower firmware boundary.
+- Education, prototyping speed, diagnostics, or field-adjustable behavior are explicit goals.
+
+Do not use MicroPython as a blanket replacement for C firmware. Check port tiers, firmware versions, memory budget, startup behavior, interrupt rules, sleep behavior, filesystem durability, package installation, and whether garbage collection or dynamic typing are acceptable on the target.
+
 ## Runtime And Allocation Constraints
 
 Firmware often has constraints that ordinary application teams do not face: fixed memory maps, limited RAM, no heap, hard startup timing, interrupt context, watchdogs, power loss, DMA buffers, and strict latency. These constraints usually matter more than language fashion.
@@ -273,4 +303,6 @@ Consider Zig for explicit allocation, C interop, and cross-compilation only afte
 
 Consider Odin for data-oriented embedded-adjacent code, host tools, and application layers only after checking target maturity, foreign-library access, debugging, and the manual dependency model for the exact chip family.
 
-For mixed systems, keep boundaries narrow. It is common to use VHDL or Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, and ABI contracts explicit at every boundary.
+Consider MicroPython for supported-board prototypes, education, diagnostics, and high-level device scripts when REPL-driven iteration matters more than deterministic low-level control.
+
+For mixed systems, keep boundaries narrow. It is common to use VHDL or Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, C++ for higher-level device logic or shared libraries, and MicroPython for scripts or diagnostics above a firmware base. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, and ABI contracts explicit at every boundary.

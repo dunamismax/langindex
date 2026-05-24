@@ -1,0 +1,108 @@
+---
+title: MicroPython vs C For Microcontrollers
+slug: micropython-vs-c-for-microcontrollers
+summary: MicroPython gives supported microcontrollers an interactive Python-like scripting workflow, while C remains the baseline for smallest-footprint firmware, vendor SDKs, startup code, hard timing, direct memory control, and broad embedded toolchain support.
+languages:
+  - micropython
+  - c
+useCases:
+  - microcontroller programming
+  - embedded firmware
+  - hardware prototyping
+  - device scripting
+  - board bring-up
+sources:
+  - title: MicroPython homepage
+    url: https://micropython.org/
+    publisher: MicroPython
+  - title: MicroPython downloads
+    url: https://micropython.org/download/
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 documentation
+    url: https://docs.micropython.org/en/v1.28.0/
+    publisher: MicroPython
+  - title: machine - functions related to the hardware
+    url: https://docs.micropython.org/en/v1.28.0/library/machine.html
+    publisher: MicroPython
+  - title: MicroPython on microcontrollers
+    url: https://docs.micropython.org/en/v1.28.0/reference/constrained.html
+    publisher: MicroPython
+  - title: MicroPython remote control - mpremote
+    url: https://docs.micropython.org/en/v1.28.0/reference/mpremote.html
+    publisher: MicroPython
+  - title: The MicroPython project README
+    url: https://github.com/micropython/micropython/blob/master/README.md
+    publisher: MicroPython
+  - title: C language homepage
+    url: https://www.c-language.org/
+    publisher: C language project
+  - title: ISO/IEC JTC1/SC22/WG14 - C
+    url: https://www.open-std.org/jtc1/sc22/wg14/
+    publisher: ISO/IEC JTC1/SC22/WG14
+  - title: Language Standards Supported by GCC
+    url: https://gcc.gnu.org/onlinedocs/gcc/Standards.html
+    publisher: GNU Compiler Collection
+  - title: C Support in Clang
+    url: https://clang.llvm.org/c_status.html
+    publisher: LLVM Project
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for microcontroller firmware, board-level prototypes, embedded education, hardware tests, and device scripting. It is not a general comparison of Python and C for desktop software.
+
+C is the embedded baseline. MicroPython is an embedded scripting/runtime choice that can be excellent on supported boards when iteration speed and readability matter more than full control.
+
+## Practical Difference
+
+C normally sits closest to the hardware: startup code, interrupt vectors, linker scripts, register headers, vendor SDKs, HALs, RTOS kernels, bootloaders, drivers, and certification-oriented firmware. It can run with tiny runtime assumptions and direct control over memory layout, allocation, interrupt behavior, and generated code.
+
+MicroPython puts a Python-like compiler, virtual machine, garbage-collected heap, filesystem, REPL, and hardware modules on the device. It gives developers interactive access to pins, buses, timers, networking, and files without rebuilding firmware for every edit. That is a major productivity advantage for prototypes, education, diagnostics, and small device logic.
+
+## Key Differences
+
+| Dimension      | MicroPython                                          | C                                                       |
+| -------------- | ---------------------------------------------------- | ------------------------------------------------------- |
+| Workflow       | REPL, scripts, `mpremote`, board filesystem, `.mpy`  | Compile, link, flash, debug, inspect generated firmware |
+| Runtime        | Compact VM and garbage-collected heap                | Native code with no required garbage collector          |
+| Hardware APIs  | `machine`, board modules, port-specific features     | Vendor headers, HALs, direct registers, RTOS APIs       |
+| Memory         | Constrained heap/stack managed by runtime            | Explicit storage, stack, globals, heap policy           |
+| Timing         | Good for many control scripts, not hard real-time by default | Better fit for interrupt latency and deterministic paths |
+| Portability    | Portable across supported APIs, but port features vary | Broad compiler/vendor reach, but SDKs are target-specific |
+| Dependencies   | `mip`, copied files, frozen modules, firmware config | Build systems, SDKs, headers, libraries, object files   |
+| Best role      | High-level device behavior and interactive control   | Firmware foundation and tight hardware control          |
+
+## Choose MicroPython When
+
+- The target board has a mature MicroPython port and enough flash/RAM for the application.
+- The project benefits from interactive REPL testing, quick script changes, and readable hardware code.
+- The work is a prototype, classroom project, lab instrument, data logger, small robot, sensor node, LED/display controller, or device diagnostic.
+- The team wants Python familiarity on the device and can accept subset compatibility, garbage collection, and port-specific limits.
+- Timing-critical code can remain in C firmware, a native module, or a different lower-level layer.
+
+## Choose C When
+
+- The board vendor's SDK, examples, debugger, RTOS, startup files, and support path are C-centered.
+- The firmware needs hard timing, precise interrupt control, DMA ownership, low-power sequencing, bootloaders, secure update paths, or exact memory layout.
+- The chip is too small for a MicroPython runtime or the product cannot afford the firmware and heap footprint.
+- Certification, safety analysis, static analysis, MISRA-style rules, or existing embedded process relies on C artifacts.
+- The code needs direct integration with vendor libraries, radio stacks, USB stacks, filesystems, or drivers that are only exposed cleanly in C.
+
+## Hybrid Boundary
+
+Many successful designs are mixed. C owns startup, board support, critical drivers, RTOS integration, and timing-sensitive routines. MicroPython owns configuration, scripts, teaching examples, diagnostics, product behavior, or field-adjustable logic.
+
+Keep the boundary explicit. Decide which side owns pin initialization, buffers, interrupts, allocation, errors, logging, firmware updates, persistent settings, and hardware recovery. A loose boundary can turn an easy prototype into a hard-to-debug product.
+
+## Watch Points
+
+MicroPython can make unsafe hardware operations feel deceptively easy. The `machine` module can access clocks, interrupts, raw memory, sleep states, and peripherals; mistakes can crash or damage hardware. Scripts still need electrical knowledge, pin maps, bus timing, power budgets, and target tests.
+
+C can make every small change slow when the workflow is compile, flash, reset, and inspect. For exploratory hardware work, MicroPython may be the faster way to discover requirements before committing a C implementation.
+
+## Practical Default
+
+Start with MicroPython when learning, prototyping, or testing hardware on a supported board.
+
+Start with C when building the production firmware foundation, a smallest-footprint product, hard real-time behavior, vendor-SDK integration, or anything that must survive strict embedded review. Use a hybrid only when the C/MicroPython boundary is owned as part of the architecture, not as an afterthought.

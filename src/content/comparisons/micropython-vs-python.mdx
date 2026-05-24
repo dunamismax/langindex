@@ -1,0 +1,100 @@
+---
+title: MicroPython vs Python
+slug: micropython-vs-python
+summary: MicroPython keeps Python syntax and a subset of Python behavior for microcontrollers and constrained systems, while Python is the full general-purpose ecosystem for scripts, services, data, applications, and libraries on conventional computers.
+languages:
+  - micropython
+  - python
+useCases:
+  - microcontroller programming
+  - embedded prototyping
+  - hardware education
+  - scripting
+  - Python compatibility
+sources:
+  - title: MicroPython homepage
+    url: https://micropython.org/
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 documentation
+    url: https://docs.micropython.org/en/v1.28.0/
+    publisher: MicroPython
+  - title: MicroPython language and implementation
+    url: https://docs.micropython.org/en/v1.28.0/reference/index.html
+    publisher: MicroPython
+  - title: MicroPython differences from CPython
+    url: https://docs.micropython.org/en/v1.28.0/genrst/index.html
+    publisher: MicroPython
+  - title: MicroPython libraries
+    url: https://docs.micropython.org/en/v1.28.0/library/index.html
+    publisher: MicroPython
+  - title: Package management
+    url: https://docs.micropython.org/en/v1.28.0/reference/packages.html
+    publisher: MicroPython
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Language Reference
+    url: https://docs.python.org/3/reference/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams deciding whether a Python-like workflow belongs on a microcontroller, board, device, or constrained embedded target. It is not about choosing between MicroPython and CPython for a normal server, desktop script, notebook, or data application.
+
+The short version: choose Python for the full ecosystem on conventional computers. Choose MicroPython when the program must run on a supported device with tight RAM, flash, peripheral, and deployment constraints.
+
+## Shared Territory
+
+MicroPython deliberately feels familiar to Python developers. It uses Python syntax, dynamic runtime typing, familiar core data structures, imports, exceptions, functions, classes, comprehensions, and an interactive prompt. That makes it a strong teaching and prototyping bridge from desktop Python to hardware.
+
+The overlap should not be overstated. MicroPython aims at Python 3.4 syntax with selected later features and documents differences from CPython. Its libraries are "micro" versions or MicroPython-specific modules, and individual ports may omit documented functionality because of resource limits or firmware configuration.
+
+## Key Differences
+
+| Dimension       | MicroPython                                             | Python                                                  |
+| --------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| Target          | Microcontrollers, constrained systems, selected ports   | Desktops, servers, notebooks, tools, services, data     |
+| Runtime         | Compact compiler and VM, often bare metal               | CPython bytecode VM and other full implementations      |
+| Libraries       | Small stdlib subset plus hardware modules               | Full standard library plus broad third-party ecosystem  |
+| Packages        | `mip`, `mpremote`, `micropython-lib`, copied/frozen code | `pip`, PyPI, `venv`, `pyproject.toml`, ecosystem tools  |
+| Hardware access | `machine`, port modules, board APIs                     | Usually through OS APIs, native packages, or devices    |
+| Memory model    | GC on constrained heap and stack                        | GC/reference counting on much larger hosts in CPython   |
+| Compatibility   | Python-like subset with documented CPython differences  | Reference point for most Python packages and tooling    |
+| Deployment      | Firmware images, board filesystems, `.mpy`, serial tools | Virtual envs, containers, packages, system installs     |
+
+## Choose MicroPython When
+
+- The code must run directly on a microcontroller or constrained board.
+- Interactive hardware exploration, REPL access, and fast iteration are core to the workflow.
+- The board has a mature MicroPython port with the needed GPIO, I2C, SPI, UART, ADC, PWM, networking, sleep, and filesystem support.
+- The application logic is small enough to fit the board's RAM and flash with acceptable garbage-collection behavior.
+- Python familiarity is valuable for students, hardware teams, labs, prototyping, diagnostics, or device scripting.
+- Timing-critical and vendor-specific layers can stay in C or narrow native modules.
+
+## Choose Python When
+
+- The code runs on a desktop, server, laptop, Raspberry Pi-class Linux system, cloud host, or build machine.
+- The project needs the full standard library, PyPI packages, native wheels, notebooks, data libraries, web frameworks, or mature packaging workflows.
+- CPython compatibility is required for third-party modules, tools, type checkers, debuggers, linters, tests, or deployment.
+- Memory, storage, process management, filesystem access, and OS services are ordinary application resources.
+- The target hardware can run full Python under Linux or another operating system without the firmware constraints that MicroPython is designed around.
+
+## Watch Points
+
+MicroPython's main risk is assuming that Python compatibility means CPython compatibility. Test the exact board, firmware version, port tier, enabled modules, package format, and memory budget before committing. Code that imports fine on a laptop can fail on a board because a module is absent, too large, or implemented differently.
+
+Python's main risk in embedded conversations is assuming that a Linux Python workflow maps to bare metal. If the device is really a microcontroller with vendor startup code, flash limits, interrupts, and peripheral registers, full Python may not fit at all.
+
+## Practical Default
+
+Start with Python for host-side tools, data processing, tests, build scripts, dashboards, notebooks, and services.
+
+Use MicroPython on the device when the target board supports it well and the value is interactive hardware development, small scripts, education, diagnostics, or high-level device behavior. Keep the option open to move timing-sensitive or memory-sensitive code into C, native modules, or a different firmware stack.

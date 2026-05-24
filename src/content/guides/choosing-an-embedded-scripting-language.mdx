@@ -1,14 +1,15 @@
 ---
 title: Choosing An Embedded Scripting Language
 slug: choosing-an-embedded-scripting-language
-summary: A practical guide for choosing Lua, Scheme, GDScript, JavaScript, Python, or a host-specific language for application plugins, game logic, modding, configuration, and user automation.
-audience: Developers adding a scripting or plugin layer to a host application, game, editor, native tool, device UI, database, or extensible product.
+summary: A practical guide for choosing Lua, Scheme, GDScript, JavaScript, Python, MicroPython, or a host-specific language for application plugins, device scripts, game logic, modding, configuration, and user automation.
+audience: Developers adding a scripting or plugin layer to a host application, game, editor, native tool, device UI, database, microcontroller, or extensible product.
 candidates:
   - lua
   - scheme
   - gdscript
   - javascript
   - python
+  - micropython
 sources:
   - title: Lua about
     url: https://www.lua.org/about.html
@@ -55,6 +56,21 @@ sources:
   - title: Embedding Python in Another Application
     url: https://docs.python.org/3/extending/embedding.html
     publisher: Python Software Foundation
+  - title: MicroPython homepage
+    url: https://micropython.org/
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 documentation
+    url: https://docs.micropython.org/en/v1.28.0/
+    publisher: MicroPython
+  - title: The MicroPython Interactive Interpreter Mode
+    url: https://docs.micropython.org/en/v1.28.0/reference/repl.html
+    publisher: MicroPython
+  - title: MicroPython remote control - mpremote
+    url: https://docs.micropython.org/en/v1.28.0/reference/mpremote.html
+    publisher: MicroPython
+  - title: Package management
+    url: https://docs.micropython.org/en/v1.28.0/reference/packages.html
+    publisher: MicroPython
 lastVerified: 2026-05-24
 ---
 
@@ -140,6 +156,19 @@ Choose Python when:
 
 The main watch point is operational surface. Python embedding can be the right choice, but it brings interpreter versioning, virtual environments or equivalent isolation, native wheels, package compatibility, and a larger standard library.
 
+## When MicroPython Fits
+
+MicroPython fits embedded-scripting conversations when the host is a constrained board or device rather than a desktop application. It gives a microcontroller a Python-like REPL, scripts, hardware modules, and serial tooling, which can make device behavior easier to inspect and change.
+
+Choose MicroPython when:
+
+- The script host is a supported microcontroller, embedded board, lab device, test jig, sensor node, or small connected product.
+- Users need to interact with pins, buses, displays, sensors, timers, files, or networking from a Python-like prompt.
+- The device can accept MicroPython's firmware footprint, garbage-collected heap, Python subset, and package limits.
+- Scripts are trusted product logic, lab automation, education material, diagnostics, or field-adjustable behavior.
+
+The main watch point is target specificity. MicroPython is not a generic replacement for embedding CPython in a native application, and it is not a sandbox by default. Board port, firmware version, enabled modules, memory budget, package policy, and exposed hardware APIs are part of the scripting platform.
+
 ## Sandboxing And Trust
 
 Do not treat embedded scripting as a sandbox by default. A language runtime can limit what scripts can name, but the host decides what scripts can actually do.
@@ -175,5 +204,7 @@ Start with GDScript when the host is Godot and scripts should be first-class God
 Start with JavaScript when the host and plugin authors are already web or Node.js centered.
 
 Start with Python when plugin value depends on Python's libraries, data ecosystem, or user familiarity.
+
+Start with MicroPython when the scriptable surface is a supported microcontroller or constrained device and REPL-driven hardware control is the value.
 
 Choose a host-specific scripting language when the engine or application already provides one with better editor integration, debugger support, lifecycle hooks, and documentation than a generic language embed.

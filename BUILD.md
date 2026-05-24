@@ -178,13 +178,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 15 - MicroPython
 
-- [ ] Add a complete MicroPython page.
-- [ ] Cover Python subset, microcontroller targets, REPL, memory constraints, hardware APIs, `machine` module, board ports, package story, CPython compatibility limits, and embedded education/prototyping.
-- [ ] Add MicroPython vs Python comparison.
-- [ ] Add MicroPython vs C for microcontrollers comparison.
-- [ ] Add MicroPython to embedded-language and embedded-scripting guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete MicroPython page.
+- [x] Cover Python subset, microcontroller targets, REPL, memory constraints, hardware APIs, `machine` module, board ports, package story, CPython compatibility limits, and embedded education/prototyping.
+- [x] Add MicroPython vs Python comparison.
+- [x] Add MicroPython vs C for microcontrollers comparison.
+- [x] Add MicroPython to embedded-language and embedded-scripting guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 16 - PL/SQL
 

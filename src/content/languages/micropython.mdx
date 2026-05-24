@@ -1,0 +1,224 @@
+---
+title: MicroPython
+slug: micropython
+status: active
+summary: MicroPython is a compact Python 3 implementation for microcontrollers and constrained systems, centered on interactive hardware control, a Python subset, board-specific ports, the machine module, mpremote workflows, and careful memory and compatibility tradeoffs.
+firstReleased: 2014
+creators:
+  - Damien George
+paradigms:
+  - procedural
+  - object-oriented
+  - embedded scripting
+  - hardware control
+typing:
+  discipline: dynamic
+  strength: Python-style runtime typing with MicroPython-specific library and language subset limits
+memory:
+  model: garbage collected heap with constrained RAM, stack, flash, and port-specific allocation behavior
+runtime:
+  model: compact Python compiler and virtual machine running on bare-metal microcontrollers, RTOS ports, Unix, Windows, WebAssembly, and other ports
+officialSite: https://micropython.org/
+repository: https://github.com/micropython/micropython
+packageManagers:
+  - mip
+  - mpremote
+  - micropython-lib
+  - mpy-cross
+comparedWith:
+  - python
+  - c
+  - lua
+  - javascript
+bestFor:
+  - Microcontroller prototypes, classroom hardware projects, maker devices, sensor nodes, and small connected devices where interactive Python lowers iteration cost.
+  - Boards with official or community MicroPython firmware where GPIO, I2C, SPI, UART, ADC, PWM, timers, networking, and filesystems can be reached through documented modules.
+  - Embedded education and product experiments where REPL access, serial tooling, and readable scripts are more valuable than maximum performance or minimum firmware size.
+  - Device firmware that can keep timing-critical or vendor-owned layers in C while exposing higher-level behavior in MicroPython.
+poorFit:
+  - Hard real-time firmware, safety-critical control loops, tiny chips without enough flash/RAM, or products where deterministic allocation and timing dominate.
+  - Projects expecting full CPython compatibility, the full Python standard library, ordinary PyPI packages, desktop Python packaging, or native-extension workflows.
+  - Board bring-up, boot code, interrupt-heavy drivers, and low-level HAL work that must match vendor C SDKs, linker scripts, startup files, and debug probes.
+  - Systems where garbage collection pauses, dynamic typing, and port-specific feature availability are unacceptable risks.
+sources:
+  - title: MicroPython homepage
+    url: https://micropython.org/
+    publisher: MicroPython
+  - title: MicroPython downloads
+    url: https://micropython.org/download/
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 documentation
+    url: https://docs.micropython.org/en/v1.28.0/
+    publisher: MicroPython
+  - title: MicroPython language and implementation
+    url: https://docs.micropython.org/en/v1.28.0/reference/index.html
+    publisher: MicroPython
+  - title: MicroPython differences from CPython
+    url: https://docs.micropython.org/en/v1.28.0/genrst/index.html
+    publisher: MicroPython
+  - title: MicroPython libraries
+    url: https://docs.micropython.org/en/v1.28.0/library/index.html
+    publisher: MicroPython
+  - title: machine - functions related to the hardware
+    url: https://docs.micropython.org/en/v1.28.0/library/machine.html
+    publisher: MicroPython
+  - title: The MicroPython Interactive Interpreter Mode
+    url: https://docs.micropython.org/en/v1.28.0/reference/repl.html
+    publisher: MicroPython
+  - title: MicroPython remote control - mpremote
+    url: https://docs.micropython.org/en/v1.28.0/reference/mpremote.html
+    publisher: MicroPython
+  - title: MicroPython on microcontrollers
+    url: https://docs.micropython.org/en/v1.28.0/reference/constrained.html
+    publisher: MicroPython
+  - title: Package management
+    url: https://docs.micropython.org/en/v1.28.0/reference/packages.html
+    publisher: MicroPython
+  - title: MicroPython Support Tiers
+    url: https://docs.micropython.org/en/v1.28.0/develop/support_tiers.html
+    publisher: MicroPython
+  - title: MicroPython v1.28.0 release
+    url: https://github.com/micropython/micropython/releases/tag/v1.28.0
+    publisher: MicroPython
+  - title: The MicroPython project README
+    url: https://github.com/micropython/micropython/blob/master/README.md
+    publisher: MicroPython
+  - title: The Python Language Reference
+    url: https://docs.python.org/3/reference/
+    publisher: Python Software Foundation
+lastVerified: 2026-05-24
+---
+
+## Origin And Design Goals
+
+MicroPython was created by Damien George to bring a Python-like development experience to microcontrollers and constrained embedded systems. The project grew around the pyboard and the idea that a small board could expose an interactive Python prompt, filesystem, scripts, and hardware control without a desktop operating system.
+
+The design center is not "all of Python on every chip." MicroPython is a lean Python 3 implementation with a small standard-library subset, a compact compiler and runtime, MicroPython-specific hardware modules, and ports for many boards and architectures. It aims to keep ordinary Python syntax familiar while accepting tighter limits around RAM, flash, modules, packages, and runtime behavior.
+
+That makes MicroPython especially useful when iteration speed matters. A developer can flash firmware, connect over serial, test a pin or bus from the REPL, copy a script to the board, and refine behavior without rebuilding a C firmware image for every change.
+
+## Python Subset And Compatibility
+
+MicroPython aims to implement Python 3.4 syntax with selected features from later Python versions. The official differences documentation is explicit that MicroPython and CPython can diverge in standard-library behavior, builtin types, modules, parser behavior, and some language-level features.
+
+The practical rule is simple: Python knowledge transfers, but CPython compatibility must be tested. Small scripts that use core types, functions, classes, exceptions, loops, comprehensions, and imports often move naturally. Desktop Python programs that depend on the full standard library, filesystem assumptions, subprocesses, native wheels, large packages, reflection-heavy frameworks, or current CPython edge cases usually do not.
+
+MicroPython also changes the packaging expectation. PyPI and `pip` are not the default answer on a board. Code may be copied directly, installed with `mip` or `mpremote`, frozen into firmware, precompiled to `.mpy`, or avoided because the target does not have enough storage, RAM, networking, or compatible dependencies.
+
+Related concepts: [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), and [Garbage Collection](/concepts/garbage-collection/).
+
+## Runtime, Ports, And Boards
+
+MicroPython runs through board and platform ports. The v1.28.0 documentation lists quick references for pyboard, ESP8266, ESP32, Raspberry Pi RP2xxx, NXP i.MXRT, WiPy/CC3200, Unix and Windows, Zephyr, Renesas RA, and SAMD21/SAMD51. The download page also publishes firmware builds for many board families and vendors.
+
+The support-tier model matters. Tier 1 ports are the most mature and actively maintained, while lower tiers may have less hardware testing, feature work, documentation, or regression priority. As of this verification, Tier 1 ports include `esp32`, `mimxrt`, `rp2`, `samd`, `stm32`, `unix`, and `windows`. Tier 2 includes `alif`, `embed`, `nrf`, `renesas-ra`, `webassembly`, and `zephyr`.
+
+Treat "MicroPython supports this board" as a versioned statement. A project should record the exact firmware version, board definition, port tier, enabled feature level, filesystem layout, memory size, and driver expectations.
+
+## REPL And Development Workflow
+
+The REPL is central to MicroPython. It lets a developer import modules, inspect objects, test hardware, paste code, interrupt running programs, and exercise APIs from an interactive prompt on the device. That makes it a strong fit for learning, hardware exploration, board bring-up experiments, and debugging deployed scripts.
+
+`mpremote` is the standard command-line tool for talking to a MicroPython device over serial. It can connect to boards, open the REPL, evaluate expressions, run scripts, manage the filesystem, inspect storage, reset the board, enter the bootloader, and install packages through `mip`.
+
+That interactive workflow is the main difference from conventional C firmware. It is possible to discover a pin mapping, test an I2C sensor, adjust a PWM duty cycle, or run a quick diagnostic without compiling and flashing a new binary. The tradeoff is that the production firmware still needs disciplined boot files, deployment scripts, version pins, and tests instead of relying on manual REPL sessions.
+
+## Hardware APIs And The `machine` Module
+
+The `machine` module is MicroPython's hardware-facing center. It exposes board-specific functions and classes for low-level hardware such as pins, timers, buses, clocks, interrupts, reset behavior, sleep modes, raw memory access, and peripherals. Other modules cover networking, Bluetooth, frame buffers, NeoPixels, virtual filesystems, port-specific hardware, and implementation internals.
+
+This API gives Python code direct power over a device. It also means mistakes can have physical consequences. The documentation warns that `machine` can provide direct and unrestricted access to hardware blocks and that incorrect use can lock up or damage a board. Code using raw memory access, interrupts, sleep modes, clocks, or peripheral reconfiguration needs the same care as firmware in C.
+
+MicroPython code should prefer portable `machine` APIs where possible and move to port-specific modules only when the target requires it. A sensor demo can often be cross-board. A production device driver usually needs board-level tests, pin maps, electrical review, timing review, and careful error handling.
+
+## Memory And Performance Constraints
+
+MicroPython is designed for constrained systems, so RAM and flash shape ordinary code. The homepage says MicroPython is compact enough to fit in 256 KB of code space and 16 KB of RAM, while the repository README notes that devices with at least 512 KB flash and 128 KB RAM allow a much more full-featured experience.
+
+The runtime uses garbage collection, and a board can still run out of heap, fragment memory, exhaust stack, or spend too much time allocating. Code that is fine on a laptop can fail on a microcontroller because strings, lists, closures, exceptions, imports, buffers, and drivers all compete for limited memory.
+
+Common mitigations include:
+
+- Preallocating buffers for repeated work.
+- Avoiding unnecessary string construction in loops.
+- Freezing modules or bytecode into firmware when flash and build workflow allow it.
+- Using `.mpy` files to reduce parsing and source-storage cost.
+- Keeping interrupt handlers short and avoiding allocation inside interrupt context.
+- Measuring on the exact board instead of assuming behavior from another port.
+
+MicroPython can also use native emitters, inline assembler on selected architectures, and native `.mpy` modules for specialized cases. Those tools are useful escape hatches, but they move the project closer to target-specific firmware engineering.
+
+## Packages, Filesystems, And Builds
+
+MicroPython packages are not ordinary desktop Python packages. Network-capable boards can use `mip`, which installs from `micropython-lib` by default and can also fetch files from third-party URLs, GitHub, and GitLab. `mpremote` can install packages to connected boards, copy files, and automate common device tasks.
+
+For production, package policy should be explicit:
+
+- Which modules are copied as source, installed as `.mpy`, or frozen into firmware.
+- Whether package installation happens on the board, from a host tool, or during firmware build.
+- Which boards have enough storage and networking to install packages directly.
+- How dependency versions, board firmware versions, and filesystem contents are reproduced.
+- How secrets, certificates, Wi-Fi credentials, calibration data, and logs are separated from source.
+
+MicroPython's source tree includes `mpy-cross`, which precompiles Python scripts to `.mpy` bytecode. Many ports require building `mpy-cross` first for firmware builds. That makes the build system more firmware-like than normal Python application packaging.
+
+## Syntax Example
+
+```python
+from machine import Pin, I2C
+import time
+
+
+led = Pin("LED", Pin.OUT)
+i2c = I2C(0)
+
+
+def scan_bus():
+    devices = i2c.scan()
+    print("I2C devices:", [hex(addr) for addr in devices])
+    return devices
+
+
+while True:
+    led.toggle()
+    scan_bus()
+    time.sleep_ms(1000)
+```
+
+This example is intentionally small. It shows ordinary Python syntax plus MicroPython hardware APIs: `machine.Pin`, `machine.I2C`, a board LED, I2C bus scanning, and millisecond sleep. Real code should check the board's pin names, bus IDs, pull modes, voltage levels, and supported `machine` classes.
+
+## Best-Fit Use Cases
+
+MicroPython is a strong fit for:
+
+- Education, workshops, and hardware learning where Python familiarity and REPL feedback matter.
+- Rapid prototypes for sensors, displays, buttons, motors, LEDs, data logging, simple robotics, and connected devices.
+- Microcontroller projects on boards with mature MicroPython ports and enough memory for the needed libraries.
+- Embedded products where high-level behavior can be scripted while timing-critical drivers or vendor SDK layers remain in C.
+- Field diagnostics, factory tests, and board-level experiments where interactive control shortens the feedback loop.
+
+## Poor-Fit Or Risky Use Cases
+
+MicroPython can be a poor fit when:
+
+- The product needs hard real-time guarantees, predictable allocation, certified toolchains, or safety evidence.
+- The chip is too small for the desired firmware, libraries, filesystem, TLS stack, or application data.
+- The team expects full CPython behavior, the full Python standard library, PyPI packages, or desktop Python deployment habits.
+- Critical paths need maximum throughput, exact interrupt latency, direct DMA ownership, or precise power-state control.
+- The board port is low-tier, stale, missing needed peripherals, or unsupported by the vendor workflow.
+
+## Governance, Releases, And Maturity
+
+MicroPython is open source under the MIT license, developed in the open on GitHub, and maintained through the project repository, documentation, releases, discussions, and board ports. The project is mature enough to have broad board coverage and formal port support tiers, but each target still needs its own evaluation.
+
+As of this verification, the MicroPython download page lists `1.28.0` as the latest source release, and the GitHub release page marks v1.28.0 as latest. That release added or advanced hardware-facing features such as `machine.PWM` support on additional ports and a finalized `machine.CAN` API, while also continuing test-suite and port work.
+
+MicroPython is best evaluated as an embedded Python implementation, not as a replacement for CPython or C in every context. The stronger the target constraints become, the more the decision depends on the exact board, port tier, firmware build, memory budget, and hardware timing.
+
+## Comparisons
+
+[Python](/languages/python/) is the closest language because MicroPython deliberately keeps Python syntax and a subset of Python behavior. Python is the general-purpose desktop, server, data, and automation ecosystem. MicroPython is the constrained-device implementation that trades ecosystem breadth for interactive microcontroller control.
+
+[C](/languages/c/) is the closest firmware baseline. C usually owns startup code, vendor SDKs, HALs, RTOS kernels, drivers, interrupts, and smallest-footprint paths. MicroPython is strongest above that layer, where readable scripts, fast iteration, and REPL-driven hardware exploration matter more than maximum control.
+
+[Lua](/languages/lua/) and [JavaScript](/languages/javascript/) enter the conversation when a product needs an embedded scripting layer, but MicroPython's center is microcontroller firmware and Python familiarity rather than a generic host-application scripting runtime.
