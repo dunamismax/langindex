@@ -53,6 +53,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "rust",
     "scala",
     "scheme",
+    "scratch",
     "solidity",
     "sql",
     "swift",
@@ -721,9 +722,9 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 52);
-        assert_eq!(content.comparisons.len(), 78);
-        assert_eq!(content.guides.len(), 24);
+        assert_eq!(content.languages.len(), 53);
+        assert_eq!(content.comparisons.len(), 79);
+        assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
         assert!(content.language("ada").is_some());
@@ -790,6 +791,7 @@ mod tests {
         assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
         assert!(content.language("scheme").is_some());
+        assert!(content.language("scratch").is_some());
         assert!(content.language("julia").is_some());
         assert!(content.language("lua").is_some());
         assert!(content.language("dart").is_some());
@@ -817,6 +819,11 @@ mod tests {
         assert!(content.comparison("common-lisp-vs-clojure").is_some());
         assert!(content.comparison("scheme-vs-common-lisp").is_some());
         assert!(content.comparison("scheme-vs-clojure").is_some());
+        assert!(
+            content
+                .comparison("scratch-vs-python-for-first-programming-language")
+                .is_some()
+        );
         assert!(content.comparison("julia-vs-python").is_some());
         assert!(content.comparison("julia-vs-r").is_some());
         assert!(content.comparison("zig-vs-c").is_some());
@@ -877,6 +884,11 @@ mod tests {
         );
         assert!(
             content
+                .guide("choosing-a-beginner-education-language")
+                .is_some()
+        );
+        assert!(
+            content
                 .guide("choosing-a-concurrency-oriented-backend-language")
                 .is_some()
         );
@@ -911,6 +923,7 @@ mod tests {
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
         assert!(routes.contains("/languages/scheme"));
+        assert!(routes.contains("/languages/scratch"));
         assert!(routes.contains("/languages/fsharp"));
         assert!(routes.contains("/languages/d"));
         assert!(routes.contains("/languages/nim"));
@@ -946,6 +959,7 @@ mod tests {
         assert!(routes.contains("/comparisons/common-lisp-vs-clojure"));
         assert!(routes.contains("/comparisons/scheme-vs-common-lisp"));
         assert!(routes.contains("/comparisons/scheme-vs-clojure"));
+        assert!(routes.contains("/comparisons/scratch-vs-python-for-first-programming-language"));
         assert!(routes.contains("/languages/erlang"));
         assert!(routes.contains("/comparisons/lua-vs-javascript"));
         assert!(routes.contains("/comparisons/lua-vs-python"));
@@ -962,6 +976,7 @@ mod tests {
         assert!(routes.contains("/guides/choosing-an-infrastructure-as-code-language"));
         assert!(routes.contains("/guides/choosing-a-lisp-family-language"));
         assert!(routes.contains("/guides/choosing-a-logic-programming-language"));
+        assert!(routes.contains("/guides/choosing-a-beginner-education-language"));
         assert!(routes.contains("/guides/choosing-a-smart-contract-language"));
         assert!(routes.contains("/guides/choosing-an-embedded-scripting-language"));
         assert!(routes.contains("/guides/choosing-a-systems-language"));

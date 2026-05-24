@@ -149,12 +149,12 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 12 - Scratch
 
-- [ ] Add a complete Scratch page if educational visual languages are in scope.
-- [ ] Cover block-based programming, Scratch Foundation/MIT origins, event-driven model, sprites, costumes, broadcasts, variables/lists, classroom use, limitations, and transition paths to text languages.
-- [ ] Add Scratch vs Python for first programming language comparison.
-- [ ] Add Scratch to a new beginner/education guide rather than production-language guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Scratch page if educational visual languages are in scope.
+- [x] Cover block-based programming, Scratch Foundation/MIT origins, event-driven model, sprites, costumes, broadcasts, variables/lists, classroom use, limitations, and transition paths to text languages.
+- [x] Add Scratch vs Python for first programming language comparison.
+- [x] Add Scratch to a new beginner/education guide rather than production-language guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 13 - Gleam
 

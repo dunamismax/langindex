@@ -1,0 +1,179 @@
+---
+title: Scratch
+slug: scratch
+status: active
+summary: Scratch is a free, block-based visual programming language and creative coding community for children, classrooms, clubs, and first programming experiences built around interactive stories, games, animations, sprites, media, and sharing.
+firstReleased: 2007
+creators:
+  - Mitchel Resnick
+  - Lifelong Kindergarten Group at the MIT Media Lab
+paradigms:
+  - visual
+  - block-based
+  - event-driven
+  - educational
+  - imperative
+typing:
+  discipline: dynamic
+  strength: block-shaped runtime values for numbers, strings, booleans, variables, lists, sprites, costumes, sounds, and messages, with many type errors prevented by block shapes rather than text syntax
+memory:
+  model: managed by the Scratch runtime and project model; learners work with variables, lists, sprites, clones, costumes, sounds, and stage state rather than explicit allocation
+runtime:
+  model: Scratch projects run in the Scratch web editor/player or Scratch desktop environment through the Scratch 3.0 JavaScript-based editor, VM, blocks, renderer, storage, and media tooling
+officialSite: https://scratch.mit.edu/
+repository: https://github.com/scratchfoundation/scratch-editor
+comparedWith:
+  - python
+bestFor:
+  - First programming experiences for children, classrooms, clubs, libraries, families, and informal learning settings where immediate visual feedback matters.
+  - Creative coding projects such as interactive stories, animations, games, art, music, simulations, and simple media-rich experiments.
+  - Teaching sequencing, events, loops, conditionals, variables, lists, coordinate motion, state, debugging, remixing, and collaboration before text syntax becomes the main obstacle.
+  - Learners who benefit from a low-floor environment with sprites, costumes, sounds, broadcasts, starter projects, tutorials, and a moderated sharing community.
+poorFit:
+  - Production applications, command-line tools, backend services, embedded firmware, data pipelines, libraries, or systems that need ordinary text files, APIs, package management, deployment, and automated tests.
+  - Courses where the immediate goal is professional text-language fluency, local development tooling, version control, modules, packages, operating-system interfaces, or typed APIs.
+  - Large programs that need maintainable architecture, source review, refactoring tools, dependency isolation, or reproducible builds.
+  - Performance-sensitive games or simulations where the project needs native engines, browser APIs, GPU control, networking, persistence, or production game-development workflows.
+sources:
+  - title: About Scratch
+    url: https://scratch.mit.edu/help/about/
+    publisher: Scratch
+  - title: Scratch
+    url: https://www.scratchfoundation.org/home
+    publisher: Scratch Foundation
+  - title: Impact
+    url: https://www.scratchfoundation.org/impact
+    publisher: Scratch Foundation
+  - title: Scratch's Creative Learning Philosophy
+    url: https://www.scratchfoundation.org/learn/learning-library/scratch-creative-learning-philosophy
+    publisher: Scratch Foundation
+  - title: Introducing Scratch 3.0
+    url: https://news.mit.edu/2019/mit-media-lab-introduces-scratch-3point0-0108
+    publisher: MIT News
+  - title: Scratch Foundation GitHub
+    url: https://github.com/scratchfoundation
+    publisher: Scratch Foundation
+  - title: scratch-vm
+    url: https://github.com/scratchfoundation/scratch-vm
+    publisher: Scratch Foundation
+  - title: scratch-gui
+    url: https://github.com/scratchfoundation/scratch-gui
+    publisher: Scratch Foundation
+  - title: scratch-blocks
+    url: https://github.com/scratchfoundation/scratch-blocks
+    publisher: Scratch Foundation
+lastVerified: 2026-05-24
+---
+
+## Origin And Scope
+
+Scratch is a block-based visual programming language, editor, project player, and online creative coding community. The Scratch site describes it as a way to program interactive stories, games, and animations and share those creations with others. The Scratch Foundation describes Scratch as a creative coding platform for children, where young people bring stories, games, and animations to life in a moderated online community.
+
+Scratch came out of the Lifelong Kindergarten Group at the MIT Media Lab. The older Scratch about page says the project was initiated in 2003 and provided free of charge by the MIT Media Lab group. The Scratch Foundation's current site says Scratch was developed at the MIT Media Lab in 2007 by a team led by Professor Mitchel Resnick and transferred from MIT to the Scratch Foundation in 2019.
+
+That history matters because Scratch is not trying to be a smaller Python, JavaScript, or game engine. Its design center is creative learning: learners make projects, remix ideas, share work, debug visible behavior, and encounter programming concepts through sprites, media, events, and blocks.
+
+## Block-Based Programming
+
+Scratch programs are assembled from visual blocks rather than typed as plain text. Blocks fit together in shapes that reflect their role: event "hat" blocks start scripts, stack blocks perform actions, reporter blocks produce values, boolean blocks fit into conditions, and control blocks contain nested stacks.
+
+This lowers the syntax cost of starting. A beginner can drag a loop, attach a motion block, add a condition, and see the stage change without first memorizing punctuation, indentation, file layout, imports, or compiler errors. It also changes what learners practice. Scratch makes sequencing, repetition, events, state, coordinates, and decomposition visible, but it does not teach the ordinary text-editing and tooling habits needed in Python, JavaScript, C#, or Rust.
+
+Related concepts: [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), and [Testing Cultures](/concepts/testing-cultures/).
+
+## Sprites, Costumes, Sounds, And The Stage
+
+Scratch projects are built around a stage and sprites. A sprite is a code-running object with scripts, visual costumes, sounds, position, direction, size, visibility, variables, and interaction with other sprites. The stage owns the project background and can have its own scripts and backdrops.
+
+Costumes and sounds are first-class teaching material rather than incidental assets. A learner can animate by switching costumes, change mood with sounds, move a sprite with coordinates, detect touching or key presses, and build state with variables and lists. That makes Scratch especially good for interactive stories, simple arcade games, math visualizations, music toys, animations, and classroom demonstrations.
+
+The tradeoff is that Scratch project structure is media-centered. It is useful for learning and sharing, but it is not the same as a source tree with modules, packages, tests, build scripts, and deployment artifacts.
+
+## Events And Broadcasts
+
+Scratch is event-driven. Common scripts start when the green flag is clicked, a key is pressed, a sprite is clicked, the backdrop changes, a clone starts, or a broadcast message is received. Broadcasts let one script send a named message that other scripts can handle, which is a beginner-friendly way to coordinate scenes, menus, levels, animation steps, sound cues, or game state.
+
+This event model teaches a real programming idea: programs often react to inputs and messages instead of running one top-to-bottom script. It also has limits. A large Scratch project can become hard to reason about when many sprites broadcast messages, mutate shared variables, and respond to events at the same time. Naming conventions, comments, small custom blocks, and simple state diagrams help, but the environment is not designed like a production event bus or game engine architecture.
+
+## Variables, Lists, And Custom Blocks
+
+Scratch variables hold changing values such as score, health, timers, names, positions, selected options, or simple state flags. Lists hold ordered collections and are useful for inventories, quiz answers, generated data, or small simulations. Variable scope can be project-wide or sprite-specific, which lets learners discover the difference between shared state and object-local state without starting from formal scope rules.
+
+Custom blocks are Scratch's main decomposition tool. They let a learner name a repeated action, hide a multi-block detail behind one block, and pass simple inputs. This is the bridge from "make the sprite do things" to "factor behavior into named procedures."
+
+Scratch does not have the module, package, class, type, import, namespace, or distribution systems that text languages use for larger software. When a project starts needing those tools, the learner has probably outgrown Scratch for that specific goal.
+
+## Example Project Shape
+
+```text
+when green flag clicked
+set [score v] to [0]
+switch backdrop to [level-1 v]
+go to x: [0] y: [0]
+forever
+  if <key [right arrow v] pressed?> then
+    change x by [8]
+  end
+  if <touching [coin v]?> then
+    change [score v] by [1]
+    broadcast [coin-collected v]
+  end
+end
+
+when I receive [coin-collected v]
+next costume
+play sound [pop v] until done
+```
+
+This is not Scratch's saved file format. It is a text sketch of the block structure: an event starts a script, variables hold state, keyboard input changes a sprite, collision triggers a broadcast, and another script reacts with costume and sound changes.
+
+## Classroom And Community Fit
+
+Scratch is strongest when programming is part of a creative learning setting. The Scratch Foundation publishes learning materials, tutorials, coding cards, educator resources, and a creative learning philosophy centered on playful projects, learner interests, peers, iteration, and multiple paths into the same concepts.
+
+In classrooms and clubs, that can be a practical advantage. Students can begin with visible projects, remix existing work, collaborate, explain their designs, and debug by watching behavior. Teachers can frame lessons around stories, games, art, math, languages, history, or science rather than treating syntax as the whole subject.
+
+The online community is part of the product. Sharing and remixing are useful learning mechanics, but educators and parents should still pay attention to moderation, accounts, privacy, classroom policies, and whether students are using Scratch online, offline, or through a controlled school environment.
+
+## Runtime And Implementation
+
+Modern Scratch is a web-centered system. Scratch 3.0 moved the experience to current browsers and touch devices, with an offline desktop version also available. The public Scratch Foundation GitHub organization includes the editor, GUI, virtual machine, blocks library, renderer, storage, paint editor, localization, desktop wrapper, and related components.
+
+The Scratch VM repository describes the VM as a library for representing, running, and maintaining the state of programs written with Scratch Blocks. Internally, Scratch projects are real software artifacts with blocks, targets, assets, and runtime state. For ordinary learners, though, the important runtime surface is the editor and player, not a command-line compiler or package manager.
+
+## Best-Fit Use Cases
+
+Scratch is a strong fit for:
+
+- Elementary and middle-school coding introductions, informal clubs, library programs, family learning, and early creative computing.
+- Learners who need immediate visual feedback before text syntax, file layout, local installs, and error messages become the main task.
+- Creative projects involving sprites, costumes, sounds, backdrops, animation, simple games, quizzes, stories, and interactive art.
+- Teaching core ideas such as sequencing, events, loops, conditions, variables, lists, coordinates, procedures, debugging, and remixing.
+- Transition programs where Scratch gives learners confidence before Python, JavaScript, p5.js, Godot, or another text-based environment.
+
+## Poor-Fit Or Risky Use Cases
+
+Scratch is a poor fit when:
+
+- The goal is production software rather than learning, exploration, or creative coding.
+- The project needs normal text source, modules, package management, automated tests, build artifacts, deployment, APIs, or version-control review.
+- The work is a backend service, CLI, data workflow, firmware, native application, library, or production game.
+- The learner already needs to practice text-language tooling, editor habits, debugging stack traces, imports, dependencies, and documentation reading.
+- A large Scratch project is becoming a substitute for learning maintainable program architecture in a text environment.
+
+## Transition Paths
+
+The right next language depends on the learner's goal:
+
+- Move to [Python](/languages/python/) for a readable first text language, scripts, turtle graphics, data, files, automation, notebooks, and general-purpose learning.
+- Move to [JavaScript](/languages/javascript/) for browser-based interaction, web pages, p5.js-style creative coding, or immediate sharing on the web.
+- Move to [GDScript](/languages/gdscript/) or C# when the learner wants a full game engine workflow in Godot or Unity.
+- Move to [Scheme](/languages/scheme/) or another teaching language when the course is about programming-language ideas, recursion, interpreters, and abstraction.
+
+The main teaching move is to name what transfers and what does not. Events, loops, variables, state, conditionals, decomposition, debugging, and project design transfer well. Block dragging, sprite-centered structure, and Scratch's media workflow do not map directly to every text language.
+
+## Comparison Notes
+
+Python is the closest first-text-language comparison. Scratch is usually better when the learner is young, visual feedback is the motivator, classroom creativity matters, or syntax should not be the first barrier. Python is usually better when the learner is ready to type code, read errors, manage files, use libraries, and build skills that transfer directly into general-purpose programming.
+
+See [Scratch vs Python for first programming language](/comparisons/scratch-vs-python-for-first-programming-language/) for the focused comparison.
