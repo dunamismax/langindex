@@ -112,12 +112,12 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 8 - HCL
 
-- [ ] Add a complete HashiCorp Configuration Language page if the product scope accepts declarative infrastructure languages as language pages.
-- [ ] Cover Terraform/OpenTofu usage, declarative resource graphs, expressions, modules, variables, providers, state coupling, evaluation model, limits versus general-purpose languages, and HashiCorp/OpenTofu ecosystem split.
-- [ ] Add HCL vs YAML for infrastructure configuration comparison only if YAML or configuration-language treatment exists; otherwise add HCL vs Bash/Python for infrastructure automation.
-- [ ] Add HCL to a new or existing infrastructure-as-code guide.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete HashiCorp Configuration Language page if the product scope accepts declarative infrastructure languages as language pages.
+- [x] Cover Terraform/OpenTofu usage, declarative resource graphs, expressions, modules, variables, providers, state coupling, evaluation model, limits versus general-purpose languages, and HashiCorp/OpenTofu ecosystem split.
+- [x] Add HCL vs YAML for infrastructure configuration comparison only if YAML or configuration-language treatment exists; otherwise add HCL vs Bash/Python for infrastructure automation.
+- [x] Add HCL to a new or existing infrastructure-as-code guide.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 9 - ABAP
 

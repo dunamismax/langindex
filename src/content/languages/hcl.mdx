@@ -1,0 +1,222 @@
+---
+title: HCL
+slug: hcl
+status: active
+summary: HCL is HashiCorp Configuration Language, a structured configuration language and Go toolkit used most visibly by Terraform and OpenTofu to describe infrastructure resources, variables, modules, providers, expressions, and desired state.
+firstReleased: 2014
+creators:
+  - HashiCorp
+  - Mitchell Hashimoto
+paradigms:
+  - declarative
+  - configuration
+  - infrastructure as code
+  - expression language
+typing:
+  discipline: schema-defined
+  strength: application-defined attributes and blocks with expression values, Terraform/OpenTofu type constraints, validation rules, and provider schemas
+memory:
+  model: not an application memory model; Terraform and OpenTofu persist infrastructure bindings in state while providers manage remote objects through APIs
+runtime:
+  model: parsed and evaluated by a host application; Terraform and OpenTofu build dependency graphs, plan changes, call providers, and update state from HCL configuration
+officialSite: https://github.com/hashicorp/hcl
+repository: https://github.com/hashicorp/hcl
+packageManagers:
+  - Terraform Registry
+  - OpenTofu Registry
+  - terraform init
+  - tofu init
+comparedWith:
+  - bash
+  - python
+bestFor:
+  - Terraform and OpenTofu configurations where infrastructure should be declared as resources, data sources, variables, modules, provider requirements, outputs, and explicit dependencies.
+  - Teams that want reviewable desired-state infrastructure definitions rather than long imperative scripts that call cloud CLIs step by step.
+  - Reusable infrastructure modules with typed inputs, outputs, provider requirements, version constraints, and registry or VCS distribution.
+  - Cloud, SaaS, DNS, identity, Kubernetes, and platform resources where provider coverage, state management, drift detection, and plan review are valuable.
+poorFit:
+  - General-purpose programming, long-running services, rich data processing, complex algorithms, custom CLIs, or workflows that need ordinary packages, tests, and control flow.
+  - One-off operational scripts where a short Bash, PowerShell, or Python wrapper is clearer than introducing Terraform or OpenTofu state.
+  - Infrastructure domains without mature providers, stable APIs, import paths, or a team willing to own state, locking, backend security, and provider upgrades.
+  - Teams that need to avoid Terraform/OpenTofu ecosystem coupling or cannot decide how the HashiCorp and OpenTofu split affects licensing, registries, providers, and support.
+sources:
+  - title: HCL
+    url: https://github.com/hashicorp/hcl
+    publisher: HashiCorp
+  - title: HCL Native Syntax Specification
+    url: https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md
+    publisher: HashiCorp
+  - title: Terraform v0.1.0
+    url: https://github.com/hashicorp/terraform/releases/tag/v0.1.0
+    publisher: HashiCorp
+  - title: Terraform Language Documentation
+    url: https://developer.hashicorp.com/terraform/language
+    publisher: HashiCorp Developer
+  - title: Expressions - Terraform
+    url: https://developer.hashicorp.com/terraform/language/expressions
+    publisher: HashiCorp Developer
+  - title: Create and manage resources overview
+    url: https://developer.hashicorp.com/terraform/language/resources
+    publisher: HashiCorp Developer
+  - title: Modules overview
+    url: https://developer.hashicorp.com/terraform/language/modules
+    publisher: HashiCorp Developer
+  - title: Use input variables to add module arguments
+    url: https://developer.hashicorp.com/terraform/language/values/variables
+    publisher: HashiCorp Developer
+  - title: State
+    url: https://docs.hashicorp.com/terraform/language/state
+    publisher: HashiCorp Developer
+  - title: OpenTofu Language Documentation
+    url: https://opentofu.org/docs/language/
+    publisher: OpenTofu
+  - title: State - OpenTofu
+    url: https://opentofu.org/docs/language/state/
+    publisher: OpenTofu
+  - title: HashiCorp adopts the Business Source License for future releases of its products
+    url: https://www.globenewswire.com/news-release/2023/08/10/2723189/0/en/HashiCorp-adopts-the-Business-Source-License-for-future-releases-of-its-products.html
+    publisher: HashiCorp
+  - title: OpenTofu Announces Fork of Terraform
+    url: https://opentofu.org/blog/opentofu-announces-fork-of-terraform/
+    publisher: OpenTofu
+lastVerified: 2026-05-24
+---
+
+## Scope And Origin
+
+HCL is HashiCorp Configuration Language. The HCL project describes it as a toolkit for building structured configuration languages that are human- and machine-friendly, primarily for command-line tools, DevOps tools, and servers. It is not one single runtime in the way Python, Go, or JavaScript is a runtime ecosystem. A host application defines which blocks, attributes, labels, variables, functions, and evaluation rules are meaningful.
+
+HCL originated in Terraform, with the original HCL and HIL parser work credited by the HCL repository to Mitchell Hashimoto, Fatih Arslan, and Martin Atkins. Terraform v0.1.0 is the practical origin point for HCL's most visible infrastructure-as-code use.
+
+That origin still shapes how developers meet HCL. In everyday infrastructure work, "HCL" often means the Terraform/OpenTofu language: `.tf` files with `terraform`, `provider`, `resource`, `data`, `variable`, `locals`, `module`, and `output` blocks. Strictly, HCL is the underlying configuration language and parser toolkit; Terraform and OpenTofu define a particular HCL-based language for infrastructure.
+
+## Language Model
+
+HCL has two central structural forms: attributes and blocks. Attributes assign expression values to names. Blocks group nested content and may have labels. The HCL repository contrasts this with plain JSON or YAML: HCL is designed for structured configuration formats where the calling application defines the expected schema and can return useful diagnostics.
+
+Expressions make HCL more than a static key-value format. Terraform and OpenTofu expressions can include literals, references, operators, conditionals, function calls, `for` expressions, splats, templates, dynamic blocks, and type constraints. That gives infrastructure configuration enough computation to reduce repetition and connect values across resources.
+
+The limit is intentional. HCL is not a general-purpose language. It has no ordinary package ecosystem for arbitrary application code, no long-running process model, no unrestricted I/O, no normal object system, and no loops with side effects. It works best when the host application can interpret a declarative document against a known schema.
+
+## Terraform And OpenTofu
+
+Terraform's language documentation says Terraform configuration files tell Terraform what plugins to install, what infrastructure to create, and what data to fetch. The main purpose is declaring resources, and other language features exist to make resource definitions more flexible and convenient. OpenTofu's language documentation uses the same basic model: a declarative language that describes the intended goal, while dependency relationships determine the order of operations.
+
+The common workflow is:
+
+- Write HCL configuration for providers, variables, resources, modules, and outputs.
+- Run initialization so the tool can install providers and modules.
+- Validate and plan to see the intended change.
+- Apply to call provider APIs and update managed infrastructure.
+- Store state so future plans can map configuration addresses to remote objects.
+
+This model is strongest when infrastructure can be represented as desired state. It is weaker when the work is a procedural runbook, a multi-step migration with external coordination, or an API sequence whose correct behavior depends on business logic rather than resource convergence.
+
+## Resources, Graphs, And Evaluation
+
+Terraform and OpenTofu configurations form a dependency graph. A `resource` block declares an infrastructure object such as a virtual network, compute instance, DNS record, IAM role, repository setting, or SaaS object. Providers define the concrete resource types and data sources. References between resources create implicit dependencies, and meta-arguments such as `depends_on`, `count`, and `for_each` can shape graph behavior.
+
+The graph is why HCL should not be read as "execute this file from top to bottom." Terraform's language documentation states that the language is declarative and that block ordering and file organization are generally not significant; Terraform considers relationships between resources when deciding operation order. OpenTofu documents the same declarative ordering model.
+
+This is useful for review. A plan can show create, update, replace, and destroy actions before apply. It is also a source of surprises. Unknown values, provider behavior, computed attributes, lifecycle rules, replacement semantics, eventual consistency, and API-side defaults can all make a plan less obvious than the HCL text alone suggests.
+
+## Variables, Modules, Providers, And State
+
+Variables define module inputs. Terraform's variable documentation describes `variable` blocks as an input interface that lets callers customize module behavior without changing module source code. Outputs expose selected values from a module. Locals name derived values inside a module.
+
+Modules are collections of resources managed together. The root module is the working directory; child modules are called with `module` blocks. Modules can be loaded from local paths, registries, and version-control sources. Good modules are not just copied folders. They define inputs, outputs, provider requirements, version constraints, upgrade notes, and examples that make the boundary reviewable.
+
+Providers are plugins that expose resource types and data sources. Provider choice determines most of the real surface area: cloud APIs, SaaS APIs, version behavior, authentication, import support, timeouts, diff logic, and provider-specific bugs. HCL can make provider use readable, but it cannot make an unstable API or weak provider mature.
+
+State is the operational center. Terraform says state maps real-world resources to configured resource instances and records object identities for future changes. OpenTofu similarly stores state to map managed infrastructure and configuration. State can contain sensitive values and must be stored, locked, backed up, and protected deliberately. Treating HCL as "just configuration files" while ignoring state is a common infrastructure failure mode.
+
+## Ecosystem Split
+
+HashiCorp announced in August 2023 that future releases of HashiCorp products, including Terraform, would move from Mozilla Public License 2.0 to Business Source License 1.1. OpenTofu announced a fork of Terraform later in August 2023 after the license change was not reversed.
+
+For HCL users, the practical split is not only legal language. It affects CLI choice, registry behavior, provider and module discovery, state compatibility, feature availability, policy in regulated organizations, vendor support, and whether examples assume `terraform` or `tofu`. Many HCL configurations remain portable between Terraform and OpenTofu, but teams should test the exact toolchain, version, providers, backends, and automation system they run.
+
+Do not paper over the split in new platform work. Choose a default CLI, pin versions, document migration constraints, and make provider and module sources explicit.
+
+## Syntax Example
+
+```hcl
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+variable "aws_region" {
+  type        = string
+  description = "AWS region for the example VPC."
+  default     = "us-east-1"
+}
+
+variable "availability_zones" {
+  type        = list(string)
+  description = "Availability zones to spread subnets across."
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_vpc" "main" {
+  cidr_block = "10.20.0.0/16"
+
+  tags = {
+    Name = "langindex-example"
+  }
+}
+
+resource "aws_subnet" "public" {
+  for_each = toset(var.availability_zones)
+
+  vpc_id            = aws_vpc.main.id
+  availability_zone = each.value
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, index(var.availability_zones, each.value))
+}
+
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
+```
+
+This example shows provider requirements, typed variables, a provider block, resources, references, `for_each`, functions, tags, and an output. The exact provider version, backend, credentials, state storage, region policy, naming rules, and CI workflow would still need to be defined for real use.
+
+## Best-Fit Use Cases
+
+HCL is a strong fit for:
+
+- Terraform and OpenTofu infrastructure definitions where resources, dependencies, variables, modules, providers, and outputs should be reviewed as code.
+- Cloud and SaaS resources where provider coverage is mature enough to make plan/apply safer than ad hoc API scripts.
+- Reusable platform modules with typed inputs, documented outputs, version constraints, and examples.
+- Environments where state locking, plan review, import workflows, drift detection, and remote backends are part of the operating model.
+- Teams that want declarative desired state but do not need arbitrary program control inside the infrastructure definition itself.
+
+HCL is often best paired with a small amount of Bash, PowerShell, Python, Go, or another language around the edges: wrappers, policy checks, tests, CI orchestration, code generation, inventory exports, or migration helpers.
+
+## Poor-Fit Or Risky Use Cases
+
+HCL can be a poor fit when:
+
+- The task is really a script: run these commands, inspect this output, branch, retry, clean up, and emit a report.
+- The infrastructure provider is missing, immature, unmaintained, or unable to model the API behavior the team needs.
+- The team cannot protect state, handle locking, manage provider upgrades, or review planned destructive changes.
+- Complex expression logic, nested dynamic blocks, and module indirection make the configuration harder to read than explicit resources.
+- The organization has not chosen how to handle Terraform versus OpenTofu licensing, registries, provider sources, and support.
+- The desired result depends on procedural sequencing that Terraform/OpenTofu's graph model does not express well.
+
+Use HCL when the desired-state model is a real advantage. Use a general-purpose language or script when the work is control flow, parsing, orchestration, or application logic.
+
+## Comparison Notes
+
+[HCL vs Bash And Python For Infrastructure Automation](/comparisons/hcl-vs-bash-python-for-infrastructure-automation/) is the closest practical comparison for operations teams. HCL owns desired-state infrastructure definitions. Bash owns command-line glue. Python owns structured automation and tool logic.
+
+Bash and PowerShell are often better launchers than infrastructure languages. They can set environment variables, call `terraform plan`, call `tofu apply`, check required tools, and integrate with CI. They become risky when they start reimplementing state, dependency graphs, and idempotent resource management.
+
+Python, TypeScript, Go, C#, Java, and similar languages can be strong in SDK-based IaC systems or custom platform tools. They bring ordinary language features, packages, tests, and abstractions, but also move more responsibility into application code. The right choice depends on whether the product needs a declarative resource graph, a programmable infrastructure application, or a narrow automation wrapper.

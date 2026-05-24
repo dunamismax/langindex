@@ -31,6 +31,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "go",
     "groovy",
     "haskell",
+    "hcl",
     "java",
     "javascript",
     "julia",
@@ -717,9 +718,9 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 48);
-        assert_eq!(content.comparisons.len(), 74);
-        assert_eq!(content.guides.len(), 23);
+        assert_eq!(content.languages.len(), 49);
+        assert_eq!(content.comparisons.len(), 75);
+        assert_eq!(content.guides.len(), 24);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
         assert!(content.comparison("ada-vs-rust").is_some());
@@ -746,6 +747,17 @@ mod tests {
         assert!(content.comparison("crystal-vs-ruby").is_some());
         assert!(content.language("fsharp").is_some());
         assert!(content.language("groovy").is_some());
+        assert!(content.language("hcl").is_some());
+        assert!(
+            content
+                .comparison("hcl-vs-bash-python-for-infrastructure-automation")
+                .is_some()
+        );
+        assert!(
+            content
+                .guide("choosing-an-infrastructure-as-code-language")
+                .is_some()
+        );
         assert!(content.comparison("groovy-vs-java").is_some());
         assert!(content.comparison("groovy-vs-kotlin").is_some());
         assert!(content.language("nim").is_some());
@@ -870,6 +882,7 @@ mod tests {
         assert!(routes.contains("/languages/common-lisp"));
         assert!(routes.contains("/languages/delphi"));
         assert!(routes.contains("/languages/haskell"));
+        assert!(routes.contains("/languages/hcl"));
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
@@ -897,6 +910,7 @@ mod tests {
         assert!(routes.contains("/comparisons/d-vs-zig"));
         assert!(routes.contains("/comparisons/gdscript-vs-csharp-for-godot"));
         assert!(routes.contains("/comparisons/gdscript-vs-lua"));
+        assert!(routes.contains("/comparisons/hcl-vs-bash-python-for-infrastructure-automation"));
         assert!(routes.contains("/comparisons/haskell-vs-ocaml"));
         assert!(routes.contains("/comparisons/haskell-vs-scala"));
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));
@@ -918,6 +932,7 @@ mod tests {
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));
+        assert!(routes.contains("/guides/choosing-an-infrastructure-as-code-language"));
         assert!(routes.contains("/guides/choosing-a-lisp-family-language"));
         assert!(routes.contains("/guides/choosing-a-logic-programming-language"));
         assert!(routes.contains("/guides/choosing-a-smart-contract-language"));

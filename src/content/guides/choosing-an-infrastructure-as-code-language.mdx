@@ -1,0 +1,143 @@
+---
+title: Choosing An Infrastructure As Code Language
+slug: choosing-an-infrastructure-as-code-language
+summary: A guide for deciding when infrastructure should be declared in HCL, wrapped with shell or PowerShell, supported by Python, or modeled in a general-purpose language such as TypeScript, Go, C#, Java, or Rust.
+audience: Developers, operators, SREs, DevOps engineers, and platform teams choosing how to represent cloud, SaaS, Kubernetes, and internal platform infrastructure as code.
+candidates:
+  - hcl
+  - bash
+  - powershell
+  - python
+  - typescript
+  - javascript
+  - go
+  - csharp
+  - java
+  - rust
+sources:
+  - title: HCL
+    url: https://github.com/hashicorp/hcl
+    publisher: HashiCorp
+  - title: Terraform Language Documentation
+    url: https://developer.hashicorp.com/terraform/language
+    publisher: HashiCorp Developer
+  - title: Create and manage resources overview
+    url: https://developer.hashicorp.com/terraform/language/resources
+    publisher: HashiCorp Developer
+  - title: State
+    url: https://docs.hashicorp.com/terraform/language/state
+    publisher: HashiCorp Developer
+  - title: OpenTofu Language Documentation
+    url: https://opentofu.org/docs/language/
+    publisher: OpenTofu
+  - title: State - OpenTofu
+    url: https://opentofu.org/docs/language/state/
+    publisher: OpenTofu
+  - title: Pulumi Languages & SDKs
+    url: https://www.pulumi.com/docs/iac/languages-sdks/
+    publisher: Pulumi
+  - title: Bash Reference Manual
+    url: https://www.gnu.org/software/bash/manual/bash.html
+    publisher: GNU Project
+  - title: What is PowerShell?
+    url: https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Go Programming Language
+    url: https://go.dev/
+    publisher: Go Project
+  - title: TypeScript
+    url: https://www.typescriptlang.org/
+    publisher: Microsoft
+  - title: JavaScript
+    url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+    publisher: MDN Web Docs
+  - title: C# documentation
+    url: https://learn.microsoft.com/en-us/dotnet/csharp/
+    publisher: Microsoft Learn
+  - title: Java SE Documentation
+    url: https://docs.oracle.com/en/java/javase/
+    publisher: Oracle
+  - title: The Rust Programming Language
+    url: https://www.rust-lang.org/
+    publisher: Rust Foundation
+lastVerified: 2026-05-24
+---
+
+## Start With The Ownership Model
+
+Infrastructure as code is not one language choice. It is an ownership model for resources, state, review, credentials, drift, and change. The first question is not "which syntax do we like?" It is "which system owns the desired state, and how will the team review and recover changes?"
+
+Use HCL when Terraform or OpenTofu should own long-lived resource state. Use Bash or PowerShell when the work is a thin operational wrapper around existing tools. Use Python when the workflow needs structured data, validation, APIs, reporting, or custom tooling around the infrastructure layer. Use TypeScript, JavaScript, Go, C#, Java, or Rust when the team deliberately chooses a programmable IaC system or a custom platform tool whose abstractions are ordinary application code.
+
+## Choose HCL For Terraform Or OpenTofu Desired State
+
+Choose HCL when infrastructure is naturally represented as resources and dependencies:
+
+- The target domain has mature Terraform or OpenTofu providers.
+- Plans, state, imports, drift checks, and provider schemas are central to the workflow.
+- Modules can standardize networks, accounts, clusters, DNS, IAM, repositories, environments, or SaaS settings.
+- The team wants reviewable configuration rather than imperative scripts that call cloud APIs step by step.
+- The organization can decide between Terraform and OpenTofu, pin versions, manage provider sources, and protect state.
+
+HCL's advantage is not that it is more expressive than a general-purpose language. It is that Terraform and OpenTofu give HCL a resource graph, provider ecosystem, state model, plan/apply workflow, and module convention. Those are the product features to evaluate.
+
+## Use Shell Or PowerShell As Glue
+
+Use Bash for Unix-shaped glue and PowerShell for Microsoft-shaped administration:
+
+- Select environment variables, workspaces, profiles, and credentials.
+- Run format, validation, plan, and apply commands in CI.
+- Check required tools and versions.
+- Wrap a short deployment sequence.
+- Bootstrap a machine before richer tooling exists.
+
+Keep this layer small. Shell and PowerShell are useful launchers, but they should not quietly become resource-state managers. A long script that creates cloud resources, parses CLI output, stores ad hoc IDs, and retries partial failures is usually reimplementing a weaker version of an IaC engine.
+
+## Use Python For Structured Infrastructure Automation
+
+Use Python when the infrastructure workflow has program shape:
+
+- Validate inventories, environment files, policy inputs, or generated variables.
+- Call cloud, SaaS, or internal APIs for discovery and reporting.
+- Generate HCL, JSON, YAML, or module input files from a source of truth.
+- Inspect Terraform/OpenTofu plan JSON or state outputs.
+- Build migration tools, audit scripts, or internal CLIs with tests.
+
+Python is often a good companion to HCL because it handles structured data and tests well. Keep the boundary clear: Python can prepare, validate, inspect, or report; Terraform/OpenTofu can still own the long-lived managed resources.
+
+## Use General-Purpose Languages Deliberately
+
+General-purpose languages can be the right IaC choice when infrastructure definitions need application-language features: packages, functions, classes, loops, tests, IDE refactoring, shared libraries, and domain abstractions. Pulumi, for example, documents supported languages including Node.js, Python, Go, .NET, Java, and Pulumi YAML.
+
+Choose TypeScript or JavaScript when the platform team already lives in Node.js, npm packages, frontend/backend shared tooling, or TypeScript-heavy cloud SDKs.
+
+Choose Go when the output is a platform controller, Kubernetes operator, provider, CLI, or infrastructure service where a static binary and Go's cloud-native ecosystem are valuable.
+
+Choose C# or Java when the organization already owns infrastructure tooling in .NET or JVM systems and wants to reuse libraries, identity integrations, and enterprise build pipelines.
+
+Choose Rust when a custom infrastructure tool has security-sensitive parsing, native distribution, memory-safety concerns, or performance constraints that justify Rust's adoption cost.
+
+Do not choose a general-purpose language only to avoid learning HCL. Programmable IaC moves complexity from configuration into code. That can be excellent when the abstractions are real, and expensive when the team only needed a few modules.
+
+## State, Secrets, And Review
+
+Every serious IaC choice needs answers to the same operational questions:
+
+- Where is state stored, locked, backed up, and recovered?
+- Which values can become secrets in state, logs, plans, outputs, or CI artifacts?
+- Who can approve destructive changes?
+- How are provider, module, package, and tool versions pinned?
+- How are imports and drift handled?
+- What is the rollback plan when an API accepts a bad change?
+- Which resources are owned by IaC and which are intentionally external?
+
+Language syntax does not solve those questions. HCL, Python, TypeScript, Go, and shell can all be used responsibly or dangerously depending on the state and review model.
+
+## Practical Default
+
+Default to HCL with Terraform or OpenTofu for long-lived cloud and SaaS resources when provider support is mature. Add small Bash or PowerShell wrappers for command orchestration. Use Python for validation, reporting, generation, and migration helpers. Move to TypeScript, Python, Go, C#, Java, or Rust as the primary IaC language only when the team truly needs programmable infrastructure abstractions and can own the extra application-code surface.
+
+The cleanest systems often separate the layers: declarative resource ownership in HCL, thin command wrappers at the edge, and tested general-purpose tools for the logic that does not belong inside HCL expressions.
