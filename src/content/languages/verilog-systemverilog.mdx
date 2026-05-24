@@ -27,6 +27,7 @@ packageManagers:
   - Icarus Verilog
   - FPGA and ASIC EDA toolchains
 comparedWith:
+  - vhdl
   - assembly
   - c
   - cpp
@@ -214,6 +215,6 @@ The practical status is mature but fragmented. Verilog/SystemVerilog are central
 
 ## Comparison Notes
 
-VHDL is the closest HDL comparison and should get a dedicated LangIndex comparison once the VHDL page is published. Until then, the main distinction to keep in mind is not "software language versus software language"; it is HDL ecosystem, type discipline, vendor flow, verification style, and organizational history.
+[VHDL vs Verilog / SystemVerilog](/comparisons/vhdl-vs-verilog-systemverilog/) is the closest HDL comparison. The main distinction is not "software language versus software language"; it is HDL ecosystem, type discipline, vendor flow, verification style, and organizational history.
 
 Assembly, C, C++, Rust, and Ada are nearby only at the hardware/software boundary. They run on processors or define firmware and low-level software; Verilog/SystemVerilog describes hardware to be simulated or synthesized. A system may use SystemVerilog for an FPGA accelerator, C for firmware, Python for test orchestration, and C++ for a simulator harness, but those languages own different layers.

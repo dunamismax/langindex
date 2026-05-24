@@ -1,7 +1,7 @@
 ---
 title: Choosing an Embedded Language
 slug: choosing-an-embedded-language
-summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
+summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, VHDL, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
   - assembly
@@ -11,6 +11,7 @@ candidates:
   - cpp
   - zig
   - odin
+  - vhdl
   - verilog-systemverilog
 sources:
   - title: GNU assembler manual
@@ -22,6 +23,12 @@ sources:
   - title: "Procedure Call Standard for the Arm 64-bit Architecture"
     url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
     publisher: Arm
+  - title: IEEE 1076-2019 - IEEE Standard for VHDL Language Reference Manual
+    url: https://standards.ieee.org/ieee/1076/5179/
+    publisher: IEEE Standards Association
+  - title: VHDL
+    url: https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Microelectronics/VHDL
+    publisher: European Space Agency
   - title: IEEE 1800-2023 - IEEE Standard for SystemVerilog
     url: https://standards.ieee.org/ieee/1800/7743/
     publisher: IEEE Standards Association
@@ -132,19 +139,21 @@ Use Assembly when:
 
 Do not let assembly expand by default. Once startup, trap entry, or hardware-specific setup is complete, C, Rust, C++, Zig, Odin, or Ada usually give better structure, review, testing, and portability for the rest of the firmware.
 
-## When Verilog / SystemVerilog Fits
+## When VHDL Or Verilog / SystemVerilog Fits
 
-Verilog and SystemVerilog belong in an embedded discussion only when the work is digital hardware, not firmware. They describe RTL and verification environments for FPGA, ASIC, and SoC logic: counters, state machines, bus interfaces, accelerators, memories, device glue, custom peripherals, and testbenches.
+VHDL, Verilog, and SystemVerilog belong in an embedded discussion only when the work is digital hardware, not firmware. They describe RTL and verification environments for FPGA, ASIC, and SoC logic: counters, state machines, bus interfaces, accelerators, memories, device glue, custom peripherals, and testbenches.
 
-Use Verilog/SystemVerilog when:
+Use VHDL or Verilog/SystemVerilog when:
 
 - The target is an FPGA fabric, ASIC block, or SoC hardware component rather than a CPU running firmware.
 - Vendor synthesis, simulation, constraints, timing analysis, IP, and board flows support the chosen HDL subset.
 - The design needs cycle-level hardware control, parallel datapaths, register-transfer structure, or custom interfaces that software cannot provide.
-- Verification needs self-checking testbenches, assertions, coverage, constrained random testing, or UVM-style components.
+- Verification needs self-checking testbenches, assertions, coverage, constrained random testing, VHDL verification libraries, or UVM-style components.
 - The team can review clocks, resets, CDC, metastability, timing constraints, inferred memories, and synthesis warnings as first-class engineering artifacts.
 
-Do not use Verilog/SystemVerilog for ordinary microcontroller application code. If the logic runs on a processor, choose C, Rust, Ada, C++, assembly, Zig, Odin, or another software language. If the logic becomes hardware, treat the HDL, constraints, simulator, synthesizer, and board or ASIC flow as the product boundary.
+VHDL is often attractive when strong typing, explicit interfaces, packages, records, and reviewable long-lived RTL matter. Verilog/SystemVerilog is often attractive when the existing flow is centered on SystemVerilog RTL, assertions, DPI, constrained random verification, or UVM.
+
+Do not use VHDL, Verilog, or SystemVerilog for ordinary microcontroller application code. If the logic runs on a processor, choose C, Rust, Ada, C++, assembly, Zig, Odin, or another software language. If the logic becomes hardware, treat the HDL, constraints, simulator, synthesizer, and board or ASIC flow as the product boundary.
 
 ## When C Is The Baseline
 
@@ -250,7 +259,7 @@ For C, allocation and lifetime policies must be project rules. For Rust, `no_std
 
 Start with Assembly only for the small target-owned layer that must run before or below a normal language runtime.
 
-Start with Verilog/SystemVerilog only when the work is hardware RTL or verification for an FPGA, ASIC, or SoC block. It is adjacent to embedded firmware, but it is not a firmware language.
+Start with VHDL or Verilog/SystemVerilog only when the work is hardware RTL or verification for an FPGA, ASIC, or SoC block. HDLs are adjacent to embedded firmware, but they are not firmware languages.
 
 Start with C when the board, SDK, RTOS, debugger, and examples are C-first and the firmware must match vendor expectations.
 
@@ -264,4 +273,4 @@ Consider Zig for explicit allocation, C interop, and cross-compilation only afte
 
 Consider Odin for data-oriented embedded-adjacent code, host tools, and application layers only after checking target maturity, foreign-library access, debugging, and the manual dependency model for the exact chip family.
 
-For mixed systems, keep boundaries narrow. It is common to use Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, and ABI contracts explicit at every boundary.
+For mixed systems, keep boundaries narrow. It is common to use VHDL or Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, and C++ for higher-level device logic or shared libraries. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, and ABI contracts explicit at every boundary.

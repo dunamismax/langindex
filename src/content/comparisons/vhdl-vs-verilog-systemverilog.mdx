@@ -1,0 +1,113 @@
+---
+title: VHDL vs Verilog / SystemVerilog
+slug: vhdl-vs-verilog-systemverilog
+summary: VHDL and Verilog/SystemVerilog are the dominant standardized HDLs for FPGA, ASIC, and verification work, but VHDL emphasizes strong typing and explicit design units while SystemVerilog emphasizes Verilog continuity plus a larger verification ecosystem.
+languages:
+  - vhdl
+  - verilog-systemverilog
+useCases:
+  - FPGA design
+  - ASIC design
+  - hardware verification
+  - safety-critical hardware
+  - digital IP
+sources:
+  - title: IEEE 1076-2019 - IEEE Standard for VHDL Language Reference Manual
+    url: https://standards.ieee.org/ieee/1076/5179/
+    publisher: IEEE Standards Association
+  - title: IEEE 1800-2023 - IEEE Standard for SystemVerilog
+    url: https://standards.ieee.org/ieee/1800/7743/
+    publisher: IEEE Standards Association
+  - title: IEEE 1364-2005 - IEEE Standard for Verilog Hardware Description Language
+    url: https://standards.ieee.org/ieee/1364/3641/
+    publisher: IEEE Standards Association
+  - title: Vivado Design Suite User Guide - Synthesis
+    url: https://docs.amd.com/v/u/en-US/ug901-vivado-synthesis
+    publisher: AMD
+  - title: VHDL Synthesis Support
+    url: https://www.intel.com/content/www/us/en/programmable/quartushelp/25.1/hdl/vhdl/vhdl_list_support.htm
+    publisher: Intel
+  - title: UVM Standard Universal Verification Methodology
+    url: https://www.verilog.org/downloads/standards/uvm
+    publisher: Accellera Systems Initiative
+  - title: VUnit Documentation
+    url: https://vunit.github.io/
+    publisher: VUnit Project
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing an HDL for FPGA RTL, ASIC RTL, digital IP, testbenches, verification infrastructure, high-integrity hardware, or mixed-language flows.
+
+For the full profiles, see [VHDL](/languages/vhdl/) and [Verilog / SystemVerilog](/languages/verilog-systemverilog/).
+
+## Shared Territory
+
+VHDL and Verilog/SystemVerilog both describe digital hardware. Both can model modules or blocks, ports, signals, registers, combinational logic, sequential logic, memories, finite-state machines, testbenches, assertions, and simulation behavior. Both can be simulated before hardware exists and synthesized into FPGA or ASIC netlists when written within a supported subset.
+
+The practical decision is usually not "which HDL is objectively better?" It is which language, subset, style guide, simulator, synthesizer, verification framework, vendor flow, IP ecosystem, and team skill match the hardware being built.
+
+## Practical Difference
+
+VHDL is more explicit and strongly typed at the language surface. It separates entity interfaces from architectures, uses packages heavily, encourages named types and records, and tends to fit organizations that value readable long-term interfaces, reviewable declarations, and disciplined coding standards.
+
+Verilog is terser and historically closer to C-like syntax. SystemVerilog adds a much larger modern surface: stronger RTL constructs, interfaces, assertions, classes, constrained random testing, coverage, DPI, and the UVM ecosystem. That makes SystemVerilog especially important in larger ASIC and SoC verification organizations.
+
+Both languages can produce excellent or poor hardware. The quality comes from clear requirements, constrained subsets, review, tests, formal checks where useful, timing closure, CDC discipline, reset policy, tool support, and target evidence.
+
+## Key Differences
+
+| Dimension             | VHDL                                                        | Verilog / SystemVerilog                                      |
+| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
+| Standard anchor       | IEEE 1076                                                   | IEEE 1800 for SystemVerilog; IEEE 1364 Verilog superseded    |
+| Interface style       | `entity` plus `architecture`, packages, generics, records   | `module`, ports, parameters, interfaces in SystemVerilog     |
+| Type discipline       | Stronger explicit typing and package-centered declarations  | Wider range from classic net/reg style to richer SV types    |
+| RTL ergonomics        | Verbose but reviewable for explicit interfaces              | Terse, common in many examples, with SV RTL conveniences     |
+| Verification gravity  | VHDL testbenches, PSL, OSVVM, VUnit, commercial simulators  | SystemVerilog assertions, coverage, classes, DPI, UVM        |
+| Tool support risk     | Standard-version and synthesis-subset support varies        | SV verification support varies; Verilog subsets remain broad |
+| Common domain pull    | FPGA, European space/aerospace, defense, high-integrity RTL | ASIC/SoC verification, US-oriented RTL examples, UVM flows   |
+
+## Choose VHDL When
+
+- The team values strong typing, explicit design units, named types, records, packages, and interface review.
+- The FPGA or ASIC flow already supports the required VHDL version and coding subset.
+- The organization has VHDL standards, IP, training, verification libraries, or long-lived hardware assets.
+- Aerospace, defense, space, industrial, or safety-relevant hardware culture makes readable, reviewable source a priority.
+- Verification can be handled with VHDL testbenches, PSL, VUnit, OSVVM, GHDL, commercial simulators, or a mixed-language strategy.
+
+## Choose Verilog / SystemVerilog When
+
+- The project is centered on SystemVerilog assertions, coverage, constrained random verification, DPI, interfaces, classes, or UVM.
+- The ASIC, SoC, IP vendor, simulator, linter, formal, or verification ecosystem is SystemVerilog-first.
+- Existing RTL, examples, coding standards, or hiring expectations are Verilog/SystemVerilog-centered.
+- The team wants terser RTL syntax and is disciplined about blocking/nonblocking assignment, widths, four-state logic, and synthesizable subsets.
+- Mixed-language cost is higher than adopting the dominant HDL in the existing verification environment.
+
+## Simulation, Synthesis, And Tool Reality
+
+Both languages have legal constructs that are not synthesizable. Both can also be partly supported by a tool that claims language support. AMD Vivado documents synthesis for SystemVerilog, Verilog, and VHDL, while Intel Quartus documents VHDL construct support with categories such as supported, unsupported, and ignored. Those categories are the practical contract.
+
+For VHDL, watch standard-version support, package policy, numeric package behavior, records at ports, VHDL 2008/2019 features, library mapping, and vendor IP compatibility. For SystemVerilog, watch the split between RTL support and verification-only support, class/UVM support, assertions, DPI, interfaces, modports, and simulator versus synthesizer behavior.
+
+Do not choose either language by syntax alone. Run a vertical slice through the actual simulator, synthesizer, constraints, lint/formal tools, generated IP, CI, and board or ASIC flow.
+
+## Safety And High-Integrity Hardware
+
+VHDL has strong cultural gravity in some aerospace, defense, and space organizations. ESA says VHDL is preferred in developments initiated or led by ESA, and NASA publishes a VHDL style handbook. That makes VHDL a credible default in organizations whose existing standards and review culture are VHDL-centered.
+
+SystemVerilog is also used in high-integrity and mission-critical hardware, especially where verification environments depend on assertions, coverage, constrained random testing, UVM, or commercial EDA flows. The safety case must cover the HDL subset, verification plan, traceability, coding standards, tool qualification expectations, timing, CDC, reset, constraints, and target evidence either way.
+
+## Migration Or Interoperability Notes
+
+Mixed-language projects are normal. A design can include VHDL RTL, SystemVerilog verification, Verilog legacy IP, SystemC models, C/C++ DPI code, Python test orchestration, Tcl scripts, generated RTL, and vendor constraints. The cost is toolchain complexity: compile order, library mapping, foreign-language boundaries, signal visibility, simulator licenses, waveform/debug behavior, and CI images.
+
+Migration is rarely a mechanical syntax rewrite. VHDL and SystemVerilog differ in type systems, scheduling details, packages/modules, interfaces, testbench idioms, numeric behavior, and verification libraries. Keep stable IP in its current language unless a toolchain or staffing reason justifies the rewrite.
+
+## Practical Default
+
+Choose VHDL when strong typing, explicit interfaces, long-lived reviewability, and the existing hardware organization point that way.
+
+Choose Verilog/SystemVerilog when SystemVerilog verification features, UVM, ASIC/SoC ecosystem gravity, or existing RTL and IP make that the lower-risk path.
+
+For either choice, the accepted subset and verified tool flow matter more than the language name.

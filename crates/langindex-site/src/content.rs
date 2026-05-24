@@ -59,6 +59,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "typescript",
     "vba",
     "verilog-systemverilog",
+    "vhdl",
     "visual-basic",
     "zig",
 ];
@@ -720,8 +721,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 51);
-        assert_eq!(content.comparisons.len(), 77);
+        assert_eq!(content.languages.len(), 52);
+        assert_eq!(content.comparisons.len(), 78);
         assert_eq!(content.guides.len(), 24);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -796,6 +797,12 @@ mod tests {
         assert!(content.language("prolog").is_some());
         assert!(content.language("rust").is_some());
         assert!(content.language("verilog-systemverilog").is_some());
+        assert!(content.language("vhdl").is_some());
+        assert!(
+            content
+                .comparison("vhdl-vs-verilog-systemverilog")
+                .is_some()
+        );
         assert!(content.language("visual-basic").is_some());
         assert!(content.comparison("perl-vs-python").is_some());
         assert!(content.comparison("fortran-vs-cpp").is_some());
@@ -913,6 +920,7 @@ mod tests {
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
         assert!(routes.contains("/languages/verilog-systemverilog"));
+        assert!(routes.contains("/languages/vhdl"));
         assert!(routes.contains("/languages/visual-basic"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));
@@ -947,6 +955,7 @@ mod tests {
         assert!(routes.contains("/comparisons/prolog-vs-haskell"));
         assert!(routes.contains("/comparisons/prolog-vs-python-for-rule-search-heavy-problems"));
         assert!(routes.contains("/comparisons/solidity-vs-rust-for-smart-contracts"));
+        assert!(routes.contains("/comparisons/vhdl-vs-verilog-systemverilog"));
         assert!(routes.contains("/guides/choosing-a-concurrency-oriented-backend-language"));
         assert!(routes.contains("/guides/choosing-a-distributed-systems-language"));
         assert!(routes.contains("/guides/choosing-a-functional-programming-language"));

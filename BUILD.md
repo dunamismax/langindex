@@ -133,19 +133,19 @@ Selection signals checked on 2026-05-23:
 
 - [x] Add a complete Verilog/SystemVerilog page, or split into separate pages if research shows the combined treatment would be misleading.
 - [x] Cover hardware description and verification, simulation vs synthesis, modules, always blocks, blocking/nonblocking assignment, testbenches, SystemVerilog verification features, FPGA/ASIC workflows, toolchains, and standards.
-- [x] Add Verilog/SystemVerilog vs VHDL comparison once VHDL exists, or stage the comparison with a TODO until Phase 11 lands. Staged for Phase 11 because VHDL is not yet published.
+- [x] Add Verilog/SystemVerilog vs VHDL comparison once VHDL exists, or stage the comparison until Phase 11 lands. Completed in Phase 11.
 - [x] Add Verilog/SystemVerilog to embedded and safety-critical guides, with clear hardware-language framing.
 - [x] Update validation and tests.
 - [x] Run the normal verification commands.
 
 ## Phase 11 - VHDL
 
-- [ ] Add a complete VHDL page.
-- [ ] Cover hardware description, strong typing, entities/architectures, processes, signals, simulation vs synthesis, FPGA/ASIC use, IEEE standardization, tooling, and defense/aerospace relevance.
-- [ ] Add VHDL vs Verilog/SystemVerilog comparison.
-- [ ] Add VHDL to embedded and safety-critical guides, with clear hardware-language framing.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete VHDL page.
+- [x] Cover hardware description, strong typing, entities/architectures, processes, signals, simulation vs synthesis, FPGA/ASIC use, IEEE standardization, tooling, and defense/aerospace relevance.
+- [x] Add VHDL vs Verilog/SystemVerilog comparison.
+- [x] Add VHDL to embedded and safety-critical guides, with clear hardware-language framing.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 12 - Scratch
 

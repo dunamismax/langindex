@@ -1,0 +1,239 @@
+---
+title: VHDL
+slug: vhdl
+status: active
+summary: VHDL is an IEEE-standardized hardware description and verification language for modeling, simulating, verifying, and synthesizing digital logic for FPGA, ASIC, and high-integrity hardware designs.
+firstReleased: 1987
+creators:
+  - U.S. Department of Defense VHSIC program
+paradigms:
+  - hardware description
+  - register-transfer level
+  - concurrent
+  - strongly typed
+  - event-driven simulation
+typing:
+  discipline: static hardware-oriented
+  strength: strong typing with explicit scalar, array, record, enumeration, resolved signal, package, generic, entity, architecture, and numeric types
+memory:
+  model: hardware state, signals, registers, variables, memories, and simulation objects rather than an application heap or garbage-collected runtime
+runtime:
+  model: analyzed and elaborated by VHDL simulators for verification, or accepted by synthesis tools that translate a supported synthesizable subset into FPGA or ASIC netlists
+officialSite: https://standards.ieee.org/ieee/1076/5179/
+packageManagers:
+  - IEEE 1076
+  - IEEE std_logic_1164
+  - IEEE numeric_std
+  - GHDL
+  - VUnit
+  - FPGA and ASIC EDA toolchains
+comparedWith:
+  - verilog-systemverilog
+  - ada
+  - c
+  - cpp
+bestFor:
+  - Digital hardware design where strong typing, explicit interfaces, packages, records, generics, and readable long-term RTL matter.
+  - FPGA and ASIC projects where vendor simulators, synthesizers, constraints, timing analysis, IP flows, and coding standards support the selected VHDL subset.
+  - High-integrity, defense, aerospace, space, industrial, and long-lived hardware teams that value reviewable source, traceable interfaces, and disciplined modeling guidelines.
+  - Testbenches and verification flows where VHDL, PSL, VUnit, OSVVM, GHDL, commercial simulators, or mixed-language environments fit the project.
+poorFit:
+  - Ordinary firmware, operating-system code, applications, scripts, services, or business logic that runs on a processor rather than being synthesized into hardware.
+  - Teams that expect the full IEEE language to be accepted identically by every simulator, synthesizer, linter, FPGA vendor, or ASIC signoff tool.
+  - Verification environments that need the dominant SystemVerilog/UVM class-based ecosystem and where VHDL-only tooling would isolate the team.
+  - Safety-critical hardware work that treats VHDL style as sufficient without requirements traceability, independent verification, coding standards, tool qualification, timing closure, and target evidence.
+sources:
+  - title: IEEE 1076-2019 - IEEE Standard for VHDL Language Reference Manual
+    url: https://standards.ieee.org/ieee/1076/5179/
+    publisher: IEEE Standards Association
+  - title: VHDL Analysis and Standardization Group - About
+    url: https://ieee-p1076.gitlab.io/About/index.html
+    publisher: VHDL Analysis and Standardization Group
+  - title: IEEE 1076 VHDL Packages README
+    url: https://gitlab.com/IEEE-P1076/packages/-/raw/develop/README.md
+    publisher: IEEE P1076 Working Group
+  - title: Vivado Design Suite User Guide - Synthesis
+    url: https://docs.amd.com/v/u/en-US/ug901-vivado-synthesis
+    publisher: AMD
+  - title: VHDL Synthesis Support
+    url: https://www.intel.com/content/www/us/en/programmable/quartushelp/25.1/hdl/vhdl/vhdl_list_support.htm
+    publisher: Intel
+  - title: GHDL Documentation
+    url: https://ghdl.github.io/ghdl/
+    publisher: GHDL Project
+  - title: VUnit Documentation
+    url: https://vunit.github.io/
+    publisher: VUnit Project
+  - title: VHDL
+    url: https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Microelectronics/VHDL
+    publisher: European Space Agency
+  - title: NASA-HDBK-4011 - VHSIC Hardware Description Language VHDL Style Handbook
+    url: https://standards.nasa.gov/standard/NASA/NASA-HDBK-4011
+    publisher: NASA Technical Standards System
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+VHDL is a language for digital hardware design and verification. It describes structure and behavior that can be simulated, reviewed, documented, and, for a supported subset, synthesized into FPGA or ASIC logic. It is not a general-purpose software language, even though the source text can look procedural in places.
+
+IEEE 1076-2019 defines VHDL as a formal notation for electronic systems and says it supports creation, verification, synthesis, testing, communication, maintenance, modification, and procurement of hardware designs. That broad wording matters: a VHDL file may describe synthesizable RTL, a testbench, a package, a timing model, a behavioral model, or documentation-oriented hardware intent. Only some of that source is meant to become gates or FPGA resources.
+
+## Origin And Standardization
+
+VHDL stands for VHSIC Hardware Description Language. The current public standards anchor is IEEE 1076-2019, and the IEEE page lists it as an active standard. The VHDL Analysis and Standardization Group lists the IEEE 1076 family from the original 1987 standard through 1993, 2000, 2002, 2008, and 2019.
+
+The language's roots are tied to the U.S. Department of Defense VHSIC program and long-lived electronic-system documentation. That history still shows in VHDL's emphasis on explicit declarations, strong typing, packages, named interfaces, and reviewable design units. VHDL is common in FPGA, ASIC, aerospace, defense, space, industrial, telecom, and education contexts, especially where readability, portability, and disciplined design review matter.
+
+IEEE 1076 now includes material that used to be adjacent standards or packages, including `std_logic_1164` and `numeric_std`. The IEEE P1076 package repository contains open-source materials referenced by the standard, with tagged states matching language-reference-manual releases.
+
+## Hardware Description Model
+
+A VHDL design is built from design units. The most visible pair is the `entity` and `architecture`:
+
+- An `entity` declares a hardware block's interface: ports, generics, and names visible to users of the block.
+- An `architecture` describes one implementation of that entity: signals, component instances, concurrent assignments, processes, generate statements, and internal structure.
+- Packages hold shared types, constants, functions, procedures, and reusable declarations.
+- Configurations and libraries help bind analyzed design units in larger tool flows.
+
+Hardware concurrency is the default. Multiple concurrent statements and processes describe behavior that exists at the same time. A process can contain sequential statements, but that sequence is part of a concurrent hardware model. The review question is not "what line executes after this one in a CPU thread?" but "what hardware behavior does this process or assignment describe over time?"
+
+Related concepts: [Compilation Targets](/concepts/compilation-targets/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), and [Strong vs Weak Typing](/concepts/strong-vs-weak-typing/).
+
+## Strong Typing And Interfaces
+
+VHDL is known for stronger type discipline than classic Verilog. Designers commonly use explicit scalar ranges, arrays, records, enumerations, subtypes, packages, generics, `std_logic`, `std_logic_vector`, `signed`, and `unsigned`. That can make interfaces verbose, but it also helps large hardware projects catch accidental mismatches earlier and make intent more visible in code review.
+
+The most common production idiom is to use IEEE `std_logic_1164` for resolved digital signals and `numeric_std` for signed and unsigned arithmetic. Teams should be explicit about which packages are allowed. Older code and vendor examples may use non-standard or legacy arithmetic packages; maintainable projects usually document numeric-package policy because silent interpretation of bit vectors can create hardware bugs.
+
+VHDL's typing does not make a design automatically correct. It can prevent many accidental type and width mistakes, but it will not prove clock-domain safety, reset behavior, timing closure, metastability handling, protocol compliance, or requirements coverage.
+
+## Simulation Versus Synthesis
+
+Simulation and synthesis are separate contracts.
+
+Simulation answers "what does this VHDL model do under these events and testbench stimuli?" A simulator analyzes and elaborates design units, schedules signal updates, runs processes, evaluates assertions, and can execute testbench-only code. Testbenches may use files, waits, text I/O, randomization libraries, verification frameworks, and behavioral models that should never be synthesized.
+
+Synthesis answers "which hardware can implement this supported source subset on this target?" AMD's Vivado synthesis guide describes transforming RTL designs written in SystemVerilog, Verilog, and VHDL into gate-level netlists for Xilinx FPGA implementation. Intel's Quartus VHDL support documentation classifies constructs as supported, unsupported, or ignored and notes that only a subset of VHDL 2019 features is supported.
+
+That split is one of the practical risks in VHDL. A testbench can pass while the RTL is unsynthesizable, dependent on unsupported language features, missing timing constraints, incorrect across clock domains, or too slow after placement and routing. Serious projects run the exact simulator, synthesizer, linter, formal tool, FPGA vendor flow, or ASIC flow that will own the release.
+
+## Core RTL Constructs
+
+VHDL RTL uses a small set of constructs constantly:
+
+- `library` and `use` clauses make package declarations visible.
+- `entity` and `architecture` define block interfaces and implementations.
+- `signal` declarations model hardware connections and state.
+- `process` blocks describe clocked or combinational behavior.
+- `rising_edge` and reset logic describe sequential state updates.
+- `if`, `case`, loops, functions, and procedures help express behavior inside supported subsets.
+- `record`, `array`, `subtype`, and enumeration declarations make structured interfaces and state machines clearer.
+- `generic` declarations parameterize widths, depths, options, and reusable components.
+- `generate` statements conditionally instantiate or replicate hardware structure.
+
+The sharp edge is that the language is larger than the synthesizable subset. `wait`, delays, file I/O, after clauses, unconstrained behavior, access types, protected types, and advanced language features may be legal VHDL but not acceptable RTL for a target. The accepted subset belongs in the project's coding standard.
+
+## Syntax Example
+
+```vhdl
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity pulse_counter is
+    generic (
+        WIDTH : positive := 8
+    );
+    port (
+        clk   : in  std_logic;
+        rst_n : in  std_logic;
+        pulse : in  std_logic;
+        count : out unsigned(WIDTH - 1 downto 0)
+    );
+end entity pulse_counter;
+
+architecture rtl of pulse_counter is
+    signal pulse_d : std_logic := '0';
+    signal count_r : unsigned(WIDTH - 1 downto 0) := (others => '0');
+begin
+    count <= count_r;
+
+    process (clk, rst_n)
+    begin
+        if rst_n = '0' then
+            pulse_d <= '0';
+            count_r <= (others => '0');
+        elsif rising_edge(clk) then
+            pulse_d <= pulse;
+
+            if pulse = '1' and pulse_d = '0' then
+                count_r <= count_r + 1;
+            end if;
+        end if;
+    end process;
+end architecture rtl;
+```
+
+This example describes hardware: an entity interface, a generic width, an architecture, clocked state, an active-low reset, a delayed pulse signal, and an unsigned counter. A real design would add a testbench, constraints, reset review, clock-domain review, lint/formal checks where useful, and target-specific synthesis verification.
+
+## FPGA And ASIC Workflows
+
+FPGA workflows usually combine VHDL source, constraints, vendor IP, simulation libraries, synthesis, implementation, timing analysis, bitstream generation, board programming, and hardware debug. VHDL may be the central source language, but the release artifact is not the source file alone. The constraints, device family, tool version, IP versions, clocking plan, and timing reports are part of the design.
+
+ASIC workflows are stricter and more expensive to change. VHDL RTL usually passes through lint, simulation, formal checks, clock-domain crossing checks, reset checks, synthesis, static timing analysis, equivalence checking, power intent, scan/test insertion, physical design, extraction, signoff, and silicon validation. Mixed-language blocks are common, so VHDL may live alongside Verilog, SystemVerilog, SystemC, generated RTL, Tcl, Python, C/C++ test harnesses, and vendor IP.
+
+File extensions are only hints. `.vhd` and `.vhdl` usually indicate VHDL, but tools may still require standard-version flags, library mapping, compile order, work-library configuration, or vendor-specific switches.
+
+## Tooling And Ecosystem
+
+VHDL's ecosystem is EDA-tool-centered rather than package-registry-centered. Projects normally pin simulators, synthesizers, lint/formal tools, FPGA vendor releases, ASIC libraries, IP blocks, constraints, scripts, and CI images. Reuse often happens through packages, entities, internal IP libraries, generated RTL, vendor catalogs, verification components, and controlled repositories.
+
+Open-source tools are useful but not complete substitutes for every commercial flow. GHDL describes itself as a free and open-source analyzer, compiler, simulator, and experimental synthesizer for VHDL, with recent support work around VHDL 2019. VUnit is an open-source unit testing framework for VHDL and SystemVerilog that supports automated HDL testing. These tools are valuable for learning, CI, library testing, open hardware, and some production checks, but commercial simulators and vendor tools still dominate many mixed-language, timing-annotated, UVM-heavy, FPGA-vendor, or ASIC signoff flows.
+
+Maintainable VHDL projects write down:
+
+- The selected VHDL standard and accepted RTL subset.
+- The simulator, synthesizer, linter, formal tool, and FPGA or ASIC flow that are authoritative.
+- Library mapping, compile order, generated-source policy, and vendor IP policy.
+- Clock, reset, CDC, initialization, X/unknown handling, and timing-constraint rules.
+- Numeric package policy, naming/style rules, and which warnings fail CI.
+- Which language features are testbench-only.
+
+## Defense, Aerospace, And Safety-Relevant Use
+
+VHDL has a durable place in defense, aerospace, and space hardware because its original problem was long-lived electronic-system description and because its explicit style fits review-heavy organizations. ESA says VHDL is the preferred language in developments initiated or led by the European Space Agency and publishes modeling guidance for readability, portability, and verification. NASA publishes NASA-HDBK-4011, a VHDL style handbook for modern ASIC and FPGA text-based design, with maintainability and reviewability as explicit goals.
+
+That relevance should not be mistaken for automatic certification. A high-integrity VHDL project still needs requirements traceability, coding standards, independent review, verification plans, simulator and synthesis evidence, timing closure, target tests, tool qualification expectations, and hardware assurance artifacts such as DO-254/ED-80 evidence where applicable.
+
+## Best-Fit Use Cases
+
+VHDL is a strong fit for:
+
+- FPGA RTL where the vendor flow supports the team's VHDL version and coding subset.
+- ASIC or SoC RTL where strong typing, packages, records, explicit interfaces, and long-term reviewability are valuable.
+- Aerospace, defense, space, industrial, telecom, medical, and other high-integrity hardware teams with VHDL experience and coding standards.
+- Digital IP blocks, bus interfaces, controllers, signal-processing pipelines, state machines, safety monitors, and hardware glue logic.
+- Testbench and CI workflows that can use VHDL-native libraries, GHDL, VUnit, OSVVM, PSL, commercial simulators, or mixed-language verification.
+
+## Poor-Fit Or Risky Use Cases
+
+VHDL is a poor default when:
+
+- The work is software running on a CPU or microcontroller. Use C, C++, Rust, Ada, assembly, Python, or another software language for firmware and host code.
+- The team mainly needs SystemVerilog/UVM verification ecosystem support and would fight the toolchain by keeping VHDL as the verification language.
+- The target vendor or ASIC flow has weak support for the VHDL standard version or constructs the team wants to use.
+- The design can be better expressed through vendor IP configuration, high-level synthesis, Chisel, SpinalHDL, Amaranth, Bluespec, or another generator, and the organization accepts that toolchain.
+- The verification plan assumes "it simulates" or "it synthesizes" is enough without constraints, timing, CDC, resets, formal or directed tests, and hardware evidence.
+
+## Governance And Current Status
+
+VHDL is standardized through IEEE 1076. IEEE lists IEEE 1076-2019 as active, published on December 23, 2019, and superseding IEEE 1076-2008. The VHDL Analysis and Standardization Group coordinates continuing work around the language and standards materials.
+
+The practical status is mature but tool-dependent. VHDL is a serious production HDL, especially in FPGA, ASIC, aerospace, defense, space, and long-lived hardware environments. But "supports VHDL" is never precise enough. Teams must verify the exact standard version, synthesis subset, package support, simulator behavior, vendor IP compatibility, mixed-language boundary, and release flow before depending on a feature.
+
+## Comparison Notes
+
+[VHDL vs Verilog / SystemVerilog](/comparisons/vhdl-vs-verilog-systemverilog/) is the closest HDL comparison. VHDL usually appeals when explicit typing, packages, records, entity/architecture separation, and review-oriented source are valuable. Verilog/SystemVerilog usually appeals when the project is centered on the dominant SystemVerilog RTL and verification ecosystem, especially assertions, interfaces, constrained random testing, DPI, and UVM.
+
+Ada is adjacent historically and culturally because both languages value explicitness and strong typing in high-integrity environments. C, C++, Rust, and assembly are adjacent at the hardware/software boundary, but they run on processors; VHDL describes hardware to be simulated or synthesized.
