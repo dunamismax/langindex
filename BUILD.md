@@ -60,14 +60,14 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 3 - VBA
 
-- [ ] Add a complete VBA page.
-- [ ] Cover Visual Basic for Applications, Office automation, macro security, COM automation, Excel/Access use, legacy business workflows, type system, editor/debugger limitations, Windows and Microsoft 365 coupling, and migration pressure.
-- [ ] Add VBA vs PowerShell comparison.
-- [ ] Add VBA vs Visual Basic comparison.
-- [ ] Add VBA vs Python for Office automation comparison if the scope can be source-backed.
-- [ ] Add VBA to legacy-maintenance, scripting/automation, and enterprise guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete VBA page.
+- [x] Cover Visual Basic for Applications, Office automation, macro security, COM automation, Excel/Access use, legacy business workflows, type system, editor/debugger limitations, Windows and Microsoft 365 coupling, and migration pressure.
+- [x] Add VBA vs PowerShell comparison.
+- [x] Add VBA vs Visual Basic comparison.
+- [x] Add VBA vs Python for Office automation comparison if the scope can be source-backed.
+- [x] Add VBA to legacy-maintenance, scripting/automation, and enterprise guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 4 - Prolog
 

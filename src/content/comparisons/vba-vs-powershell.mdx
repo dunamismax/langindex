@@ -1,0 +1,99 @@
+---
+title: VBA vs PowerShell
+slug: vba-vs-powershell
+summary: VBA and PowerShell both automate Microsoft-centered work, but VBA is hosted inside Office desktop applications while PowerShell is a shell and scripting language for objects, modules, remoting, and administration.
+languages:
+  - vba
+  - powershell
+useCases:
+  - Office automation
+  - Microsoft administration
+  - desktop workflows
+  - scripting
+  - legacy maintenance
+sources:
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: Working Across Applications
+    url: https://learn.microsoft.com/office/vba/Language/Concepts/Getting-Started/working-across-applications
+    publisher: Microsoft Learn
+  - title: Macros From The Internet Are Blocked By Default In Office
+    url: https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked
+    publisher: Microsoft Learn
+  - title: What Is PowerShell?
+    url: https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Pipelines
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: about_Modules
+    url: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_modules?view=powershell-7.6
+    publisher: Microsoft Learn
+  - title: Microsoft Graph PowerShell Overview
+    url: https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview?view=graph-powershell-1.0
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams deciding whether Microsoft-centered automation belongs inside Office as VBA macros or outside Office as PowerShell scripts and modules.
+
+Use VBA when the workflow is document-centered and needs direct access to an Office desktop object model while a user is working. Use PowerShell when the workflow is administrative, operational, remote, module-backed, or better expressed as a script that can run outside a workbook or document.
+
+For the full profiles, see [VBA](/languages/vba/) and [PowerShell](/languages/powershell/).
+
+## Shared Territory
+
+Both languages are common in Microsoft-heavy organizations. Both can automate Windows desktop state, call COM objects in some contexts, work with files, coordinate Office applications, and become long-lived business infrastructure even when they started as a small script.
+
+Both also need explicit security policy. VBA macro trust, signed code, trusted locations, and blocked internet macros matter for Office files. PowerShell execution policy, module trust, remoting permissions, credentials, and logging matter for operational scripts.
+
+## Key Differences
+
+| Dimension | VBA | PowerShell |
+| --- | --- | --- |
+| Runtime | Hosted inside Office desktop applications | PowerShell engine on .NET, interactive shell, and script runner |
+| Main boundary | Workbooks, documents, Access objects, forms, events, Office object models | Cmdlets, modules, .NET objects, remoting, management APIs |
+| Distribution | Macro-enabled files, templates, add-ins, trusted locations, signed projects | Scripts, modules, repositories, profiles, scheduled jobs, CI steps |
+| Strongest platform | Desktop Office, especially Excel and Access | Windows, Microsoft 365, Azure, Active Directory, SQL Server, cross-platform operations |
+| Pipeline model | Office object calls and local control flow | Object pipelines between commands |
+| Security pressure | Macro malware risk and file trust policy | Script provenance, remoting, module supply chain, credentials |
+| Modernization path | Office Scripts, Office Add-ins, Graph, Python, C#, PowerShell, services | Modules, Python/Go/C# tools, services, CI automation |
+
+## Choose VBA When
+
+- The code must manipulate the active workbook, document, Access database, form, report, selection, or Office event model.
+- Users run the automation from Office buttons, forms, templates, or macro-enabled files.
+- Excel formulas, named ranges, PivotTables, Access forms, reports, and workbook state are part of the behavior.
+- Macro distribution, signing, trusted locations, Office version, and desktop host policy are controllable.
+- The existing macro is valuable and should be stabilized before replacement.
+
+VBA is strongest when Office itself is the application platform.
+
+## Choose PowerShell When
+
+- The work is Windows, Active Directory, Exchange, Microsoft 365, Azure, SQL Server, or Microsoft Graph administration.
+- The script should run from a terminal, scheduled task, CI job, remote session, or operations workstation.
+- Object pipelines, cmdlets, modules, credentials, and remoting are the natural interface.
+- The automation needs parameters, logs, reusable functions, versioned modules, and operator-facing commands.
+- Office files are inputs or outputs rather than the live host where the user works.
+
+PowerShell is usually the better Microsoft automation language when the object model is exposed through modules or APIs rather than through a live Office desktop session.
+
+## Watch Points
+
+VBA risks come from implicit Office state: active workbook, active sheet, hidden ranges, missing references, macro settings, 32-bit versus 64-bit declarations, COM registration, and users opening files from untrusted locations.
+
+PowerShell risks come from hidden profile state, aliases copied from an interactive session, unpinned modules, remote permissions, non-terminating errors, downloaded packages, and treating execution policy as a sandbox.
+
+Both languages need careful review around destructive writes, privilege changes, downloaded code, credentials, and distribution to non-developer users.
+
+## Practical Default
+
+Keep VBA when the automation is inherently Office-hosted and the organization can control macro trust.
+
+Use PowerShell when the automation is system administration, cloud administration, Microsoft 365 operations, repeatable scripting, or remote work that should not depend on an open Office application.
+
+When a VBA macro grows into operational infrastructure, consider moving the non-Office parts to PowerShell, Python, C#, or a service while keeping only the document-specific behavior inside Office.

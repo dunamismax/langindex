@@ -1,0 +1,79 @@
+---
+title: VBA vs Visual Basic
+slug: vba-vs-visual-basic
+summary: VBA is the Office-hosted macro language for desktop automation, while Visual Basic is the broader Microsoft BASIC-family line covering modern .NET Visual Basic, classic VB6, and related maintenance contexts.
+languages:
+  - vba
+  - visual-basic
+useCases:
+  - Office automation
+  - Visual Basic maintenance
+  - Windows desktop applications
+  - COM automation
+  - legacy modernization
+sources:
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: 64-bit Visual Basic For Applications Overview
+    url: https://learn.microsoft.com/en-us/office/vba/Language/Concepts/Getting-Started/64-bit-visual-basic-for-applications-overview
+    publisher: Microsoft Learn
+  - title: Visual Basic Documentation
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/
+    publisher: Microsoft Learn
+  - title: Microsoft .NET Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/fundamentals/languages
+    publisher: Microsoft Learn
+  - title: Annotated Visual Basic Language Strategy
+    url: https://learn.microsoft.com/en-us/dotnet/visual-basic/getting-started/strategy
+    publisher: Microsoft Learn
+  - title: Support Statement For Visual Basic 6.0 On Windows
+    url: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6-support-policy
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison separates a common naming confusion. VBA is Visual Basic for Applications, the macro language hosted by Office applications. Visual Basic is the broader language family and current .NET language page on LangIndex, with important notes about VB.NET, classic VB6, and Office VBA.
+
+Use this comparison when a modernization plan says "Visual Basic" but the real system might be a workbook macro, an Access database, a VB.NET project, or a VB6 desktop application.
+
+For the full profiles, see [VBA](/languages/vba/) and [Visual Basic](/languages/visual-basic/).
+
+## Key Differences
+
+| Dimension | VBA | Visual Basic |
+| --- | --- | --- |
+| Main meaning | Office-hosted macro language | Microsoft BASIC-family language line, especially VB.NET today |
+| Runtime | Office host application and VBA runtime | .NET runtime for modern VB; VB6 runtime for classic VB applications |
+| Main artifacts | `.xlsm`, `.xlam`, `.accdb`, `.docm`, templates, modules, forms | `.vb`, `.vbproj`, assemblies, VB6 `.frm`/`.bas`/`.cls`/`.vbp` files |
+| Primary domain | Excel, Access, Word, Outlook, PowerPoint automation | .NET apps/libraries and legacy Windows desktop systems |
+| Package/dependency model | Office references, COM libraries, templates, add-ins | NuGet/MSBuild for VB.NET; COM/ActiveX/runtime dependencies for VB6 |
+| Deployment risk | Macro trust, Office version, host object model, file distribution | .NET target/support or VB6 runtime/IDE/control compatibility |
+| Migration target | Office Scripts, Office Add-ins, Graph, PowerShell, Python, C#, services | C#, newer .NET, wrappers, services, or controlled VB maintenance |
+
+## VBA Is Host-Centered
+
+VBA code is valuable when the host is the product. Excel macros often depend on worksheets, formulas, PivotTables, named ranges, charts, and user-triggered workbook events. Access VBA often depends on forms, reports, queries, tables, and database behavior. Word and Outlook macros depend on their own document and mail object models.
+
+That makes VBA migration more like workflow migration than language migration. You need sample workbooks, documents, Access databases, expected reports, user paths, macro policy, references, and Office versions before deciding what should move.
+
+## Visual Basic Is Platform-Centered
+
+Modern Visual Basic is a .NET language. It uses project files, assemblies, .NET libraries, NuGet packages, MSBuild, Visual Studio, and the .NET runtime. It can interoperate with C# and F# through the CLR.
+
+Classic VB6 is another maintenance shape. VB6 systems often depend on forms, ActiveX controls, COM references, installers, ADO, registry entries, and 32-bit Windows runtime behavior. Microsoft supports core VB6 runtime files in supported Windows versions for compatibility, but the VB6 IDE has long been unsupported.
+
+Those are different risks from VBA. A VB.NET application can be modernized through .NET practices. A VB6 application needs Windows desktop and COM inventory. A VBA system needs Office-host and document workflow inventory.
+
+## Practical Default
+
+When you find "Visual Basic" in an inventory, classify the artifact first:
+
+- VBA macro in Office file, template, Access database, or Office add-in.
+- VB.NET project in a .NET solution.
+- Classic VB6 desktop application or component.
+- Mixed system that uses more than one of these.
+
+Then choose a path. Stabilize VBA around Office host behavior. Stabilize VB.NET as a .NET application. Stabilize VB6 around reproducible Windows desktop builds and runtime dependencies. Do not treat any of the three as a simple syntax translation problem.

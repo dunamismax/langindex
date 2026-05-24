@@ -1,8 +1,8 @@
 ---
 title: Choosing Java For Backend, Enterprise, And JVM Work
 slug: choosing-java-for-backend-enterprise-and-jvm-work
-summary: A decision guide for teams evaluating Java as a backend language, enterprise platform language, or conservative JVM default.
-audience: Developers and teams deciding whether Java should be their main language for services, enterprise applications, JVM platforms, Android-adjacent maintenance, or long-lived integration systems.
+summary: A decision guide for teams evaluating Java as a backend language, enterprise platform language, conservative JVM default, or modernization target around existing enterprise systems.
+audience: Developers and teams deciding whether Java should be their main language for services, enterprise applications, JVM platforms, Android-adjacent maintenance, long-lived integration systems, or modernization around older enterprise workflows.
 candidates:
   - java
   - sql
@@ -14,6 +14,7 @@ candidates:
   - clojure
   - python
   - typescript
+  - vba
 sources:
   - title: The Java Language Specification, Java SE 26 Edition
     url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
@@ -81,7 +82,13 @@ sources:
   - title: Data Structures
     url: https://clojure.org/reference/data_structures
     publisher: Clojure
-lastVerified: 2026-05-21
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: Macros From The Internet Are Blocked By Default In Office
+    url: https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Platform Constraint
@@ -119,6 +126,8 @@ The enterprise fit is strongest when the organization will actually use the plat
 - Clear ownership for generated code, annotations, and framework conventions.
 
 Java is a poor enterprise default when it becomes ceremony without leverage. A small internal tool does not need a large framework because an enterprise framework exists.
+
+VBA enters enterprise decisions as an existing workflow platform rather than a new backend choice. Many organizations have business-critical behavior in Excel workbooks, Access databases, templates, reports, and macros. Treat those systems as legacy enterprise assets: inventory files, formulas, Access objects, macro security policy, references, owners, and outputs before moving behavior to Java, C#, Python, PowerShell, Office Add-ins, Microsoft Graph, or services.
 
 ## Choose Java In The JVM Ecosystem When
 
@@ -174,3 +183,5 @@ Start with Clojure when the JVM is desired and the system benefits from immutabl
 Start with Python or TypeScript when the surrounding ecosystem, not the JVM, is the real reason for the language choice.
 
 Start with SQL as a first-class companion when backend correctness depends on relational constraints, transactional updates, reporting queries, and database-side execution. The JVM should make those database contracts explicit, not bury them.
+
+Keep VBA only where desktop Office is still the controlled runtime for an existing workflow. Do not make Java compete with a workbook macro until the team has identified which behavior belongs in Office, which belongs in a service, and which belongs in a data or reporting layer.

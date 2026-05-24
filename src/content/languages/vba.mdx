@@ -1,0 +1,213 @@
+---
+title: VBA
+slug: vba
+status: active
+summary: Visual Basic for Applications is Microsoft's Office-hosted macro and automation language for Excel, Access, Word, Outlook, PowerPoint, and COM-era desktop workflows.
+creators:
+  - Microsoft
+paradigms:
+  - procedural
+  - imperative
+  - event-driven
+  - object-oriented
+  - scripting
+typing:
+  discipline: static and dynamic
+  strength: optional declarations and compile-time checks through explicit types and Option Explicit, with Variant values, late binding, implicit conversions, default members, and runtime COM errors common in existing code
+memory:
+  model: managed by the Office host, VBA runtime, and COM reference-counted objects; production code still needs explicit cleanup for files, external processes, database connections, and long-lived object references
+runtime:
+  model: interpreted/compiled macro code hosted inside desktop Office applications and their object models, with Windows COM automation as the strongest integration path
+officialSite: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+packageManagers:
+  - Office object libraries
+  - COM references
+  - Office templates and add-ins
+comparedWith:
+  - powershell
+  - visual-basic
+  - python
+bestFor:
+  - Excel workbooks, Access databases, Word templates, Outlook rules/forms, and PowerPoint decks where automation must live close to the user's Office document or desktop host.
+  - Legacy business workflows that already encode valuable behavior in macros, forms, reports, queries, templates, and workbook formulas.
+  - Office object-model automation where macro recording, event handlers, forms, and direct user interaction are part of the workflow.
+  - Controlled maintenance while behavior is inventoried before moving suitable work to Office Add-ins, Office Scripts, PowerShell, Python, C#, Microsoft Graph, or services.
+poorFit:
+  - Unattended server automation, cloud workflows, web apps, mobile Office clients, or cross-platform automation where desktop Office cannot be the runtime contract.
+  - Security-sensitive distribution of untrusted macro-enabled files, especially when users receive documents from email, chat, browsers, or external parties.
+  - New automation that needs a package ecosystem, modern tests, source-controlled dependencies, CI execution, service APIs, or non-Office deployment.
+  - Large rewrites that assume VBA can be translated mechanically without preserving workbook formulas, Access data behavior, COM references, macro policy, and user workflows.
+sources:
+  - title: Getting Started With VBA In Office
+    url: https://learn.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office
+    publisher: Microsoft Learn
+  - title: Office VBA Language Reference
+    url: https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/visual-basic-language-reference
+    publisher: Microsoft Learn
+  - title: Understanding Objects, Methods, Properties, And Events
+    url: https://learn.microsoft.com/en-us/office/vba/language/concepts/getting-started/understanding-objects-properties-methods-and-events
+    publisher: Microsoft Learn
+  - title: Working Across Applications
+    url: https://learn.microsoft.com/office/vba/Language/Concepts/Getting-Started/working-across-applications
+    publisher: Microsoft Learn
+  - title: Excel VBA Reference
+    url: https://learn.microsoft.com/en-us/office/vba/api/overview/excel
+    publisher: Microsoft Learn
+  - title: Access Object Model
+    url: https://learn.microsoft.com/en-us/office/vba/api/overview/access/object-model
+    publisher: Microsoft Learn
+  - title: 64-bit Visual Basic For Applications Overview
+    url: https://learn.microsoft.com/en-us/office/vba/Language/Concepts/Getting-Started/64-bit-visual-basic-for-applications-overview
+    publisher: Microsoft Learn
+  - title: Macros From The Internet Are Blocked By Default In Office
+    url: https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked
+    publisher: Microsoft Learn
+  - title: Differences Between Office Scripts And VBA Macros
+    url: https://learn.microsoft.com/en-us/office/dev/scripts/resources/vba-differences
+    publisher: Microsoft Learn
+  - title: Excel Add-ins Overview
+    url: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-add-ins-overview
+    publisher: Microsoft Learn
+  - title: Working With Excel In Microsoft Graph
+    url: https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+VBA means Visual Basic for Applications. It is the Office-hosted branch of the Visual Basic family, not the same product as modern Visual Basic on .NET and not the same runtime as classic VB6 desktop applications.
+
+The practical scope is Office automation: Excel workbooks, Access databases, Word templates, Outlook automation, PowerPoint decks, forms, reports, and macro-enabled files. VBA can also automate across applications through COM automation, especially on Windows, but the code is still shaped by the host application's object model.
+
+This page treats VBA as a maintenance and Office-workflow language. It remains useful because many organizations have valuable behavior embedded in documents and databases. It is a weak default for new cloud, web, unattended, or cross-platform automation.
+
+## Origin And Design Goals
+
+VBA exists so Office users and developers can automate Office applications from inside the applications themselves. Microsoft describes Office applications as exposing object models: workbooks, worksheets, ranges, documents, forms, reports, mail items, presentations, and application objects that code can inspect and modify.
+
+That design center explains VBA's strengths. A user can record a macro, inspect generated code in the Visual Basic Editor, wire code to events, show a user form, and call directly into the host application's object model. The automation lives beside the document, workbook, Access database, template, or add-in that users already open.
+
+It also explains the constraint. VBA is not a general deployment runtime. A macro's behavior depends on Office version, host application, macro settings, document trust, installed references, file paths, add-ins, COM registration, workbook shape, Access objects, and user desktop state.
+
+## Office Host Model
+
+VBA code normally runs inside an Office host. Excel code often manipulates `Workbook`, `Worksheet`, `Range`, `ListObject`, `Chart`, `PivotTable`, and application-level state. Access code often sits near forms, reports, queries, tables, modules, macros, and database events. Word, Outlook, and PowerPoint expose their own object models.
+
+The host model is why VBA can be highly productive. The code can work at the same level as the user's document: cells, named ranges, forms, records, mail items, paragraphs, slides, and templates. It can also respond to events such as opening a workbook, changing a sheet, clicking a button, loading a form, or sending an item.
+
+The host model is also the main maintenance risk. A macro may depend on active selection, active workbook, hidden sheets, named ranges, regional settings, installed printers, references, bitness, Trust Center policy, or the exact shape of a workbook. Production VBA should qualify objects explicitly, avoid invisible active-state assumptions, and document the Office versions it supports.
+
+Related concepts: [Object-Oriented Programming](/concepts/object-oriented-programming/), [Modules And Namespacing](/concepts/modules-and-namespacing/), and [Testing Cultures](/concepts/testing-cultures/).
+
+## Type System And Language Model
+
+VBA is usually written as procedural, event-driven code with modules, procedures, functions, classes, forms, variables, arrays, collections, `Variant` values, error handlers, and references to Office or COM object libraries. It supports explicit types, user-defined types, enums, classes, and object variables, but much existing code leans on dynamic behavior.
+
+`Option Explicit` is a basic maintenance line. It forces variable declarations and prevents many misspelled-name bugs. Beyond that, production code should prefer explicit types at boundaries, avoid unnecessary `Variant` values, use named constants for object-model magic values, and be careful with default properties.
+
+VBA error handling is older than modern exception systems. `On Error GoTo` remains common, and COM calls often fail at runtime because a reference is missing, a workbook shape changed, a file is locked, or a host object is unavailable. Good VBA code keeps error handling narrow, restores application state, and reports enough context for a user or maintainer to recover.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Strong vs Weak Typing](/concepts/strong-vs-weak-typing/), and [Errors As Values vs Exceptions](/concepts/errors-as-values-vs-exceptions/).
+
+## Syntax Example
+
+```vb
+Option Explicit
+
+Public Sub SummarizeOpenOrders()
+    Dim source As Worksheet
+    Dim summary As Worksheet
+    Dim lastRow As Long
+    Dim rowIndex As Long
+    Dim openCount As Long
+
+    Set source = ThisWorkbook.Worksheets("Orders")
+    Set summary = ThisWorkbook.Worksheets("Summary")
+
+    lastRow = source.Cells(source.Rows.Count, "A").End(xlUp).Row
+
+    For rowIndex = 2 To lastRow
+        If source.Cells(rowIndex, "D").Value = "Open" Then
+            openCount = openCount + 1
+        End If
+    Next rowIndex
+
+    summary.Range("B2").Value = openCount
+    summary.Range("B3").Value = Now
+End Sub
+```
+
+This example shows typical Excel VBA shape: a macro procedure, explicit variable declarations, typed counters, qualified workbook and worksheet references, cell access through the Excel object model, and direct updates to workbook state.
+
+## Excel, Access, And Business Workflows
+
+Excel is the most visible VBA host. Macros often automate formatting, reports, imports, reconciliation, workbook cleanup, dashboard refreshes, custom ribbon buttons, analyst workflows, and repeated calculations around formulas and tables. VBA is strongest when the workbook itself is the working surface.
+
+Access is a different kind of VBA environment. Access applications often combine tables, queries, forms, reports, macros, modules, and VBA event handlers. They may sit close to departmental databases, line-of-business workflows, local files, linked tables, ODBC connections, and reports. Modernization has to preserve more than code: forms, queries, report output, record locking, and user paths matter.
+
+VBA also appears in Word templates, Outlook automation, PowerPoint generation, and cross-application workflows. A macro may take Outlook items into Excel, generate Word documents from spreadsheet data, or drive another Office application through `CreateObject` or `GetObject`.
+
+## Macro Security
+
+Macro security is a product constraint, not an afterthought. Microsoft documents that macros from the internet are blocked by default in Office because VBA macros are a common malware and ransomware path. Macro-enabled files, trusted locations, signed macros, Group Policy, and Mark of the Web behavior can determine whether code runs at all.
+
+Do not treat "the macro works on my machine" as a deployment plan. Maintained VBA should document how files are distributed, whether code is signed, which locations are trusted, who can edit macros, how users receive updates, and what data the macro can read or modify.
+
+Office Scripts and Office Add-ins exist partly because the old macro trust model does not fit every modern collaboration scenario. Microsoft frames VBA macros as desktop solutions and Office Scripts as cloud/cross-platform Excel automation. Excel Add-ins can run across Office on the web, Windows, Mac, and iPad through web technologies and Office JavaScript APIs. Those are different programming models, but they are important migration targets when desktop macro policy becomes the main risk.
+
+## COM Automation And Bitness
+
+VBA's Windows strength is COM automation. It can create or retrieve objects from other Microsoft applications and other COM servers, call object methods, set properties, and coordinate Office applications on a user's desktop.
+
+This is useful for local integration and risky for portability. COM automation depends on registered components, type libraries, references, installed Office applications, user sessions, and 32-bit versus 64-bit compatibility. Microsoft documents that 64-bit Office changed how old declarations need to handle pointers and handles, which is a common failure point for code that calls Windows APIs.
+
+Inventory references before changing a VBA system. Check missing references, ActiveX controls, database drivers, Windows API declarations, add-ins, workbook links, templates, and deployment scripts. A macro can be syntactically simple while depending on a fragile desktop environment.
+
+## Editor And Debugger Limitations
+
+The Visual Basic Editor is useful for inspecting macros, editing forms and modules, setting breakpoints, stepping through code, watching variables, and running procedures. Its value is proximity: it is already inside Office.
+
+Its limitation is that it is not a modern software delivery environment. Version control, formatting, package management, automated tests, dependency pinning, code review, and CI need extra discipline or external tooling. Many VBA projects still live inside binary Office files, which makes review and merges hard.
+
+For serious maintenance, export modules where practical, keep macro-enabled files under controlled storage, document references, sign code when policy requires it, add sample files for regression testing, and separate workbook data from reusable code as much as the host allows.
+
+## Migration Pressure
+
+VBA migration pressure usually comes from one of five places:
+
+- Macro security policy blocks or complicates distribution.
+- Workflows need web, mobile, SharePoint, Power Automate, or unattended execution.
+- Data work has outgrown workbook-shaped processing.
+- The team cannot safely review, test, or version the macros.
+- The automation depends on old COM components, 32-bit assumptions, or unsupported desktop state.
+
+The replacement is not always one language. Office Scripts may fit Excel web automation. Office Add-ins may fit cross-platform user-facing Office extensions. Microsoft Graph may fit service-side workbook access in OneDrive or SharePoint. PowerShell may fit Microsoft 365 or Windows administration. Python may fit file processing, data analysis, report generation, and external APIs. C# may fit compiled Office add-ins, services, or .NET migration tools.
+
+## Best-Fit Use Cases
+
+VBA is a strong fit when:
+
+- The automation is document-centered and runs while a user works in desktop Office.
+- Excel or Access object-model behavior is the durable business surface.
+- Existing macros already encode valuable formulas, reports, forms, and workflows.
+- The organization can control macro trust, signing, templates, Office versions, and file distribution.
+- The near-term goal is stabilization, not a broad rewrite.
+
+## Poor-Fit Or Risky Use Cases
+
+VBA can be a poor fit when:
+
+- Code must run unattended on a server, in containers, or in cloud workers.
+- The workflow must work the same in Office on the web, mobile Office, and desktop Office.
+- The organization cannot safely trust or distribute macro-enabled files.
+- The work needs a modern dependency ecosystem, tests, CI, code review, and packaging.
+- The automation is really a data pipeline, API integration, or service workflow rather than Office-hosted user automation.
+
+## Comparison Notes
+
+[VBA vs PowerShell](/comparisons/vba-vs-powershell/) is the operations boundary comparison. VBA is strongest inside Office documents and desktop object models. PowerShell is stronger for Microsoft administration, remoting, modules, object pipelines, and operational scripts.
+
+[VBA vs Visual Basic](/comparisons/vba-vs-visual-basic/) separates Office-hosted macros from VB.NET and classic VB maintenance. The family resemblance is real, but the runtime and deployment model are different.
+
+[VBA vs Python For Office Automation](/comparisons/vba-vs-python-for-office-automation/) is the data and automation comparison. VBA is closest to live Office UI and object models; Python is stronger for files, data libraries, APIs, tests, and non-Office execution.

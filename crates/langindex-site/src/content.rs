@@ -51,6 +51,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "sql",
     "swift",
     "typescript",
+    "vba",
     "visual-basic",
     "zig",
 ];
@@ -712,8 +713,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 43);
-        assert_eq!(content.comparisons.len(), 63);
+        assert_eq!(content.languages.len(), 44);
+        assert_eq!(content.comparisons.len(), 66);
         assert_eq!(content.guides.len(), 22);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("ada").is_some());
