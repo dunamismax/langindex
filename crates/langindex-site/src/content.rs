@@ -40,6 +40,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "kotlin",
     "lua",
     "matlab",
+    "mojo",
     "nim",
     "objective-c",
     "odin",
@@ -723,8 +724,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 54);
-        assert_eq!(content.comparisons.len(), 81);
+        assert_eq!(content.languages.len(), 55);
+        assert_eq!(content.comparisons.len(), 83);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -780,6 +781,7 @@ mod tests {
         assert!(content.language("odin").is_some());
         assert!(content.language("gdscript").is_some());
         assert!(content.language("gleam").is_some());
+        assert!(content.language("mojo").is_some());
         assert!(content.language("ocaml").is_some());
         assert!(content.language("zig").is_some());
         assert!(content.language("clojure").is_some());
@@ -960,6 +962,8 @@ mod tests {
         assert!(routes.contains("/comparisons/elixir-vs-erlang"));
         assert!(routes.contains("/comparisons/gleam-vs-elixir"));
         assert!(routes.contains("/comparisons/gleam-vs-erlang"));
+        assert!(routes.contains("/comparisons/mojo-vs-python"));
+        assert!(routes.contains("/comparisons/mojo-vs-julia"));
         assert!(routes.contains("/comparisons/elixir-vs-ruby"));
         assert!(routes.contains("/comparisons/clojure-vs-java"));
         assert!(routes.contains("/comparisons/clojure-vs-scala"));

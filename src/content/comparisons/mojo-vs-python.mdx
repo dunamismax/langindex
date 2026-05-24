@@ -1,0 +1,117 @@
+---
+title: Mojo vs Python
+slug: mojo-vs-python
+summary: Mojo uses Python-like syntax and can interoperate with CPython, but Python is the mature general-purpose ecosystem while Mojo is a compiled, beta-stage systems and accelerator language aimed at CPU/GPU kernels, MAX integration, and performance-sensitive boundaries.
+languages:
+  - mojo
+  - python
+useCases:
+  - Python acceleration
+  - AI kernels
+  - numerical computing
+  - data workflows
+  - systems programming
+  - performance-sensitive modules
+sources:
+  - title: Mojo
+    url: https://www.modular.com/mojo
+    publisher: Modular
+  - title: Mojo Manual
+    url: https://mojolang.org/docs/manual/
+    publisher: Mojo
+  - title: Mojo releases
+    url: https://mojolang.org/releases/
+    publisher: Mojo
+  - title: Mojo v1.0.0b1
+    url: https://mojolang.org/releases/v1.0.0b1/
+    publisher: Mojo
+  - title: Python interoperability
+    url: https://mojolang.org/docs/manual/python/
+    publisher: Mojo
+  - title: Calling Python from Mojo
+    url: https://mojolang.org/docs/manual/python/python-from-mojo/
+    publisher: Mojo
+  - title: Calling Mojo from Python
+    url: https://mojolang.org/docs/manual/python/mojo-from-python/
+    publisher: Mojo
+  - title: Intro to value lifecycle
+    url: https://mojolang.org/docs/manual/lifecycle/
+    publisher: Mojo
+  - title: Packages
+    url: https://mojolang.org/packages/
+    publisher: Mojo
+  - title: Modular Community License
+    url: https://www.modular.com/legal/community
+    publisher: Modular
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: PyTorch Documentation
+    url: https://docs.pytorch.org/docs/stable/index.html
+    publisher: PyTorch
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams deciding whether Mojo should replace, extend, or sit beside Python in AI, data, scientific, or performance-sensitive work. It is not a claim that Mojo is a drop-in Python implementation.
+
+The practical question is boundary placement. Python should usually own the broad workflow. Mojo becomes interesting when one boundary needs compiled Mojo code, accelerator kernels, ownership-based systems features, or MAX integration.
+
+## Shared Territory
+
+Both languages are relevant to AI and scientific computing, and Mojo intentionally keeps Python-like syntax. Mojo can call Python modules through CPython, and Python can call exported Mojo modules through bindings. That makes mixed systems a first-class evaluation path rather than a temporary migration hack.
+
+The overlap is still incomplete. Python is a mature general-purpose language with a vast ecosystem. Mojo is a newer compiled language with beta-era release notes, a growing but small package ecosystem, and a much narrower center of gravity around performance and hardware.
+
+## Key Differences
+
+| Dimension        | Mojo                                                  | Python                                                     |
+| ---------------- | ----------------------------------------------------- | ---------------------------------------------------------- |
+| Runtime model    | Compiled with AOT/JIT workflows                       | Interpreted bytecode on CPython and other implementations  |
+| Main use         | CPU/GPU kernels, MAX, Python acceleration boundaries  | General-purpose apps, scripts, data, web, ML orchestration |
+| Typing           | Static Mojo types, traits, ownership and lifetimes    | Dynamic runtime typing with optional type hints            |
+| Memory           | No GC or reference counter for Mojo values            | CPython reference counting plus cyclic garbage collection  |
+| Interop          | Calls Python; exports Mojo to Python with limitations | Calls native extensions and many external runtimes         |
+| Packaging        | uv/pixi/conda install, conda packages, native PM plans | pip, PyPI, venv, pyproject.toml, many ecosystem tools      |
+| Maturity         | Latest stable is `1.0.0b1` at verification time       | Decades of production use and broad institutional support  |
+| License risk     | Check Modular Community License and SDK restrictions  | PSF-licensed interpreter and broad open-source ecosystem   |
+
+## Choose Mojo When
+
+- A measured hot path needs compiled performance or accelerator access and is hard to express through existing Python libraries.
+- The team is already evaluating MAX custom kernels, Modular's AI stack, or hardware-portable CPU/GPU kernel work.
+- Python syntax and Python interop are important, but the target component needs systems-language tools such as ownership, traits, unsafe pointers, or compile-time specialization.
+- The project can pin a Mojo compiler version, read release notes, test generated artifacts, and accept beta-stage migration work.
+- The licensing, redistribution, telemetry, production, and hardware-use terms have been reviewed for the intended deployment.
+
+## Choose Python When
+
+- The main value is notebooks, scripts, services, APIs, data preparation, ML framework integration, automation, or cross-team maintainability.
+- NumPy, pandas, PyTorch, TensorFlow, JAX, SciPy, Numba, Cython, native extensions, multiprocessing, or database pushdown already solve the measured performance problem.
+- Broad hiring, onboarding, tutorials, package availability, and production reliability matter more than experimenting with a new kernel language.
+- The deployment target needs mature wheels, containers, platform documentation, observability tools, and long-lived dependency support.
+- The application is not actually bottlenecked on Python-level code.
+
+## Watch Points
+
+Mojo's Python interop is useful, but it is a boundary. Calling Python from Mojo depends on an external Python runtime and installed packages. Calling Mojo from Python is documented as early and active development, with practical limitations around some bindings and package dependencies.
+
+Python's weakness is not that every Python program is slow. Many Python data and AI systems are fast because Python coordinates optimized libraries, native kernels, databases, or model runtimes. Before adopting Mojo, profile the workload and name the specific code that should move.
+
+Mojo's release cadence matters. Recent releases changed function syntax, pointer behavior, standard-library collections, GPU support, and packaging docs. That activity is healthy for a young language, but it is still maintenance cost for production teams.
+
+## Practical Default
+
+Start with Python for the workflow: notebooks, services, data processing, model orchestration, evaluation, scripts, packaging, and integration.
+
+Add Mojo only where a measured performance or accelerator boundary justifies the extra compiler, package, platform, and license review. Treat the first adoption as an isolated module or kernel with tests, version pins, and a fallback plan rather than as a wholesale rewrite.

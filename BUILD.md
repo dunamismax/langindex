@@ -168,13 +168,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 14 - Mojo
 
-- [ ] Add a complete Mojo page only after verifying the current license, availability, and implementation status from Modular sources.
-- [ ] Cover Python relationship, MLIR, MAX/Modular ecosystem, accelerator and AI-kernel goals, type system, ownership/lifetime features if stable enough to document, package/tooling story, platform support, and maturity risks.
-- [ ] Add Mojo vs Python comparison.
-- [ ] Add Mojo vs Julia comparison if the AI/numerics scope is strong enough.
-- [ ] Add Mojo to Python/data/AI, performance-critical, and numerics guides with conservative maturity language.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Mojo page only after verifying the current license, availability, and implementation status from Modular sources.
+- [x] Cover Python relationship, MLIR, MAX/Modular ecosystem, accelerator and AI-kernel goals, type system, ownership/lifetime features if stable enough to document, package/tooling story, platform support, and maturity risks.
+- [x] Add Mojo vs Python comparison.
+- [x] Add Mojo vs Julia comparison if the AI/numerics scope is strong enough.
+- [x] Add Mojo to Python/data/AI, performance-critical, and numerics guides with conservative maturity language.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 15 - MicroPython
 

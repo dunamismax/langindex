@@ -8,6 +8,7 @@ candidates:
   - python
   - sql
   - julia
+  - mojo
   - matlab
   - fortran
 sources:
@@ -50,6 +51,21 @@ sources:
   - title: Pkg.jl Documentation
     url: https://pkgdocs.julialang.org/v1/
     publisher: Julia
+  - title: Mojo
+    url: https://www.modular.com/mojo
+    publisher: Modular
+  - title: Mojo releases
+    url: https://mojolang.org/releases/
+    publisher: Mojo
+  - title: Python interoperability
+    url: https://mojolang.org/docs/manual/python/
+    publisher: Mojo
+  - title: System requirements
+    url: https://mojolang.org/docs/requirements/
+    publisher: Mojo
+  - title: Modular Community License
+    url: https://www.modular.com/legal/community
+    publisher: Modular
   - title: MATLAB Documentation
     url: https://www.mathworks.com/help/matlab/index.html
     publisher: MathWorks
@@ -77,7 +93,7 @@ sources:
   - title: Fortran 2023
     url: https://wg5-fortran.org/f2023.html
     publisher: ISO/IEC JTC1/SC22/WG5
-lastVerified: 2026-05-21
+lastVerified: 2026-05-24
 ---
 
 ## Start With The Deliverable
@@ -122,6 +138,12 @@ R can still participate. The cleaner design is often to let R own the analysis o
 Julia is nearby when an R workflow becomes a scientific-computing project rather than mainly a statistical analysis or report. It is a strong candidate for simulations, optimization, differential equations, custom numerical methods, scientific machine learning, and generic mathematical packages where multiple dispatch and compiled specialization help keep high-level code close to the hot path.
 
 This split is useful when R owns the statistical report, plots, analyst review, or domain package, while Julia owns the computational model or solver. It is risky when the project cannot pin Julia versions, manifests, artifacts, precompilation behavior, and data-conversion boundaries between R and Julia.
+
+## Use Mojo For Narrow AI Or Accelerator Kernels
+
+Mojo is nearby only when the research or data workflow has a measured CPU/GPU kernel, Python-adjacent AI acceleration problem, or MAX custom-operation boundary. It is not a replacement for R's statistical ecosystem or reporting workflow.
+
+This split is useful when R owns the statistical analysis and communication, Python owns surrounding ML orchestration, and Mojo owns a small compiled kernel that has been profiled and tested. It is risky when the project cannot tolerate Mojo's beta-stage language movement, smaller package ecosystem, platform requirements, or Modular Community License terms.
 
 ## Use MATLAB For Engineering Analysis
 
@@ -172,10 +194,11 @@ Before rewriting, check whether the workload can be changed:
 - How will results be reproduced six months after publication or delivery?
 - Which parts of the system should stay in SQL, Python, or another runtime instead of entering R?
 - Which numerical kernels belong in Julia because they need high-level scientific programming and specialized compiled performance?
+- Which accelerator kernels are narrow enough to evaluate in Mojo without moving statistical work out of R or orchestration work out of Python?
 - Which engineering models belong in MATLAB because Simulink, toolboxes, or MathWorks product support are the actual constraint?
 
 ## Practical Default
 
 Start with R when statistical analysis, graphics, data frames, reports, Shiny apps, or research workflows are the center of the work.
 
-Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with MATLAB when the work is engineering-computing-first and the core value is MathWorks toolboxes, Simulink, and licensed model-based workflows. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.
+Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with Mojo only when a narrow AI, CPU, or GPU kernel has been measured and its beta-stage tooling and license terms are acceptable. Start with MATLAB when the work is engineering-computing-first and the core value is MathWorks toolboxes, Simulink, and licensed model-based workflows. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.

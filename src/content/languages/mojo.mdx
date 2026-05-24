@@ -1,0 +1,190 @@
+---
+title: Mojo
+slug: mojo
+status: active
+summary: Mojo is a Python-syntax, MLIR-based systems and accelerator programming language from Modular, currently centered on CPU/GPU kernels, Python interoperability, MAX integration, ownership-based value semantics, and a still-maturing package and stability story.
+firstReleased: 2023
+creators:
+  - Modular
+  - Chris Lattner
+paradigms:
+  - multi-paradigm
+  - systems
+  - accelerator programming
+  - numerical computing
+  - Python-adjacent
+typing:
+  discipline: static with Python interoperability
+  strength: static typing for Mojo values, traits, structs, parameterization, ownership and lifetime checking, plus dynamic PythonObject boundaries when calling Python APIs
+memory:
+  model: ownership-based value semantics without a garbage collector or reference counter for Mojo values, with explicit unsafe pointer and manual lifecycle tools for low-level code
+runtime:
+  model: compiled with AOT and JIT workflows through the Mojo toolchain, with optional CPython runtime use for Python interoperability and MAX integration for AI graph and kernel workloads
+officialSite: https://mojolang.org/
+repository: https://github.com/modular/modular
+packageManagers:
+  - uv
+  - pixi
+  - conda
+  - rattler-build
+  - modular-community conda channel
+comparedWith:
+  - python
+  - julia
+  - rust
+  - cpp
+bestFor:
+  - Teams writing performance-sensitive CPU or GPU kernels where Python-like syntax, MLIR-based compilation, accelerator targets, and Modular's MAX stack are part of the evaluation.
+  - Python-heavy AI, numerics, or data projects that want to isolate bottlenecks behind Mojo modules while keeping Python libraries and orchestration around them.
+  - Developers exploring a modern systems language with ownership, traits, compile-time metaprogramming, direct MLIR access, and explicit hardware targets.
+poorFit:
+  - General application teams that need a mature 1.x language ecosystem, broad hiring market, stable package manager, long production track record, and predictable source compatibility today.
+  - Projects that need pure open-source tooling and permissive SDK redistribution without checking Modular's Community License and repository license split.
+  - Data science, backend, or ML workflows whose bottlenecks are already handled by mature Python, Julia, C++, CUDA, PyTorch, JAX, NumPy, or database tooling.
+sources:
+  - title: Mojo
+    url: https://www.modular.com/mojo
+    publisher: Modular
+  - title: Mojo Manual
+    url: https://mojolang.org/docs/manual/
+    publisher: Mojo
+  - title: Mojo releases
+    url: https://mojolang.org/releases/
+    publisher: Mojo
+  - title: Mojo v1.0.0b1
+    url: https://mojolang.org/releases/v1.0.0b1/
+    publisher: Mojo
+  - title: System requirements
+    url: https://mojolang.org/docs/requirements/
+    publisher: Mojo
+  - title: Python interoperability
+    url: https://mojolang.org/docs/manual/python/
+    publisher: Mojo
+  - title: Calling Python from Mojo
+    url: https://mojolang.org/docs/manual/python/python-from-mojo/
+    publisher: Mojo
+  - title: Calling Mojo from Python
+    url: https://mojolang.org/docs/manual/python/mojo-from-python/
+    publisher: Mojo
+  - title: Intro to value lifecycle
+    url: https://mojolang.org/docs/manual/lifecycle/
+    publisher: Mojo
+  - title: Ownership
+    url: https://mojolang.org/docs/manual/values/ownership/
+    publisher: Mojo
+  - title: Lifetimes, origins, and references
+    url: https://mojolang.org/docs/manual/values/lifetimes/
+    publisher: Mojo
+  - title: Traits
+    url: https://mojolang.org/docs/manual/traits/
+    publisher: Mojo
+  - title: Compilation targets
+    url: https://mojolang.org/docs/tools/compilation/
+    publisher: Mojo
+  - title: Packages
+    url: https://mojolang.org/packages/
+    publisher: Mojo
+  - title: Modular Platform repository
+    url: https://github.com/modular/modular
+    publisher: Modular
+  - title: Modular Community License
+    url: https://www.modular.com/legal/community
+    publisher: Modular
+  - title: Graph overview
+    url: https://docs.modular.com/max/develop/graph/
+    publisher: Modular
+  - title: The path to Mojo 1.0
+    url: https://www.modular.com/blog/the-path-to-mojo-1-0
+    publisher: Modular
+lastVerified: 2026-05-24
+---
+
+## Origin And Current Status
+
+Mojo is a programming language from Modular, the AI infrastructure company co-founded by Chris Lattner and Tim Davis. Modular announced Mojo publicly in 2023 as part of a broader attempt to reduce the split between Python-level AI development and lower-level systems, compiler, and accelerator code.
+
+The current status needs careful wording. When this page was verified, the Mojo releases page listed `1.0.0b1` as the latest stable release, published on May 7, 2026, and a newer nightly build for May 24, 2026. That is an important improvement over earlier pre-1.0 releases, but it is still a beta. Modular's own 1.0 planning notes also say 1.0 is meant to establish an epoch of stability, not finish every general-purpose systems-programming capability.
+
+The license story is also split. The `modular/modular` repository says the repository and contributions are under the Apache License v2.0 with LLVM Exceptions, while Modular, MAX, and Mojo usage and distribution are licensed under the Modular Community License. Teams should verify the exact SDK, redistribution, telemetry, production, hardware, and commercial terms before treating Mojo like a conventional permissively licensed compiler toolchain.
+
+## Python Relationship
+
+Mojo deliberately uses Python-like syntax and is positioned as a way to work near Python rather than as a simple Python replacement. Mojo code can import Python modules through the CPython runtime supplied by the environment, and Python code can call exported Mojo modules through Python bindings.
+
+That makes Mojo useful at boundaries: a Python project can keep notebooks, orchestration, model loading, evaluation, data preparation, and service integration in Python while trying Mojo for a measured hot path or accelerator kernel.
+
+The boundary is still real. Mojo is compiled, not interpreted like CPython. Python dependencies are runtime dependencies when a Mojo executable imports Python packages; `mojo build` does not bundle the Python runtime or installed Python libraries into the executable. Calling Mojo from Python is also documented as early and active development, with limitations around bindings, keyword argument support, package dependencies through the import hook, properties, and some type conversions.
+
+Related concepts: [Compilation Targets](/concepts/compilation-targets/), [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), and [Foreign Function Interface](/concepts/foreign-function-interface/).
+
+## MLIR, MAX, And Accelerator Goals
+
+Mojo is built around MLIR, the compiler infrastructure originally developed in the LLVM ecosystem for progressively lowering programs through intermediate representations. Mojo exposes MLIR directly for advanced cases, which matters when the work needs target-specific intrinsics, custom dialect operations, or low-level accelerator control.
+
+This design fits Modular's MAX ecosystem. MAX records model computation as graphs, compiles those graphs, fuses operations, plans memory, and dispatches hardware-tuned kernels. Mojo is the language used for many low-level kernels and runtime pieces in that stack.
+
+The practical fit is therefore narrower than "Python but faster." Mojo is most credible when the hard part is kernel authoring, hardware portability, CPU/GPU performance, Python interop, or custom operations for AI and numerical workloads. For ordinary web services, scripts, analytics, or product glue, the value proposition depends on a specific bottleneck or hardware target.
+
+## Type System, Ownership, And Memory
+
+Mojo has static typing for Mojo values, structs, traits, generic parameters, and function signatures. Traits let functions depend on required behavior instead of one concrete type, and the compiler checks trait conformance. Python interop reintroduces dynamic boundaries through `PythonObject`, so type guarantees depend on where the Mojo/Python boundary sits.
+
+Mojo's value model is systems-oriented. The manual describes Mojo as having no reference counter and no garbage collector. Type authors can define constructors, copy constructors, move constructors, and destructors, while the ownership and lifetime system tracks values and references. Unsafe pointers and external origins exist for lower-level work, but using those APIs moves responsibility back to the programmer.
+
+That is promising for performance-sensitive code, but it is not the same maturity profile as Rust, C++, or Julia. Ownership, lifetimes, closures, pointer rules, bounds checks, GPU semantics, and standard-library traits have changed across recent releases. Document exact compiler versions in real projects and keep migration cost visible.
+
+Related concepts: [Ownership](/concepts/ownership/), [Memory Safety](/concepts/memory-safety/), [Manual Memory Management](/concepts/manual-memory-management/), and [Generics And Parametric Polymorphism](/concepts/generics-and-parametric-polymorphism/).
+
+## Syntax Example
+
+```mojo
+def average(a: Float64, b: Float64, c: Float64) -> Float64:
+    return (a + b + c) / 3.0
+
+def classify(score: Float64) -> String:
+    if score >= 0.8:
+        return "ship"
+    elif score >= 0.5:
+        return "review"
+    return "hold"
+
+def main():
+    var score = average(0.92, 0.73, 0.81)
+    print(classify(score))
+```
+
+This is intentionally small. It shows Python-like indentation, `def`, explicit parameter and return types, mutable `var` binding, ordinary control flow, and a compiled `main()` entry point. Real Mojo performance work usually moves quickly into traits, parameterization, layout types, SIMD, GPU kernels, Python interop, or MAX APIs.
+
+## Tooling, Packages, And Platforms
+
+Mojo is installed through Python or Conda-style workflows. The quickstart recommends `uv` or `pixi`, and the stable package can be installed as `mojo`. The CLI can run files, build executables, start a REPL, debug, package source, format files, generate docs, and inspect versions.
+
+The package story is developing. Mojo packages can be distributed as conda packages, the public package page lists community packages from the `modular-community` conda channel, and the docs say Modular is working on plans for a native Mojo package manager. The v1.0.0b1 release also added a packaging guide based on `rattler-build`.
+
+Platform support is specific. The system requirements list Linux, macOS on Apple silicon, and Windows through WSL. GPU support is optional and spans NVIDIA, AMD, and Apple silicon with documented driver, OS, Xcode, and hardware requirements. Cross-compilation is marked as work in progress: the compiler can query targets and produce some target outputs, but fully linked cross-compiled executables require external linker support.
+
+## Best-Fit Use Cases
+
+Mojo is a strong candidate for:
+
+- Custom CPU or GPU kernels in AI, inference, numerics, image processing, audio processing, or scientific workloads.
+- Python projects with one or more measured hot paths where Python orchestration should remain in place.
+- MAX custom operations or kernels where Modular's graph compiler, runtime, and hardware support are the target platform.
+- Research into MLIR-native language design, accelerator programming, ownership-based systems programming, and Python-adjacent performance work.
+- Teams willing to pin compiler versions, track release notes, test generated artifacts, and absorb beta-era language and library movement.
+
+## Poor-Fit Or Risky Use Cases
+
+Mojo can be a poor fit when:
+
+- The application needs the broadest package ecosystem, tutorials, examples, hiring market, and production track record today.
+- The team needs a stable language standard, independent compiler ecosystem, mature package manager, or long-term source compatibility guarantee.
+- The project is mostly backend application logic, dashboards, CRUD services, notebooks, glue scripts, or data cleaning without a measured kernel problem.
+- The organization cannot accept Modular's Community License terms, SDK restrictions, or production-use obligations.
+- Existing Python, Julia, C++, Rust, CUDA, JAX, PyTorch, NumPy, Fortran, or database tools already solve the performance boundary with lower adoption risk.
+
+## Comparisons
+
+Mojo sits closest to [Python](/languages/python/) because of syntax and interop, but it is a compiled systems and accelerator language rather than another Python implementation. It sits near [Julia](/languages/julia/) for scientific and numerical computing, but Julia is a mature high-level scientific language with a package ecosystem, while Mojo is more focused on kernels, hardware targets, and Python-adjacent acceleration.
+
+[Rust](/languages/rust/) and [C++](/languages/cpp/) are nearby for systems performance, ownership, low-level control, and native code, but their ecosystems and production histories are much larger. Mojo should usually be evaluated as a targeted performance and accelerator tool first, then as a broader application language only after package, stability, licensing, and platform requirements have been verified.

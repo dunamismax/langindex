@@ -1,7 +1,7 @@
 ---
 title: Choosing A Performance-Critical Language
 slug: choosing-a-performance-critical-language
-summary: A practical guide for choosing C++, Rust, D, Odin, Ada, C, Fortran, Julia, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
+summary: A practical guide for choosing C++, Rust, D, Odin, Ada, C, Fortran, Julia, Mojo, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
 audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
 candidates:
   - cpp
@@ -12,6 +12,7 @@ candidates:
   - c
   - fortran
   - julia
+  - mojo
   - matlab
   - go
   - java
@@ -38,6 +39,24 @@ sources:
   - title: Performance Tips
     url: https://docs.julialang.org/en/v1/manual/performance-tips/
     publisher: Julia
+  - title: Mojo
+    url: https://www.modular.com/mojo
+    publisher: Modular
+  - title: Mojo releases
+    url: https://mojolang.org/releases/
+    publisher: Mojo
+  - title: Mojo v1.0.0b1
+    url: https://mojolang.org/releases/v1.0.0b1/
+    publisher: Mojo
+  - title: System requirements
+    url: https://mojolang.org/docs/requirements/
+    publisher: Mojo
+  - title: Intro to value lifecycle
+    url: https://mojolang.org/docs/manual/lifecycle/
+    publisher: Mojo
+  - title: Modular Community License
+    url: https://www.modular.com/legal/community
+    publisher: Modular
   - title: MATLAB Documentation
     url: https://www.mathworks.com/help/matlab/index.html
     publisher: MathWorks
@@ -146,6 +165,12 @@ Choose Julia when the performance-critical work is scientific or numerical and t
 
 Julia works best when the team can profile, keep hot code type-stable, manage allocations, pin `Project.toml` and `Manifest.toml`, and test compilation latency or sysimage decisions. It is usually a poor fit when the product mainly needs tiny binaries, fast cold starts, hard real-time behavior, or broad general application frameworks.
 
+## When Mojo Fits
+
+Choose Mojo when the performance-sensitive work is a CPU or GPU kernel, MAX custom operation, or Python-adjacent accelerator boundary where Mojo's MLIR-based compilation, Python-like syntax, ownership model, and hardware target support are the point of the evaluation.
+
+Mojo should be treated conservatively. When this guide was verified, the latest stable release was `1.0.0b1`, the package story was still forming around conda packages and planned native package management, and the SDK/use terms required review under the Modular Community License. Measure the exact compiler version, hardware, driver, Python boundary, license terms, and fallback path before making Mojo the owner of a production performance requirement.
+
 ## When MATLAB Fits
 
 Choose MATLAB when the performance-sensitive work is engineering or scientific computation and the fastest credible path is through MathWorks' matrix language, optimized built-ins, domain toolboxes, Simulink workflows, Parallel Computing Toolbox, or MATLAB Coder for supported generated C/C++ targets.
@@ -204,6 +229,7 @@ Managed runtimes need measurement. Garbage collection, allocation rate, startup 
 - Are the hottest paths isolated enough to use a lower-level language only there?
 - Which profilers, sanitizers, benchmarks, and load tests will gate changes?
 - Does the team already know how to operate the runtime in production?
+- Is Mojo being evaluated for a narrow kernel boundary, or is it being asked to carry application responsibilities that a more mature language already handles?
 
 ## Practical Default
 
@@ -211,4 +237,4 @@ Start with the highest-level language and runtime that meet the measured constra
 
 Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use D when the work is native and C/C++ adjacent but can accept a GC-backed default runtime and benefits from CTFE, ranges, Phobos, and DUB. Use Odin when the hot path is data-oriented native code and the team accepts manual memory management plus a younger ecosystem. Use Ada when the performance-sensitive component is also high-integrity, embedded, real-time, or certification-sensitive. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
 
-Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.
+Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use Mojo when the measured constraint is a narrow CPU/GPU kernel or MAX-adjacent accelerator boundary and beta-stage language risk is acceptable. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.

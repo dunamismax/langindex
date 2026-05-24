@@ -1,0 +1,111 @@
+---
+title: Mojo vs Julia
+slug: mojo-vs-julia
+summary: Mojo and Julia both target high-performance technical computing, but Julia is a mature high-level scientific language centered on multiple dispatch while Mojo is a beta-stage systems and accelerator language centered on Python interop, MLIR, MAX, and CPU/GPU kernels.
+languages:
+  - mojo
+  - julia
+useCases:
+  - scientific computing
+  - numerical computing
+  - AI kernels
+  - GPU programming
+  - research software
+  - performance-sensitive modules
+sources:
+  - title: Mojo
+    url: https://www.modular.com/mojo
+    publisher: Modular
+  - title: Mojo Manual
+    url: https://mojolang.org/docs/manual/
+    publisher: Mojo
+  - title: Mojo releases
+    url: https://mojolang.org/releases/
+    publisher: Mojo
+  - title: Mojo v1.0.0b1
+    url: https://mojolang.org/releases/v1.0.0b1/
+    publisher: Mojo
+  - title: Python interoperability
+    url: https://mojolang.org/docs/manual/python/
+    publisher: Mojo
+  - title: Mojo inline MLIR reference
+    url: https://mojolang.org/docs/reference/inline-mlir/
+    publisher: Mojo
+  - title: System requirements
+    url: https://mojolang.org/docs/requirements/
+    publisher: Mojo
+  - title: Packages
+    url: https://mojolang.org/packages/
+    publisher: Mojo
+  - title: Graph overview
+    url: https://docs.modular.com/max/develop/graph/
+    publisher: Modular
+  - title: The Julia Programming Language
+    url: https://julialang.org/
+    publisher: Julia
+  - title: Julia 1.12 Documentation
+    url: https://docs.julialang.org/en/v1/
+    publisher: Julia
+  - title: Methods
+    url: https://docs.julialang.org/en/v1/manual/methods/
+    publisher: Julia
+  - title: Performance Tips
+    url: https://docs.julialang.org/en/v1/manual/performance-tips/
+    publisher: Julia
+  - title: Pkg.jl Documentation
+    url: https://pkgdocs.julialang.org/v1/
+    publisher: Julia
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for AI, numerical, scientific, and research-software teams choosing between a high-level scientific language and a newer systems/accelerator language. It is not a general-purpose popularity contest.
+
+Julia and Mojo can both sit near Python workflows, but they solve different problems. Julia is a language for writing high-level scientific and numerical programs whose generic algorithms specialize at runtime. Mojo is currently more about Python-adjacent acceleration, MLIR-native compilation, CPU/GPU kernels, MAX integration, and systems-level control.
+
+## Shared Territory
+
+Both languages appeal to developers who dislike the two-language split between a high-level prototype and a lower-level implementation. Both can express performance-sensitive numerical code more directly than ordinary Python loops, and both are relevant to scientific or AI-adjacent workloads.
+
+The similarity should not be overstated. Julia has a mature package manager, registries, numerical libraries, and a language identity centered on multiple dispatch. Mojo has Python-like syntax and a kernel-oriented story, but its latest stable release was still `1.0.0b1` when verified.
+
+## Key Differences
+
+| Dimension         | Mojo                                                   | Julia                                                        |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| Center of gravity | CPU/GPU kernels, MAX, Python acceleration, systems     | Scientific computing, multiple dispatch, numerical packages  |
+| Compilation       | MLIR-based compiled language with AOT/JIT workflows    | LLVM-based JIT specialization with precompilation/sysimages   |
+| Polymorphism      | Static types, traits, parameters, ownership boundaries | Multiple dispatch across argument types                      |
+| Python relation   | Python-like syntax and CPython interop are central     | Interop exists, but Julia is its own scientific ecosystem     |
+| Hardware story    | Direct CPU/GPU kernel and accelerator target focus     | Strong numerical ecosystem with package-specific GPU support  |
+| Packaging         | Conda packages today; native package manager planned   | Pkg environments, registries, Project.toml, Manifest.toml     |
+| Maturity risk     | Beta language and small ecosystem                      | Smaller than Python, but substantially more established       |
+
+## Choose Mojo When
+
+- The work is a custom CPU or GPU kernel, MAX custom operation, or hardware-portable AI performance component.
+- Python interop is central and the team wants to move one bottleneck into a Python-adjacent compiled language.
+- MLIR access, compile-time metaprogramming, ownership, low-level pointers, or accelerator-specific control are part of the reason for adoption.
+- The team can tolerate beta-era compiler and library changes and can verify licensing against the Modular Community License.
+
+## Choose Julia When
+
+- The core work is a solver, simulation, optimizer, differential equation model, automatic differentiation workflow, scientific machine learning package, or generic numerical algorithm.
+- Multiple dispatch would make the mathematical model clearer across arrays, number types, units, sparse structures, GPU arrays, or domain objects.
+- The team wants a mature scientific package manager and existing numerical ecosystem more than direct MAX or Modular integration.
+- The project can manage Julia version pins, manifests, package precompilation, compilation latency, and deployment artifacts.
+
+## Watch Points
+
+Mojo is promising for accelerator code, but it is young. Check the exact hardware, driver, OS, compiler release, package dependencies, GPU target, and API stability before committing product architecture to it.
+
+Julia is mature enough for serious scientific software, but it is not frictionless. Type instability, allocations, package load latency, sysimage choices, binary artifacts, and deployment shape still need engineering attention.
+
+For Python-heavy teams, both languages can be boundary languages rather than replacements. The decision should come from the measured bottleneck: a numerical model or solver often points toward Julia; a low-level kernel or MAX-bound accelerator path may point toward Mojo.
+
+## Practical Default
+
+Start with Julia when the product is scientific computing and the team needs high-level mathematical code with specialized performance.
+
+Start with Mojo when the product is closer to custom CPU/GPU kernels, AI accelerator work, or Python-to-compiled performance boundaries inside the Modular/MAX ecosystem. Keep the first Mojo component narrow and source-versioned until the language and package story match the project's risk tolerance.
