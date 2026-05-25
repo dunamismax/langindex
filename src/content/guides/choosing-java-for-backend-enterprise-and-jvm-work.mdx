@@ -18,6 +18,7 @@ candidates:
   - abap
   - transact-sql
   - plsql
+  - cfml
 sources:
   - title: The Java Language Specification, Java SE 26 Edition
     url: https://docs.oracle.com/javase/specs/jls/se26/html/index.html
@@ -112,7 +113,22 @@ sources:
   - title: ABAP Development Tools for Eclipse
     url: https://help.sap.com/docs/ABAP_ENVIRONMENT/abap-environment/eclipse-tool-for-abap-environment
     publisher: SAP Help Portal
-lastVerified: 2026-05-24
+  - title: Adobe ColdFusion Family
+    url: https://www.adobe.com/products/coldfusion-family.html
+    publisher: Adobe
+  - title: Frequently Asked Questions - Adobe ColdFusion 2025 release
+    url: https://guides.adobe.com/coldfusion/en/docs/introduction-to-coldfusion/faq.html
+    publisher: Adobe
+  - title: Use the ColdFusion administrator
+    url: https://guides.adobe.com/coldfusion/en/docs/install-and-configure-coldfusion/using-the-coldfusion-administrator.html
+    publisher: Adobe
+  - title: cfcomponent
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfcomponent.html
+    publisher: Adobe
+  - title: Lucee Server Documentation
+    url: https://docs.lucee.org/
+    publisher: Lucee
+lastVerified: 2026-05-25
 ---
 
 ## Start With The Platform Constraint
@@ -158,6 +174,8 @@ ABAP enters enterprise decisions as a SAP platform language rather than a genera
 PL/SQL enters enterprise decisions as an Oracle Database-resident language rather than a general JVM competitor. If logic belongs inside Oracle Database packages, procedures, triggers, privileges, and transaction-local data behavior, PL/SQL may be the right owner. If the work is a service, API, external integration, queue consumer, or cross-system workflow around Oracle, Java is usually the clearer owner and should call database APIs deliberately instead of duplicating hidden database rules.
 
 Transact-SQL enters enterprise decisions as a SQL Server and Azure SQL-resident language rather than a general JVM competitor. If logic belongs inside SQL Server stored procedures, functions, triggers, permissions, tempdb-backed data-local workflows, and transaction-local behavior, T-SQL may be the right owner. If the work is a service, API, event consumer, or cross-system workflow around SQL Server, Java is usually the clearer owner and should call database APIs deliberately instead of burying application architecture in stored procedures.
+
+CFML enters enterprise decisions as a ColdFusion or Lucee web-application language that already runs near JVM infrastructure. If logic belongs inside an existing CFML application with templates, CFCs, datasources, scheduled tasks, reports, and engine-administered behavior, CFML may be the safer owner while that runtime remains supportable. If the work is a new service, API, integration layer, or shared JVM library around that application, Java is usually the clearer owner and should call the CFML or database boundary deliberately instead of recreating hidden page behavior.
 
 ## Choose Java In The JVM Ecosystem When
 
@@ -221,3 +239,5 @@ Keep ABAP where SAP business semantics and lifecycle management are the point. U
 Keep PL/SQL where Oracle Database transaction semantics, package APIs, triggers, and data-local behavior are the point. Use Java around Oracle when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call the database rather than burying application architecture inside stored procedures.
 
 Keep Transact-SQL where SQL Server or Azure SQL transaction semantics, stored procedures, triggers, temp tables, and database-local behavior are the point. Use Java around SQL Server when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call the database rather than duplicating or hiding database-owned rules.
+
+Keep CFML where ColdFusion or Lucee already owns stable web behavior, forms, reports, scheduled jobs, and datasource-driven business logic. Use Java around CFML when the boundary is explicit: services, adapters, APIs, workers, event consumers, and integration layers that call the CFML system or its database contracts instead of casually translating templates into Java.

@@ -5,6 +5,7 @@ summary: A decision guide for teams evaluating PHP for server-rendered web appli
 audience: Teams deciding whether PHP should power a new web backend, CMS-backed site, admin system, internal tool, or migration from an existing PHP platform.
 candidates:
   - php
+  - cfml
   - javascript
   - typescript
   - ruby
@@ -50,6 +51,18 @@ sources:
   - title: Drupal Composer requirements
     url: https://www.drupal.org/docs/getting-started/system-requirements/composer-requirements
     publisher: Drupal.org
+  - title: Adobe ColdFusion Family
+    url: https://www.adobe.com/products/coldfusion-family.html
+    publisher: Adobe
+  - title: Use the ColdFusion administrator
+    url: https://guides.adobe.com/coldfusion/en/docs/install-and-configure-coldfusion/using-the-coldfusion-administrator.html
+    publisher: Adobe
+  - title: Lucee Server Documentation
+    url: https://docs.lucee.org/
+    publisher: Lucee
+  - title: CommandBox Documentation
+    url: https://commandbox.ortusbooks.com/
+    publisher: Ortus Solutions
   - title: About Node.js
     url: https://nodejs.org/en/about
     publisher: OpenJS Foundation
@@ -71,7 +84,7 @@ sources:
   - title: Phoenix Overview
     url: https://hexdocs.pm/phoenix/overview.html
     publisher: Phoenix
-lastVerified: 2026-05-20
+lastVerified: 2026-05-25
 ---
 
 ## Start With The Web Shape
@@ -105,6 +118,23 @@ Choose PHP when:
 PHP is especially pragmatic for organizations that already own PHP code or
 content systems. Replacing a working CMS or framework stack only makes sense
 when the replacement solves a real product or operational problem.
+
+## Choose CFML Instead When
+
+Choose [CFML](/languages/cfml/) when the web application is already centered on
+Adobe ColdFusion or Lucee and that runtime owns important forms, reports,
+queries, scheduled jobs, CFCs, and server configuration. CFML overlaps with PHP
+most in server-rendered, database-backed web applications, but the platform
+decision is different: CFML means ColdFusion or Lucee, JVM deployment,
+datasource administration, CommandBox or ForgeBox workflows, and a smaller
+specialist ecosystem.
+
+Do not move a working CFML application to PHP only because PHP is more common.
+First document the engine version, Java version, datasources, mappings,
+scheduled tasks, administrator settings, packages, reports, and database
+contracts. PHP becomes a stronger target when support cost, staffing, package
+needs, hosting, or CMS/framework fit justify moving behavior behind tested
+boundaries.
 
 ## Choose JavaScript Or TypeScript Instead When
 
@@ -181,11 +211,13 @@ Before choosing PHP for production, answer these questions:
 
 Start with PHP when the product is a web application or CMS and Laravel,
 Symfony, WordPress, Drupal, Composer packages, or PHP hosting are real
-advantages. Use TypeScript/Node.js when browser and backend code sharing is the
-main benefit. Use Ruby/Rails when Rails conventions are the platform choice.
-Use Elixir/Phoenix when realtime BEAM-backed application behavior is central.
-Use Python, Java, C#, or Go when their ecosystems or deployment models better
-match the workload.
+advantages. Keep CFML when ColdFusion or Lucee already owns the working
+application and modernization can happen safely in place or behind service
+boundaries. Use TypeScript/Node.js when browser and backend code sharing is the
+main benefit. Use Ruby/Rails when Rails conventions are the platform choice. Use
+Elixir/Phoenix when realtime BEAM-backed application behavior is central. Use
+Python, Java, C#, or Go when their ecosystems or deployment models better match
+the workload.
 
 For existing PHP systems, improve the runtime and dependency posture before
 rewriting. Supported PHP versions, modern framework releases, Composer locks,

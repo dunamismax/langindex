@@ -15,6 +15,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "assembly",
     "bash",
     "c",
+    "cfml",
     "clojure",
     "common-lisp",
     "cobol",
@@ -729,12 +730,13 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 60);
-        assert_eq!(content.comparisons.len(), 93);
+        assert_eq!(content.languages.len(), 61);
+        assert_eq!(content.comparisons.len(), 95);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
         assert!(content.language("ada").is_some());
+        assert!(content.language("cfml").is_some());
         assert!(
             content
                 .comparison("abap-vs-java-for-enterprise-systems")
@@ -970,11 +972,14 @@ mod tests {
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
         assert!(routes.contains("/languages/labview"));
+        assert!(routes.contains("/languages/cfml"));
         assert!(routes.contains("/languages/verilog-systemverilog"));
         assert!(routes.contains("/languages/vhdl"));
         assert!(routes.contains("/languages/visual-basic"));
         assert!(routes.contains("/comparisons/labview-vs-python-for-test-automation"));
         assert!(routes.contains("/comparisons/labview-vs-c-for-hardware-control-systems"));
+        assert!(routes.contains("/comparisons/cfml-vs-php"));
+        assert!(routes.contains("/comparisons/cfml-vs-java-for-legacy-web-modernization"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-csharp"));

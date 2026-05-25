@@ -1,0 +1,210 @@
+---
+title: CFML
+slug: cfml
+status: active
+summary: CFML is a tag-and-script server-side web language best known through Adobe ColdFusion and Lucee, used for database-backed web applications, intranet systems, forms, reports, and long-lived JVM-hosted business apps.
+firstReleased: 1995
+creators:
+  - Jeremy Allaire
+  - JJ Allaire
+  - Allaire Corporation
+paradigms:
+  - server-side scripting
+  - tag-based programming
+  - procedural
+  - object-oriented
+  - template-oriented web programming
+typing:
+  discipline: dynamic
+  strength: runtime typing with optional type declarations on functions, arguments, return values, components, and variables depending on engine and language feature level
+memory:
+  model: managed by the CFML engine and JVM, with request, session, application, server, cache, database, and Java object lifetimes controlled by application configuration and engine behavior
+runtime:
+  model: CFML source compiled or interpreted by engines such as Adobe ColdFusion or Lucee, commonly running on the JVM inside an application server, servlet container, or bundled server distribution
+officialSite: https://www.adobe.com/products/coldfusion-family.html
+packageManagers:
+  - ColdFusion Package Manager
+  - CommandBox
+  - ForgeBox
+  - cfpm
+  - Lucee Extension Provider
+comparedWith:
+  - php
+  - java
+  - csharp
+  - javascript
+  - sql
+bestFor:
+  - Existing ColdFusion or Lucee applications where CFML already owns web pages, forms, database queries, reports, scheduled jobs, session behavior, and business rules.
+  - Database-heavy server-rendered web applications, intranets, admin systems, and line-of-business tools where rapid HTML, SQL, forms, and service integration are the main work.
+  - Teams that can support Adobe ColdFusion, Lucee, CommandBox, JVM deployment, CFML components, datasource configuration, and engine-specific behavior deliberately.
+  - Incremental modernization around a working CFML system, especially when behavior can be wrapped, tested, upgraded, and moved behind clearer service boundaries over time.
+poorFit:
+  - Greenfield systems where the team has no CFML experience and would get stronger hiring, package ecosystem, framework, or hosting leverage from PHP, Java, C#, TypeScript, Python, or Go.
+  - Browser-first products, mobile apps, CLIs, infrastructure tools, low-level services, or workloads that need a small native binary or broad open source package reach.
+  - Systems that need implementation-neutral portability across CFML engines without testing Adobe ColdFusion, Lucee, libraries, extensions, and compatibility flags explicitly.
+  - Modernization projects that plan a big-bang rewrite before preserving behavior, data contracts, scheduled tasks, reports, security rules, and database semantics.
+sources:
+  - title: Adobe ColdFusion Family
+    url: https://www.adobe.com/products/coldfusion-family.html
+    publisher: Adobe
+  - title: Frequently Asked Questions - Adobe ColdFusion 2025 release
+    url: https://guides.adobe.com/coldfusion/en/docs/introduction-to-coldfusion/faq.html
+    publisher: Adobe
+  - title: Use the ColdFusion administrator
+    url: https://guides.adobe.com/coldfusion/en/docs/install-and-configure-coldfusion/using-the-coldfusion-administrator.html
+    publisher: Adobe
+  - title: cfquery
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfquery.html
+    publisher: Adobe
+  - title: cfcomponent
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfcomponent.html
+    publisher: Adobe
+  - title: cffile action = rename
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cffile-action-rename.html
+    publisher: Adobe
+  - title: cfoutput
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfoutput.html
+    publisher: Adobe
+  - title: Tag Syntax
+    url: https://docs.lucee.org/recipes/tag-syntax.html
+    publisher: Lucee
+  - title: Twenty years of making web happen - Happy Birthday ColdFusion
+    url: https://coldfusion.adobe.com/2015/07/twenty-years-of-making-web-happen-happy-birthday-coldfusion/
+    publisher: Adobe ColdFusion Blog
+  - title: Lucee Server Documentation
+    url: https://docs.lucee.org/
+    publisher: Lucee
+  - title: Lucee CFML Tags
+    url: https://docs.lucee.org/reference/tags.html
+    publisher: Lucee
+  - title: Lucee CFML Functions
+    url: https://docs.lucee.org/reference/functions.html
+    publisher: Lucee
+  - title: CommandBox Documentation
+    url: https://commandbox.ortusbooks.com/
+    publisher: Ortus Solutions
+  - title: ForgeBox
+    url: https://www.forgebox.io/
+    publisher: Ortus Solutions
+lastVerified: 2026-05-25
+---
+
+## Origin And Scope
+
+CFML stands for ColdFusion Markup Language. It began with ColdFusion in the mid-1990s at Allaire as a web application language for connecting HTML pages, forms, databases, and server-side behavior. Adobe ColdFusion remains the commercial implementation most associated with the language. Lucee is the main open source CFML engine and keeps CFML relevant for teams that want a non-Adobe runtime path.
+
+The language is unusual because it has two everyday syntaxes. Classic CFML uses tags such as `cfoutput`, `cfquery`, and `cfloop`, which makes server-side code look close to HTML templates. CFScript provides a more conventional script syntax for functions, components, services, and application logic. Mature codebases often contain both, especially when older page templates and newer component-oriented code live together.
+
+CFML should be evaluated as a web and business-application ecosystem rather than as syntax alone. Its practical center is database-backed web applications, intranets, forms, reports, scheduled jobs, CMS-like internal tools, and long-lived enterprise apps that grew around ColdFusion or Lucee.
+
+## ColdFusion And Lucee Ecosystems
+
+Adobe ColdFusion is a commercial application server and tooling ecosystem. It includes the CFML engine, administration UI, datasource management, scheduled tasks, security configuration, caching, PDF/reporting and document features, WebSocket and REST support in supported versions, package management, and integration with Java libraries and enterprise infrastructure.
+
+Lucee is an open source CFML engine with its own administration model, documentation, extensions, compatibility behavior, and deployment patterns. It is important because many CFML teams want lower-cost deployments, open runtime inspection, container-friendly installs, or compatibility with existing CFML applications without standardizing on Adobe ColdFusion.
+
+Do not assume the two engines are identical. CFML code can be portable across Adobe ColdFusion and Lucee when teams stay inside common features and test both engines, but real systems often depend on engine-specific tags, functions, administrator settings, Java libraries, ORM behavior, PDF features, caches, security settings, or compatibility modes.
+
+## Runtime And Deployment
+
+Modern CFML deployments are JVM deployments. Adobe ColdFusion and Lucee run CFML on top of Java infrastructure, either through bundled server distributions or application-server and servlet-container shapes. That gives CFML access to Java libraries, JDBC drivers, JVM tuning, application server integration, and ordinary server operations concerns.
+
+The operational surface is larger than a single language runtime. Production CFML teams need to know the CFML engine version, update level, Java version, servlet container or bundled server, database drivers, datasources, JVM heap settings, mappings, scheduled tasks, mail settings, caches, security configuration, and file permissions.
+
+This JVM foundation is useful when a CFML system already sits near enterprise databases and Java libraries. It is also a source of maintenance work: old ColdFusion versions, old Java runtimes, outdated JDBC drivers, unpatched administrator endpoints, or engine-specific compatibility settings can become larger risks than the CFML source syntax itself.
+
+Related concepts: [Virtual Machines And Bytecode](/concepts/virtual-machines-and-bytecode/), [Interpreters, JIT, And AOT](/concepts/interpreters-jit-and-aot/), [Build Systems](/concepts/build-systems/), [Package Managers](/concepts/package-managers/), and [Foreign Function Interface](/concepts/foreign-function-interface/).
+
+## Tags, Script, And Components
+
+Tag syntax is still part of CFML's identity. It fits page templates, conditional output, loops, queries, mail, files, forms, and HTML-adjacent server rendering. That closeness can make small database-backed pages quick to build, but it can also encourage old applications to mix SQL, presentation, authentication, and business logic inside one template.
+
+CFScript is the more natural syntax for component methods, services, tests, command handlers, and application code. ColdFusion Components, commonly called CFCs, give CFML applications a class-like unit for methods, properties, dependency boundaries, remote methods, and framework conventions. Modern CFML code usually benefits from moving reusable behavior into components and leaving tags for views or narrow template work.
+
+CFML is dynamically typed, but not structureless. Functions can declare argument and return types, components can expose properties, engines provide built-in data types, and frameworks can add validation and dependency injection. Treat those declarations as runtime contracts and documentation, not as a whole-program static type system.
+
+## Database-Heavy Web Applications
+
+CFML's strongest historical fit is database-backed server-rendered web software. ColdFusion made it straightforward to define datasources, run queries, render output, process forms, manage sessions, send mail, schedule jobs, and call other services from a single server-side environment.
+
+That strength is still useful for internal applications, intranets, reporting tools, admin systems, and long-lived line-of-business applications. A small CFML page can talk to a database and render HTML with little ceremony. A large CFML application, however, needs the same discipline as any other backend: parameterized queries, transaction boundaries, validation, output encoding, authentication, authorization, logging, tests, dependency management, and deployment automation.
+
+The database boundary deserves special attention. Legacy CFML systems may have SQL in templates, dynamic query strings, stored procedures, database triggers, scheduler jobs, and report outputs tied together in ways that are not visible from route structure alone. Modernization should inventory those data contracts before moving code.
+
+## Tooling And Packages
+
+CFML's package and tooling story is smaller than PHP's Composer or Java's Maven/Gradle ecosystem, but it is not empty. Adobe ColdFusion includes a package manager for server modules. CommandBox is a widely used CFML command-line tool for local servers, task automation, package installation, scaffolding, testing workflows, and framework development. ForgeBox is the associated package registry used by many modern CFML projects.
+
+Frameworks and libraries matter in real CFML maintenance. Some teams use ColdBox, FW/1, older Fusebox-era patterns, custom MVC structures, or frameworkless pages. A project may also depend on Java libraries, `.jar` files, CFML mappings, engine extensions, scheduled tasks, datasource definitions, and administrator settings that are not visible in application source unless the team documents them.
+
+For reproducibility, write down how a developer starts the app locally, which engine is supported, how dependencies are installed, where configuration lives, how datasources are provisioned, how tests run, and which server settings are required. Without that, a CFML application can appear simple while hiding most of its runtime state in the server.
+
+## Syntax Example
+
+Tag-oriented CFML:
+
+```html
+<cfquery name="languages" datasource="langindex">
+  SELECT slug, title
+  FROM languages
+  WHERE status = <cfqueryparam value="active" cfsqltype="cf_sql_varchar">
+  ORDER BY title
+</cfquery>
+
+<cfoutput query="languages">
+  <li><a href="/languages/#slug#/">#encodeForHtml(title)#</a></li>
+</cfoutput>
+```
+
+The same project might put reusable behavior in CFScript:
+
+```javascript
+component {
+  public array function activeTitles(required query languages) {
+    var titles = [];
+
+    for (var row in arguments.languages) {
+      titles.append(row.title);
+    }
+
+    return titles;
+  }
+}
+```
+
+This example is intentionally small. Real CFML applications should keep credentials out of templates, use datasource configuration deliberately, parameterize queries, encode output, and separate business behavior from page rendering where the system is long-lived.
+
+## Best-Fit Use Cases
+
+CFML is a strong fit when:
+
+- A ColdFusion or Lucee application already owns important business behavior and can be kept on a supported runtime.
+- The workload is server-rendered, database-heavy, form-heavy, intranet-oriented, or administrative.
+- The team knows CFML, CFCs, datasource configuration, engine administration, and JVM deployment.
+- Modernization can happen incrementally through tests, framework upgrades, component extraction, API boundaries, or service wrappers.
+- Adobe ColdFusion commercial support or Lucee's open source runtime model is a better organizational fit than replacing the platform immediately.
+
+## Poor-Fit Or Risky Use Cases
+
+CFML is a poor default when:
+
+- The project is greenfield and the team would get stronger ecosystem leverage from PHP, Java, C#, TypeScript, Python, Ruby, Go, or another mainstream backend language.
+- The application needs a large public package ecosystem, broad contributor pool, hosted platform support, or framework community that CFML cannot match.
+- The runtime must be a small static binary, a browser runtime, a mobile app, an edge function, or a non-JVM embedded target.
+- The organization treats Adobe ColdFusion and Lucee as interchangeable without compatibility testing.
+- A rewrite is planned before the current system's data, reports, scheduled jobs, user workflows, and security behavior are characterized.
+
+## Modernization And Maintenance
+
+Most CFML decisions are legacy modernization decisions. Start by making the current application observable and reproducible. Record engine version, Java version, update level, datasources, mappings, scheduled tasks, file paths, administrator settings, packages, `.jar` dependencies, framework version, mail and cache settings, and deployment steps.
+
+Then add characterization tests around the behavior users actually depend on: generated HTML, forms, database effects, reports, exports, scheduled jobs, permissions, session behavior, and integration calls. From there, a team can choose modernization in place, wrapping, or migration with less guesswork.
+
+Modernization in place may mean upgrading ColdFusion or Lucee, replacing unsafe query construction with parameterized queries, introducing CFC boundaries, adopting CommandBox workflows, containerizing the runtime, adding tests, and removing obsolete extensions. Wrapping may mean exposing stable CFML behavior through HTTP, queues, or database boundaries while new work moves elsewhere. A rewrite is justified only when it reduces a specific risk that runtime upgrades, tests, and boundary extraction cannot reduce.
+
+## Comparison Notes
+
+[CFML vs PHP](/comparisons/cfml-vs-php/) is the closest server-rendered web comparison. Both grew around embedding dynamic server-side behavior in web pages, database-backed applications, and HTML output. PHP has the much larger modern open source package and hosting ecosystem; CFML is usually strongest where an existing ColdFusion or Lucee system is already the business asset.
+
+[CFML vs Java For Legacy Web Modernization](/comparisons/cfml-vs-java-for-legacy-web-modernization/) is the JVM modernization comparison. CFML and Java can share JVM infrastructure, but they usually own different layers. CFML often owns legacy web forms, reports, and business pages; Java is often the stronger target for new services, APIs, integration layers, and broader enterprise platform work.

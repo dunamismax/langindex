@@ -228,13 +228,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 20 - CFML
 
-- [ ] Add a complete CFML page.
-- [ ] Cover ColdFusion/Lucee ecosystems, tag and script syntax, web application history, JVM deployment, database-heavy server-rendered apps, package/tooling story, and legacy modernization constraints.
-- [ ] Add CFML vs PHP comparison.
-- [ ] Add CFML vs Java for legacy web modernization comparison if source-backed.
-- [ ] Add CFML to backend/web, enterprise, and legacy-maintenance guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete CFML page.
+- [x] Cover ColdFusion/Lucee ecosystems, tag and script syntax, web application history, JVM deployment, database-heavy server-rendered apps, package/tooling story, and legacy modernization constraints.
+- [x] Add CFML vs PHP comparison.
+- [x] Add CFML vs Java for legacy web modernization comparison if source-backed.
+- [x] Add CFML to backend/web, enterprise, and legacy-maintenance guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Deferred Or Scope-Question Candidates
 

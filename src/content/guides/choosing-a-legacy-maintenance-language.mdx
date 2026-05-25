@@ -1,11 +1,12 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, SAS, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, CFML, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, SAS, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
   - php
+  - cfml
   - ruby
   - bash
   - c
@@ -38,6 +39,21 @@ sources:
   - title: PHP Supported Versions
     url: https://www.php.net/supported-versions.php
     publisher: PHP Project
+  - title: Adobe ColdFusion Family
+    url: https://www.adobe.com/products/coldfusion-family.html
+    publisher: Adobe
+  - title: Frequently Asked Questions - Adobe ColdFusion 2025 release
+    url: https://guides.adobe.com/coldfusion/en/docs/introduction-to-coldfusion/faq.html
+    publisher: Adobe
+  - title: Use the ColdFusion administrator
+    url: https://guides.adobe.com/coldfusion/en/docs/install-and-configure-coldfusion/using-the-coldfusion-administrator.html
+    publisher: Adobe
+  - title: Lucee Server Documentation
+    url: https://docs.lucee.org/
+    publisher: Lucee
+  - title: CommandBox Documentation
+    url: https://commandbox.ortusbooks.com/
+    publisher: Ortus Solutions
   - title: About Ruby
     url: https://www.ruby-lang.org/en/about/
     publisher: Ruby
@@ -143,14 +159,14 @@ sources:
   - title: CDER Study Data Standards Research and Development
     url: https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/cder-study-data-standards-research-and-development
     publisher: U.S. Food and Drug Administration
-lastVerified: 2026-05-24
+lastVerified: 2026-05-25
 ---
 
 ## Start With Ownership, Not Preference
 
 Legacy maintenance is not a referendum on whether a language is fashionable. It is a risk-management problem around working software: behavior, data, dependencies, operators, tests, deployment, security, and the people who can safely change it.
 
-The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, or SAS system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
+The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, CFML, Ruby, shell, C, C++, Java, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, or SAS system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
 
 ## Inventory The System
 
@@ -176,7 +192,7 @@ Modernize in place when the runtime is still supportable and most risk comes fro
 - Split large scripts or modules around stable boundaries.
 - Document deployment and rollback.
 
-This is often the right first move for Perl, PHP, Ruby, shell, and Java systems. It is also useful for C and C++ systems when the ABI, build chain, hardware target, or performance constraints make replacement expensive.
+This is often the right first move for Perl, PHP, CFML, Ruby, shell, and Java systems. It is also useful for C and C++ systems when the ABI, build chain, hardware target, or performance constraints make replacement expensive.
 
 ## Choose Wrapping When
 
@@ -208,6 +224,8 @@ Avoid rewriting only because the language is old. Old code with tests and known 
 Perl systems are often text-heavy, CPAN-backed, and operationally close to Unix. Start by pinning Perl and modules, adding tests around regex-heavy behavior, and replacing shell-string command calls with safer argument-list forms.
 
 PHP systems are often web or CMS-centered. Supported PHP versions, Composer locks, framework/CMS upgrades, OPcache/FPM configuration, and extension patching usually reduce risk before a full rewrite.
+
+CFML systems usually sit inside Adobe ColdFusion or Lucee applications where templates, CFCs, datasources, scheduled tasks, reports, sessions, administrator settings, Java libraries, and database behavior are part of the system contract. Start by pinning the CFML engine, Java runtime, update level, datasource definitions, mappings, CommandBox or ForgeBox packages, and deployment process before moving behavior to PHP, Java, C#, TypeScript, Python, or another platform.
 
 Ruby systems are often Rails or automation systems. Ruby version support, Bundler locks, Rails upgrades, native gem dependencies, background workers, and test coverage are the main maintenance levers.
 

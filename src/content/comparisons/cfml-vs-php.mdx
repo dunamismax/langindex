@@ -1,0 +1,114 @@
+---
+title: CFML vs PHP
+slug: cfml-vs-php
+summary: CFML and PHP both serve server-rendered, database-backed web applications, but CFML centers on Adobe ColdFusion or Lucee and JVM-hosted legacy business apps while PHP has a much larger Composer, framework, CMS, and hosting ecosystem.
+languages:
+  - cfml
+  - php
+useCases:
+  - web backends
+  - server-rendered applications
+  - legacy maintenance
+  - cms platforms
+  - database-backed business apps
+sources:
+  - title: Adobe ColdFusion Family
+    url: https://www.adobe.com/products/coldfusion-family.html
+    publisher: Adobe
+  - title: Use the ColdFusion administrator
+    url: https://guides.adobe.com/coldfusion/en/docs/install-and-configure-coldfusion/using-the-coldfusion-administrator.html
+    publisher: Adobe
+  - title: cfquery
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfquery.html
+    publisher: Adobe
+  - title: cfcomponent
+    url: https://guides.adobe.com/coldfusion/en/docs/cfml-reference/__references__/cfcomponent.html
+    publisher: Adobe
+  - title: Lucee Server Documentation
+    url: https://docs.lucee.org/
+    publisher: Lucee
+  - title: CommandBox Documentation
+    url: https://commandbox.ortusbooks.com/
+    publisher: Ortus Solutions
+  - title: ForgeBox
+    url: https://www.forgebox.io/
+    publisher: Ortus Solutions
+  - title: What is PHP?
+    url: https://www.php.net/manual/en/introduction.php
+    publisher: PHP Manual
+  - title: FastCGI Process Manager
+    url: https://www.php.net/manual/en/install.fpm.php
+    publisher: PHP Manual
+  - title: Composer basic usage
+    url: https://getcomposer.org/doc/01-basic-usage.md
+    publisher: Composer
+  - title: Packagist
+    url: https://packagist.org/
+    publisher: Packagist
+  - title: Laravel Documentation
+    url: https://laravel.com/docs
+    publisher: Laravel
+  - title: Symfony Documentation
+    url: https://symfony.com/doc/current/index.html
+    publisher: Symfony
+lastVerified: 2026-05-25
+---
+
+## Scope
+
+This comparison is for teams choosing a server-side web stack or maintaining older web applications where CFML and PHP are both plausible. It is especially relevant to intranets, admin systems, forms, reports, CMS-adjacent work, and database-backed business applications.
+
+The best answer depends heavily on whether there is an existing system. A working ColdFusion or Lucee application is an asset to understand, not a reason to rewrite immediately. A greenfield application has a different default because PHP's ecosystem, hosting, packages, and hiring pool are much larger.
+
+## Shared Territory
+
+CFML and PHP both grew from the web. Both can embed server-side behavior near HTML, process forms, talk to relational databases, manage sessions, send mail, call services, render templates, and support framework-based applications. Both can be used well, and both can become hard to maintain when templates mix SQL, presentation, authentication, and business rules without boundaries.
+
+Both also need ordinary backend discipline: supported runtime versions, dependency locks, parameterized queries, validation, output encoding, authentication, authorization, logging, tests, deployment automation, and upgrade plans.
+
+## Key Differences
+
+| Dimension        | CFML                                                         | PHP                                                        |
+| ---------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| Main runtimes    | Adobe ColdFusion and Lucee, commonly JVM-hosted              | Zend Engine through PHP-FPM, CLI, web SAPIs, and workers   |
+| Syntax shape     | Tag syntax plus CFScript                                     | Script syntax embedded in templates or framework code      |
+| Package center   | CommandBox, ForgeBox, engine packages, extensions, Java jars | Composer, Packagist, PHP extensions, PSR autoloading       |
+| Ecosystem size   | Smaller and legacy-heavy, with active specialist communities | Much larger web, CMS, framework, and hosting ecosystem     |
+| Platform gravity | Existing ColdFusion/Lucee apps and JVM server configuration  | PHP frameworks, CMSs, shared hosting, PHP-FPM, Composer    |
+| Main risk        | Engine/version coupling and hidden server configuration      | Dependency sprawl, framework/CMS drift, runtime settings   |
+
+## Choose CFML When
+
+- A ColdFusion or Lucee application already owns important behavior and can be kept on a supportable runtime.
+- The team understands CFML, CFCs, datasources, scheduled tasks, engine administration, CommandBox, and JVM deployment.
+- Adobe ColdFusion features, Lucee compatibility, existing CFCs, or CFML frameworks are central assets.
+- The safest modernization path is runtime upgrade, test coverage, component extraction, or service wrapping rather than a rewrite.
+- Integration with existing Java libraries, JDBC drivers, and enterprise server configuration is already part of the system.
+
+## Choose PHP When
+
+- The project is greenfield and needs a mainstream server-rendered web backend or CMS ecosystem.
+- Laravel, Symfony, WordPress, Drupal, Composer packages, Packagist, or conventional PHP hosting are clear advantages.
+- Hiring, public package availability, framework documentation, static analysis tools, and community examples matter more than preserving an existing CFML platform.
+- The team wants a non-JVM web runtime with broad hosting support and request-scoped PHP-FPM operations.
+- Migrating away from CFML is already justified by support, cost, staffing, or operational risk and the target system is web/CMS-centered.
+
+## Watch Points
+
+CFML's hidden complexity is often outside source files: administrator settings, datasources, mappings, scheduled tasks, Java libraries, update levels, caches, PDF/reporting features, and engine compatibility. Before changing architecture, export and document those settings.
+
+PHP's accessibility can hide similar operational risk in a different form: Composer dependency drift, old PHP versions, unsafe uploads, framework upgrades, CMS plugin supply chains, OPcache/FPM tuning, and extension compatibility.
+
+Do not translate templates mechanically. A maintainable migration usually starts by identifying behavior boundaries: forms, reports, queries, scheduled jobs, authentication flows, file exports, session rules, and database side effects.
+
+## Migration Or Interoperability Notes
+
+CFML and PHP can coexist behind HTTP, queues, files, databases, reverse proxies, or service boundaries. A common migration path is to leave stable CFML behavior in place while new pages, APIs, or CMS features move into PHP only after the shared contracts are explicit.
+
+When moving CFML to PHP, preserve database semantics first. CFML applications often rely on datasource configuration, transaction scope, query behavior, stored procedures, session variables, scheduled tasks, and report formats that are easy to miss if the migration starts from page templates alone.
+
+## Practical Default
+
+Keep CFML when it is already the tested owner of a business web system and the engine can be maintained responsibly.
+
+Choose PHP for new conventional web and CMS work unless ColdFusion, Lucee, CFML expertise, or existing CFML assets are the real reason for the platform.
