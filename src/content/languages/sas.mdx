@@ -1,0 +1,205 @@
+---
+title: SAS
+slug: sas
+status: active
+summary: SAS is a proprietary statistical programming language and analytics platform centered on DATA step data preparation, PROC-based analysis, SAS data sets, macro-generated programs, and long-lived enterprise and clinical reporting workflows.
+firstReleased: 1976
+creators:
+  - SAS Institute
+paradigms:
+  - statistical computing
+  - data analysis
+  - procedural
+  - declarative
+  - enterprise
+  - macro programming
+typing:
+  discipline: dynamic with data-set metadata
+  strength: SAS variables are defined as character or numeric in data sets, with runtime conversions, formats, informats, and procedure-specific rules shaping real programs
+memory:
+  model: SAS runtime-managed data sets, work libraries, procedure memory, CAS tables where used, and external database engines rather than manual heap allocation
+runtime:
+  model: proprietary SAS execution environments for DATA steps, PROC steps, macro expansion, SAS 9 sessions, SAS Studio, and SAS Viya/CAS-backed analytics
+officialSite: https://www.sas.com/
+packageManagers:
+  - SAS procedures
+  - SAS macros
+  - SAS Studio
+  - SAS Viya
+  - SAS libraries
+  - SASPy
+comparedWith:
+  - r
+  - python
+  - sql
+  - matlab
+bestFor:
+  - Regulated, validated, or long-lived analytics workflows where SAS programs, data sets, logs, outputs, macros, and procedures are already the operational standard.
+  - Statistical analysis, reporting, data management, clinical trial programming, risk analytics, fraud analytics, and enterprise batch workflows built around SAS products.
+  - Teams that need vendor-supported analytics tooling, SAS procedures, SAS Studio or Enterprise Guide workflows, and controlled access to SAS data and reporting infrastructure.
+  - Maintenance of existing SAS estates where DATA step, PROC, macro, ODS, and XPORT behavior encode important business or regulatory process.
+poorFit:
+  - Open source public projects or low-cost education stacks where every contributor must be able to run the full toolchain without proprietary licenses.
+  - General-purpose services, CLIs, web applications, infrastructure automation, and software platforms where Python, R, SQL, Java, C#, Go, or JavaScript ecosystems are better operational fits.
+  - Greenfield data science teams that primarily need open package ecosystems, broad hiring pools, notebook-native collaboration, or direct integration with modern ML infrastructure.
+  - Migrations that assume SAS programs can be mechanically translated to R or Python without preserving data semantics, macros, logs, output contracts, validation evidence, and regulatory expectations.
+sources:
+  - title: SAS History
+    url: https://www.sas.com/en_us/company-information/history.html
+    publisher: SAS
+  - title: SAS Processing - The DATA Step
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a000992092.htm
+    publisher: SAS Support
+  - title: Processing a DATA Step - A Walk-Through
+    url: https://documentation.sas.com/doc/en/pgmsascdc/v_073/lepg/n0yuo79dkucm7pn1rvmlt6l13qmn.htm
+    publisher: SAS Documentation
+  - title: SAS Variables - Definition of SAS Variables
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a001103596.htm
+    publisher: SAS Support
+  - title: PROC SQL - Overview
+    url: https://support.sas.com/documentation/cdl/en/proc/61895/HTML/default/sql-overview.htm
+    publisher: SAS Support
+  - title: Understanding and Using the Macro Facility
+    url: https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/mcrolref/n01mgvwt7f9smen159ad334ts4ha.htm
+    publisher: SAS Documentation
+  - title: SAS Viya Platform
+    url: https://www.sas.com/en_us/software/viya.html
+    publisher: SAS
+  - title: SAS Studio
+    url: https://support.sas.com/en/software/studio-support.html
+    publisher: SAS Support
+  - title: SASPy
+    url: https://support.sas.com/en/software/saspy.html
+    publisher: SAS Support
+  - title: Open Source Integration
+    url: https://www.sas.com/en_us/software/viya/open.html
+    publisher: SAS
+  - title: CDER Study Data Standards Research and Development
+    url: https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/cder-study-data-standards-research-and-development
+    publisher: U.S. Food and Drug Administration
+  - title: Study Data Standards Resources
+    url: https://www.fda.gov/industry/fda-data-standards-advisory-board/study-data-standards-resources
+    publisher: U.S. Food and Drug Administration
+  - title: A Short History of CDISC and SAS Transport Files
+    url: https://www.cdisc.org/kb/articles/short-history-cdisc-and-sas-transport-files
+    publisher: CDISC
+lastVerified: 2026-05-24
+---
+
+## Origin And Scope
+
+SAS began as the Statistical Analysis System in an academic agricultural-data project involving Southern universities and North Carolina State University. SAS's history page says the company incorporated as SAS Institute Inc. in July 1976 and released Base SAS as its first product that year.
+
+The language is best understood as part of a product environment, not as a standalone open language standard. SAS programs combine DATA steps, PROC steps, global statements, macro expansion, libraries, output delivery, logs, data-set metadata, and product-specific procedures. That shape is why SAS remains important in organizations with validated analytics pipelines, enterprise reporting, risk and fraud systems, and clinical trial programming.
+
+SAS should be evaluated by workflow ownership. If the durable asset is a set of audited SAS programs, logs, SAS data sets, transport files, clinical tables, regulatory reports, or enterprise procedures, SAS knowledge is part of the system. If the durable asset is a new open data product or general software platform, Python, R, SQL, or another ecosystem may be a better owner.
+
+## DATA Step And PROC Model
+
+SAS programs are commonly organized as a sequence of steps. DATA steps read, transform, and write data. PROC steps invoke procedures for reporting, statistics, SQL, graphics, sorting, summaries, modeling, data management, and product-specific analytics.
+
+The DATA step has its own execution model. SAS compiles DATA step statements, builds program state, reads records or observations, executes statements, and writes observations to an output data set. This gives SAS a row-processing vocabulary that is different from R data-frame expressions or Python pandas method chains. It is strong for repeatable data preparation, merging, recoding, deriving variables, and producing intermediate SAS data sets.
+
+PROC steps are the other center of gravity. A SAS programmer often solves a problem by choosing the right procedure and configuring it correctly rather than writing every algorithm directly. `PROC SQL` brings SQL-style querying into SAS, while statistical and reporting procedures provide domain-specific behavior. This procedure culture is productive for teams with shared SAS conventions, but it can make migration difficult because each procedure carries its own options, output shapes, diagnostics, and edge cases.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Build Systems](/concepts/build-systems/), [Modules And Namespacing](/concepts/modules-and-namespacing/), and [Documentation Cultures](/concepts/documentation-cultures/).
+
+## Data Sets, Libraries, And Types
+
+SAS data sets are a central storage and exchange unit. In ordinary SAS terminology, data is arranged as observations and variables. Variables are character or numeric, and their attributes include names, types, lengths, labels, formats, and informats. Those attributes matter because downstream procedures, reports, and submissions can depend on them.
+
+This is not the same type model as R, Python, SQL, or a statically typed application language. SAS data-set metadata gives structure to tabular data, while SAS program execution remains runtime-oriented. Automatic conversions, missing values, formats, informats, variable lengths, sort order, and procedure-specific rules should be treated as semantics, not incidental formatting.
+
+Libraries make data location explicit. A program may read from a temporary WORK library, persistent SAS libraries, database-backed libraries through SAS/ACCESS products, CAS-backed tables in Viya, or transport files. Production SAS work should document library assignments, encoding, data-set options, permissions, source systems, and output locations.
+
+## Macro Language
+
+The SAS macro facility is a text-generation and parameterization system. Macro variables replace text in SAS programs, and macro definitions can generate SAS statements, conditionally include code, loop over parameters, and build repeated procedure calls.
+
+Macros are one reason large SAS estates can be compact and configurable. They are also one reason they can be hard to migrate. A SAS program's visible DATA and PROC steps may not be the whole program that actually runs after macro expansion. Debugging and modernization should inspect resolved code, macro variable values, logs, generated outputs, and all included macro libraries.
+
+Use macros deliberately. They are useful for repeated report shells, parameterized clinical tables, shared data-preparation conventions, and environment-specific paths. They become risky when they hide control flow, generate different code by side effect, or turn business logic into string substitution that only a few maintainers can safely change.
+
+## Statistics, Reporting, And Clinical Use
+
+SAS is strongly associated with statistical analysis and enterprise reporting. Base SAS and SAS product families include many procedures and applications for data management, modeling, forecasting, visualization, decisioning, and governed analytics. SAS Viya extends that center into a cloud-native analytics platform with visual and code-based interfaces, CAS-backed computation, governance features, and integration points for other languages.
+
+Clinical and regulated workflows are a special case. FDA and CDISC sources document the historical and ongoing importance of SAS Version 5 transport files for study data exchange. FDA's CDER study-data page also explicitly recognizes limitations of SAS Transport files, including short variable names, label limits, character-field limits, and flat two-dimensional structure, while describing work toward more modern exchange mechanisms.
+
+That context explains SAS's durability in clinical programming without turning it into a universal recommendation. Existing pharmaceutical and CRO workflows may have validated SAS programs, CDISC data standards, XPT outputs, define files, statistical analysis plans, TLF shells, audit trails, and reviewer expectations. Replacing SAS in that setting is not just a syntax conversion; it is a validation and process migration.
+
+## Enterprise Tooling And Viya
+
+SAS tooling is product-centered. SAS Studio is a browser-based development application for writing or generating SAS code and running it on a SAS server, whether that server is local, in a data center, or in the cloud. Older and adjacent SAS environments include Enterprise Guide, Display Manager, batch SAS, stored processes, platform scheduling, metadata servers, and product-specific interfaces.
+
+SAS Viya is the current strategic platform direction. SAS describes Viya as an AI, analytics, data management, and governance platform. It supports SAS programming and also offers integration with REST, Python, R, Java, Lua, and other clients. SASPy lets Python code access SAS data and analytics capabilities, including data exchange with pandas data frames and submission of SAS programs.
+
+Those integrations should not be confused with removing SAS coupling. They are useful when Python or R teams need to call SAS capabilities, or when SAS estates need controlled open-source participation. They still require licensed SAS environments, versioned platform configuration, access controls, data governance, and runtime testing.
+
+## Licensing, Cost, And Operations
+
+SAS is proprietary software. Licensing, product entitlement, server access, support contracts, platform administration, and user training are part of the technical decision. A program may depend on Base SAS, SAS/STAT, SAS/GRAPH, SAS/ACCESS, SAS Viya services, SAS Studio, or specialized industry products that are not equally available to every developer, CI worker, consultant, customer, or university collaborator.
+
+This is often acceptable in enterprises that already operate SAS as shared analytics infrastructure. It is a poor default for open source projects, low-budget teams, or public reproducibility requirements where anyone must be able to rebuild results from a clean checkout without commercial software.
+
+Operationally, production SAS should record the SAS version, product set, license assumptions, server or Viya environment, library assignments, macro paths, database connections, system options, input data snapshots, output destinations, and exact run commands. Logs are part of the evidence trail, especially in regulated or audited workflows.
+
+## Syntax Example
+
+```sas
+data work.language_scores;
+  input name $ domain $ score;
+  datalines;
+SAS statistics 9
+R statistics 9
+Python data 8
+SQL databases 8
+;
+run;
+
+proc sort data=work.language_scores out=work.ranked;
+  by descending score name;
+run;
+
+proc print data=work.ranked noobs;
+  where score >= 8;
+run;
+```
+
+This example shows a DATA step creating a SAS data set, a PROC step sorting it, and another PROC step printing filtered observations. Real SAS systems often add macro parameters, library assignments, formats, statistical procedures, ODS output, database access, and batch scheduling.
+
+## Best-Fit Use Cases
+
+SAS is a strong fit when:
+
+- Existing SAS programs, procedures, macros, data sets, reports, and logs are already trusted production assets.
+- Clinical, financial, insurance, government, or enterprise analytics workflows need validated procedures, audit-friendly output, vendor support, and controlled platform administration.
+- The team already has SAS-skilled programmers, SAS licenses, SAS Studio or Viya infrastructure, and review practices around SAS logs and outputs.
+- The work is batch analytics, statistical reporting, data management, or governed model development rather than general application software.
+- Interoperability with Python or R is useful, but SAS remains the governed analytics platform or validated reporting boundary.
+
+## Poor-Fit Or Risky Use Cases
+
+SAS is a poor default when:
+
+- The project must be fully open source, self-hostable without commercial licenses, or easy for public contributors to run locally.
+- The team is building general services, applications, CLIs, APIs, data platforms, or ML infrastructure where open language ecosystems are the main constraint.
+- Hiring, onboarding, or collaboration depends on broad Python/R/SQL familiarity rather than specialized SAS experience.
+- A migration plan treats macro-heavy SAS programs as plain scripts and ignores logs, generated code, data-set metadata, procedure options, and validation evidence.
+- Cost, product access, CI availability, or cloud deployment constraints prevent every environment from running the same SAS code.
+
+## Migration And Interoperability
+
+SAS-to-R or SAS-to-Python migration should start with behavior, not syntax. Inventory input data sets, variable attributes, formats, macros, included files, PROC outputs, ODS destinations, sort order assumptions, missing-value behavior, random seeds, logs, warnings, and downstream consumers. Then build characterization tests around representative outputs before translating code.
+
+For many organizations, a mixed boundary is safer than a rewrite. Keep validated SAS reporting or clinical deliverables in SAS while moving orchestration, APIs, file workflows, or exploratory analysis to Python or R. Or keep Python/R as the main data science environment and call SAS through SASPy, Viya APIs, or controlled batch jobs when specific SAS procedures or validated outputs are required.
+
+Migration pressure toward Python and R is real where open source collaboration, package reach, hiring, notebook workflows, cost control, and modern ML infrastructure matter. It is not proof that SAS can be removed casually. The more regulated or validated the workflow, the more the migration must preserve evidence, not just results.
+
+## Comparison Notes
+
+[SAS vs R](/comparisons/sas-vs-r/) is the closest statistics and reporting comparison. R is usually stronger for open statistical collaboration, CRAN/Bioconductor packages, graphics, and reproducible research documents. SAS is usually stronger when validated enterprise procedures, SAS data sets, macro estates, vendor support, and regulated reporting infrastructure are already the center.
+
+[SAS vs Python For Analytics](/comparisons/sas-vs-python-for-analytics/) compares SAS with Python's general-purpose data ecosystem. Python is usually the better owner for services, orchestration, notebooks, ML infrastructure, and open packages. SAS earns its place when the governed analytics platform, PROC ecosystem, and existing SAS estate are the hard requirement.
+
+SQL remains the right owner for relational filtering, joining, aggregation, constraints, and database-side transactions. SAS can query databases and process extracts, but durable relational rules should usually stay near the database unless SAS is explicitly the reporting or analytics boundary.

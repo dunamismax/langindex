@@ -1,0 +1,116 @@
+---
+title: SAS vs Python For Analytics
+slug: sas-vs-python-for-analytics
+summary: "SAS and Python both support analytics work, but SAS centers on proprietary DATA/PROC workflows, enterprise governance, and validated reporting while Python centers on general-purpose programming, open packages, automation, notebooks, and ML infrastructure."
+languages:
+  - sas
+  - python
+useCases:
+  - analytics
+  - data analysis
+  - enterprise reporting
+  - clinical programming
+  - automation
+  - machine learning
+sources:
+  - title: SAS Processing - The DATA Step
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a000992092.htm
+    publisher: SAS Support
+  - title: PROC SQL - Overview
+    url: https://support.sas.com/documentation/cdl/en/proc/61895/HTML/default/sql-overview.htm
+    publisher: SAS Support
+  - title: SAS Viya Platform
+    url: https://www.sas.com/en_us/software/viya.html
+    publisher: SAS
+  - title: SAS Studio
+    url: https://support.sas.com/en/software/studio-support.html
+    publisher: SAS Support
+  - title: SASPy
+    url: https://support.sas.com/en/software/saspy.html
+    publisher: SAS Support
+  - title: Open Source Integration
+    url: https://www.sas.com/en_us/software/viya/open.html
+    publisher: SAS
+  - title: Python Documentation
+    url: https://docs.python.org/3/
+    publisher: Python Software Foundation
+  - title: The Python Standard Library
+    url: https://docs.python.org/3/library/
+    publisher: Python Software Foundation
+  - title: Python Packaging User Guide
+    url: https://packaging.python.org/
+    publisher: Python Packaging Authority
+  - title: NumPy Documentation
+    url: https://numpy.org/doc/
+    publisher: NumPy
+  - title: pandas Documentation
+    url: https://pandas.pydata.org/docs/
+    publisher: pandas
+  - title: PyTorch Documentation
+    url: https://docs.pytorch.org/docs/stable/index.html
+    publisher: PyTorch
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for analytics teams choosing between SAS and Python, or deciding where each should own work in a mixed data system. It covers data preparation, statistical analysis, reporting, governed analytics, automation, and machine-learning-adjacent workflows.
+
+SAS is an analytics product ecosystem with a programming language at its center. Python is a general-purpose language with a large data and ML ecosystem. The practical decision is whether the hard part is SAS-governed reporting and procedures, or broad software integration and open package reach.
+
+## Shared Territory
+
+Both can read data, transform tables, call databases, run statistical or machine-learning workflows, produce outputs, and operate in batch jobs or notebooks. SAS Viya and SASPy also make direct integration possible: Python can call SAS capabilities, and Viya exposes open integration points for Python, R, REST, Java, Lua, and other clients.
+
+The best architecture often uses both. SAS may own validated analytics and reports, while Python owns orchestration, APIs, files, tests, and ML infrastructure. Or Python may own the workflow while calling SAS only for a specific procedure or legacy report.
+
+## Key Differences
+
+| Dimension         | SAS                                                        | Python                                                       |
+| ----------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| Center of gravity | Enterprise analytics, DATA steps, PROC steps, macros       | General-purpose programming, open data tooling, automation   |
+| Runtime model     | Licensed SAS sessions, SAS Studio, SAS 9, SAS Viya/CAS     | CPython and other implementations with packages/environments |
+| Data workflow     | SAS data sets, libraries, PROC SQL, ODS, product procedures | pandas, NumPy, notebooks, files, APIs, databases, packages   |
+| Deployment shape  | SAS servers, Viya deployments, batch jobs, governed output  | Scripts, packages, services, containers, notebooks, workers   |
+| Strongest fit     | Validated reporting, enterprise procedures, regulated work  | Integration, open packages, services, ML tooling, automation  |
+| Main risk         | Licensing, platform coupling, specialized code estates      | Dependency drift, native packages, weak production boundaries |
+
+## Choose SAS When
+
+- The organization already operates SAS as governed analytics infrastructure.
+- Existing DATA step, PROC, macro, ODS, and SAS data-set behavior must be preserved.
+- Regulated reporting, clinical programming, risk analytics, fraud analytics, or enterprise batch reports need a validated SAS process.
+- Vendor support, centralized platform administration, access controls, and SAS procedure behavior matter more than open package reach.
+- Python would mostly wrap a SAS estate rather than replace the work it performs.
+
+## Choose Python When
+
+- Analytics is one part of a larger software system: services, APIs, CLIs, orchestration, cloud SDKs, ML pipelines, model serving, or operational automation.
+- The team needs open source packages, broad hiring, low-cost local development, and easy CI/container execution.
+- pandas, NumPy, PyTorch, scikit-learn, notebooks, web frameworks, or application libraries are the workflow center.
+- Data must move through many non-SAS systems, file formats, APIs, queues, or services.
+- The project values general software tests, packaging, type hints, and application boundaries more than SAS procedure compatibility.
+
+## Watch Points
+
+SAS's hidden costs are platform and license coupling. A program that works in one SAS installation may depend on products, macros, library assignments, options, encodings, or server-side configuration that are not present elsewhere.
+
+Python's hidden costs are environment and ownership drift. Notebooks and exploratory scripts can become production analytics without dependency locks, data contracts, tests, or memory controls. Native packages and GPU or platform dependencies need explicit deployment strategy.
+
+Performance should be measured at the workload boundary. SAS can perform well when procedures and platform services own the heavy work. Python can perform well when it delegates to NumPy, pandas, databases, PyTorch, or native libraries. Both can perform poorly when large workloads are written as interpreted row-by-row code without pushdown or vectorized/native execution.
+
+## Migration Or Interoperability Notes
+
+Do not start with automatic translation. Start by identifying ownership:
+
+- SAS-owned: validated reports, regulatory outputs, trusted PROC behavior, macro libraries, SAS data-set metadata, and governed platform jobs.
+- Python-owned: orchestration, APIs, file workflows, notebooks, tests, ML infrastructure, cloud integration, and general software boundaries.
+- Shared: databases, stable files, XPT when required, Parquet/CSV where appropriate, narrow service calls, and explicit run artifacts.
+
+SASPy and Viya integration can reduce migration risk by letting Python call SAS while a team inventories behavior. That is useful when the goal is gradual modernization, but it still requires a working SAS environment and operational ownership of the SAS side.
+
+## Practical Default
+
+Start with SAS when the hard problem is a governed or validated SAS analytics estate.
+
+Start with Python when the hard problem is open software integration, automation, data products, ML infrastructure, or broad package access.

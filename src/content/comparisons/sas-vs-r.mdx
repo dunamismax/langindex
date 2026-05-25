@@ -1,0 +1,114 @@
+---
+title: SAS vs R
+slug: sas-vs-r
+summary: "SAS and R both serve statistical analysis and reporting, but SAS centers on proprietary enterprise analytics, DATA/PROC workflows, macros, and validated estates while R centers on open statistical computing, CRAN/Bioconductor, graphics, and reproducible research."
+languages:
+  - sas
+  - r
+useCases:
+  - statistics
+  - data analysis
+  - reporting
+  - clinical programming
+  - regulated analytics
+  - research workflows
+sources:
+  - title: SAS History
+    url: https://www.sas.com/en_us/company-information/history.html
+    publisher: SAS
+  - title: SAS Processing - The DATA Step
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a000992092.htm
+    publisher: SAS Support
+  - title: Understanding and Using the Macro Facility
+    url: https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/mcrolref/n01mgvwt7f9smen159ad334ts4ha.htm
+    publisher: SAS Documentation
+  - title: SAS Viya Platform
+    url: https://www.sas.com/en_us/software/viya.html
+    publisher: SAS
+  - title: Open Source Integration
+    url: https://www.sas.com/en_us/software/viya/open.html
+    publisher: SAS
+  - title: CDER Study Data Standards Research and Development
+    url: https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/cder-study-data-standards-research-and-development
+    publisher: U.S. Food and Drug Administration
+  - title: What is R?
+    url: https://www.r-project.org/about.html
+    publisher: The R Foundation
+  - title: The R Language Definition
+    url: https://cran.r-project.org/doc/manuals/r-release/R-lang.html
+    publisher: R Core Team
+  - title: Tidyverse packages
+    url: https://tidyverse.org/packages/
+    publisher: tidyverse
+  - title: Bioconductor About
+    url: https://bioconductor.org/about/index.html
+    publisher: Bioconductor
+  - title: Project Environments
+    url: https://rstudio.github.io/renv/
+    publisher: renv
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams choosing between SAS and R for statistics, data analysis, reporting, regulated analytics, clinical programming, research workflows, or migration planning. It is not a universal verdict on either ecosystem.
+
+SAS is strongest when the organization already depends on SAS programs, DATA steps, PROC steps, macros, SAS data sets, logs, licensed products, and validated reporting infrastructure. R is strongest when the work benefits from open statistical computing, CRAN and Bioconductor packages, graphics, reproducible documents, and analyst/research collaboration without proprietary runtime access.
+
+## Shared Territory
+
+Both ecosystems can prepare data, run statistical models, create tables and figures, generate reports, connect to databases, call native code, and participate in clinical, academic, government, finance, and enterprise analytics. Both have long statistical histories and strong documentation cultures.
+
+They often coexist. A regulated team may keep validated SAS reporting while using R for exploratory analysis, graphics, package-based methods, or reproducible research documents. An R-centered team may still need to read SAS data sets, produce XPT files, or interoperate with a SAS estate.
+
+## Key Differences
+
+| Dimension         | SAS                                                         | R                                                          |
+| ----------------- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| Center of gravity | Proprietary enterprise analytics, DATA/PROC workflows       | Open statistical computing, packages, graphics, reporting  |
+| Runtime model     | Licensed SAS sessions, SAS Studio, SAS 9, SAS Viya/CAS      | GNU R interactive environment, scripts, packages, reports  |
+| Program shape     | DATA steps, PROC steps, macros, libraries, logs, ODS output | Functions, packages, data frames, formulas, notebooks      |
+| Ecosystem         | SAS products, procedures, vendor support, enterprise tools   | CRAN, Bioconductor, tidyverse, data.table, Posit tooling   |
+| Clinical fit      | Strong legacy and validation presence in clinical reporting | Growing use, but validation and submission processes matter |
+| Main risk         | License cost, product coupling, specialized maintainers      | Reproducibility, package/native dependency management      |
+
+## Choose SAS When
+
+- The workflow is already validated around SAS programs, logs, macros, data sets, ODS output, or XPT files.
+- Clinical, finance, insurance, government, or enterprise analytics teams need vendor-supported procedures and controlled platform administration.
+- Existing reporting shells, table/listing/figure pipelines, macro libraries, or regulatory processes are the durable asset.
+- The organization has SAS licenses, SAS-fluent maintainers, and review practices around SAS logs and output.
+- Replacing SAS would require revalidating a large estate before it would reduce any real risk.
+
+## Choose R When
+
+- The project needs open source reproducibility, public collaboration, package publication, or low-friction local installs.
+- Statistical method packages, graphics, CRAN, Bioconductor, tidyverse, data.table, Shiny, R Markdown, or Quarto are the workflow center.
+- Analysts, statisticians, or researchers need to combine code, prose, figures, tables, and citations in reviewable reports.
+- The organization wants to avoid proprietary license barriers for education, public research, or cross-institution collaboration.
+- The work is exploratory or research-facing enough that package reach and community review matter more than SAS estate compatibility.
+
+## Watch Points
+
+SAS projects can become fragile when macro behavior, library paths, product entitlements, server options, and output destinations are known only to one environment. Preserve logs, resolved macro code, data-set metadata, and exact run commands.
+
+R projects can become fragile when a local package library, notebook state, or interactive RStudio session becomes the production environment. Use lockfiles, package snapshots, containers, controlled repositories, or another reproducibility mechanism.
+
+Clinical and regulatory decisions need special care. FDA and CDISC materials explain why SAS transport files remain important in study-data exchange, while FDA also documents their limitations. A move from SAS to R should be treated as a validated process change, not just a code translation.
+
+## Migration Or Interoperability Notes
+
+Avoid translating a SAS program line by line into R without first defining expected behavior. SAS DATA step processing, formats, informats, missing values, sort assumptions, macro expansion, PROC output, and ODS destinations can all affect results.
+
+Use a staged boundary when possible:
+
+- Keep validated SAS deliverables in SAS until the replacement process has evidence.
+- Use R for exploratory work, graphics, method packages, reports, or open collaboration.
+- Exchange data through documented tables, XPT files, CSV/Parquet where appropriate, databases, or narrow API boundaries.
+- Test representative outputs, logs, and numerical tolerances on clean environments.
+
+## Practical Default
+
+Start with SAS when the hard problem is preserving or extending an existing validated SAS estate.
+
+Start with R when the hard problem is open statistical analysis, graphics, method packages, reproducible research, or collaborative reporting outside a proprietary platform.

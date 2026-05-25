@@ -208,13 +208,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 18 - SAS
 
-- [ ] Add a complete SAS language page.
-- [ ] Cover DATA step, PROC ecosystem, statistical analysis, clinical/regulatory use, macro language, datasets, enterprise tooling, licensing, and migration pressure toward Python/R where relevant.
-- [ ] Add SAS vs R comparison.
-- [ ] Add SAS vs Python for analytics comparison.
-- [ ] Add SAS to data-analysis/statistics and legacy-maintenance guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete SAS language page.
+- [x] Cover DATA step, PROC ecosystem, statistical analysis, clinical/regulatory use, macro language, datasets, enterprise tooling, licensing, and migration pressure toward Python/R where relevant.
+- [x] Add SAS vs R comparison.
+- [x] Add SAS vs Python for analytics comparison.
+- [x] Add SAS to data-analysis/statistics and legacy-maintenance guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 19 - LabVIEW
 

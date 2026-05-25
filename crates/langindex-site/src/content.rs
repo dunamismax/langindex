@@ -56,6 +56,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "ruby",
     "rust",
     "scala",
+    "sas",
     "scheme",
     "scratch",
     "solidity",
@@ -727,8 +728,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 58);
-        assert_eq!(content.comparisons.len(), 89);
+        assert_eq!(content.languages.len(), 59);
+        assert_eq!(content.comparisons.len(), 91);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -800,6 +801,7 @@ mod tests {
         assert!(content.language("objective-c").is_some());
         assert!(content.language("perl").is_some());
         assert!(content.language("scala").is_some());
+        assert!(content.language("sas").is_some());
         assert!(content.language("scheme").is_some());
         assert!(content.language("scratch").is_some());
         assert!(content.language("julia").is_some());
@@ -862,6 +864,8 @@ mod tests {
         assert!(content.comparison("plsql-vs-sql").is_some());
         assert!(content.comparison("transact-sql-vs-sql").is_some());
         assert!(content.comparison("transact-sql-vs-plsql").is_some());
+        assert!(content.comparison("sas-vs-python-for-analytics").is_some());
+        assert!(content.comparison("sas-vs-r").is_some());
         assert!(
             content
                 .comparison("plsql-vs-java-for-database-adjacent-business-logic")
@@ -948,6 +952,7 @@ mod tests {
         assert!(routes.contains("/languages/lua"));
         assert!(routes.contains("/languages/dart"));
         assert!(routes.contains("/languages/rust"));
+        assert!(routes.contains("/languages/sas"));
         assert!(routes.contains("/languages/scheme"));
         assert!(routes.contains("/languages/scratch"));
         assert!(routes.contains("/languages/fsharp"));
@@ -990,6 +995,8 @@ mod tests {
         assert!(routes.contains("/comparisons/plsql-vs-sql"));
         assert!(routes.contains("/comparisons/transact-sql-vs-sql"));
         assert!(routes.contains("/comparisons/transact-sql-vs-plsql"));
+        assert!(routes.contains("/comparisons/sas-vs-python-for-analytics"));
+        assert!(routes.contains("/comparisons/sas-vs-r"));
         assert!(routes.contains("/comparisons/plsql-vs-java-for-database-adjacent-business-logic"));
         assert!(routes.contains("/comparisons/mojo-vs-python"));
         assert!(routes.contains("/comparisons/mojo-vs-julia"));

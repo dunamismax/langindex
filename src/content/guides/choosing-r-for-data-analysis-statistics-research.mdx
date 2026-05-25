@@ -10,6 +10,7 @@ candidates:
   - julia
   - mojo
   - matlab
+  - sas
   - fortran
 sources:
   - title: The R Project for Statistical Computing
@@ -78,6 +79,18 @@ sources:
   - title: Pricing and Licensing
     url: https://www.mathworks.com/pricing-licensing.html
     publisher: MathWorks
+  - title: SAS Processing - The DATA Step
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a000992092.htm
+    publisher: SAS Support
+  - title: SAS Viya Platform
+    url: https://www.sas.com/en_us/software/viya.html
+    publisher: SAS
+  - title: Open Source Integration
+    url: https://www.sas.com/en_us/software/viya/open.html
+    publisher: SAS
+  - title: CDER Study Data Standards Research and Development
+    url: https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/cder-study-data-standards-research-and-development
+    publisher: U.S. Food and Drug Administration
   - title: Python Documentation
     url: https://docs.python.org/3/
     publisher: Python Software Foundation
@@ -129,7 +142,7 @@ Use R when:
 
 Do not make R own the whole system only because one step is statistical.
 
-Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer MATLAB when the work is engineering-analysis-first and depends on MathWorks toolboxes, Simulink, or licensed product workflows. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
+Prefer Python when the same codebase must own application logic, APIs, orchestration, ML pipelines, cloud SDKs, or general software packaging. Prefer SQL when the task is filtering, joining, grouping, updating, constraining, or securing relational data inside a database. Prefer MATLAB when the work is engineering-analysis-first and depends on MathWorks toolboxes, Simulink, or licensed product workflows. Prefer SAS when the durable asset is a validated enterprise or clinical analytics workflow built around DATA steps, PROC steps, macros, SAS data sets, logs, and licensed SAS infrastructure. Prefer Julia, C++, Fortran, Rust, or another compiled language when the core requirement is custom numerical kernels, native performance, or tight integration with existing high-performance libraries.
 
 R can still participate. The cleaner design is often to let R own the analysis or reporting layer while another language owns storage, services, scheduling, or production APIs.
 
@@ -150,6 +163,12 @@ This split is useful when R owns the statistical analysis and communication, Pyt
 MATLAB is nearby when a data or research workflow is centered on engineering computation rather than statistical analysis: matrix-heavy analysis, controls, signal processing, image processing, Simulink models, generated code, or MathWorks toolbox workflows.
 
 This split is useful when R owns the statistical report, plots, model summaries, or analyst-facing method, while MATLAB owns an engineering model or simulation that already exists in a MathWorks environment. It is risky when the project cannot manage MATLAB licenses, toolbox availability, Runtime versions, Simulink files, or release compatibility.
+
+## Use SAS For Validated Enterprise Analytics
+
+SAS is nearby when the analysis workflow is already governed by SAS programs, DATA steps, PROC steps, macro libraries, SAS data sets, ODS outputs, XPT files, logs, and licensed SAS infrastructure. This is most common in long-lived enterprise reporting, clinical trial programming, risk analytics, fraud analytics, and regulated batch workflows.
+
+This split is useful when R owns open analysis, graphics, method exploration, reports, or package-based research while SAS owns validated production deliverables or a regulated reporting boundary. It is risky when a migration treats SAS as only syntax and ignores macro expansion, data-set metadata, procedure options, logs, validation evidence, and submission expectations.
 
 ## Use Fortran At The Numerical Boundary
 
@@ -196,9 +215,10 @@ Before rewriting, check whether the workload can be changed:
 - Which numerical kernels belong in Julia because they need high-level scientific programming and specialized compiled performance?
 - Which accelerator kernels are narrow enough to evaluate in Mojo without moving statistical work out of R or orchestration work out of Python?
 - Which engineering models belong in MATLAB because Simulink, toolboxes, or MathWorks product support are the actual constraint?
+- Which validated analytics deliverables belong in SAS because the existing process, logs, macros, data sets, or regulatory review path are the actual constraint?
 
 ## Practical Default
 
 Start with R when statistical analysis, graphics, data frames, reports, Shiny apps, or research workflows are the center of the work.
 
-Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with Mojo only when a narrow AI, CPU, or GPU kernel has been measured and its beta-stage tooling and license terms are acceptable. Start with MATLAB when the work is engineering-computing-first and the core value is MathWorks toolboxes, Simulink, and licensed model-based workflows. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.
+Start with Python when the data work must live inside a broader software system. Start with Julia when the work is scientific-computing-first and the core value is a custom numerical algorithm, solver, simulation, or generic mathematical package. Start with Mojo only when a narrow AI, CPU, or GPU kernel has been measured and its beta-stage tooling and license terms are acceptable. Start with MATLAB when the work is engineering-computing-first and the core value is MathWorks toolboxes, Simulink, and licensed model-based workflows. Start with SAS when the core value is an existing validated SAS analytics estate, especially in enterprise or clinical reporting. Start with SQL when relational data should be reduced or protected inside the database. Use R at the boundary where it adds statistical method, visualization, reporting, or analyst productivity that the surrounding system does not need to own.

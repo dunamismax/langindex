@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, SAS, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -21,6 +21,7 @@ candidates:
   - abap
   - plsql
   - transact-sql
+  - sas
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -130,6 +131,18 @@ sources:
   - title: What Is SQL Server?
     url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
     publisher: Microsoft Learn
+  - title: SAS Processing - The DATA Step
+    url: https://support.sas.com/documentation/cdl/en/lrcon/62955/HTML/default/a000992092.htm
+    publisher: SAS Support
+  - title: Understanding and Using the Macro Facility
+    url: https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/mcrolref/n01mgvwt7f9smen159ad334ts4ha.htm
+    publisher: SAS Documentation
+  - title: SAS Viya Platform
+    url: https://www.sas.com/en_us/software/viya.html
+    publisher: SAS
+  - title: CDER Study Data Standards Research and Development
+    url: https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/cder-study-data-standards-research-and-development
+    publisher: U.S. Food and Drug Administration
 lastVerified: 2026-05-24
 ---
 
@@ -137,7 +150,7 @@ lastVerified: 2026-05-24
 
 Legacy maintenance is not a referendum on whether a language is fashionable. It is a risk-management problem around working software: behavior, data, dependencies, operators, tests, deployment, security, and the people who can safely change it.
 
-The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, or ABAP system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
+The first question is not "what would we write today?" The first question is "what must keep working while we learn enough to change it safely?" A stable Perl, PHP, Ruby, shell, C, C++, Java, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, or SAS system can be worth maintaining when the business behavior is known and the runtime can still be supported. A rewrite is justified only when it reduces a concrete risk that modernization in place cannot address.
 
 ## Inventory The System
 
@@ -223,6 +236,8 @@ ABAP systems usually sit inside SAP landscapes where code, data, customizing, au
 PL/SQL systems usually sit inside Oracle Database schemas where packages, procedures, triggers, grants, jobs, reports, and application clients depend on shared database behavior. Preserve package specifications, table dependencies, callers, transaction semantics, exception contracts, optimizer-sensitive SQL, and migration order before replacing PL/SQL behavior with Java, Python, SQL-only migrations, or external services. Modernization often means testing and versioning packages, reducing hidden trigger behavior, and moving non-database responsibilities outward while keeping true data-local rules in Oracle.
 
 Transact-SQL systems usually sit inside SQL Server or Azure SQL databases where stored procedures, functions, triggers, SQL Server Agent jobs, reports, permissions, temp tables, and application clients depend on shared database behavior. Preserve procedure contracts, table dependencies, callers, transaction semantics, error contracts, tempdb-heavy workflows, optimizer-sensitive SQL, and migration order before replacing T-SQL behavior with C#, Java, Python, SQL-only migrations, or external services. Modernization often means testing and versioning stored modules, reducing hidden trigger behavior, and moving non-database responsibilities outward while keeping true data-local rules in SQL Server.
+
+SAS systems usually sit inside enterprise analytics, clinical reporting, risk, fraud, government, or regulated batch workflows where DATA steps, PROC steps, macro libraries, SAS data sets, ODS outputs, logs, library assignments, and product licenses are part of the behavior. Preserve input data sets, variable metadata, formats, macro expansion, procedure options, generated outputs, logs, validation evidence, and downstream submission or reporting contracts before replacing SAS behavior with R, Python, SQL, or platform services. Modernization often means wrapping SAS jobs, separating orchestration from analytics, improving reproducibility, or migrating narrow outputs after characterization tests exist.
 
 ## Practical Default
 
