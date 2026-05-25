@@ -38,6 +38,7 @@ const KNOWN_LANGUAGE_SLUGS: &[&str] = &[
     "javascript",
     "julia",
     "kotlin",
+    "labview",
     "lua",
     "matlab",
     "micropython",
@@ -728,8 +729,8 @@ mod tests {
     #[test]
     fn all_current_content_loads_and_validates() {
         let content = SiteContent::load(&default_content_root()).expect("content validates");
-        assert_eq!(content.languages.len(), 59);
-        assert_eq!(content.comparisons.len(), 91);
+        assert_eq!(content.languages.len(), 60);
+        assert_eq!(content.comparisons.len(), 93);
         assert_eq!(content.guides.len(), 25);
         assert_eq!(content.concepts.len(), 40);
         assert!(content.language("abap").is_some());
@@ -769,6 +770,7 @@ mod tests {
         assert!(content.language("fsharp").is_some());
         assert!(content.language("groovy").is_some());
         assert!(content.language("hcl").is_some());
+        assert!(content.language("labview").is_some());
         assert!(
             content
                 .comparison("hcl-vs-bash-python-for-infrastructure-automation")
@@ -967,9 +969,12 @@ mod tests {
         assert!(routes.contains("/languages/solidity"));
         assert!(routes.contains("/languages/powershell"));
         assert!(routes.contains("/languages/prolog"));
+        assert!(routes.contains("/languages/labview"));
         assert!(routes.contains("/languages/verilog-systemverilog"));
         assert!(routes.contains("/languages/vhdl"));
         assert!(routes.contains("/languages/visual-basic"));
+        assert!(routes.contains("/comparisons/labview-vs-python-for-test-automation"));
+        assert!(routes.contains("/comparisons/labview-vs-c-for-hardware-control-systems"));
         assert!(routes.contains("/comparisons/delphi-vs-csharp"));
         assert!(routes.contains("/comparisons/visual-basic-vs-csharp"));
         assert!(routes.contains("/comparisons/fsharp-vs-csharp"));

@@ -1,7 +1,7 @@
 ---
 title: Choosing A Performance-Critical Language
 slug: choosing-a-performance-critical-language
-summary: A practical guide for choosing C++, Rust, D, Odin, Ada, C, Fortran, Julia, Mojo, MATLAB, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, or predictable resource behavior is part of the product requirement.
+summary: A practical guide for choosing C++, Rust, D, Odin, Ada, C, Fortran, Julia, Mojo, MATLAB, LabVIEW, Go, Java, or C# when latency, throughput, memory footprint, native integration, numerical throughput, hardware timing, or predictable resource behavior is part of the product requirement.
 audience: Developers choosing a language for performance-sensitive services, libraries, engines, real-time systems, scientific software, databases, media, trading, or native components.
 candidates:
   - cpp
@@ -14,6 +14,7 @@ candidates:
   - julia
   - mojo
   - matlab
+  - labview
   - go
   - java
   - csharp
@@ -69,6 +70,15 @@ sources:
   - title: About MATLAB Runtime
     url: https://www.mathworks.com/help/compiler/about-the-matlab-runtime.html
     publisher: MathWorks
+  - title: NI LabVIEW
+    url: https://www.ni.com/en/shop/labview
+    publisher: NI
+  - title: Real-Time System Components
+    url: https://www.ni.com/docs/en-US/bundle/labview-real-time-module/page/real-time-system-components-real-time-module.html
+    publisher: NI
+  - title: Programming FPGAs Overview
+    url: https://www.ni.com/docs/en-US/bundle/labview-fpga-module/page/programming-fpgas-overview-fpga-module.html
+    publisher: NI
   - title: Rust Programming Language
     url: https://www.rust-lang.org/
     publisher: Rust Foundation
@@ -126,7 +136,7 @@ sources:
   - title: Introduction to .NET
     url: https://learn.microsoft.com/en-us/dotnet/core/introduction
     publisher: Microsoft Learn
-lastVerified: 2026-05-24
+lastVerified: 2026-05-25
 ---
 
 ## Define Performance Before Choosing
@@ -176,6 +186,14 @@ Mojo should be treated conservatively. When this guide was verified, the latest 
 Choose MATLAB when the performance-sensitive work is engineering or scientific computation and the fastest credible path is through MathWorks' matrix language, optimized built-ins, domain toolboxes, Simulink workflows, Parallel Computing Toolbox, or MATLAB Coder for supported generated C/C++ targets.
 
 MATLAB works best when the team can profile real workloads, keep array operations clear, control toolbox and release versions, and accept license-managed deployment. It is usually a poor fit when the measured requirement is a small native binary, open redistribution, hard real-time behavior outside supported generated-code paths, or an application platform unrelated to engineering analysis.
+
+## When LabVIEW Fits
+
+Choose LabVIEW when the performance constraint is not a general benchmark but an engineering test or control boundary: instrument throughput, deterministic RT target behavior, hardware-triggered acquisition, FPGA-timed I/O, synchronized channels, or low-latency decisions close to NI hardware.
+
+LabVIEW is strongest when the measured path can use NI drivers, supported RT targets, supported FPGA targets, built-in analysis blocks, and graphical tooling that lets engineers inspect and tune the system near the physical process. It is usually a poor fit when the performance-critical asset is a portable library, server, CLI, game engine, database, open package, or native component that should be built and reviewed in ordinary text-language workflows.
+
+Measure the exact target. A host LabVIEW application, LabVIEW Real-Time VI, and LabVIEW FPGA VI have different timing guarantees, deployment steps, and bottlenecks. The relevant benchmark should include driver versions, module compatibility, target hardware, I/O timing, acquisition buffering, logging, UI update rate, and operator workflow.
 
 ## When Rust Fits
 
@@ -237,4 +255,4 @@ Start with the highest-level language and runtime that meet the measured constra
 
 Use C++ or Rust for native components where layout, allocation, latency, or platform integration are central. Use D when the work is native and C/C++ adjacent but can accept a GC-backed default runtime and benefits from CTFE, ranges, Phobos, and DUB. Use Odin when the hot path is data-oriented native code and the team accepts manual memory management plus a younger ecosystem. Use Ada when the performance-sensitive component is also high-integrity, embedded, real-time, or certification-sensitive. Use C for narrow ABI, firmware, or platform layers. Use Go, Java, or C# for services when managed runtime behavior is acceptable and the ecosystem reduces delivery risk.
 
-Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use Mojo when the measured constraint is a narrow CPU/GPU kernel or MAX-adjacent accelerator boundary and beta-stage language risk is acceptable. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core is the product.
+Use Fortran when the measured constraint is numerical scientific computation and the team can maintain the compiler, math-library, and validation environment. Use Julia when the measured constraint is custom scientific computing but high-level generic code and interactive iteration are also central. Use Mojo when the measured constraint is a narrow CPU/GPU kernel or MAX-adjacent accelerator boundary and beta-stage language risk is acceptable. Use MATLAB when the measured constraint sits inside an engineering workflow where MathWorks toolboxes, Simulink, or supported generated-code paths are the real accelerant. Use LabVIEW when the measured constraint is an NI-supported test, measurement, RT, or FPGA boundary where hardware integration is the accelerant. Keep orchestration, reporting, APIs, and product code in a higher-level ecosystem unless the numerical core or hardware-timed path is the product.

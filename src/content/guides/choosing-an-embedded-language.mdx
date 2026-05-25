@@ -1,7 +1,7 @@
 ---
 title: Choosing an Embedded Language
 slug: choosing-an-embedded-language
-summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, MicroPython, VHDL, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
+summary: A practical guide for choosing C, Rust, Ada, C++, Zig, Odin, MicroPython, LabVIEW, VHDL, Verilog/SystemVerilog, or another language for firmware, embedded systems, and hardware-adjacent work by target support, runtime constraints, vendor tooling, safety needs, and maintenance risk.
 audience: Developers choosing a language for firmware, microcontrollers, board support packages, drivers, RTOS tasks, and constrained devices.
 candidates:
   - assembly
@@ -12,6 +12,7 @@ candidates:
   - zig
   - odin
   - micropython
+  - labview
   - vhdl
   - verilog-systemverilog
 sources:
@@ -36,6 +37,18 @@ sources:
   - title: IEEE 1364-2005 - IEEE Standard for Verilog Hardware Description Language
     url: https://standards.ieee.org/ieee/1364/3641/
     publisher: IEEE Standards Association
+  - title: NI LabVIEW
+    url: https://www.ni.com/en/shop/labview
+    publisher: NI
+  - title: Real-Time System Components
+    url: https://www.ni.com/docs/en-US/bundle/labview-real-time-module/page/real-time-system-components-real-time-module.html
+    publisher: NI
+  - title: Programming FPGAs Overview
+    url: https://www.ni.com/docs/en-US/bundle/labview-fpga-module/page/programming-fpgas-overview-fpga-module.html
+    publisher: NI
+  - title: LabVIEW Compatibility with the LabVIEW FPGA and Real-Time Modules
+    url: https://www.ni.com/en/support/documentation/compatibility/25/labview-compatibility-with-the-labview-fpga-and-real-time-modules.html
+    publisher: NI
   - title: Vivado Design Suite User Guide - Synthesis
     url: https://docs.amd.com/v/u/en-US/ug901-vivado-synthesis
     publisher: AMD
@@ -123,7 +136,7 @@ sources:
   - title: MicroPython Support Tiers
     url: https://docs.micropython.org/en/v1.28.0/develop/support_tiers.html
     publisher: MicroPython
-lastVerified: 2026-05-24
+lastVerified: 2026-05-25
 ---
 
 ## Start With The Board And Toolchain
@@ -170,6 +183,20 @@ Use VHDL or Verilog/SystemVerilog when:
 VHDL is often attractive when strong typing, explicit interfaces, packages, records, and reviewable long-lived RTL matter. Verilog/SystemVerilog is often attractive when the existing flow is centered on SystemVerilog RTL, assertions, DPI, constrained random verification, or UVM.
 
 Do not use VHDL, Verilog, or SystemVerilog for ordinary microcontroller application code. If the logic runs on a processor, choose C, Rust, Ada, C++, assembly, Zig, Odin, or another software language. If the logic becomes hardware, treat the HDL, constraints, simulator, synthesizer, and board or ASIC flow as the product boundary.
+
+## When LabVIEW Fits
+
+LabVIEW belongs in embedded discussions when the work is really an engineering test, measurement, data-acquisition, hardware-in-the-loop, or NI-supported control system rather than portable firmware for an arbitrary microcontroller.
+
+Use LabVIEW when:
+
+- NI hardware, drivers, PXI, CompactDAQ, CompactRIO, FlexRIO, LabVIEW Real-Time, or LabVIEW FPGA already define the target environment.
+- The team needs graphical dataflow, live signal inspection, engineering front panels, and fast instrument integration.
+- A supported RT target can own deterministic host-side control, or a supported FPGA target can own custom I/O, triggering, synchronization, or signal-processing logic.
+- The deployment process can pin LabVIEW, Real-Time, FPGA, driver, toolkit, and hardware versions.
+- The source-control workflow includes LabVIEW-aware compare, merge, and source-only VI practices.
+
+Do not treat LabVIEW as a replacement for startup code, vendor SDK layers, device drivers, bootloaders, or portable firmware on unsupported boards. In a mixed system, LabVIEW often sits above C firmware or beside VHDL/SystemVerilog FPGA logic as the test, control, or operator-facing layer.
 
 ## When C Is The Baseline
 
@@ -291,6 +318,8 @@ Start with Assembly only for the small target-owned layer that must run before o
 
 Start with VHDL or Verilog/SystemVerilog only when the work is hardware RTL or verification for an FPGA, ASIC, or SoC block. HDLs are adjacent to embedded firmware, but they are not firmware languages.
 
+Start with LabVIEW when the embedded-adjacent problem is an NI-supported measurement, control, HIL, RT, or FPGA application where instrument integration and operator workflow are central.
+
 Start with C when the board, SDK, RTOS, debugger, and examples are C-first and the firmware must match vendor expectations.
 
 Start with Rust when new firmware needs stronger ownership and type guarantees, the target support is solid, and the team can validate the embedded Rust toolchain early.
@@ -305,4 +334,4 @@ Consider Odin for data-oriented embedded-adjacent code, host tools, and applicat
 
 Consider MicroPython for supported-board prototypes, education, diagnostics, and high-level device scripts when REPL-driven iteration matters more than deterministic low-level control.
 
-For mixed systems, keep boundaries narrow. It is common to use VHDL or Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, C++ for higher-level device logic or shared libraries, and MicroPython for scripts or diagnostics above a firmware base. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, and ABI contracts explicit at every boundary.
+For mixed systems, keep boundaries narrow. It is common to use VHDL or Verilog/SystemVerilog for FPGA or ASIC logic, C for startup and vendor SDK layers, Rust for memory-sensitive new modules, Ada or SPARK for high-integrity control logic, C++ for higher-level device logic or shared libraries, LabVIEW for NI-centered test and control rigs, and MicroPython for scripts or diagnostics above a firmware base. Zig or Odin may fit narrow tools or modules once target support is proved. The important part is making ownership, allocation, interrupt safety, tasking, hardware/software register contracts, target timing, and ABI contracts explicit at every boundary.

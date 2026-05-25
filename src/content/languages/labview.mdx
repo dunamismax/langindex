@@ -1,0 +1,190 @@
+---
+title: LabVIEW
+slug: labview
+status: active
+summary: LabVIEW is NI's graphical dataflow programming environment for test, measurement, automation, and control systems, centered on virtual instruments, block diagrams, hardware integration, and optional real-time and FPGA targets.
+firstReleased: 1986
+creators:
+  - Jeff Kodosky
+  - James Truchard
+  - National Instruments
+paradigms:
+  - graphical programming
+  - dataflow
+  - test automation
+  - measurement and control
+  - visual programming
+  - hardware integration
+typing:
+  discipline: static graphical dataflow
+  strength: wires, terminals, controls, indicators, clusters, arrays, and LabVIEW data types carry type information through block diagrams, with coercion and tool-specific behavior visible in the development environment
+memory:
+  model: LabVIEW-managed execution, buffers, dataflow values, queues, references, target-specific real-time constraints, and FPGA resources rather than manual heap allocation in ordinary diagrams
+runtime:
+  model: NI LabVIEW development and run-time environments for host applications, with optional LabVIEW Real-Time targets and LabVIEW FPGA compilation for supported NI hardware
+officialSite: https://www.ni.com/en/shop/labview
+packageManagers:
+  - LabVIEW Package Manager
+  - NI Package Manager
+  - VIPM
+  - NI instrument drivers
+  - LabVIEW Real-Time Module
+  - LabVIEW FPGA Module
+comparedWith:
+  - python
+  - c
+  - matlab
+  - vhdl
+  - verilog-systemverilog
+bestFor:
+  - Automated test, measurement, validation, laboratory, production, and hardware-in-the-loop systems where engineers need to connect instruments, acquire signals, analyze data, display results, and operate devices quickly.
+  - NI-centered hardware stacks such as PXI, CompactDAQ, CompactRIO, FlexRIO, DAQmx, VISA, instrument drivers, LabVIEW Real-Time, and LabVIEW FPGA.
+  - Graphical dataflow programs where the front panel, block diagram, live probes, data viewers, and engineering UI are part of how domain experts develop and debug the system.
+  - Real-time control or FPGA-adjacent measurement systems when the exact NI target, module versions, drivers, timing requirements, and deployment process are proven early.
+poorFit:
+  - General-purpose web services, CLIs, libraries, open source infrastructure, or product backends where ordinary text languages, package registries, CI tools, and code review workflows dominate.
+  - Projects that must be cheap and fully reproducible for every public contributor without proprietary development tools, commercial modules, hardware drivers, or NI licenses.
+  - Large multi-developer software systems that assume plain-text diff, merge, review, refactoring, dependency management, and headless build workflows without LabVIEW-specific process.
+  - Safety-critical or hard-real-time systems that treat LabVIEW, Real-Time, or FPGA targets as sufficient evidence without timing analysis, requirements traceability, verification, target tests, and toolchain qualification work.
+sources:
+  - title: NI LabVIEW
+    url: https://www.ni.com/en/shop/labview
+    publisher: NI
+  - title: LabVIEW Download
+    url: https://www.ni.com/en/support/downloads/software-products/download.labview.html
+    publisher: NI
+  - title: Jeff Kodosky
+    url: https://www.invent.org/inductees/jeff-kodosky
+    publisher: National Inventors Hall of Fame
+  - title: Block Diagram Objects
+    url: https://www.ni.com/docs/en-US/bundle/labview/page/block-diagram-objects.html
+    publisher: NI
+  - title: Building the Front Panel
+    url: https://www.ni.com/docs/en-US/bundle/labview/page/building-the-front-panel.html
+    publisher: NI
+  - title: Introduction to LabVIEW Channel Wires
+    url: https://www.ni.com/en/support/documentation/supplemental/16/channel-wires.html
+    publisher: NI
+  - title: Real-Time System Components
+    url: https://www.ni.com/docs/en-US/bundle/labview-real-time-module/page/real-time-system-components-real-time-module.html
+    publisher: NI
+  - title: Programming FPGAs Overview
+    url: https://www.ni.com/docs/en-US/bundle/labview-fpga-module/page/programming-fpgas-overview-fpga-module.html
+    publisher: NI
+  - title: LabVIEW Compatibility with the LabVIEW FPGA and Real-Time Modules
+    url: https://www.ni.com/en/support/documentation/compatibility/25/labview-compatibility-with-the-labview-fpga-and-real-time-modules.html
+    publisher: NI
+  - title: Managing LabVIEW VI and Application Revision History
+    url: https://www.ni.com/en/support/documentation/supplemental/21/managing-labview-vi-and-application-revision-history.html
+    publisher: NI
+  - title: Facilitating Source Control by Separating Compiled Code from VIs and Other File Types
+    url: https://www.ni.com/docs/en-US/bundle/labview/page/facilitating-source-control-by-separating-compiled-code-from-vis-and-other-file-types.html
+    publisher: NI
+  - title: Software Engineering with LabVIEW
+    url: https://www.ni.com/en/support/documentation/supplemental/09/software-engineering-with-labview.html
+    publisher: NI
+lastVerified: 2026-05-25
+---
+
+## Origin And Scope
+
+LabVIEW is short for Laboratory Virtual Instrumentation Engineering Workbench. It is a graphical programming environment and language ecosystem created at National Instruments for test, measurement, and control work. The National Inventors Hall of Fame credits Jeff Kodosky and James Truchard with introducing LabVIEW in 1986 as a graphical language for user-defined testing, measurement, and control systems.
+
+The language most LabVIEW developers use is commonly called G. Instead of writing text files first, developers build virtual instruments, or VIs, from front panels, block diagrams, terminals, wires, nodes, structures, subVIs, controls, and indicators. That makes LabVIEW unusual among programming-language choices: its strongest value is not just syntax, but the combined environment for acquiring signals, integrating hardware, displaying data, debugging diagrams, and deploying to supported NI targets.
+
+LabVIEW should be evaluated as an engineering system. It can be highly productive when the system is a measurement rig, automated validation bench, hardware-in-the-loop setup, lab instrument, production tester, or control application. It is a poor default when the durable asset is a general software service, open package, public library, or product backend where plain-text code, ordinary CI, and broad contributor access are the main constraints.
+
+## Dataflow And Virtual Instruments
+
+LabVIEW programs are called virtual instruments because they commonly combine an instrument-like user interface with executable logic. The front panel holds controls and indicators: knobs, buttons, graphs, numeric inputs, LEDs, charts, and other UI elements. The block diagram is the graphical source for the VI, where terminals, functions, subVIs, structures, constants, and wires define the computation.
+
+Dataflow is the core execution idea. A node can execute when its required inputs are available, and it produces outputs that flow along wires. Layout does not create execution order by itself; wire dependencies do. That gives LabVIEW a natural visual model for pipelines, acquisition loops, signal processing, control paths, and parallel activities, but it also means reviewers must understand data dependencies rather than reading top-to-bottom statements.
+
+Related concepts: [Compilation Targets](/concepts/compilation-targets/), [Build Systems](/concepts/build-systems/), [Testing Cultures](/concepts/testing-cultures/), [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), and [Documentation Cultures](/concepts/documentation-cultures/).
+
+## Typing, Wires, And Parallelism
+
+LabVIEW is not dynamically typed in the Python or JavaScript sense. Terminals and wires carry data types, and broken wires are a visible development-time signal that a diagram is inconsistent. Arrays, clusters, numerics, Booleans, strings, paths, waveforms, queues, references, errors, and user-defined types shape how diagrams connect.
+
+Parallelism follows from dataflow. Independent branches of a diagram can run concurrently, and LabVIEW exposes engineering-oriented tools for loops, timing, events, queues, notifiers, and asynchronous communication. Channel wires make some inter-loop communication patterns explicit, which is useful for producer/consumer and parallel acquisition or processing designs.
+
+This model can be productive for measurement systems because the diagram often resembles the real signal path. It can also become hard to maintain when diagrams grow too large, wires cross heavily, state is hidden in globals or references, error clusters are ignored, or developers use graphical structure as a substitute for modular architecture.
+
+## Hardware Integration
+
+LabVIEW's strongest fit is hardware-centered work. NI presents LabVIEW as a graphical programming environment for test systems, with connectivity to instruments, engineering UI, analysis functions, and extensive driver support. The ecosystem includes NI-DAQmx, NI-VISA, PXI, CompactDAQ, CompactRIO, FlexRIO, instrument drivers, TestStand integration, VeriStand, DIAdem, and many product-specific modules.
+
+That integration matters when the job is to connect instruments, acquire analog or digital signals, synchronize channels, trigger measurements, process waveforms, log results, and provide an operator interface. A Python, C, or C# application can also control hardware, but it usually needs more assembly of drivers, UI framework, packaging, logging, deployment, and test-executive boundaries.
+
+The tradeoff is coupling. A LabVIEW system may depend on a specific LabVIEW version, driver set, NI package set, module version, target OS, hardware chassis, FPGA target, license entitlement, and installed toolkit mix. Reproducibility should record those versions the same way a text-language project records compiler, package, runtime, and operating-system assumptions.
+
+## Real-Time And FPGA Targets
+
+LabVIEW Real-Time extends LabVIEW for deterministic VIs deployed to RT targets. The host computer runs LabVIEW and the Real-Time Module for development; VIs can then be downloaded to RT hardware running the LabVIEW RT Engine. NI documentation describes the RT Engine as running on a real-time operating system and avoiding virtual memory on RT targets because virtual memory can make performance unpredictable.
+
+LabVIEW FPGA is a different target story. The FPGA Module lets developers create FPGA VIs for supported NI FPGA targets, compile them, and download them to hardware. NI documents FPGA use cases such as custom I/O, onboard decision making, resource synchronization, parallel execution, and deterministic execution. That makes LabVIEW FPGA relevant to high-speed measurement, custom triggering, signal processing, and hardware-timed control.
+
+Do not blur these targets together. A host VI, RT VI, and FPGA VI have different constraints, deployment steps, timing behavior, supported functions, debugging tools, and failure modes. Compatibility between LabVIEW, the Real-Time Module, FPGA Module, device drivers, and hardware should be checked before architecture decisions harden.
+
+## Versioning And Team Maintenance
+
+LabVIEW can be used in source control, but teams need LabVIEW-aware discipline. VIs are graphical files, and many common review assumptions from text languages do not transfer directly. NI provides graphical compare and merge tooling, source-control integration, source-only VI options, revision history, and guidance for larger applications, but those tools must be part of the team's daily workflow.
+
+Source-only VIs are important because a VI can contain both graphical source and compiled code. NI documents the option to separate compiled code from source so changes in subVIs do not force unrelated callers to appear changed in source control. That is a practical maintenance choice for teams trying to reduce noisy diffs and version-upgrade churn.
+
+Maintainable LabVIEW projects usually write down:
+
+- The supported LabVIEW, module, driver, and toolkit versions.
+- Which files are source controlled and which generated outputs are ignored.
+- Whether compiled code is separated from source.
+- How graphical compare and merge are configured.
+- Naming, connector pane, error cluster, type definition, project library, and subVI conventions.
+- Build, packaging, deployment, and target-provisioning steps.
+- How headless or scheduled builds use the LabVIEW command line or build server.
+
+## Syntax Example
+
+LabVIEW source is graphical, so a text code block is only an approximation. A small acquisition-and-threshold VI might look conceptually like this:
+
+```text
+[DAQmx Read] -> [Filter Signal] -> [Mean] -> [Greater Than Limit] -> [Pass? indicator]
+      |              |                |
+      v              v                v
+[Waveform Graph] [Log TDMS]      [Error cluster out]
+```
+
+The real implementation would be a block diagram with typed wires, configured DAQmx tasks, error clusters, timing, front-panel controls for limits and channels, and possibly producer/consumer loops if acquisition, display, and logging need to run independently.
+
+## Best-Fit Use Cases
+
+LabVIEW is a strong fit when:
+
+- The central problem is automated test, measurement, validation, data acquisition, instrument control, hardware-in-the-loop, or engineering-lab automation.
+- NI hardware, drivers, PXI, CompactDAQ, CompactRIO, FlexRIO, TestStand, VeriStand, Real-Time, or FPGA modules are already the operational center.
+- Domain engineers need to inspect live signals, tune parameters, debug visually, and ship operator-facing engineering UIs quickly.
+- Hardware timing, triggering, synchronization, and driver integration matter more than broad open source package reach.
+- The organization can standardize LabVIEW versions, source-control practices, build machines, driver installs, and deployment targets.
+
+## Poor-Fit Or Risky Use Cases
+
+LabVIEW is a poor default when:
+
+- The product is a public library, web service, CLI, backend, cloud platform, or infrastructure tool whose users expect ordinary text-language workflows.
+- Every contributor must be able to build, test, and review the system without proprietary tools, commercial modules, or specialized hardware.
+- The team lacks LabVIEW review practices and expects Git text diff or web review alone to be enough.
+- The project needs broad package ecosystems, container-native deployment, server-side observability, conventional API frameworks, or platform portability outside the NI stack.
+- Safety-critical or hard-real-time claims are made without target-specific evidence, timing tests, requirements traceability, and toolchain controls.
+
+## Interoperability And Migration
+
+LabVIEW can interoperate with other languages and libraries, including Python, MATLAB, C/C++, .NET, DLLs, shared libraries, and instrument drivers. That makes mixed systems common: LabVIEW may own the bench UI and hardware orchestration, while Python handles data analysis, C owns a device library, TestStand owns production sequencing, and a database or service stores results.
+
+Migration away from LabVIEW should start with system behavior, not diagram shape. Inventory hardware, drivers, tasks, calibration, timing, synchronization, UI workflows, file formats, build specifications, test sequences, target deployments, operator procedures, and verification evidence. Then decide which boundary should move first. Rewriting a mature tester in Python or C# can be sensible, but only if the hardware and timing contracts are preserved.
+
+Migration into LabVIEW should be equally deliberate. If the target is mostly a software service with one instrument call, a Python or C# service may be simpler. If the target is a bench where acquisition, triggering, display, and operator workflow dominate, LabVIEW can be the more maintainable center.
+
+## Comparison Notes
+
+[LabVIEW vs Python For Test Automation](/comparisons/labview-vs-python-for-test-automation/) compares LabVIEW with Python's open scripting and automation ecosystem. Python is usually stronger for software integration, CI, APIs, data pipelines, and low-cost public collaboration. LabVIEW is usually stronger when the hard problem is an NI-centered measurement bench with live engineering UI and supported hardware targets.
+
+[LabVIEW vs C For Hardware And Control Systems](/comparisons/labview-vs-c-for-hardware-control-systems/) compares LabVIEW with C at hardware boundaries. C is the baseline for firmware, drivers, portable native libraries, and narrow embedded layers. LabVIEW earns its place when the system is an engineering test/control application where graphical dataflow, drivers, front panels, Real-Time, or FPGA targets reduce total system work.

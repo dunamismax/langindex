@@ -1,13 +1,14 @@
 ---
 title: Choosing A Safety-Critical Language
 slug: choosing-a-safety-critical-language
-summary: A practical guide for choosing Ada, SPARK, C, C++, Rust, VHDL, Verilog/SystemVerilog, or another language for safety-critical and high-integrity software or hardware by certification context, target runtime, tool qualification, analyzability, and team evidence.
+summary: A practical guide for choosing Ada, SPARK, C, C++, Rust, LabVIEW, VHDL, Verilog/SystemVerilog, or another language for safety-critical and high-integrity software or hardware by certification context, target runtime, tool qualification, analyzability, and team evidence.
 audience: Teams choosing implementation languages for software or hardware where defects can create safety, security, regulatory, or mission consequences.
 candidates:
   - ada
   - rust
   - c
   - cpp
+  - labview
   - vhdl
   - verilog-systemverilog
 sources:
@@ -62,7 +63,19 @@ sources:
   - title: UVM Standard Universal Verification Methodology
     url: https://www.verilog.org/downloads/standards/uvm
     publisher: Accellera Systems Initiative
-lastVerified: 2026-05-24
+  - title: NI LabVIEW
+    url: https://www.ni.com/en/shop/labview
+    publisher: NI
+  - title: Software Engineering with LabVIEW
+    url: https://www.ni.com/en/support/documentation/supplemental/09/software-engineering-with-labview.html
+    publisher: NI
+  - title: Real-Time System Components
+    url: https://www.ni.com/docs/en-US/bundle/labview-real-time-module/page/real-time-system-components-real-time-module.html
+    publisher: NI
+  - title: Programming FPGAs Overview
+    url: https://www.ni.com/docs/en-US/bundle/labview-fpga-module/page/programming-fpgas-overview-fpga-module.html
+    publisher: NI
+lastVerified: 2026-05-25
 ---
 
 ## Start With The Assurance Case
@@ -87,6 +100,14 @@ Choose VHDL or Verilog/SystemVerilog only when the safety-critical artifact is d
 In high-integrity hardware work, the safety case must cover more than the HDL source. It should name the synthesizable subset, coding standard, simulator, linter, formal tools, synthesis flow, constraints, clock and reset policy, CDC checks, timing closure, equivalence checks, fault handling, verification plan, traceability, tool qualification expectations, and target evidence from simulation, formal analysis, emulation, FPGA testing, or silicon validation.
 
 VHDL often fits organizations that value strong typing, explicit interfaces, packages, reviewable RTL, and established aerospace or defense VHDL standards. SystemVerilog assertions, coverage, constrained random testing, and UVM can support verification evidence, especially for larger ASIC and SoC projects. Neither path removes the need for independent review, requirements traceability, deterministic reset behavior, safe-state design, or hardware-in-the-loop evidence.
+
+## When LabVIEW Fits
+
+Evaluate LabVIEW when the high-integrity artifact is a test stand, validation rig, hardware-in-the-loop system, measurement application, or NI-supported control system whose safety relevance comes from the evidence it produces or the equipment it operates.
+
+LabVIEW can be useful when graphical dataflow, front panels, instrument drivers, LabVIEW Real-Time, or LabVIEW FPGA targets reduce integration risk and make the physical system easier to inspect. That is different from treating LabVIEW as a certification shortcut. The safety case still has to cover requirements, hazards, timing, calibration, target hardware, driver versions, LabVIEW/module versions, source-control process, review records, tests, deployment, operator procedures, and tool qualification expectations where applicable.
+
+Do not use LabVIEW as a blanket replacement for Ada, SPARK, C, C++, Rust, VHDL, or SystemVerilog in safety-critical implementation layers. Use it where the supported NI stack is the credible system boundary, and keep firmware, RTL, device drivers, and certified kernels in languages and toolchains that match their assurance evidence.
 
 ## When Ada Fits
 
@@ -153,3 +174,5 @@ Start with C++ when the ecosystem is decisive and the organization can enforce a
 Evaluate Rust when memory safety is a central hazard and the target/toolchain evidence can be proved early. Do not treat any language as sufficient by itself; the safety case is the product.
 
 Use VHDL or Verilog/SystemVerilog when the safety-critical asset is hardware RTL or hardware verification, and keep the boundary explicit between synthesized logic and processor software.
+
+Use LabVIEW when the safety-relevant boundary is an NI-supported test, measurement, HIL, RT, or FPGA system and the organization can produce evidence for the exact toolchain, target, timing, and operating process.

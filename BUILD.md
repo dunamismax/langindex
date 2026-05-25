@@ -218,13 +218,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 19 - LabVIEW
 
-- [ ] Add a complete LabVIEW page if visual/dataflow languages are in scope.
-- [ ] Cover graphical dataflow programming, virtual instruments, measurement/control systems, hardware integration, NI ecosystem, real-time/FPGA targets, versioning challenges, and team-maintenance constraints.
-- [ ] Add LabVIEW vs Python for test automation comparison.
-- [ ] Add LabVIEW vs C for hardware/control systems comparison if source-backed.
-- [ ] Add LabVIEW to embedded, performance-critical where appropriate, and safety-critical guides with careful scope language.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete LabVIEW page if visual/dataflow languages are in scope.
+- [x] Cover graphical dataflow programming, virtual instruments, measurement/control systems, hardware integration, NI ecosystem, real-time/FPGA targets, versioning challenges, and team-maintenance constraints.
+- [x] Add LabVIEW vs Python for test automation comparison.
+- [x] Add LabVIEW vs C for hardware/control systems comparison if source-backed.
+- [x] Add LabVIEW to embedded, performance-critical where appropriate, and safety-critical guides with careful scope language.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 20 - CFML
 
