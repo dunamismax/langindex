@@ -1,7 +1,7 @@
 ---
 title: Choosing A Legacy Maintenance Language
 slug: choosing-a-legacy-maintenance-language
-summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, and related languages.
+summary: A decision guide for maintaining, modernizing, wrapping, or replacing older production systems in Perl, PHP, Ruby, shell, C, C++, Java, Python, Objective-C, Fortran, COBOL, Delphi, Visual Basic, VBA, ABAP, PL/SQL, Transact-SQL, and related languages.
 audience: Maintainers deciding whether to keep an older language runtime, modernize in place, wrap it with safer boundaries, or migrate behavior to another platform.
 candidates:
   - perl
@@ -20,6 +20,7 @@ candidates:
   - vba
   - abap
   - plsql
+  - transact-sql
 sources:
   - title: The Perl Programming Language
     url: https://www.perl.org/
@@ -123,6 +124,12 @@ sources:
   - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
     url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
     publisher: Oracle
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
 lastVerified: 2026-05-24
 ---
 
@@ -214,6 +221,8 @@ VBA systems usually sit inside Office documents, Excel workbooks, Access databas
 ABAP systems usually sit inside SAP landscapes where code, data, customizing, authorizations, transports, and business processes are coupled. Preserve transactions, reports, background jobs, SAP data semantics, released API boundaries, transport paths, and functional ownership before replacing ABAP behavior with Java, SQL, integration middleware, or external services. For SAP S/4HANA and cloud modernization, check whether custom code can move toward ABAP Cloud, RAP, CDS, ADT, and released SAP APIs instead of depending on old internals.
 
 PL/SQL systems usually sit inside Oracle Database schemas where packages, procedures, triggers, grants, jobs, reports, and application clients depend on shared database behavior. Preserve package specifications, table dependencies, callers, transaction semantics, exception contracts, optimizer-sensitive SQL, and migration order before replacing PL/SQL behavior with Java, Python, SQL-only migrations, or external services. Modernization often means testing and versioning packages, reducing hidden trigger behavior, and moving non-database responsibilities outward while keeping true data-local rules in Oracle.
+
+Transact-SQL systems usually sit inside SQL Server or Azure SQL databases where stored procedures, functions, triggers, SQL Server Agent jobs, reports, permissions, temp tables, and application clients depend on shared database behavior. Preserve procedure contracts, table dependencies, callers, transaction semantics, error contracts, tempdb-heavy workflows, optimizer-sensitive SQL, and migration order before replacing T-SQL behavior with C#, Java, Python, SQL-only migrations, or external services. Modernization often means testing and versioning stored modules, reducing hidden trigger behavior, and moving non-database responsibilities outward while keeping true data-local rules in SQL Server.
 
 ## Practical Default
 

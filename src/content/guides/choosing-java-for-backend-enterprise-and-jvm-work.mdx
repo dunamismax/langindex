@@ -16,6 +16,7 @@ candidates:
   - typescript
   - vba
   - abap
+  - transact-sql
   - plsql
 sources:
   - title: The Java Language Specification, Java SE 26 Edition
@@ -48,6 +49,12 @@ sources:
   - title: Oracle AI Database Concepts - Server-Side Programming
     url: https://docs.oracle.com/en/database/oracle/oracle-database/26/cncpt/server-side-programming.html
     publisher: Oracle
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
   - title: The Go Programming Language Specification
     url: https://go.dev/ref/spec
     publisher: Go Project
@@ -150,6 +157,8 @@ ABAP enters enterprise decisions as a SAP platform language rather than a genera
 
 PL/SQL enters enterprise decisions as an Oracle Database-resident language rather than a general JVM competitor. If logic belongs inside Oracle Database packages, procedures, triggers, privileges, and transaction-local data behavior, PL/SQL may be the right owner. If the work is a service, API, external integration, queue consumer, or cross-system workflow around Oracle, Java is usually the clearer owner and should call database APIs deliberately instead of duplicating hidden database rules.
 
+Transact-SQL enters enterprise decisions as a SQL Server and Azure SQL-resident language rather than a general JVM competitor. If logic belongs inside SQL Server stored procedures, functions, triggers, permissions, tempdb-backed data-local workflows, and transaction-local behavior, T-SQL may be the right owner. If the work is a service, API, event consumer, or cross-system workflow around SQL Server, Java is usually the clearer owner and should call database APIs deliberately instead of burying application architecture in stored procedures.
+
 ## Choose Java In The JVM Ecosystem When
 
 Java is the baseline JVM language. That matters for libraries, platform code, build plugins, annotation processors, infrastructure APIs, and teams that need code to be readable by the broadest set of JVM developers.
@@ -210,3 +219,5 @@ Keep VBA only where desktop Office is still the controlled runtime for an existi
 Keep ABAP where SAP business semantics and lifecycle management are the point. Use Java around SAP when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call SAP rather than pretending to be SAP.
 
 Keep PL/SQL where Oracle Database transaction semantics, package APIs, triggers, and data-local behavior are the point. Use Java around Oracle when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call the database rather than burying application architecture inside stored procedures.
+
+Keep Transact-SQL where SQL Server or Azure SQL transaction semantics, stored procedures, triggers, temp tables, and database-local behavior are the point. Use Java around SQL Server when the boundary is explicit: services, adapters, orchestration, APIs, event consumers, and user-facing systems that call the database rather than duplicating or hiding database-owned rules.

@@ -25,6 +25,7 @@ officialSite: https://www.iso.org/standard/76583.html
 packageManagers: []
 comparedWith:
   - plsql
+  - transact-sql
   - python
   - java
   - csharp
@@ -76,7 +77,7 @@ sources:
   - title: Db2 SQL
     url: https://www.ibm.com/docs/en/db2/12.1.0?topic=reference-sql
     publisher: IBM
-lastVerified: 2026-05-15
+lastVerified: 2026-05-24
 ---
 
 ## Origin And Scope
@@ -235,5 +236,7 @@ For production, the database engine is the implementation. SQL competence theref
 Python is the nearby choice for data work when the question is orchestration, notebooks, files, APIs, machine learning libraries, or general-purpose scripting. SQL is the nearby choice when the work is relational querying, integrity constraints, and database-side execution.
 
 Java, C#, TypeScript, JavaScript, Go, Python, and other application languages usually call SQL rather than replace it. The application language owns process structure, APIs, user workflows, service boundaries, and integration code. SQL owns relational data access, schema contracts, constraints, and transaction-local work.
+
+Transact-SQL is the nearby Microsoft SQL Server and Azure SQL dialect when stored procedures, functions, triggers, temporary tables, SQL Server permissions, and execution plans become first-class architecture. Use it deliberately rather than assuming SQL Server-specific code is portable SQL.
 
 NoSQL and specialized data systems are the comparison when the data model is not mainly relational. The right question is not whether SQL is old or modern. It is whether the system's invariants, access patterns, and operational needs fit a relational database and its dialect.

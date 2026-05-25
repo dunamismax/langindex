@@ -1,0 +1,220 @@
+---
+title: Transact-SQL
+slug: transact-sql
+status: active
+summary: Transact-SQL is Microsoft's SQL Server and Azure SQL dialect for relational queries, schema work, procedural database logic, stored procedures, functions, triggers, temporary tables, transactions, and operational database programming.
+creators:
+  - Microsoft
+paradigms:
+  - procedural
+  - database
+  - relational
+  - imperative
+  - enterprise
+typing:
+  discipline: static with database-bound dynamic features
+  strength: schema-defined SQL Server and Azure SQL data types, variables, parameters, table variables, temporary tables, user-defined types, dynamic SQL, and runtime permissions shape real programs
+memory:
+  model: SQL Server Database Engine-managed storage, buffers, tempdb, plan cache, locks, row versions, transactions, and execution memory rather than manual heap allocation
+runtime:
+  model: Transact-SQL batches and modules are parsed, optimized, compiled, cached, and executed by the Microsoft SQL Database Engine across SQL Server, Azure SQL, and related Microsoft data services
+officialSite: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+packageManagers:
+  - SQL Server schemas
+  - SQL scripts
+  - SQL Server Management Studio
+  - sqlcmd
+  - migration tools
+comparedWith:
+  - sql
+  - plsql
+  - csharp
+  - java
+bestFor:
+  - SQL Server and Azure SQL systems where schema, queries, stored procedures, functions, triggers, transactions, and permissions should live close to relational data.
+  - Enterprise database code that exposes stable stored procedure APIs to applications, reports, jobs, integration tools, and administrative scripts.
+  - Data-local batch, validation, auditing, maintenance, and reporting support where reducing round trips and using SQL Server execution plans matter.
+  - Maintenance of existing SQL Server estates where T-SQL modules encode important transaction semantics, operational jobs, permissions, and data behavior.
+poorFit:
+  - General-purpose services, web applications, CLIs, desktop apps, mobile apps, or integration workers that need ordinary process structure, filesystem access, network clients, and package ecosystems.
+  - Systems that need strong portability across Oracle Database, PostgreSQL, MySQL, SQLite, Db2, and cloud warehouses without isolating dialect-specific code.
+  - Application architectures where stored procedures and triggers would hide business behavior from source control, migrations, tests, observability, and rollback plans.
+  - Long-running orchestration or external service calls that would hold database locks, transactions, worker resources, or tempdb pressure longer than the database should own.
+sources:
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: T-SQL Differences Between SQL Server and Azure SQL Database
+    url: https://learn.microsoft.com/en-us/azure/azure-sql/database/transact-sql-tsql-differences-sql-server?view=azuresql
+    publisher: Microsoft Learn
+  - title: CREATE PROCEDURE (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: CREATE FUNCTION (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: CREATE TRIGGER (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: CREATE TABLE (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: BEGIN TRANSACTION (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/begin-transaction-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: TRY...CATCH (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: Query Processing Architecture Guide
+    url: https://learn.microsoft.com/en-us/sql/relational-databases/query-processing-architecture-guide?view=sql-server-ver16
+    publisher: Microsoft Learn
+  - title: SQL Server Management Studio (SSMS)
+    url: https://learn.microsoft.com/en-us/ssms/sql-server-management-studio-ssms?view=sql-server-ver16
+    publisher: Microsoft Learn
+  - title: Use sqlcmd
+    url: https://learn.microsoft.com/en-us/sql/tools/sqlcmd/sqlcmd-use-utility?view=sql-server-ver17
+    publisher: Microsoft Learn
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+Transact-SQL, usually shortened to T-SQL, is the SQL dialect and procedural database language used by Microsoft SQL Server, Azure SQL Database, Azure SQL Managed Instance, SQL database in Microsoft Fabric, and related Microsoft data platforms. Microsoft describes T-SQL as central to Microsoft SQL products and services: applications and tools communicate with SQL Server databases by sending T-SQL commands.
+
+That product coupling is the center of the language. T-SQL is not generic SQL, and it is not a general-purpose service language that merely happens to query a database. It is the language used when relational data, SQL Server schemas, permissions, transactions, stored modules, tempdb, execution plans, and Microsoft database tooling are the boundary being programmed.
+
+The practical architecture question is therefore not "T-SQL or application code" in the abstract. It is which behavior should live inside SQL Server or Azure SQL because the data and transaction are the durable boundary, and which behavior belongs in C#, Java, Python, TypeScript, Go, PowerShell, or another application runtime.
+
+## Language Model
+
+T-SQL includes ordinary SQL statements for defining schemas, querying rows, and modifying data, plus procedural features such as variables, control flow, stored procedures, user-defined functions, triggers, cursors, error handling, temporary tables, table variables, dynamic SQL, and system procedures.
+
+Code can be submitted as ad hoc batches, scripts, stored procedures, functions, triggers, views, constraints, jobs, migrations, or tool-generated commands. SQL Server then parses and compiles statements, optimizes query expressions, caches execution plans where appropriate, and executes them through the Database Engine.
+
+Good T-SQL still starts with set-based SQL. Procedural control flow is useful around the edges: validation, batching, error handling, reusable database APIs, audit behavior, and maintenance tasks. Row-by-row procedural loops that repeatedly issue queries are often the wrong shape when a single set operation can give the optimizer more information.
+
+Related concepts: [Static vs Dynamic Typing](/concepts/static-vs-dynamic-typing/), [Modules And Namespacing](/concepts/modules-and-namespacing/), [Build Systems](/concepts/build-systems/), and [Errors As Values vs Exceptions](/concepts/errors-as-values-vs-exceptions/).
+
+## SQL Server And Azure SQL Coupling
+
+T-SQL is tightly coupled to the Microsoft SQL Database Engine. Its data types, catalog views, permissions, temporary objects, transactions, error numbers, query optimizer behavior, execution plans, system procedures, SQL Server Agent jobs, SSMS workflows, Azure SQL differences, and migration tools are Microsoft-specific.
+
+That coupling is a feature when SQL Server or Azure SQL is the system of record. T-SQL can expose stored procedures to several clients, enforce shared database behavior close to tables, run inside the same transaction as the data change, and use engine features such as indexes, computed columns, views, table-valued parameters, Query Store, execution plans, and database permissions.
+
+It is also the main portability cost. A T-SQL stored procedure is not an Oracle PL/SQL package, a PostgreSQL PL/pgSQL function, a MySQL stored program, or a generic ISO SQL persistent stored module. Moving a system to another database means redesigning dialect syntax, procedural modules, transaction assumptions, temp table behavior, error handling, security, deployment scripts, and optimizer expectations.
+
+Azure SQL keeps most application-facing T-SQL features compatible with SQL Server, but it is not identical to self-managed SQL Server. Platform features tied to server administration, availability groups, instance-level configuration, file access, SQL Server Agent, and cross-database behavior can differ by service. Treat SQL Server, Azure SQL Database, Azure SQL Managed Instance, Synapse, and Fabric as related targets that still need target-specific testing.
+
+## Stored Procedures, Functions, And Triggers
+
+Stored procedures are the usual T-SQL unit for database-owned commands. Microsoft documents `CREATE PROCEDURE` for permanent procedures in the current database and temporary procedures in `tempdb`. Procedures can accept parameters, return output parameters or status values, execute SQL statements, call other procedures, and provide a stable interface for application code or operational scripts.
+
+User-defined functions return scalar values or tables and can be used from T-SQL statements, applications, other functions, views, computed columns, `CHECK` constraints, and security policies. Their restrictions matter. Functions are not a general substitute for procedures because side effects and transaction behavior are constrained, and some function shapes have different optimizer consequences.
+
+Triggers are stored modules that run automatically for DML, DDL, or logon events. They are useful for audit records, compatibility behavior, derived maintenance, and rules that must execute regardless of caller. They are also a common source of hidden behavior. Microsoft explicitly notes that triggers work in transactions and can hold locks until commit or rollback, so long-running triggers can block other work.
+
+Use constraints, foreign keys, unique indexes, computed columns, and explicit procedures before reaching for large trigger bodies. If a trigger is still the right owner, keep it small, test it under concurrency, and document the application-visible behavior it creates.
+
+## Temporary Tables And Transaction Context
+
+Temporary objects are part of everyday T-SQL programming. Local temporary tables use a single `#` prefix and are visible in the current session, while global temporary tables use `##` and are visible more broadly. SQL Server stores temporary tables in `tempdb`, scopes them according to session and procedure rules, and automatically drops many temporary objects when their scope ends.
+
+Temporary tables are useful for staging intermediate result sets, breaking complex maintenance work into measurable steps, and supporting procedures that need indexes or statistics on temporary data. They also have operational cost. Heavy temp table use can create tempdb pressure, contention, plan instability, and concurrency surprises if naming, indexes, data volume, or transaction scope are not reviewed.
+
+Transactions are explicit with `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK`, and can also be affected by implicit transaction settings, savepoints, error behavior, isolation levels, locks, row versioning, and distributed transaction promotion. A transaction left open too long can block other sessions, delay log truncation, and keep version store cleanup from progressing.
+
+## Error Handling
+
+Modern T-SQL error handling usually centers on `TRY...CATCH`, `THROW`, `RAISERROR` in older code, transaction state checks, and the `ERROR_*` functions available inside a catch block. `TRY...CATCH` handles many execution errors, but it cannot span batches and cannot be used in user-defined functions.
+
+Error handling should be designed with transaction ownership. A stored procedure that starts a transaction needs a clear rule for when it commits, rolls back, or returns control to a caller that owns the transaction. A procedure called inside a larger application transaction should not surprise the caller with hidden commits or broad rollbacks.
+
+For application callers, map database errors deliberately. Unique constraint violations, deadlocks, lock timeouts, conversion errors, permission failures, and application-raised errors should be visible enough for the service layer to retry, report, or reject correctly.
+
+## Query Optimizer Boundary
+
+The SQL Server Query Optimizer is a cost-based optimizer. It chooses access paths, join order, physical operators, memory grants, and execution plans based on query text, metadata, statistics, indexes, parameter values, compatibility level, and engine features. That optimizer boundary is one of T-SQL's main strengths and one of its main sources of production risk.
+
+A stored procedure name can hide expensive SQL. Review important execution plans even when application code only sees `EXEC dbo.SomeProcedure`. Parameter sniffing, stale statistics, missing indexes, scalar UDF behavior, temp table cardinality, implicit conversions, lock escalation, isolation choices, and data skew can all change runtime behavior.
+
+The most durable T-SQL code gives the optimizer clear relational work: appropriate predicates, joins, indexes, constraints, and set-based operations. Procedural code should orchestrate the database work without preventing the engine from seeing enough of the problem to choose a good plan.
+
+## Tooling And Deployment
+
+T-SQL development is database-centered. Common tools include SQL Server Management Studio, the MSSQL extension for Visual Studio Code, Azure Data Studio where still used, SQL Server Data Tools, sqlcmd, SQL Server Management Objects, migration frameworks, schema diff tools, Query Store, execution plans, Extended Events, backup and restore tooling, and database drivers such as Microsoft.Data.SqlClient, ODBC, JDBC, and ADO.NET.
+
+SSMS is Microsoft's integrated environment for managing SQL infrastructure across SQL Server, Azure SQL Database, Azure SQL Managed Instance, SQL database in Microsoft Fabric, and related services. `sqlcmd` is a command-line utility for interactive and scripted T-SQL execution.
+
+T-SQL has no language package manager like Cargo, npm, Maven, or pip. Dependencies are database objects, schemas, grants, logins, roles, linked servers, SQL Agent jobs, certificates, CLR assemblies where allowed, external tools, and migration scripts. Production teams should version procedures, functions, triggers, views, indexes, permissions, and jobs through repeatable migrations rather than manual server edits.
+
+## Syntax Example
+
+```sql
+CREATE OR ALTER PROCEDURE dbo.AddLanguage
+  @Slug nvarchar(80),
+  @Title nvarchar(160)
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SET XACT_ABORT ON;
+
+  BEGIN TRY
+    BEGIN TRANSACTION;
+
+    INSERT INTO dbo.Languages (Slug, Title, CreatedAt)
+    VALUES (LOWER(@Slug), @Title, SYSUTCDATETIME());
+
+    COMMIT TRANSACTION;
+  END TRY
+  BEGIN CATCH
+    IF XACT_STATE() <> 0
+      ROLLBACK TRANSACTION;
+
+    THROW;
+  END CATCH;
+END;
+GO
+
+EXEC dbo.AddLanguage
+  @Slug = N'transact-sql',
+  @Title = N'Transact-SQL';
+```
+
+This example shows a stored procedure, parameters, transaction ownership, `TRY...CATCH`, rollback on error, `THROW`, and a procedure call. Real production code also needs migration ordering, permissions, tests, execution-plan review, and agreement about whether the caller or the procedure owns the transaction.
+
+## Best-Fit Use Cases
+
+T-SQL is a strong fit when:
+
+- SQL Server or Azure SQL is the durable system of record and logic must run close to tables, indexes, constraints, transactions, and permissions.
+- Several applications, reports, jobs, or integration tools need a shared database API through stored procedures or views.
+- Batch work is data-local and benefits from set-based SQL plus measured procedural orchestration.
+- Existing SQL Server stored procedures, triggers, jobs, and scripts already encode trusted behavior that should be stabilized rather than translated blindly.
+- The team has SQL Server development, DBA, migration, testing, and operational expertise.
+
+## Poor-Fit Or Risky Use Cases
+
+T-SQL is a poor default when:
+
+- The work is a general service, UI, CLI, worker, or integration layer that does not need to run inside the database.
+- The organization needs database portability and cannot isolate Microsoft-specific syntax and database modules.
+- Stored procedures, functions, triggers, or jobs are changed manually in production rather than through source-controlled migrations.
+- Business logic becomes invisible to application tests, code review, observability, or incident response.
+- The code calls external systems or performs long-running work while holding locks, transactions, tempdb resources, or database worker threads.
+
+## Enterprise Maintenance
+
+Many T-SQL systems are long-lived enterprise systems. They may include thousands of procedures, functions, triggers, views, jobs, linked servers, reports, data extracts, permissions, and application clients. Treating that estate as "just some SQL scripts" understates the maintenance risk.
+
+A practical inventory should include stored procedure contracts, table dependencies, trigger behavior, SQL Agent jobs, callers, permissions, linked servers, tempdb-heavy workflows, transaction semantics, exception contracts, migration history, execution plans, data volumes, and backup or restore assumptions. Before replacing T-SQL behavior with C#, Java, Python, or another service language, preserve the behavior that users and downstream systems depend on.
+
+Modernization often means keeping T-SQL where it is the right database boundary, extracting non-database responsibilities into services, reducing hidden trigger behavior, adding tests around stored modules, and making deployment repeatable from source.
+
+## Comparison Notes
+
+[Transact-SQL vs SQL](/comparisons/transact-sql-vs-sql/) separates portable relational SQL from Microsoft-specific database programming. SQL remains the broader language family and standard; T-SQL is the practical dialect and procedural layer for Microsoft SQL Server and Azure SQL systems.
+
+[Transact-SQL vs PL/SQL](/comparisons/transact-sql-vs-plsql/) is the main SQL Server versus Oracle procedural database comparison. Both languages keep data-local logic inside a relational database boundary, but their tooling, packaging, runtime behavior, error handling, optimizer assumptions, and platform coupling differ.

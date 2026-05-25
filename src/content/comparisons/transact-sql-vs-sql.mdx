@@ -1,0 +1,91 @@
+---
+title: Transact-SQL vs SQL
+slug: transact-sql-vs-sql
+summary: SQL is the broader relational database language family and standard, while Transact-SQL is Microsoft's SQL Server and Azure SQL dialect for stored procedures, functions, triggers, temp tables, transactions, and database-resident logic.
+languages:
+  - transact-sql
+  - sql
+useCases:
+  - SQL Server
+  - Azure SQL
+  - stored procedures
+  - data access
+  - database logic
+sources:
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: CREATE PROCEDURE (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: CREATE TRIGGER (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: BEGIN TRANSACTION (Transact-SQL)
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/begin-transaction-transact-sql?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: ISO/IEC 9075-2:2023 - SQL Foundation
+    url: https://www.iso.org/standard/76584.html
+    publisher: International Organization for Standardization
+  - title: ISO/IEC 9075-4:2023 - Persistent Stored Modules
+    url: https://www.iso.org/standard/76586.html
+    publisher: International Organization for Standardization
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams working near Microsoft SQL Server or Azure SQL and deciding whether a rule belongs in ordinary SQL, schema constraints, views, application code, or T-SQL stored logic. SQL and Transact-SQL are closely related, but they are not the same layer.
+
+SQL is the broader relational language family and standard for defining schemas, querying tables, changing rows, expressing constraints, and letting database engines optimize set operations. Transact-SQL is Microsoft's dialect and procedural extension for SQL Server, Azure SQL, and related services.
+
+## Key Differences
+
+| Dimension | SQL | Transact-SQL |
+| --- | --- | --- |
+| Primary role | Relational schema, query, constraint, and set-based data operations | Microsoft SQL Server and Azure SQL dialect plus procedural database modules |
+| Standardization | SQL is standardized, though real systems use dialects | Microsoft-specific implementation with SQL Server and Azure SQL behavior |
+| Execution model | SQL statements are optimized by a target database engine | T-SQL batches and modules are optimized and executed by the Microsoft SQL Database Engine |
+| Modularity | Tables, views, constraints, functions, procedures, schemas, and migrations across dialects | Stored procedures, functions, triggers, temp tables, batches, jobs, and Microsoft catalog objects |
+| Main risk | Dialect drift, poor plans, missing constraints, weak transaction testing | Hidden stored logic, SQL Server lock-in, trigger surprises, tempdb pressure, deployment discipline gaps |
+
+## Choose SQL When
+
+- The rule is naturally relational: constraints, joins, filters, aggregations, windows, views, indexes, or set-based transformations.
+- A query or schema migration should remain understandable to people who work across several relational databases.
+- Portability across PostgreSQL, SQLite, MySQL, Oracle Database, Db2, SQL Server, or cloud warehouses matters enough to avoid Microsoft-specific constructs.
+- Application code should own orchestration while SQL owns durable data access.
+- A single declarative statement gives the optimizer more room than procedural row-by-row logic.
+
+## Choose Transact-SQL When
+
+- SQL Server or Azure SQL should own a stable database API through stored procedures, views, or functions.
+- Logic must run inside the same database transaction as the data change.
+- The code needs SQL Server-specific behavior: temp tables, table-valued parameters, `TRY...CATCH`, `THROW`, Query Store-informed tuning, system procedures, SQL Server security, or platform-specific catalog views.
+- A trigger is the right owner for automatic database-side behavior that must occur regardless of caller.
+- Existing SQL Server modules and jobs already own important behavior and need maintenance rather than a blind rewrite.
+
+## Use Them Together
+
+Most T-SQL programs are still mostly about SQL. Good T-SQL wraps set-based statements with API design, parameter handling, transactions, error handling, batching, permissions, and operational behavior.
+
+Make the boundary visible:
+
+- Put ordinary data invariants in constraints where possible.
+- Put set operations in SQL statements, views, indexed views, or materialized query surfaces when they are clearer and measurable.
+- Put SQL Server-specific orchestration in stored procedures when several callers need the same database-owned behavior.
+- Keep triggers small and documented.
+- Keep schema and module changes in source-controlled migrations.
+
+## Watch Points
+
+T-SQL can hide expensive SQL behind a short procedure name. Review important execution plans, indexes, statistics, parameter behavior, tempdb use, and transaction duration even when the application only executes a stored procedure.
+
+SQL-only designs can also become brittle when several clients duplicate the same validation, batching, and exception mapping. In a SQL Server-centered system, a stored procedure can sometimes be a clearer boundary than scattered SQL in many application repositories.
+
+## Practical Default
+
+Start with SQL for relational data rules and set-based work. Add Transact-SQL when Microsoft SQL Server or Azure SQL should own a stable procedural API, transaction-local validation, trigger behavior, or database maintenance operation. Keep the split visible in source control, tests, and operational runbooks.

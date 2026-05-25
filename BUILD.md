@@ -198,13 +198,13 @@ Selection signals checked on 2026-05-23:
 
 ## Phase 17 - Transact-SQL
 
-- [ ] Add a complete Transact-SQL page.
-- [ ] Cover Microsoft SQL Server/Azure SQL coupling, procedural SQL, stored procedures, functions, triggers, temp tables, transactions, error handling, query optimizer boundary, tooling, and operational constraints.
-- [ ] Add Transact-SQL vs SQL comparison.
-- [ ] Add Transact-SQL vs PL/SQL comparison once PL/SQL exists.
-- [ ] Add Transact-SQL to SQL/data-access, enterprise, and legacy-maintenance guides.
-- [ ] Update validation and tests.
-- [ ] Run the normal verification commands.
+- [x] Add a complete Transact-SQL page.
+- [x] Cover Microsoft SQL Server/Azure SQL coupling, procedural SQL, stored procedures, functions, triggers, temp tables, transactions, error handling, query optimizer boundary, tooling, and operational constraints.
+- [x] Add Transact-SQL vs SQL comparison.
+- [x] Add Transact-SQL vs PL/SQL comparison once PL/SQL exists.
+- [x] Add Transact-SQL to SQL/data-access, enterprise, and legacy-maintenance guides.
+- [x] Update validation and tests.
+- [x] Run the normal verification commands.
 
 ## Phase 18 - SAS
 

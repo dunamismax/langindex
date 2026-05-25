@@ -5,6 +5,7 @@ summary: A guide for deciding where SQL should own relational data, transactions
 audience: Developers and teams designing backend services, data workflows, reporting surfaces, migrations, and database boundaries around relational systems.
 candidates:
   - sql
+  - transact-sql
   - plsql
   - python
   - java
@@ -26,6 +27,12 @@ sources:
     publisher: SQLite
   - title: Transact-SQL Reference
     url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: T-SQL Differences Between SQL Server and Azure SQL Database
+    url: https://learn.microsoft.com/en-us/azure/azure-sql/database/transact-sql-tsql-differences-sql-server?view=azuresql
     publisher: Microsoft Learn
   - title: Oracle Database SQL Language Reference
     url: https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/
@@ -99,6 +106,8 @@ Stored procedures, triggers, and database functions are useful when logic must r
 Use them carefully. Database-resident logic needs source control, review, migration ordering, tests, observability, and rollback plans. If stored procedures become a hidden application, the architecture becomes harder to reason about than either SQL or application code alone.
 
 In Oracle-centered systems, [PL/SQL](/languages/plsql/) is the main procedural language for that database-resident layer. Use it for stable package APIs, transaction-local validation, data-local batch work, and trigger behavior that truly belongs inside Oracle Database. Keep ordinary relational constraints and set-based transformations in SQL where they are clearer, and keep cross-system workflow in the application layer.
+
+In Microsoft SQL Server and Azure SQL systems, [Transact-SQL](/languages/transact-sql/) is the main dialect and procedural language for database-resident code. Use it for stored procedures, functions, triggers, temp-table-heavy data-local work, transaction-local validation, and shared database APIs that truly belong inside SQL Server. Keep ordinary constraints and set-based queries visible as SQL, and keep cross-system orchestration in the application layer.
 
 ## Data And Analytics Workflows
 

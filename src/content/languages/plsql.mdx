@@ -28,6 +28,7 @@ packageManagers:
   - migration tools
 comparedWith:
   - sql
+  - transact-sql
   - java
   - abap
   - python
@@ -209,6 +210,8 @@ Modernization often means keeping PL/SQL where it is the right database boundary
 ## Comparison Notes
 
 [PL/SQL vs SQL](/comparisons/plsql-vs-sql/) separates relational querying and schema work from Oracle-specific procedural database programming. SQL remains the language of relational sets and constraints; PL/SQL adds Oracle-resident program units around that database work.
+
+[Transact-SQL vs PL/SQL](/comparisons/transact-sql-vs-plsql/) is the closest SQL Server versus Oracle procedural database comparison. Both languages keep logic near data, but their package/module models, error handling, temporary-data behavior, tooling, optimizer assumptions, and platform coupling differ.
 
 [PL/SQL vs Java For Database-Adjacent Business Logic](/comparisons/plsql-vs-java-for-database-adjacent-business-logic/) is the main architecture comparison for Oracle-centered enterprise systems. PL/SQL is strongest inside the database boundary. Java is stronger for services, APIs, orchestration, and broad JVM ecosystem work outside that boundary.
 

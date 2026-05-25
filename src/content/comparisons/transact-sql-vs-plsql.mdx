@@ -1,0 +1,107 @@
+---
+title: Transact-SQL vs PL/SQL
+slug: transact-sql-vs-plsql
+summary: Transact-SQL is the SQL Server and Azure SQL procedural database language, while PL/SQL is Oracle Database's procedural language; both keep data-local logic inside a database boundary, but they are tied to different engines, tooling, packaging models, and operational assumptions.
+languages:
+  - transact-sql
+  - plsql
+useCases:
+  - SQL Server
+  - Azure SQL
+  - Oracle Database
+  - stored procedures
+  - enterprise maintenance
+sources:
+  - title: Transact-SQL Reference
+    url: https://learn.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: What Is SQL Server?
+    url: https://learn.microsoft.com/en-us/sql/sql-server/what-is-sql-server?view=sql-server-ver17
+    publisher: Microsoft Learn
+  - title: T-SQL Differences Between SQL Server and Azure SQL Database
+    url: https://learn.microsoft.com/en-us/azure/azure-sql/database/transact-sql-tsql-differences-sql-server?view=azuresql
+    publisher: Microsoft Learn
+  - title: Query Processing Architecture Guide
+    url: https://learn.microsoft.com/en-us/sql/relational-databases/query-processing-architecture-guide?view=sql-server-ver16
+    publisher: Microsoft Learn
+  - title: Oracle AI Database PL/SQL Language Reference - Overview of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/overview.html
+    publisher: Oracle
+  - title: Oracle AI Database PL/SQL Language Reference - Main Features of PL/SQL
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/main-features-pl-sql.html
+    publisher: Oracle
+  - title: Oracle AI Database Development Guide - Coding PL/SQL Subprograms and Packages
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/adfns/coding-subprograms-and-packages.html
+    publisher: Oracle
+  - title: Oracle AI Database Concepts - Server-Side Programming
+    url: https://docs.oracle.com/en/database/oracle/oracle-database/26/cncpt/server-side-programming.html
+    publisher: Oracle
+lastVerified: 2026-05-24
+---
+
+## Scope
+
+This comparison is for teams working near Microsoft SQL Server, Azure SQL, Oracle Database, or a migration between those worlds. Transact-SQL and PL/SQL are both procedural database languages built around SQL, transactions, stored modules, triggers, and data-local behavior. They are not portable alternatives to each other.
+
+Transact-SQL belongs to Microsoft SQL Server, Azure SQL, SQL database in Microsoft Fabric, and related Microsoft data services. PL/SQL belongs to Oracle Database. The real decision is usually not which language is nicer in isolation, but which database engine owns the data, operational model, tooling, and long-lived application contracts.
+
+## Shared Territory
+
+Both languages can:
+
+- Define stored procedures and functions.
+- Run SQL close to data inside database transactions.
+- Implement triggers and database-side validation.
+- Hide repeated SQL behind stable database APIs.
+- Support enterprise batch jobs, reports, maintenance scripts, and legacy application contracts.
+- Create maintenance risk when stored logic is not versioned, tested, reviewed, or observable.
+
+Both should be used with set-based SQL rather than as row-by-row substitutes for the optimizer. In both ecosystems, a stored module can make a system clearer or bury important behavior where application developers cannot see it.
+
+## Key Differences
+
+| Dimension | Transact-SQL | PL/SQL |
+| --- | --- | --- |
+| Database home | Microsoft SQL Server, Azure SQL, and related Microsoft data services | Oracle Database |
+| Main module style | Stored procedures, functions, triggers, views, batches, jobs, temp tables | Packages, package bodies, procedures, functions, triggers, types, anonymous blocks |
+| Packaging model | Schemas plus standalone procedures/functions, scripts, migrations, jobs, permissions | Packages with public specifications and bodies are central for larger codebases |
+| Error handling | `TRY...CATCH`, `THROW`, `RAISERROR` in older code, SQL Server error state and transaction checks | Exception blocks, predefined and user-defined exceptions, `RAISE_APPLICATION_ERROR` |
+| Temporary data | Local and global temp tables in `tempdb`, table variables, table-valued parameters | Global/private temporary tables, collections, cursors, package state, bulk features |
+| Main risk | Hidden stored logic, tempdb and plan-cache issues, trigger blocking, SQL Server lock-in | Hidden package logic, trigger surprises, Oracle lock-in, deployment and editioning complexity |
+
+## Choose Transact-SQL When
+
+- SQL Server or Azure SQL is the durable system of record.
+- Existing stored procedures, triggers, SQL Server Agent jobs, reports, and application clients already depend on T-SQL behavior.
+- The team needs Microsoft database tooling such as SSMS, sqlcmd, Query Store, SQL Server-specific execution plans, SQL Server security, or Azure SQL deployment patterns.
+- Database logic depends on T-SQL idioms such as temp tables, table-valued parameters, `TRY...CATCH`, `THROW`, `OUTPUT`, `MERGE` caveats, SQL Server catalog views, or SQL Server-specific data types.
+- The application stack is already centered on .NET, Microsoft.Data.SqlClient, ADO.NET, Entity Framework, SQL Server operations, or Azure SQL.
+
+## Choose PL/SQL When
+
+- Oracle Database is the durable system of record.
+- Existing packages, triggers, Oracle jobs, forms, reports, APEX apps, or integration tools depend on PL/SQL behavior.
+- Package specifications and package bodies are the right database API structure.
+- The code depends on Oracle-specific features such as supplied packages, definer/invoker rights, Oracle exceptions, package state, `%TYPE` and `%ROWTYPE`, bulk collect, `FORALL`, or Oracle optimizer behavior.
+- The application stack and operations team already manage Oracle schemas, grants, SQLcl, SQL*Plus, SQL Developer, editioning, and Oracle migration processes.
+
+## Migration Notes
+
+A T-SQL to PL/SQL migration, or the reverse, is a database migration before it is a syntax translation. Preserve behavior before changing language:
+
+- Stored procedure and package contracts.
+- Transaction ownership, isolation, lock behavior, and retry strategy.
+- Error numbers, exception contracts, and caller-visible messages.
+- Temporary table or collection semantics.
+- Trigger ordering and hidden side effects.
+- Security model, grants, schemas, roles, synonyms, and cross-database or database-link assumptions.
+- Execution plans, indexes, statistics, data volume, and batch windows.
+- Tooling for migrations, jobs, backups, monitoring, and rollback.
+
+Automated conversion tools can help inventory and translate simple constructs, but they cannot prove application behavior. Use characterization tests, production-shaped fixtures, and plan review before trusting a converted stored codebase.
+
+## Practical Default
+
+Keep Transact-SQL where SQL Server or Azure SQL transaction semantics, stored procedures, triggers, temp tables, and operational tooling are the point. Keep PL/SQL where Oracle Database packages, triggers, supplied packages, and Oracle transaction behavior are the point.
+
+For new behavior, prefer the database language only when the rule truly belongs inside the database boundary. Use C#, Java, Python, TypeScript, Go, or another application language for services, APIs, external integrations, workflow orchestration, and library-heavy work around that boundary.
